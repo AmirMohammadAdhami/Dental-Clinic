@@ -15,6 +15,7 @@
   --primary-dark: #0B5A54;
   --secondary: #D4AF37;
   --bg: #F8FAFC;
+  --bg-alt: #EDF2F7;
   --text: #0F172A;
   --accent: #99F6E4;
 
@@ -357,6 +358,12 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 /* ================= DOCTORS SLIDER ================= */
 .doctors-section {
   padding: 0 5vw 100px;
+  background: var(--bg-alt);
+}
+
+.assistants-section {
+  padding: 0 5vw 100px;
+  background: var(--bg);
 }
 
 .doctors-inner {
@@ -491,7 +498,8 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
 /* --- Responsive: mobile --- */
 @media (max-width: 620px) {
-  .doctors-section {
+  .doctors-section,
+  .assistants-section {
     padding: 0 5vw 60px;
   }
 

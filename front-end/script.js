@@ -41,13 +41,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- اسلایدر دکترها ---
-  const track = document.querySelector('.doctors-track');
-  const cards = document.querySelectorAll('.doctor-card');
-  const prevBtn = document.querySelector('.slider-arrow-left');
-  const nextBtn = document.querySelector('.slider-arrow-right');
+  // --- اسلایدر عمومی ---
+  function initSlider(section) {
+    const track = section.querySelector('.doctors-track');
+    const cards = section.querySelectorAll('.doctor-card');
+    const prevBtn = section.querySelector('.slider-arrow-left');
+    const nextBtn = section.querySelector('.slider-arrow-right');
 
-  if (track && cards.length && prevBtn && nextBtn) {
+    if (!track || !cards.length || !prevBtn || !nextBtn) return;
+
     let currentIndex = 0;
 
     function getVisibleCount() {
@@ -58,59 +60,41 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function getMaxIndex() {
-      const visible = getVisibleCount();
-      return Math.max(0, cards.length - visible);
+      return Math.max(0, cards.length - getVisibleCount());
     }
 
     function updateArrows() {
-      if (currentIndex <= 0) {
-        prevBtn.disabled = true;
-        prevBtn.classList.add('disabled');
-      } else {
-        prevBtn.disabled = false;
-        prevBtn.classList.remove('disabled');
-      }
-      if (currentIndex >= getMaxIndex()) {
-        nextBtn.disabled = true;
-        nextBtn.classList.add('disabled');
-      } else {
-        nextBtn.disabled = false;
-        nextBtn.classList.remove('disabled');
-      }
+      prevBtn.disabled = currentIndex <= 0;
+      prevBtn.classList.toggle('disabled', currentIndex <= 0);
+      nextBtn.disabled = currentIndex >= getMaxIndex();
+      nextBtn.classList.toggle('disabled', currentIndex >= getMaxIndex());
     }
 
     function slide() {
       const visible = getVisibleCount();
       const cardWidth = 100 / visible;
-      // direction: ltr → translateX منفی = حریک به راست (جلو)
       track.style.transform = `translateX(-${currentIndex * cardWidth}%)`;
       updateArrows();
     }
 
     prevBtn.addEventListener('click', () => {
-      if (currentIndex > 0) {
-        currentIndex--;
-        slide();
-      }
+      if (currentIndex > 0) { currentIndex--; slide(); }
     });
 
     nextBtn.addEventListener('click', () => {
-      if (currentIndex < getMaxIndex()) {
-        currentIndex++;
-        slide();
-      }
+      if (currentIndex < getMaxIndex()) { currentIndex++; slide(); }
     });
 
     window.addEventListener('resize', () => {
-      if (currentIndex > getMaxIndex()) {
-        currentIndex = getMaxIndex();
-      }
+      if (currentIndex > getMaxIndex()) currentIndex = getMaxIndex();
       slide();
     });
 
-    // نمایش اولیه
     slide();
   }
+
+  // اعمال اسلایدر روی تمام سکشن‌ها
+  document.querySelectorAll('.doctors-slider-wrapper').forEach(initSlider);
 
   // --- افکت اسکرول روی هدر (کوچک‌تر شدن هنگام اسکرول) ---
   const header = document.querySelector('.header-inner');
