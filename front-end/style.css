@@ -530,14 +530,19 @@ img {
 
 .doctor-img {
     width: 100%;
-    aspect-ratio: 3 / 4;
+    height: 0;
+    padding-bottom: 133%;
     border-radius: var(--radius-md);
     overflow: hidden;
     background: #e2e8f0;
     box-shadow: var(--shadow-soft);
+    position: relative;
 }
 
 .doctor-img img {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
