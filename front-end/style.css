@@ -224,17 +224,6 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   position: relative;
 }
 
-.tile-stat {
-  padding: 30px 26px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  min-height: 220px;
-  background: #FFFFFF;
-  border: 1px solid rgba(15, 118, 110, 0.1);
-  box-shadow: var(--shadow-soft);
-}
-
 /* ---- کارت accent: دو نیمه (عکس بالا / آمار پایین) ---- */
 .tile-accent {
   height: 100%;
@@ -261,35 +250,47 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   object-fit: cover;
 }
 
+/* دو بلاک آمار کنار هم، زیر عکس */
 .tile-accent-info {
   flex: 0 0 auto;
-  padding: 18px 22px;
+  padding: 20px 22px;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  align-items: center;
+  gap: 18px;
   background: linear-gradient(150deg, var(--accent), #ffffff 130%);
+}
+
+.tile-stat-block {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.tile-divider {
+  width: 1px;
+  align-self: stretch;
+  background: rgba(15, 23, 42, 0.12);
 }
 
 .tile-icon { margin-bottom: 14px; }
 
 .tile-number {
-  font-size: 2.6rem;
+  font-size: 1.8rem;
   font-weight: 800;
   color: var(--text);
   line-height: 1;
 }
 
 .tile-number span {
-  font-size: 1.6rem;
+  font-size: 1.15rem;
   color: var(--primary);
-  margin-right: 4px;
+  margin-right: 3px;
 }
 
 .tile-label {
-  margin-top: 10px;
-  font-size: 0.98rem;
+  margin-top: 8px;
+  font-size: 0.86rem;
   color: rgba(15, 23, 42, 0.6);
-  line-height: 1.6;
+  line-height: 1.55;
 }
 
 .tile-photo {
@@ -314,7 +315,7 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   grid-row: 2;
 }
 
-.tile-stat {
+.tile-photo-4 {
   grid-column: 1;
   grid-row: 1;
 }
@@ -330,7 +331,7 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto auto auto;
   }
-  .tile-stat   { grid-column: 1; grid-row: 1; }
+  .tile-photo-4{ grid-column: 1; grid-row: 1; }
   .tile-photo-2{ grid-column: 2; grid-row: 1; }
   .tile-photo-1{ grid-column: 1 / span 2; grid-row: 2; min-height: 320px; }
   .tile-photo-3{ grid-column: 1; grid-row: 3; }
@@ -344,11 +345,13 @@ img { display: block; width: 100%; height: 100%; object-fit: cover; }
   .hero-cta { flex-direction: column; width: 100%; }
   .btn-lg { width: 100%; }
   .gallery { grid-template-columns: 1fr; gap: 16px; }
-  .tile-stat, .tile-photo-1, .tile-photo-2, .tile-photo-3, .tile-accent {
+  .tile-photo-4, .tile-photo-1, .tile-photo-2, .tile-photo-3, .tile-accent {
     grid-column: 1 !important;
     grid-row: auto !important;
     min-height: 260px;
   }
+  .tile-accent-info { flex-direction: column; align-items: stretch; }
+  .tile-divider { width: auto; height: 1px; align-self: stretch; }
 }
 
 /* ================= REDUCED MOTION ================= */
