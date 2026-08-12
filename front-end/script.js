@@ -41,6 +41,77 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // --- اسلایدر دکترها ---
+  const track = document.querySelector('.doctors-track');
+  const cards = document.querySelectorAll('.doctor-card');
+  const prevBtn = document.querySelector('.slider-arrow-left');
+  const nextBtn = document.querySelector('.slider-arrow-right');
+
+  if (track && cards.length && prevBtn && nextBtn) {
+    let currentIndex = 0;
+
+    function getVisibleCount() {
+      const w = window.innerWidth;
+      if (w <= 620) return 1;
+      if (w <= 900) return 2;
+      return 3;
+    }
+
+    function getMaxIndex() {
+      const visible = getVisibleCount();
+      return Math.max(0, cards.length - visible);
+    }
+
+    function updateArrows() {
+      if (currentIndex <= 0) {
+        prevBtn.disabled = true;
+        prevBtn.classList.add('disabled');
+      } else {
+        prevBtn.disabled = false;
+        prevBtn.classList.remove('disabled');
+      }
+      if (currentIndex >= getMaxIndex()) {
+        nextBtn.disabled = true;
+        nextBtn.classList.add('disabled');
+      } else {
+        nextBtn.disabled = false;
+        nextBtn.classList.remove('disabled');
+      }
+    }
+
+    function slide() {
+      const visible = getVisibleCount();
+      const cardWidth = 100 / visible;
+      // direction: ltr → translateX منفی = حریک به راست (جلو)
+      track.style.transform = `translateX(-${currentIndex * cardWidth}%)`;
+      updateArrows();
+    }
+
+    prevBtn.addEventListener('click', () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        slide();
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (currentIndex < getMaxIndex()) {
+        currentIndex++;
+        slide();
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      if (currentIndex > getMaxIndex()) {
+        currentIndex = getMaxIndex();
+      }
+      slide();
+    });
+
+    // نمایش اولیه
+    slide();
+  }
+
   // --- افکت اسکرول روی هدر (کوچک‌تر شدن هنگام اسکرول) ---
   const header = document.querySelector('.header-inner');
   let lastScroll = 0;
