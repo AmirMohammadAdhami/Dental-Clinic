@@ -417,57 +417,6 @@ img {
     }
 }
 
-/* ================= ANIMATED WAVE ================= */
-.wave-separator {
-    position: relative;
-    width: 100%;
-    height: 80px;
-    overflow: hidden;
-    margin-top: -1px;
-    background: transparent;
-}
-
-.wave-layer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 200%;
-    height: 100%;
-}
-
-.wave-back {
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120'%3E%3Cpath fill='%23D5DEE8' fill-opacity='0.5' d='M0,64 C180,120 360,0 540,64 C720,128 900,0 1080,64 C1260,128 1440,32 1440,64 L1440,120 L0,120 Z'/%3E%3C/svg%3E") repeat-x;
-    background-size: 1440px 120px;
-    animation: waveSlide 12s linear infinite;
-}
-
-.wave-front {
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120'%3E%3Cpath fill='%23D5DEE8' d='M0,80 C240,120 480,20 720,80 C960,140 1200,40 1440,80 L1440,120 L0,120 Z'/%3E%3C/svg%3E") repeat-x;
-    background-size: 1440px 120px;
-    animation: waveSlide 8s linear infinite reverse;
-}
-
-.wave-separator-alt .wave-back {
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120'%3E%3Cpath fill='%23F8FAFC' fill-opacity='0.5' d='M0,64 C180,120 360,0 540,64 C720,128 900,0 1080,64 C1260,128 1440,32 1440,64 L1440,120 L0,120 Z'/%3E%3C/svg%3E") repeat-x;
-    background-size: 1440px 120px;
-    animation: waveSlide 12s linear infinite;
-}
-
-.wave-separator-alt .wave-front {
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120'%3E%3Cpath fill='%23F8FAFC' d='M0,80 C240,120 480,20 720,80 C960,140 1200,40 1440,80 L1440,120 L0,120 Z'/%3E%3C/svg%3E") repeat-x;
-    background-size: 1440px 120px;
-    animation: waveSlide 8s linear infinite reverse;
-}
-
-@keyframes waveSlide {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
-}
-
 /* ================= DOCTORS SLIDER ================= */
 .doctors-section {
     padding: 0 5vw 100px;
