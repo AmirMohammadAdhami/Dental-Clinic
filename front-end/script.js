@@ -4,6 +4,19 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+  // --- حذف افکت shimmer وقتی عکس واقعی لود شد ---
+  document.querySelectorAll('.tile-photo, .tile-accent-photo, .doctor-img').forEach(wrapper => {
+    const img = wrapper.querySelector('img');
+    if (!img) return;
+    const markLoaded = () => wrapper.classList.add('img-loaded');
+    if (img.complete && img.naturalWidth > 0) {
+      markLoaded();
+    } else {
+      img.addEventListener('load', markLoaded);
+      img.addEventListener('error', markLoaded);
+    }
+  });
+
   // --- ظاهر شدن نرم عکس‌ها و کارت‌ها هنگام ورود به صفحه ---
   const tiles = document.querySelectorAll('.gallery .tile');
 
@@ -145,10 +158,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.addEventListener('scroll', () => {
     if (window.scrollY > 20) {
-      header.style.boxShadow = '0 10px 34px -12px rgba(15, 23, 42, 0.22)';
+      header.classList.add('is-scrolled');
     } else {
-      header.style.boxShadow = '0 8px 30px -12px rgba(15, 23, 42, 0.12)';
+      header.classList.remove('is-scrolled');
     }
   });
+
+  // --- انیمیشن ظاهر شدن سکشن‌ها هنگام اسکرول ---
+  const revealEls = document.querySelectorAll('.reveal');
+
+  if ('IntersectionObserver' in window && revealEls.length) {
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+    revealEls.forEach(el => revealObserver.observe(el));
+  } else {
+    // Fallback: no IntersectionObserver support, just show everything
+    revealEls.forEach(el => el.classList.add('is-visible'));
+  }
+
+  // --- دکمه شناور رزرو نوبت در موبایل ---
+  const mobileCta = document.querySelector('.mobile-sticky-cta');
+  const heroSection = document.querySelector('.hero');
+
+  if (mobileCta && heroSection) {
+    const ctaObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        // وقتی هیرو از دید خارج شد، دکمه شناور نمایش داده میشه
+        mobileCta.classList.toggle('is-visible', !entry.isIntersecting);
+      });
+    }, { threshold: 0 });
+
+    ctaObserver.observe(heroSection);
+
+    mobileCta.querySelector('.btn').addEventListener('click', () => {
+      console.log('درخواست رزرو نوبت (موبایل) ثبت شد.');
+    });
+  }
 
 });
