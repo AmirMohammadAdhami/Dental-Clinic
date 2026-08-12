@@ -96,6 +96,50 @@ document.addEventListener('DOMContentLoaded', () => {
   // اعمال اسلایدر روی تمام سکشن‌ها
   document.querySelectorAll('.doctors-slider-wrapper').forEach(initSlider);
 
+  // --- اسلایدر قبل / بعد ---
+  document.querySelectorAll('[data-ba]').forEach(card => {
+    const container = card.querySelector('.ba-container');
+    const beforeImg = card.querySelector('.ba-before');
+    const sliderLine = card.querySelector('.ba-slider');
+    const labelBefore = card.querySelector('.ba-label-before');
+    const labelAfter = card.querySelector('.ba-label-after');
+    let isDragging = false;
+
+    function updateSlider(x) {
+      const rect = container.getBoundingClientRect();
+      let pos = (x - rect.left) / rect.width;
+      pos = Math.max(0, Math.min(1, pos));
+      const pct = pos * 100;
+      beforeImg.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+      sliderLine.style.left = `${pct}%`;
+      // لیبل سمت چپ (before) فقط وقتی اسلایدر > 20% باشه
+      labelBefore.style.opacity = pct > 20 ? '1' : '0';
+      // لیبل سمت راست (after) فقط وقتی اسلایدر < 80% باشه
+      labelAfter.style.opacity = pct < 80 ? '1' : '0';
+    }
+
+    container.addEventListener('mousedown', e => {
+      isDragging = true;
+      updateSlider(e.clientX);
+    });
+
+    container.addEventListener('touchstart', e => {
+      isDragging = true;
+      updateSlider(e.touches[0].clientX);
+    }, { passive: true });
+
+    window.addEventListener('mousemove', e => {
+      if (isDragging) updateSlider(e.clientX);
+    });
+
+    window.addEventListener('touchmove', e => {
+      if (isDragging) updateSlider(e.touches[0].clientX);
+    }, { passive: true });
+
+    window.addEventListener('mouseup', () => { isDragging = false; });
+    window.addEventListener('touchend', () => { isDragging = false; });
+  });
+
   // --- افکت اسکرول روی هدر (کوچک‌تر شدن هنگام اسکرول) ---
   const header = document.querySelector('.header-inner');
   let lastScroll = 0;
