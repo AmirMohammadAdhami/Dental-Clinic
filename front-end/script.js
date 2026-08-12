@@ -142,18 +142,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- افکت اسکرول روی هدر (کوچک‌تر شدن هنگام اسکرول) ---
   const header = document.querySelector('.header-inner');
-  let lastScroll = 0;
 
   window.addEventListener('scroll', () => {
-    const currentScroll = window.scrollY;
-
-    if (currentScroll > 20) {
+    if (window.scrollY > 20) {
       header.style.boxShadow = '0 10px 34px -12px rgba(15, 23, 42, 0.22)';
     } else {
       header.style.boxShadow = '0 8px 30px -12px rgba(15, 23, 42, 0.12)';
     }
-
-    lastScroll = currentScroll;
   });
 
 });
