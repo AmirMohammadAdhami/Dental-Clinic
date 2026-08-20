@@ -420,7 +420,7 @@ document.addEventListener('DOMContentLoaded', () => {
         dot.setAttribute('role', 'tab');
         dot.setAttribute('aria-label', `رفتن به نظر ${i + 1} از ${total}`);
         dot.addEventListener('click', () => {
-          if (i !== currentIndex) goTo(i);
+          if (i !== currentIndex) goToWithReset(i);
         });
         dotsContainer.appendChild(dot);
       }
@@ -472,14 +472,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function goNext() {
       if (currentIndex < total - 1) goTo(currentIndex + 1);
+      else goTo(0); // Loop back to start
     }
 
     function goPrev() {
       if (currentIndex > 0) goTo(currentIndex - 1);
+      else goTo(total - 1); // Loop to end
     }
 
-    if (prevBtn) prevBtn.addEventListener('click', goPrev);
-    if (nextBtn) nextBtn.addEventListener('click', goNext);
+    // --- Auto-advance every 8 seconds ---
+    let autoTimer = null;
+
+    function startAutoTimer() {
+      stopAutoTimer();
+      autoTimer = setInterval(() => {
+        goNext();
+      }, 8000);
+    }
+
+    function stopAutoTimer() {
+      if (autoTimer) {
+        clearInterval(autoTimer);
+        autoTimer = null;
+      }
+    }
+
+    // Wrap goTo to reset timer on manual interaction
+    const originalGoTo = goTo;
+    function goToWithReset(index) {
+      originalGoTo(index);
+      startAutoTimer();
+    }
+
+    if (prevBtn) prevBtn.addEventListener('click', () => goToWithReset(currentIndex > 0 ? currentIndex - 1 : total - 1));
+    if (nextBtn) nextBtn.addEventListener('click', () => goToWithReset(currentIndex < total - 1 ? currentIndex + 1 : 0));
+
+    // Pause auto-advance on hover
+    deck.addEventListener('mouseenter', stopAutoTimer);
+    deck.addEventListener('mouseleave', startAutoTimer);
 
     // Touch swipe support
     let touchStartX = 0;
@@ -490,13 +520,13 @@ document.addEventListener('DOMContentLoaded', () => {
       touchStartX = e.touches[0].clientX;
       touchStartY = e.touches[0].clientY;
       isSwiping = true;
+      stopAutoTimer();
     }, { passive: true });
 
     deck.addEventListener('touchmove', (e) => {
       if (!isSwiping) return;
       const dx = e.touches[0].clientX - touchStartX;
       const dy = e.touches[0].clientY - touchStartY;
-      // Only handle horizontal swipes
       if (Math.abs(dx) < Math.abs(dy)) {
         isSwiping = false;
       }
@@ -507,14 +537,16 @@ document.addEventListener('DOMContentLoaded', () => {
       isSwiping = false;
       const dx = e.changedTouches[0].clientX - touchStartX;
       const threshold = 50;
-      if (dx < -threshold) goNext(); // Swipe left = next
-      else if (dx > threshold) goPrev(); // Swipe right = prev
+      if (dx < -threshold) goToWithReset(currentIndex < total - 1 ? currentIndex + 1 : 0);
+      else if (dx > threshold) goToWithReset(currentIndex > 0 ? currentIndex - 1 : total - 1);
+      else startAutoTimer();
     });
 
     buildDots();
     layoutCards();
     updateDots();
     updateArrows();
+    startAutoTimer();
   }
 
 });

@@ -1406,13 +1406,29 @@ img {
     will-change: transform, opacity;
 }
 
+/* --- Animated Border Drawing --- */
+@property --border-progress {
+    syntax: '<percentage>';
+    initial-value: 0%;
+    inherits: false;
+}
+
 /* --- Fan Stack States --- */
 .testimonial-card[data-pos="front"] {
     z-index: 30;
     transform: translateX(0) scale(1);
     opacity: 1;
-    border-color: var(--primary);
+    border-color: transparent;
     box-shadow: 0 16px 48px -12px rgba(15, 118, 110, 0.25);
+    background:
+        linear-gradient(#ffffff, #ffffff) padding-box,
+        conic-gradient(from 0deg, var(--primary) 0%, var(--primary) var(--border-progress), transparent var(--border-progress)) border-box;
+    animation: borderDraw 8s linear forwards;
+}
+
+@keyframes borderDraw {
+    from { --border-progress: 0%; }
+    to { --border-progress: 100%; }
 }
 
 .testimonial-card[data-pos="next-1"] {
