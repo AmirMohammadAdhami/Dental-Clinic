@@ -2021,6 +2021,158 @@ button:focus-visible {
     flex-wrap: wrap;
 }
 
+/* ================= FOOTER ================= */
+.site-footer {
+    background: var(--primary-dark);
+    color: rgba(255, 255, 255, 0.8);
+    padding: 48px 5vw;
+}
+
+.footer-inner {
+    max-width: 1160px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+}
+
+.footer-top-btn {
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.25);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 24px;
+    font-size: 0.9rem;
+}
+
+.footer-top-btn:hover {
+    border-color: #ffffff;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.footer-copy {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* ================= CTA BANNER SECTION ================= */
+.cta-banner-section {
+    position: relative;
+    padding: 80px 5vw;
+    overflow: hidden;
+    background: var(--bg);
+}
+
+.cta-banner-pattern {
+    position: absolute;
+    inset: 0;
+    background-image: url('assets/call-to-action/c-t-a.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.15;
+    /* Fade from left to right (RTL: fades from start to end) */
+    mask-image: linear-gradient(to right, transparent 0%, black 30%, black 70%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 30%, black 70%, transparent 100%);
+}
+
+@property --cta-border-angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+
+@keyframes rotateCtaBorder {
+    from { --cta-border-angle: 0deg; }
+    to { --cta-border-angle: 360deg; }
+}
+
+.cta-banner-card {
+    position: relative;
+    z-index: 1;
+    max-width: 1000px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, #e8f5f3 0%, #f0faf8 50%, #e8f5f3 100%);
+    border-radius: var(--radius-lg);
+    padding: 60px 50px;
+    text-align: center;
+    box-shadow: 0 12px 40px -12px rgba(15, 118, 110, 0.12);
+    transition: transform 0.4s var(--ease-smooth), box-shadow 0.4s ease;
+}
+
+/* Rotating border line */
+.cta-banner-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+    padding: 2.5px;
+    background: conic-gradient(from var(--cta-border-angle), var(--primary), var(--accent), var(--primary));
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    animation: rotateCtaBorder 3s linear infinite;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.cta-banner-card:hover::after {
+    opacity: 1;
+}
+
+.cta-banner-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 50px -12px rgba(15, 118, 110, 0.25);
+    background: linear-gradient(135deg, rgba(232, 245, 243, 0.9) 0%, rgba(240, 250, 248, 0.8) 50%, rgba(232, 245, 243, 0.9) 100%);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.cta-banner-title {
+    font-size: clamp(1.6rem, 3.2vw, 2.4rem);
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.cta-banner-subtitle {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    line-height: 1.9;
+    max-width: 560px;
+    margin: 0 auto 36px;
+}
+
+.cta-banner-btn {
+    padding: 18px 44px;
+    font-size: 1.05rem;
+}
+
+@media (max-width: 620px) {
+    .cta-banner-section {
+        padding: 40px 5vw;
+    }
+
+    .cta-banner-card {
+        padding: 40px 24px;
+        border-radius: var(--radius-md);
+    }
+
+    .cta-banner-btn {
+        width: 100%;
+    }
+}
+
 /* --- Video Modal --- */
 .video-modal {
     position: fixed;
