@@ -451,8 +451,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const offset = i - currentIndex;
         let pos;
         if (offset === 0) pos = 'front';
-        else if (offset === 1) pos = 'second';
-        else if (offset === 2) pos = 'third';
+        else if (offset === 1) pos = 'next-1';
+        else if (offset === 2) pos = 'next-2';
+        else if (offset === -1) pos = 'prev-1';
+        else if (offset === -2) pos = 'prev-2';
         else pos = 'hidden';
         card.setAttribute('data-pos', pos);
       });
