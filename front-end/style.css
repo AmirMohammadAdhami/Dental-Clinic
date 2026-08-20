@@ -775,6 +775,28 @@ img {
     }
 }
 
+/* --- Assistants: no hover/link behavior --- */
+.assistants-section .doctor-card {
+    cursor: default;
+}
+
+.assistants-section .doctor-card:hover {
+    transform: none;
+}
+
+.assistants-section .doctor-card:hover .doctor-img {
+    box-shadow: var(--shadow-soft);
+}
+
+.assistants-section .doctor-card:hover .doctor-img img {
+    filter: none;
+    transform: none;
+}
+
+.assistants-section .doctor-card:hover .doctor-overlay {
+    opacity: 0;
+}
+
 /* --- Responsive: mobile --- */
 @media (max-width: 620px) {
     .doctors-section,
