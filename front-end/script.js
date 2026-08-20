@@ -4,6 +4,12 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
+  // --- Shared utility ---
+  function toPersianNum(num) {
+    const digits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+    return String(num).replace(/\d/g, d => digits[d]);
+  }
+
   // --- حذف افکت shimmer وقتی عکس واقعی لود شد ---
   document.querySelectorAll('.tile-photo, .tile-accent-photo, .doctor-img').forEach(wrapper => {
     const img = wrapper.querySelector('img');
@@ -70,11 +76,6 @@ document.addEventListener('DOMContentLoaded', () => {
       
       function easeOutQuart(t) {
         return 1 - Math.pow(1 - t, 4);
-      }
-      
-      function toPersianNum(num) {
-        const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
-        return String(num).replace(/\d/g, d => persianDigits[d]);
       }
       
       function updateCount(currentTime) {
@@ -480,10 +481,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // ================= LIVE SOCIAL PROOF COUNTER =================
   const liveCountEl = document.getElementById('live-count');
   if (liveCountEl) {
-    function toPersianNum(num) {
-      const digits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
-      return String(num).replace(/\d/g, d => digits[d]);
-    }
     function updateLiveCount() {
       const base = 18;
       const variation = Math.floor(Math.random() * 14) + 1;

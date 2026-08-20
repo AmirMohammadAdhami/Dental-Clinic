@@ -1213,6 +1213,7 @@ img {
 .hero-btn-outline {
     position: relative;
     overflow: hidden;
+    will-change: transform;
     transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, color 0.25s ease;
 }
 
@@ -1244,15 +1245,13 @@ img {
     box-shadow: 0 10px 24px -8px rgba(15, 23, 42, 0.15);
 }
 
+.hero-btn-primary:active,
+.hero-btn-outline:active {
+    transform: translateY(0) scale(0.96) !important;
+    transition-duration: 0.1s;
+}
+
 /* ================= CARD HOVER POLISH ================= */
-.doctor-card {
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.doctor-img {
-    transition: box-shadow 0.35s ease;
-}
-
 /* Samples grid hover (not blur) */
 .samples-grid .doctor-card {
     transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
@@ -1816,18 +1815,6 @@ img {
 @keyframes imageShimmer {
     from { left: -100%; }
     to { left: 150%; }
-}
-
-/* ================= CTA MICRO-INTERACTIONS ================= */
-.hero-btn-primary,
-.hero-btn-outline {
-    will-change: transform;
-}
-
-.hero-btn-primary:active,
-.hero-btn-outline:active {
-    transform: translateY(0) scale(0.96) !important;
-    transition-duration: 0.1s;
 }
 
 /* Button ripple effect */
