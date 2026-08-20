@@ -1343,7 +1343,7 @@ img {
 /* ================= TESTIMONIALS SECTION ================= */
 .testimonials-section {
     padding: 0 5vw 100px;
-    background: var(--bg-alt);
+    background: var(--bg);
 }
 
 .testimonials-inner {
@@ -1375,8 +1375,9 @@ img {
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 190px;
     margin: 0 auto;
-    max-width: 1000px;
+    max-width: 1100px;
 }
 
 .testimonials-deck {
