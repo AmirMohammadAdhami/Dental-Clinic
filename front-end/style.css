@@ -1375,7 +1375,7 @@ img {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 190px;
+    gap: 100px;
     margin: 0 auto;
     max-width: 1100px;
 }
@@ -1584,36 +1584,32 @@ img {
 
 /* --- Responsive: Tablet --- */
 @media (max-width: 900px) {
+    .testimonials-deck-wrapper {
+        gap: 80px;
+    }
+
     .testimonials-deck {
         max-width: 440px;
     }
 
-    .testimonial-card[data-pos="next-1"],
-    .testimonial-card[data-pos="prev-1"] {
+    .testimonial-card[data-pos="next-1"] {
         transform: translateX(-90px) scale(0.92);
         opacity: 0.45;
     }
 
-    .testimonial-card[data-pos="next-2"],
-    .testimonial-card[data-pos="prev-2"] {
-        transform: translateX(90px) scale(0.85);
+    .testimonial-card[data-pos="next-2"] {
+        transform: translateX(-160px) scale(0.85);
         opacity: 0.2;
     }
 
     .testimonial-card[data-pos="prev-1"] {
         transform: translateX(90px) scale(0.92);
+        opacity: 0.45;
     }
 
     .testimonial-card[data-pos="prev-2"] {
         transform: translateX(160px) scale(0.85);
-    }
-
-    .testimonial-card[data-pos="next-1"] {
-        transform: translateX(-90px) scale(0.92);
-    }
-
-    .testimonial-card[data-pos="next-2"] {
-        transform: translateX(-160px) scale(0.85);
+        opacity: 0.2;
     }
 }
 
@@ -1623,18 +1619,22 @@ img {
         padding: 0 5vw 60px;
     }
 
+    .testimonials-deck-wrapper {
+        gap: 16px;
+        position: relative;
+    }
+
     .testimonials-deck {
         height: 320px;
-        max-width: 360px;
+        max-width: 320px;
     }
 
     .testimonial-card {
         padding: 28px 24px 22px;
     }
 
-    .testimonial-card[data-pos="next-1"],
-    .testimonial-card[data-pos="prev-1"] {
-        transform: translateX(-60px) scale(0.93);
+    .testimonial-card[data-pos="next-1"] {
+        transform: translateX(-50px) scale(0.93);
         opacity: 0.4;
     }
 
@@ -1645,7 +1645,8 @@ img {
     }
 
     .testimonial-card[data-pos="prev-1"] {
-        transform: translateX(60px) scale(0.93);
+        transform: translateX(50px) scale(0.93);
+        opacity: 0.4;
     }
 
     .testimonial-quote {
@@ -1666,21 +1667,21 @@ img {
 @media (max-width: 480px) {
     .testimonials-deck {
         height: 300px;
-        max-width: 300px;
+        max-width: 280px;
     }
 
     .testimonial-card {
         padding: 22px 18px 18px;
     }
 
-    .testimonial-card[data-pos="next-1"],
-    .testimonial-card[data-pos="prev-1"] {
-        transform: translateX(-40px) scale(0.94);
+    .testimonial-card[data-pos="next-1"] {
+        transform: translateX(-35px) scale(0.94);
         opacity: 0.35;
     }
 
     .testimonial-card[data-pos="prev-1"] {
-        transform: translateX(40px) scale(0.94);
+        transform: translateX(35px) scale(0.94);
+        opacity: 0.35;
     }
 
     .testimonial-quote {
