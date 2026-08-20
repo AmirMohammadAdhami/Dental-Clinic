@@ -506,4 +506,50 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // ================= VIDEO MODAL =================
+  const videoModal = document.getElementById('videoModal');
+  const videoModalPlayer = videoModal.querySelector('.video-modal-player');
+  const videoModalClose = videoModal.querySelector('.video-modal-close');
+  const videoModalOverlay = videoModal.querySelector('.video-modal-overlay');
+
+  // Open video modal
+  document.querySelectorAll('.video-play-btn[data-video]').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      const videoSrc = this.getAttribute('data-video');
+      if (videoSrc) {
+        videoModalPlayer.querySelector('source').src = videoSrc;
+        videoModalPlayer.load();
+        videoModal.classList.add('is-active');
+        document.body.classList.add('video-modal-open');
+        videoModalPlayer.play();
+        document.body.style.overflow = 'hidden';
+      }
+    });
+  });
+
+  // Close video modal function
+  function closeVideoModal() {
+    videoModal.classList.remove('is-active');
+    document.body.classList.remove('video-modal-open');
+    videoModalPlayer.pause();
+    videoModalPlayer.currentTime = 0;
+    videoModalPlayer.querySelector('source').src = '';
+    document.body.style.overflow = '';
+  }
+
+  // Close on button click
+  videoModalClose.addEventListener('click', closeVideoModal);
+
+  // Close on overlay click
+  videoModalOverlay.addEventListener('click', closeVideoModal);
+
+  // Close on Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && videoModal.classList.contains('is-active')) {
+      closeVideoModal();
+    }
+  });
+
 });

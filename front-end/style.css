@@ -2021,6 +2021,95 @@ button:focus-visible {
     flex-wrap: wrap;
 }
 
+/* --- Video Modal --- */
+.video-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.video-modal.is-active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Blur all page content when modal is open */
+body.video-modal-open > *:not(.video-modal) {
+    filter: blur(12px);
+    pointer-events: none;
+    transition: filter 0.3s ease;
+}
+
+body.video-modal-open .header {
+    filter: blur(12px);
+}
+
+body.video-modal-open .bg-grid,
+body.video-modal-open .tooth-pattern {
+    filter: blur(12px);
+}
+
+
+
+.video-modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.5);
+}
+
+.video-modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 900px;
+    background: #000;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transform: scale(0.9);
+    transition: transform 0.3s var(--ease-smooth);
+    box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.5);
+    z-index: 10;
+}
+
+.video-modal.is-active .video-modal-content {
+    transform: scale(1);
+}
+
+.video-modal-close {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 10;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.video-modal-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+}
+
+.video-modal-player {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    display: block;
+    background: #000;
+}
+
 /* --- Video Blog Responsive --- */
 @media (max-width: 900px) {
     .video-blog-grid {
