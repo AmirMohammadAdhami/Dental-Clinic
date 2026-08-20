@@ -609,6 +609,7 @@ img {
     text-decoration: none;
     color: inherit;
     display: block;
+    position: relative;
 }
 
 .doctor-img {
@@ -620,6 +621,44 @@ img {
     background: #e2e8f0;
     box-shadow: var(--shadow-soft);
     position: relative;
+}
+
+/* --- Rotating border line on doctor cards --- */
+@property --doctor-border-angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+
+@keyframes rotateDoctorBorder {
+    from { --doctor-border-angle: 0deg; }
+    to { --doctor-border-angle: 360deg; }
+}
+
+.doctors-slider .doctor-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-md);
+    padding: 2.5px;
+    background: conic-gradient(from var(--doctor-border-angle), var(--primary), var(--accent), var(--primary));
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    animation: rotateDoctorBorder 3s linear infinite;
+    z-index: 5;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.doctors-slider .doctor-card:hover .doctor-img::after {
+    opacity: 1;
 }
 
 .doctor-img img {
@@ -657,7 +696,6 @@ img {
 /* Hover effects - only for slider doctor cards */
 .doctors-slider .doctor-card:hover .doctor-img img {
     filter: blur(8px);
-    transform: scale(1.06);
 }
 
 .doctors-slider .doctor-card:hover .doctor-overlay {
