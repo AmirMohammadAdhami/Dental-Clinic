@@ -398,4 +398,121 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // ================= TESTIMONIALS STACKED DECK =================
+  const deck = document.querySelector('.testimonials-deck');
+  if (deck) {
+    const cards = Array.from(deck.querySelectorAll('.testimonial-card'));
+    const dotsContainer = document.querySelector('.testimonials-dots');
+    const prevBtn = document.querySelector('.testimonials-prev');
+    const nextBtn = document.querySelector('.testimonials-next');
+    const total = cards.length;
+    let currentIndex = 0;
+    let isAnimating = false;
+
+    // Build dots
+    function buildDots() {
+      if (!dotsContainer) return;
+      dotsContainer.innerHTML = '';
+      for (let i = 0; i < total; i++) {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'testimonials-dot';
+        dot.setAttribute('role', 'tab');
+        dot.setAttribute('aria-label', `رفتن به نظر ${i + 1} از ${total}`);
+        dot.addEventListener('click', () => {
+          if (i !== currentIndex) goTo(i);
+        });
+        dotsContainer.appendChild(dot);
+      }
+    }
+
+    function updateDots() {
+      if (!dotsContainer) return;
+      const dots = dotsContainer.querySelectorAll('.testimonials-dot');
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('is-active', i === currentIndex);
+        dot.setAttribute('aria-selected', i === currentIndex ? 'true' : 'false');
+      });
+    }
+
+    function updateArrows() {
+      if (prevBtn) {
+        prevBtn.disabled = currentIndex <= 0;
+        prevBtn.classList.toggle('disabled', currentIndex <= 0);
+      }
+      if (nextBtn) {
+        nextBtn.disabled = currentIndex >= total - 1;
+        nextBtn.classList.toggle('disabled', currentIndex >= total - 1);
+      }
+    }
+
+    function layoutCards() {
+      cards.forEach((card, i) => {
+        const offset = i - currentIndex;
+        let pos;
+        if (offset === 0) pos = 'front';
+        else if (offset === 1) pos = 'second';
+        else if (offset === 2) pos = 'third';
+        else pos = 'hidden';
+        card.setAttribute('data-pos', pos);
+      });
+    }
+
+    function goTo(index) {
+      if (isAnimating || index === currentIndex) return;
+      isAnimating = true;
+      currentIndex = index;
+      layoutCards();
+      updateDots();
+      updateArrows();
+      setTimeout(() => { isAnimating = false; }, 500);
+    }
+
+    function goNext() {
+      if (currentIndex < total - 1) goTo(currentIndex + 1);
+    }
+
+    function goPrev() {
+      if (currentIndex > 0) goTo(currentIndex - 1);
+    }
+
+    if (prevBtn) prevBtn.addEventListener('click', goPrev);
+    if (nextBtn) nextBtn.addEventListener('click', goNext);
+
+    // Touch swipe support
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let isSwiping = false;
+
+    deck.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      isSwiping = true;
+    }, { passive: true });
+
+    deck.addEventListener('touchmove', (e) => {
+      if (!isSwiping) return;
+      const dx = e.touches[0].clientX - touchStartX;
+      const dy = e.touches[0].clientY - touchStartY;
+      // Only handle horizontal swipes
+      if (Math.abs(dx) < Math.abs(dy)) {
+        isSwiping = false;
+      }
+    }, { passive: true });
+
+    deck.addEventListener('touchend', (e) => {
+      if (!isSwiping) return;
+      isSwiping = false;
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      const threshold = 50;
+      if (dx < -threshold) goNext(); // Swipe left = next
+      else if (dx > threshold) goPrev(); // Swipe right = prev
+    });
+
+    buildDots();
+    layoutCards();
+    updateDots();
+    updateArrows();
+  }
+
 });
