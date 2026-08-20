@@ -1098,7 +1098,6 @@ img {
 .hero-title .line:nth-child(1).animate { animation-delay: 0.2s; }
 .hero-title .line:nth-child(2).animate { animation-delay: 0.35s; }
 .hero-subtitle.animate { animation-delay: 0.5s; }
-.hero-cta.animate { animation-delay: 1.6s; }
 
 @keyframes heroTextIn {
     0% {
