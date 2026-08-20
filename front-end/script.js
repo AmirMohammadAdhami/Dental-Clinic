@@ -31,6 +31,18 @@ document.addEventListener('DOMContentLoaded', () => {
       tiles.forEach(tile => {
         tile.style.opacity = '1';
         tile.style.transform = 'translateY(0)';
+
+        // بعد از اتمام ترانزیشن ورود، استایل‌های inline رو پاک می‌کنیم
+        // چون در غیر این صورت transform:translateY(0) روی خود المنت باقی می‌مونه
+        // و برای همیشه جلوی افکت hover در CSS (که با اولویت کمتری تعریف شده) رو می‌گیره
+        const clearInlineStyles = (e) => {
+          if (e.target !== tile || e.propertyName !== 'transform') return;
+          tile.style.transform = '';
+          tile.style.transition = '';
+          tile.style.opacity = '';
+          tile.removeEventListener('transitionend', clearInlineStyles);
+        };
+        tile.addEventListener('transitionend', clearInlineStyles);
       });
     }, 100);
   });
@@ -60,6 +72,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const cards = section.querySelectorAll('.doctor-card');
     const prevBtn = section.querySelector('.slider-arrow-left');
     const nextBtn = section.querySelector('.slider-arrow-right');
+    // dots و ناحیه live نه داخل wrapper بلکه بلافاصله بعدش قرار دارن
+    const dotsContainer = section.parentElement.querySelector('.slider-dots');
+    const liveRegion = section.parentElement.querySelector('.sr-only[aria-live]');
+    const sectionLabel = section.getAttribute('aria-label') || '';
 
     if (!track || !cards.length || !prevBtn || !nextBtn) return;
 
@@ -83,11 +99,51 @@ document.addEventListener('DOMContentLoaded', () => {
       nextBtn.classList.toggle('disabled', currentIndex >= getMaxIndex());
     }
 
+    // تعداد نقاط = تعداد توقف‌های ممکن اسلایدر، نه تعداد کارت‌ها
+    // (مثلا ۶ کارت با نمایش ۳ تایی یعنی ۴ توقف: ۰،۱،۲،۳)
+    function buildDots() {
+      if (!dotsContainer) return;
+      dotsContainer.innerHTML = '';
+      const stops = getMaxIndex() + 1;
+      if (stops <= 1) return; // اگه همه کارت‌ها یکجا دیده میشن، نقطه‌ای لازم نیست
+      for (let i = 0; i < stops; i++) {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'slider-dot';
+        dot.setAttribute('role', 'tab');
+        dot.setAttribute('aria-label', `رفتن به گروه ${i + 1} از ${stops}`);
+        dot.addEventListener('click', () => {
+          currentIndex = i;
+          slide();
+        });
+        dotsContainer.appendChild(dot);
+      }
+    }
+
+    function updateDots() {
+      if (!dotsContainer) return;
+      const dots = dotsContainer.querySelectorAll('.slider-dot');
+      dots.forEach((dot, i) => {
+        const active = i === currentIndex;
+        dot.classList.toggle('is-active', active);
+        dot.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+    }
+
+    function announcePosition() {
+      if (!liveRegion) return;
+      const stops = getMaxIndex() + 1;
+      if (stops <= 1) return;
+      liveRegion.textContent = `${sectionLabel} — گروه ${currentIndex + 1} از ${stops}`;
+    }
+
     function slide() {
       const visible = getVisibleCount();
       const cardWidth = 100 / visible;
       track.style.transform = `translateX(-${currentIndex * cardWidth}%)`;
       updateArrows();
+      updateDots();
+      announcePosition();
     }
 
     prevBtn.addEventListener('click', () => {
@@ -98,11 +154,19 @@ document.addEventListener('DOMContentLoaded', () => {
       if (currentIndex < getMaxIndex()) { currentIndex++; slide(); }
     });
 
+    let lastVisibleCount = getVisibleCount();
     window.addEventListener('resize', () => {
+      const visible = getVisibleCount();
       if (currentIndex > getMaxIndex()) currentIndex = getMaxIndex();
+      // فقط وقتی تعداد کارت‌های قابل‌نمایش عوض بشه (مثلا موبایل↔تبلت) نقاط رو دوباره می‌سازیم
+      if (visible !== lastVisibleCount) {
+        lastVisibleCount = visible;
+        buildDots();
+      }
       slide();
     });
 
+    buildDots();
     slide();
   }
 
@@ -117,40 +181,76 @@ document.addEventListener('DOMContentLoaded', () => {
     const labelBefore = card.querySelector('.ba-label-before');
     const labelAfter = card.querySelector('.ba-label-after');
     let isDragging = false;
+    let currentPct = 50;
 
-    function updateSlider(x) {
-      const rect = container.getBoundingClientRect();
-      let pos = (x - rect.left) / rect.width;
-      pos = Math.max(0, Math.min(1, pos));
-      const pct = pos * 100;
-      beforeImg.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
-      sliderLine.style.left = `${pct}%`;
+    // هسته‌ی مشترک: موقعیت رو با درصد (نه مختصات موس) تنظیم می‌کنه،
+    // تا هم ورودی موس/لمس و هم صفحه‌کلید از همینجا استفاده کنن
+    function setPosition(pct) {
+      currentPct = Math.max(0, Math.min(100, pct));
+      beforeImg.style.clipPath = `inset(0 ${100 - currentPct}% 0 0)`;
+      sliderLine.style.left = `${currentPct}%`;
       // لیبل سمت چپ (before) فقط وقتی اسلایدر > 20% باشه
-      labelBefore.style.opacity = pct > 20 ? '1' : '0';
+      labelBefore.style.opacity = currentPct > 20 ? '1' : '0';
       // لیبل سمت راست (after) فقط وقتی اسلایدر < 80% باشه
-      labelAfter.style.opacity = pct < 80 ? '1' : '0';
+      labelAfter.style.opacity = currentPct < 80 ? '1' : '0';
+      container.setAttribute('aria-valuenow', Math.round(currentPct));
+    }
+
+    function updateFromPointer(x) {
+      const rect = container.getBoundingClientRect();
+      const pos = (x - rect.left) / rect.width;
+      setPosition(pos * 100);
     }
 
     container.addEventListener('mousedown', e => {
       isDragging = true;
-      updateSlider(e.clientX);
+      updateFromPointer(e.clientX);
     });
 
     container.addEventListener('touchstart', e => {
       isDragging = true;
-      updateSlider(e.touches[0].clientX);
+      updateFromPointer(e.touches[0].clientX);
     }, { passive: true });
 
     window.addEventListener('mousemove', e => {
-      if (isDragging) updateSlider(e.clientX);
+      if (isDragging) updateFromPointer(e.clientX);
     });
 
     window.addEventListener('touchmove', e => {
-      if (isDragging) updateSlider(e.touches[0].clientX);
+      if (isDragging) updateFromPointer(e.touches[0].clientX);
     }, { passive: true });
 
     window.addEventListener('mouseup', () => { isDragging = false; });
     window.addEventListener('touchend', () => { isDragging = false; });
+
+    // --- پشتیبانی از صفحه‌کلید ---
+    // جهت فلش‌ها بر اساس موقعیت فیزیکی روی صفحه تنظیم شده (نه جهت متن)
+    // چون کاربر با چشم می‌بینه دستگیره به کدوم سمت حرکت می‌کنه
+    const STEP = 5;
+    container.addEventListener('keydown', e => {
+      switch (e.key) {
+        case 'ArrowRight':
+          setPosition(currentPct + STEP);
+          e.preventDefault();
+          break;
+        case 'ArrowLeft':
+          setPosition(currentPct - STEP);
+          e.preventDefault();
+          break;
+        case 'Home':
+          setPosition(0);
+          e.preventDefault();
+          break;
+        case 'End':
+          setPosition(100);
+          e.preventDefault();
+          break;
+        default:
+          return;
+      }
+    });
+
+    setPosition(50); // مقدار اولیه، هماهنگ با aria-valuenow="50" در HTML
   });
 
   // --- افکت اسکرول روی هدر (کوچک‌تر شدن هنگام اسکرول) ---

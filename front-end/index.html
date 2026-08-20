@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dentura — Where Confidence Begins With Your Smile</title>
+    <title>دنتورا — جایی که اعتماد به نفس شما با لبخندتان آغاز می‌شود</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+<a href="#main-content" class="skip-link">رفتن به محتوای اصلی</a>
 
 <div class="bg-grid"></div>
 
@@ -24,8 +26,8 @@
             <span class="brand-name">دنتورا</span>
         </div>
 
-        <!-- منو (فعلا خالی) -->
-        <nav class="nav"></nav>
+        <!-- فضای خالی برای منو در آینده -->
+        <div class="nav"></div>
 
         <!-- سمت چپ: دکمه رزرو -->
         <div class="header-actions">
@@ -35,7 +37,7 @@
     </div>
 </header>
 
-<main class="hero">
+<main class="hero" id="main-content" tabindex="-1">
     <div class="hero-inner">
 
         <h1 class="hero-title">
@@ -44,8 +46,13 @@
         </h1>
 
         <p class="hero-subtitle">
-            دندان‌پزشکی مدرن، طراحی‌شده برای هر لبخند؛ از معاینات ساده تا درمان‌های تخصصی، با دقت و آرامش خاطر.
+           دندانپزشکی زیبایی و ترمیمی، با تمرکز بر لبخندی طبیعی و ماندگار
         </p>
+
+        <div class="hero-cta">
+            <button class="btn btn-primary btn-lg">رزرو نوبت آنلاین</button>
+            <button class="btn btn-outline btn-lg">مشاهده نمونه کارها</button>
+        </div>
 
         <div class="gallery">
             <div class="tile tile-photo tile-photo-4">
@@ -83,11 +90,6 @@
         </div>
 
 
-        <div class="hero-cta">
-            <button class="btn btn-primary btn-lg">رزرو نوبت</button>
-            <button class="btn btn-outline btn-lg">نمونه کارها</button>
-        </div>
-
     </div>
 </main>
 
@@ -97,7 +99,8 @@
         <h2 class="doctors-title">تیم درمانی ما</h2>
         <p class="doctors-subtitle">متخصصان باتجربه و مجرب دنتورا، آماده خدمت‌رسانی به شما هستند</p>
 
-        <div class="doctors-slider-wrapper reveal-stagger">
+        <div class="doctors-slider-wrapper reveal-stagger" role="region" aria-roledescription="اسلایدر"
+             aria-label="تیم درمانی">
             <button class="slider-arrow slider-arrow-right" aria-label="کارت قبلی">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -172,6 +175,9 @@
                 </svg>
             </button>
         </div>
+
+        <div class="slider-dots" role="tablist" aria-label="موقعیت اسلایدر تیم درمانی"></div>
+        <span class="sr-only" aria-live="polite"></span>
     </div>
 </section>
 
@@ -181,7 +187,8 @@
         <h2 class="doctors-title">دستیاران ما</h2>
         <p class="doctors-subtitle">دستیاران حرفه‌ای و متعهد دنتورا، همراه شما در تمام مراحل درمان</p>
 
-        <div class="doctors-slider-wrapper reveal-stagger">
+        <div class="doctors-slider-wrapper reveal-stagger" role="region" aria-roledescription="اسلایدر"
+             aria-label="دستیاران">
             <button class="slider-arrow slider-arrow-right" aria-label="کارت قبلی">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -242,6 +249,9 @@
                 </svg>
             </button>
         </div>
+
+        <div class="slider-dots" role="tablist" aria-label="موقعیت اسلایدر دستیاران"></div>
+        <span class="sr-only" aria-live="polite"></span>
     </div>
 </section>
 
@@ -254,45 +264,61 @@
         <div class="samples-grid reveal-stagger">
 
             <div class="doctor-card" data-ba>
-                <div class="doctor-img ba-container">
-                    <img class="ba-img ba-after" src="assets/1-after.jpg">
-                    <img class="ba-img ba-before" src="assets/1-before.jpg">
-                    <div class="ba-slider"><div class="ba-handle"></div></div>
-                    <span class="ba-label ba-label-before">Before</span>
-                    <span class="ba-label ba-label-after">After</span>
+                <div class="doctor-img ba-container" tabindex="0" role="slider"
+                     aria-label="مقایسه قبل و بعد لمینت سرامیکی ۸ واحد، با کشیدن یا کلیدهای جهت‌نما" aria-valuemin="0"
+                     aria-valuemax="100" aria-valuenow="50">
+                    <img class="ba-img ba-after" src="assets/before-after/1-after.jpg" alt="نتیجه بعد از لمینت سرامیکی ۸ واحد">
+                    <img class="ba-img ba-before" src="assets/before-after/1-before.jpg" alt="وضعیت قبل از لمینت سرامیکی ۸ واحد">
+                    <div class="ba-slider">
+                        <div class="ba-handle"></div>
+                    </div>
+                    <span class="ba-label ba-label-before">قبل</span>
+                    <span class="ba-label ba-label-after">بعد</span>
                 </div>
                 <p class="doctor-name">لمینت سرامیکی ۸ واحد</p>
             </div>
 
             <div class="doctor-card" data-ba>
-                <div class="doctor-img ba-container">
-                    <img class="ba-img ba-after" src="assets/2-after.jpg">
-                    <img class="ba-img ba-before" src="assets/2-before.jpg">
-                    <div class="ba-slider"><div class="ba-handle"></div></div>
-                    <span class="ba-label ba-label-before">Before</span>
-                    <span class="ba-label ba-label-after">After</span>
+                <div class="doctor-img ba-container" tabindex="0" role="slider"
+                     aria-label="مقایسه قبل و بعد اصلاح طرح لبخند، با کشیدن یا کلیدهای جهت‌نما" aria-valuemin="0"
+                     aria-valuemax="100" aria-valuenow="50">
+                    <img class="ba-img ba-after" src="assets/before-after/2-after.jpg" alt="نتیجه بعد از اصلاح طرح لبخند">
+                    <img class="ba-img ba-before" src="assets/before-after/2-before.jpg" alt="وضعیت قبل از اصلاح طرح لبخند">
+                    <div class="ba-slider">
+                        <div class="ba-handle"></div>
+                    </div>
+                    <span class="ba-label ba-label-before">قبل</span>
+                    <span class="ba-label ba-label-after">بعد</span>
                 </div>
                 <p class="doctor-name">اصلاح طرح لبخند</p>
             </div>
 
             <div class="doctor-card" data-ba>
-                <div class="doctor-img ba-container">
-                    <img class="ba-img ba-after" src="assets/3-after.jpg">
-                    <img class="ba-img ba-before" src="assets/3-before.jpg">
-                    <div class="ba-slider"><div class="ba-handle"></div></div>
-                    <span class="ba-label ba-label-before">Before</span>
-                    <span class="ba-label ba-label-after">After</span>
+                <div class="doctor-img ba-container" tabindex="0" role="slider"
+                     aria-label="مقایسه قبل و بعد ایمپلنت و روکش، با کشیدن یا کلیدهای جهت‌نما" aria-valuemin="0"
+                     aria-valuemax="100" aria-valuenow="50">
+                    <img class="ba-img ba-after" src="assets/before-after/3-after.jpg" alt="نتیجه بعد از ایمپلنت و روکش">
+                    <img class="ba-img ba-before" src="assets/before-after/3-before.jpg" alt="وضعیت قبل از ایمپلنت و روکش">
+                    <div class="ba-slider">
+                        <div class="ba-handle"></div>
+                    </div>
+                    <span class="ba-label ba-label-before">قبل</span>
+                    <span class="ba-label ba-label-after">بعد</span>
                 </div>
                 <p class="doctor-name">ایمپلنت و روکش</p>
             </div>
 
             <div class="doctor-card" data-ba>
-                <div class="doctor-img ba-container">
-                    <img class="ba-img ba-after" src="assets/4-after.jpg">
-                    <img class="ba-img ba-before" src="assets/4-before.jpg">
-                    <div class="ba-slider"><div class="ba-handle"></div></div>
-                    <span class="ba-label ba-label-before">Before</span>
-                    <span class="ba-label ba-label-after">After</span>
+                <div class="doctor-img ba-container" tabindex="0" role="slider"
+                     aria-label="مقایسه قبل و بعد بلیچینگ حرفه‌ای، با کشیدن یا کلیدهای جهت‌نما" aria-valuemin="0"
+                     aria-valuemax="100" aria-valuenow="50">
+                    <img class="ba-img ba-after" src="assets/before-after/4-after.jpg" alt="نتیجه بعد از بلیچینگ حرفه‌ای">
+                    <img class="ba-img ba-before" src="assets/before-after/4-before.jpg" alt="وضعیت قبل از بلیچینگ حرفه‌ای">
+                    <div class="ba-slider">
+                        <div class="ba-handle"></div>
+                    </div>
+                    <span class="ba-label ba-label-before">قبل</span>
+                    <span class="ba-label ba-label-after">بعد</span>
                 </div>
                 <p class="doctor-name">بلیچینگ حرفه‌ای</p>
             </div>
