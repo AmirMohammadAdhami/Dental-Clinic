@@ -38,11 +38,27 @@
 </header>
 
 <main class="hero" id="main-content" tabindex="-1">
-    <div class="hero-inner">
+    <!-- Background glow effect -->
+    <div class="hero-glow"></div>
+    
+    <!-- SVG Smile curve decorative element -->
+    <svg class="hero-smile-svg" viewBox="0 0 600 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path class="smile-path" d="M50 40 Q300 120 550 40" stroke="url(#smileGradient)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <defs>
+            <linearGradient id="smileGradient" x1="50" y1="40" x2="550" y2="40" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="var(--primary)" stop-opacity="0"/>
+                <stop offset="30%" stop-color="var(--primary)" stop-opacity="0.3"/>
+                <stop offset="70%" stop-color="var(--primary)" stop-opacity="0.3"/>
+                <stop offset="100%" stop-color="var(--primary)" stop-opacity="0"/>
+            </linearGradient>
+        </defs>
+    </svg>
+
+    <div class="hero-inner" data-parallax-bg>
 
         <h1 class="hero-title">
-            <span class="line">جایی که اعتماد به نفس شما</span>
-            <span class="line accent">با لبخندتان آغاز می‌شود</span>
+            <span class="line hero-line-1">جایی که اعتماد به نفس شما</span>
+            <span class="line accent hero-line-2">با لبخندتان آغاز می‌شود</span>
         </h1>
 
         <p class="hero-subtitle">
@@ -50,39 +66,39 @@
         </p>
 
         <div class="hero-cta">
-            <button class="btn btn-primary btn-lg">رزرو نوبت آنلاین</button>
-            <button class="btn btn-outline btn-lg">مشاهده نمونه کارها</button>
+            <button class="btn btn-primary btn-lg hero-btn-primary">رزرو نوبت آنلاین</button>
+            <button class="btn btn-outline btn-lg hero-btn-outline">مشاهده نمونه کارها</button>
         </div>
 
         <div class="gallery">
-            <div class="tile tile-photo tile-photo-4">
+            <div class="tile tile-photo tile-photo-4" data-parallax-card="0.7" data-float-duration="5.2" data-float-delay="0">
                 <img src="assets/hero/clinic-detail.jpg" alt="فضای مطب">
             </div>
 
-            <div class="tile tile-photo tile-photo-1">
+            <div class="tile tile-photo tile-photo-1" data-parallax-card="1" data-float-duration="4.5" data-float-delay="1.2">
                 <img src="assets/hero/patient-woman.jpg" alt="درمان دندان‌پزشکی">
             </div>
 
-            <div class="tile tile-photo tile-photo-2">
+            <div class="tile tile-photo tile-photo-2" data-parallax-card="0.85" data-float-duration="5.8" data-float-delay="0.6">
                 <img src="assets/hero/dentist-work.jpg" alt="پزشک در حال معاینه">
             </div>
 
-            <div class="tile tile-photo tile-photo-3">
+            <div class="tile tile-photo tile-photo-3" data-parallax-card="0.9" data-float-duration="4.8" data-float-delay="2.1">
                 <img src="assets/hero/happy-patient.jpg" alt="بیمار خندان">
             </div>
 
-            <div class="tile tile-accent">
+            <div class="tile tile-accent" data-parallax-card="0.8" data-float-duration="5.5" data-float-delay="1.8">
                 <div class="tile-accent-photo">
                     <img src="assets/hero/smile-detail.jpg" alt="لبخند بیمار">
                 </div>
                 <div class="tile-accent-info">
                     <div class="tile-stat-block">
-                        <div class="tile-number">۱۵<span>+</span></div>
+                        <div class="tile-number" data-count-to="15" data-count-suffix="+">۰<span>+</span></div>
                         <div class="tile-label">سال سابقه<br>خدمات درمانی</div>
                     </div>
                     <div class="tile-divider"></div>
                     <div class="tile-stat-block">
-                        <div class="tile-number">۵<span>هزار+</span></div>
+                        <div class="tile-number" data-count-to="5" data-count-suffix="هزار+">۰<span>هزار+</span></div>
                         <div class="tile-label">لبخند رضایت‌مند</div>
                     </div>
                 </div>
@@ -96,8 +112,8 @@
 <!-- ================= DOCTORS SLIDER ================= -->
 <section class="doctors-section">
     <div class="doctors-inner reveal">
-        <h2 class="doctors-title">تیم درمانی ما</h2>
-        <p class="doctors-subtitle">متخصصان باتجربه و مجرب دنتورا، آماده خدمت‌رسانی به شما هستند</p>
+        <h2 class="doctors-title">تیم درمانی دنتورا</h2>
+        <p class="doctors-subtitle">متخصصان مجرب دنتورا، کنار شما در هر مرحله از درمان</p>
 
         <div class="doctors-slider-wrapper reveal-stagger" role="region" aria-roledescription="اسلایدر"
              aria-label="تیم درمانی">
@@ -115,7 +131,7 @@
                         <div class="doctor-img">
                             <img src="assets/doctors/doctor-1.jpg" alt="دکتر سارا احمدی">
                         </div>
-                        <h3 class="doctor-name">دکتر سارا احمدی</h3>
+                        <h3 class="doctor-name">دکتر علیرضا احمدی</h3>
                         <p class="doctor-specialty">ارتودنسی</p>
                         <p class="doctor-university">دانشگاه علوم پزشکی تهران</p>
                     </div>
@@ -124,7 +140,7 @@
                         <div class="doctor-img">
                             <img src="assets/doctors/doctor-2.jpg" alt="دکتر علی محمدی">
                         </div>
-                        <h3 class="doctor-name">دکتر علی محمدی</h3>
+                        <h3 class="doctor-name">دکتر زهرا محمدی</h3>
                         <p class="doctor-specialty">ایمپلنت و جراحی فک</p>
                         <p class="doctor-university">دانشگاه علوم پزشکی شیراز</p>
                     </div>
@@ -133,7 +149,7 @@
                         <div class="doctor-img">
                             <img src="assets/doctors/doctor-3.jpg" alt="دکتر مریم کریمی">
                         </div>
-                        <h3 class="doctor-name">دکتر مریم کریمی</h3>
+                        <h3 class="doctor-name">دکتر محمد کریمی</h3>
                         <p class="doctor-specialty">دندان‌پزشکی زیبایی</p>
                         <p class="doctor-university">دانشگاه علوم پزشکی اصفهان</p>
                     </div>
@@ -142,7 +158,7 @@
                         <div class="doctor-img">
                             <img src="assets/doctors/doctor-4.jpg" alt="دکتر مریم کریمی">
                         </div>
-                        <h3 class="doctor-name">دکتر مریم کریمی</h3>
+                        <h3 class="doctor-name">دکتر مریم ابراهیمی</h3>
                         <p class="doctor-specialty">دندان‌پزشکی زیبایی</p>
                         <p class="doctor-university">دانشگاه علوم پزشکی اصفهان</p>
                     </div>
@@ -151,7 +167,7 @@
                         <div class="doctor-img">
                             <img src="assets/doctors/doctor-5.jpg" alt="دکتر مریم کریمی">
                         </div>
-                        <h3 class="doctor-name">دکتر مریم کریمی</h3>
+                        <h3 class="doctor-name">دکتر امیرمحمد فرهمندنیا</h3>
                         <p class="doctor-specialty">دندان‌پزشکی زیبایی</p>
                         <p class="doctor-university">دانشگاه علوم پزشکی اصفهان</p>
                     </div>
@@ -160,7 +176,7 @@
                         <div class="doctor-img">
                             <img src="assets/doctors/doctor-6.jpg" alt="دکتر مریم کریمی">
                         </div>
-                        <h3 class="doctor-name">دکتر مریم کریمی</h3>
+                        <h3 class="doctor-name">دکتر مهسا امیری راد</h3>
                         <p class="doctor-specialty">دندان‌پزشکی زیبایی</p>
                         <p class="doctor-university">دانشگاه علوم پزشکی اصفهان</p>
                     </div>
@@ -184,7 +200,7 @@
 <!-- ================= ASSISTANTS SLIDER ================= -->
 <section class="assistants-section">
     <div class="doctors-inner reveal">
-        <h2 class="doctors-title">دستیاران ما</h2>
+        <h2 class="doctors-title">دستیاران دنتورا</h2>
         <p class="doctors-subtitle">دستیاران حرفه‌ای و متعهد دنتورا، همراه شما در تمام مراحل درمان</p>
 
         <div class="doctors-slider-wrapper reveal-stagger" role="region" aria-roledescription="اسلایدر"
@@ -211,7 +227,7 @@
                         <div class="doctor-img">
                             <img src="assets/assistants/assistant-2.jpg" alt="زهرا حسینی">
                         </div>
-                        <h3 class="doctor-name">زهرا حسینی</h3>
+                        <h3 class="doctor-name">پارسا کیمیا</h3>
                         <p class="doctor-specialty">دستیار جراحی</p>
                     </div>
 
@@ -227,7 +243,7 @@
                         <div class="doctor-img">
                             <img src="assets/assistants/assistant-4.jpg" alt="سارا نوری">
                         </div>
-                        <h3 class="doctor-name">سارا نوری</h3>
+                        <h3 class="doctor-name">رضا نوری</h3>
                         <p class="doctor-specialty">دستیار دندان‌پزشکی زیبایی</p>
                     </div>
 
@@ -236,6 +252,14 @@
                             <img src="assets/assistants/assistant-5.jpg" alt="الهام موسوی">
                         </div>
                         <h3 class="doctor-name">الهام موسوی</h3>
+                        <p class="doctor-specialty">دستیار ایمپلنت</p>
+                    </div>
+
+                    <div class="doctor-card">
+                        <div class="doctor-img">
+                            <img src="assets/assistants/assistant-6.jpg" alt="الهام موسوی">
+                        </div>
+                        <h3 class="doctor-name">علی اکبری</h3>
                         <p class="doctor-specialty">دستیار ایمپلنت</p>
                     </div>
 
@@ -326,7 +350,7 @@
         </div>
 
         <div class="samples-cta">
-            <button class="btn btn-outline btn-lg">مشاهده نمونه‌ها</button>
+            <button class="btn btn-primary btn-lg">مشاهده نمونه‌ کارها</button>
         </div>
     </div>
 </section>

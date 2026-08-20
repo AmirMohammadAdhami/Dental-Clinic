@@ -17,35 +17,132 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // --- ظاهر شدن نرم عکس‌ها و کارت‌ها هنگام ورود به صفحه ---
-  const tiles = document.querySelectorAll('.gallery .tile');
+  // ================= HERO PREMIUM ANIMATIONS =================
+  const heroSection = document.querySelector('.hero');
+  const heroInner = document.querySelector('.hero-inner');
+  const heroLines = document.querySelectorAll('.hero-title .line');
+  const heroSubtitle = document.querySelector('.hero-subtitle');
+  const heroCta = document.querySelector('.hero-cta');
+  const galleryTiles = document.querySelectorAll('.gallery .tile');
+  const bgGlow = document.querySelector('.hero-glow');
 
-  tiles.forEach((tile, index) => {
-    tile.style.opacity = '0';
-    tile.style.transform = 'translateY(24px)';
-    tile.style.transition = `opacity 0.6s ease ${index * 0.08}s, transform 0.6s ease ${index * 0.08}s`;
-  });
+  // --- Stagger hero text entrance ---
+  setTimeout(() => {
+    heroLines.forEach(line => line.classList.add('animate'));
+    heroSubtitle.classList.add('animate');
+  }, 100);
 
-  requestAnimationFrame(() => {
+  // --- Stagger gallery card entrance ---
+  setTimeout(() => {
+    galleryTiles.forEach(tile => tile.classList.add('entering'));
+    // Trigger CTA after cards
     setTimeout(() => {
-      tiles.forEach(tile => {
-        tile.style.opacity = '1';
-        tile.style.transform = 'translateY(0)';
+      heroCta.classList.add('animate');
+    }, 400);
+    // Start floating after entrance completes
+    setTimeout(() => {
+      initFloatingCards();
+      initCountAnimation();
+    }, 1200);
+  }, 600);
 
-        // بعد از اتمام ترانزیشن ورود، استایل‌های inline رو پاک می‌کنیم
-        // چون در غیر این صورت transform:translateY(0) روی خود المنت باقی می‌مونه
-        // و برای همیشه جلوی افکت hover در CSS (که با اولویت کمتری تعریف شده) رو می‌گیره
-        const clearInlineStyles = (e) => {
-          if (e.target !== tile || e.propertyName !== 'transform') return;
-          tile.style.transform = '';
-          tile.style.transition = '';
-          tile.style.opacity = '';
-          tile.removeEventListener('transitionend', clearInlineStyles);
-        };
-        tile.addEventListener('transitionend', clearInlineStyles);
-      });
-    }, 100);
+  // --- Floating animation for cards ---
+  function initFloatingCards() {
+    galleryTiles.forEach(tile => {
+      const duration = parseFloat(tile.dataset.floatDuration) || 5;
+      const delay = parseFloat(tile.dataset.floatDelay) || 0;
+      const distance = 2 + Math.random() * 2; // 2-4px
+      tile.style.setProperty('--float-duration', `${duration}s`);
+      tile.style.setProperty('--float-delay', `${delay}s`);
+      tile.style.setProperty('--float-distance', `-${distance}px`);
+      tile.classList.add('floating');
+    });
+  }
+
+  // --- Count animation for statistics ---
+  function initCountAnimation() {
+    const statNumbers = document.querySelectorAll('[data-count-to]');
+    statNumbers.forEach(el => {
+      const target = parseInt(el.dataset.countTo, 10);
+      const suffix = el.dataset.countSuffix || '';
+      const duration = 1500;
+      const startTime = performance.now();
+      
+      function easeOutQuart(t) {
+        return 1 - Math.pow(1 - t, 4);
+      }
+      
+      function toPersianNum(num) {
+        const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+        return String(num).replace(/\d/g, d => persianDigits[d]);
+      }
+      
+      function updateCount(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easedProgress = easeOutQuart(progress);
+        const currentValue = Math.round(easedProgress * target);
+        el.innerHTML = `${toPersianNum(currentValue)}<span>${suffix}</span>`;
+        
+        if (progress < 1) {
+          requestAnimationFrame(updateCount);
+        }
+      }
+      
+      requestAnimationFrame(updateCount);
+    });
+  }
+
+  // --- Mouse parallax effect ---
+  let mouseX = 0, mouseY = 0;
+  let currentX = 0, currentY = 0;
+  let isParallaxActive = true;
+
+  document.addEventListener('mousemove', (e) => {
+    const rect = heroSection.getBoundingClientRect();
+    if (e.clientY > rect.bottom + 100 || e.clientY < rect.top - 100) {
+      isParallaxActive = false;
+      return;
+    }
+    isParallaxActive = true;
+    mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+    mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
   });
+
+  function animateParallax() {
+    if (!isParallaxActive) {
+      currentX += (0 - currentX) * 0.05;
+      currentY += (0 - currentY) * 0.05;
+    } else {
+      currentX += (mouseX - currentX) * 0.08;
+      currentY += (mouseY - currentY) * 0.08;
+    }
+
+    // Background glow movement (8-10px)
+    if (bgGlow) {
+      bgGlow.style.transform = `translate(calc(-50% + ${currentX * 10}px), calc(-50% + ${currentY * 10}px))`;
+    }
+
+    // Hero inner movement (3px for subtle shift)
+    if (heroInner) {
+      heroInner.style.transform = `translate(${currentX * 3}px, ${currentY * 3}px)`;
+    }
+
+    // Surrounding cards parallax (5-7px)
+    galleryTiles.forEach(tile => {
+      const factor = parseFloat(tile.dataset.parallaxCard) || 0.5;
+      const tx = currentX * 7 * factor;
+      const ty = currentY * 7 * factor;
+      if (!tile.classList.contains('floating')) {
+        tile.style.transform = `translate(${tx}px, ${ty}px)`;
+      }
+    });
+
+    requestAnimationFrame(animateParallax);
+  }
+
+  // Start parallax animation loop
+  requestAnimationFrame(animateParallax);
 
   // --- دکمه‌های رزرو نوبت ---
   const bookButtons = document.querySelectorAll('.btn-primary');
@@ -285,7 +382,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- دکمه شناور رزرو نوبت در موبایل ---
   const mobileCta = document.querySelector('.mobile-sticky-cta');
-  const heroSection = document.querySelector('.hero');
 
   if (mobileCta && heroSection) {
     const ctaObserver = new IntersectionObserver((entries) => {
