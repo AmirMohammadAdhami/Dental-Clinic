@@ -406,10 +406,43 @@ document.addEventListener('DOMContentLoaded', () => {
     const prevBtn = document.querySelector('.testimonials-prev');
     const nextBtn = document.querySelector('.testimonials-next');
     const total = cards.length;
-    let currentIndex = 0;
-    let isAnimating = false;
+    let current = 0;
+    let timer = null;
 
-    // Build dots
+    function update() {
+      cards.forEach((card, i) => {
+        const d = i - current;
+        let p = 'hidden';
+        if (d === 0) p = 'front';
+        else if (d === 1) p = 'next-1';
+        else if (d === 2) p = 'next-2';
+        else if (d === -1) p = 'prev-1';
+        else if (d === -2) p = 'prev-2';
+        card.setAttribute('data-pos', p);
+      });
+      if (dotsContainer) {
+        dotsContainer.querySelectorAll('.testimonials-dot').forEach((d, i) => {
+          d.classList.toggle('is-active', i === current);
+        });
+      }
+      if (prevBtn) prevBtn.disabled = current <= 0;
+      if (nextBtn) nextBtn.disabled = current >= total - 1;
+    }
+
+    function goTo(i) {
+      current = (i + total) % total;
+      update();
+    }
+
+    function schedule() {
+      clearTimeout(timer);
+      timer = setTimeout(function tick() {
+        current = (current + 1) % total;
+        update();
+        timer = setTimeout(tick, 8000);
+      }, 8000);
+    }
+
     function buildDots() {
       if (!dotsContainer) return;
       dotsContainer.innerHTML = '';
@@ -419,134 +452,61 @@ document.addEventListener('DOMContentLoaded', () => {
         dot.className = 'testimonials-dot';
         dot.setAttribute('role', 'tab');
         dot.setAttribute('aria-label', `رفتن به نظر ${i + 1} از ${total}`);
-        dot.addEventListener('click', () => {
-          if (i !== currentIndex) goToWithReset(i);
-        });
+        dot.addEventListener('click', function() { goTo(i); schedule(); });
         dotsContainer.appendChild(dot);
       }
     }
 
-    function updateDots() {
-      if (!dotsContainer) return;
-      const dots = dotsContainer.querySelectorAll('.testimonials-dot');
-      dots.forEach((dot, i) => {
-        dot.classList.toggle('is-active', i === currentIndex);
-        dot.setAttribute('aria-selected', i === currentIndex ? 'true' : 'false');
-      });
-    }
+    if (prevBtn) prevBtn.addEventListener('click', function() { goTo(current - 1); schedule(); });
+    if (nextBtn) nextBtn.addEventListener('click', function() { goTo(current + 1); schedule(); });
 
-    function updateArrows() {
-      if (prevBtn) {
-        prevBtn.disabled = currentIndex <= 0;
-        prevBtn.classList.toggle('disabled', currentIndex <= 0);
-      }
-      if (nextBtn) {
-        nextBtn.disabled = currentIndex >= total - 1;
-        nextBtn.classList.toggle('disabled', currentIndex >= total - 1);
-      }
-    }
+    deck.addEventListener('mouseenter', function() { clearTimeout(timer); });
+    deck.addEventListener('mouseleave', schedule);
 
-    function layoutCards() {
-      cards.forEach((card, i) => {
-        const offset = i - currentIndex;
-        let pos;
-        if (offset === 0) pos = 'front';
-        else if (offset === 1) pos = 'next-1';
-        else if (offset === 2) pos = 'next-2';
-        else if (offset === -1) pos = 'prev-1';
-        else if (offset === -2) pos = 'prev-2';
-        else pos = 'hidden';
-        card.setAttribute('data-pos', pos);
-      });
-    }
-
-    function goTo(index) {
-      if (isAnimating || index === currentIndex) return;
-      isAnimating = true;
-      currentIndex = index;
-      layoutCards();
-      updateDots();
-      updateArrows();
-      setTimeout(() => { isAnimating = false; }, 500);
-    }
-
-    function goNext() {
-      if (currentIndex < total - 1) goTo(currentIndex + 1);
-      else goTo(0); // Loop back to start
-    }
-
-    function goPrev() {
-      if (currentIndex > 0) goTo(currentIndex - 1);
-      else goTo(total - 1); // Loop to end
-    }
-
-    // --- Auto-advance every 8 seconds ---
-    let autoTimer = null;
-
-    function startAutoTimer() {
-      stopAutoTimer();
-      autoTimer = setInterval(() => {
-        goNext();
-      }, 8000);
-    }
-
-    function stopAutoTimer() {
-      if (autoTimer) {
-        clearInterval(autoTimer);
-        autoTimer = null;
-      }
-    }
-
-    // Wrap goTo to reset timer on manual interaction
-    const originalGoTo = goTo;
-    function goToWithReset(index) {
-      originalGoTo(index);
-      startAutoTimer();
-    }
-
-    if (prevBtn) prevBtn.addEventListener('click', () => goToWithReset(currentIndex > 0 ? currentIndex - 1 : total - 1));
-    if (nextBtn) nextBtn.addEventListener('click', () => goToWithReset(currentIndex < total - 1 ? currentIndex + 1 : 0));
-
-    // Pause auto-advance on hover
-    deck.addEventListener('mouseenter', stopAutoTimer);
-    deck.addEventListener('mouseleave', startAutoTimer);
-
-    // Touch swipe support
-    let touchStartX = 0;
-    let touchStartY = 0;
-    let isSwiping = false;
-
-    deck.addEventListener('touchstart', (e) => {
-      touchStartX = e.touches[0].clientX;
-      touchStartY = e.touches[0].clientY;
-      isSwiping = true;
-      stopAutoTimer();
-    }, { passive: true });
-
-    deck.addEventListener('touchmove', (e) => {
-      if (!isSwiping) return;
-      const dx = e.touches[0].clientX - touchStartX;
-      const dy = e.touches[0].clientY - touchStartY;
-      if (Math.abs(dx) < Math.abs(dy)) {
-        isSwiping = false;
-      }
-    }, { passive: true });
-
-    deck.addEventListener('touchend', (e) => {
-      if (!isSwiping) return;
-      isSwiping = false;
-      const dx = e.changedTouches[0].clientX - touchStartX;
-      const threshold = 50;
-      if (dx < -threshold) goToWithReset(currentIndex < total - 1 ? currentIndex + 1 : 0);
-      else if (dx > threshold) goToWithReset(currentIndex > 0 ? currentIndex - 1 : total - 1);
-      else startAutoTimer();
+    let tx = 0;
+    deck.addEventListener('touchstart', function(e) { tx = e.touches[0].clientX; clearTimeout(timer); }, { passive: true });
+    deck.addEventListener('touchend', function(e) {
+      var dx = e.changedTouches[0].clientX - tx;
+      if (dx < -50) goTo(current + 1);
+      else if (dx > 50) goTo(current - 1);
+      schedule();
     });
 
     buildDots();
-    layoutCards();
-    updateDots();
-    updateArrows();
-    startAutoTimer();
+    update();
+    schedule();
   }
+
+  // ================= LIVE SOCIAL PROOF COUNTER =================
+  const liveCountEl = document.getElementById('live-count');
+  if (liveCountEl) {
+    function toPersianNum(num) {
+      const digits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+      return String(num).replace(/\d/g, d => digits[d]);
+    }
+    function updateLiveCount() {
+      const base = 18;
+      const variation = Math.floor(Math.random() * 14) + 1;
+      liveCountEl.textContent = toPersianNum(base + variation);
+    }
+    setInterval(updateLiveCount, 5000);
+  }
+
+  // ================= CTA BUTTON RIPPLE =================
+  document.querySelectorAll('.btn-primary, .btn-outline').forEach(btn => {
+    btn.style.position = 'relative';
+    btn.style.overflow = 'hidden';
+    btn.addEventListener('click', function(e) {
+      const ripple = document.createElement('span');
+      ripple.className = 'btn-ripple';
+      const rect = this.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      ripple.style.width = ripple.style.height = size + 'px';
+      ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+      ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+      this.appendChild(ripple);
+      setTimeout(() => ripple.remove(), 600);
+    });
+  });
 
 });
