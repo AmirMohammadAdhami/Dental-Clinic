@@ -522,3 +522,24 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 });
+
+// ================= HAMBURGER MENU (all pages) =================
+document.addEventListener('DOMContentLoaded', function () {
+  var hamburger = document.getElementById('headerHamburger');
+  var mobileNav = document.getElementById('headerMobileNav');
+  if (!hamburger || !mobileNav) return;
+
+  hamburger.addEventListener('click', function () {
+    var isOpen = hamburger.classList.toggle('is-open');
+    hamburger.setAttribute('aria-expanded', isOpen);
+    mobileNav.classList.toggle('is-open');
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!hamburger.contains(e.target) && !mobileNav.contains(e.target)) {
+      hamburger.classList.remove('is-open');
+      hamburger.setAttribute('aria-expanded', 'false');
+      mobileNav.classList.remove('is-open');
+    }
+  });
+});
