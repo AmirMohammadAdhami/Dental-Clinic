@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نمونه کارها — دنتورا</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">رفتن به محتوای اصلی</a>
+<div class="bg-grid"></div>
+<div class="tooth-pattern"></div>
+
+<header class="header">
+    <div class="header-inner">
+        <a href="index.html" class="brand" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:10px">
+            <span class="brand-icon">
+                <svg viewBox="0 0 48 48" width="30" height="30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M24 6C18.5 6 14 8.6 11.2 12.4C9.3 15 9 18.3 9.4 21.5C9.8 25 10.8 28.4 11.7 31.8C12.4 34.5 13 37.4 14.6 39.7C15.5 41 17 42 18.6 41.4C20.1 40.8 20.6 39 20.9 37.6C21.4 35 21.4 32.3 21.9 29.7C22.2 28.1 22.9 26.2 24 26.2C25.1 26.2 25.8 28.1 26.1 29.7C26.6 32.3 26.6 35 27.1 37.6C27.4 39 27.9 40.8 29.4 41.4C31 42 32.5 41 33.4 39.7C35 37.4 35.6 34.5 36.3 31.8C37.2 28.4 38.2 25 38.6 21.5C39 18.3 38.7 15 36.8 12.4C34 8.6 29.5 6 24 6Z"
+                          fill="currentColor"/>
+                </svg>
+            </span>
+            <span class="brand-name">دنتورا</span>
+        </a>
+        <div class="nav"></div>
+        <div class="header-actions">
+            <a href="before-after.html" class="btn btn-outline btn-sm">نمونه کارها</a>
+            <button class="btn btn-primary btn-sm">رزرو نوبت</button>
+        </div>
+    </div>
+</header>
+
+<main class="ba-page" id="main-content" tabindex="-1">
+    <div class="ba-page-inner">
+        <div class="ba-page-header reveal">
+            <h1 class="ba-page-title">نمونه کارهای دنتورا</h1>
+            <p class="ba-page-subtitle">نتیجه واقعی درمان‌های زیبایی و ترمیمی ما را ببینید</p>
+        </div>
+        <div class="ba-filters reveal" role="tablist" aria-label="فیلتر نوع درمان">
+            <button class="ba-filter-btn is-active" data-filter="all" role="tab" aria-selected="true">همه</button>
+            <button class="ba-filter-btn" data-filter="implant" role="tab" aria-selected="false">ایمپلنت</button>
+            <button class="ba-filter-btn" data-filter="veneer" role="tab" aria-selected="false">ونیر</button>
+            <button class="ba-filter-btn" data-filter="laminate" role="tab" aria-selected="false">لمینت</button>
+            <button class="ba-filter-btn" data-filter="composite" role="tab" aria-selected="false">کامپوزیت</button>
+        </div>
+        <div class="ba-grid" id="baGrid"></div>
+        <nav class="ba-pagination reveal" aria-label="صفحه‌بندی نمونه کارها">
+            <button class="ba-page-btn" aria-label="صفحه بعد">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 18l-6-6 6-6"/>
+                </svg>
+            </button>
+            <button class="ba-page-num is-active">۱</button>
+            <button class="ba-page-num">۲</button>
+            <button class="ba-page-num">۳</button>
+            <button class="ba-page-num">۴</button>
+            <span class="ba-page-dots">...</span>
+            <button class="ba-page-num">۸</button>
+            <button class="ba-page-btn" aria-label="صفحه قبل">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 18l6-6-6-6"/>
+                </svg>
+            </button>
+        </nav>
+    </div>
+</main>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <button class="btn btn-outline footer-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 15l-6-6-6 6"/>
+            </svg>
+            بازگشت به بالا
+        </button>
+        <p class="footer-copy">© ۲۰۲۶ دنتورا — تمامی حقوق محفوظ است.</p>
+    </div>
+</footer>
+
+<script src="script.js"></script>
+<script src="before-after.js"></script>
+</body>
+</html>

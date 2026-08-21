@@ -2,6 +2,52 @@
 // Dentura — Hero interactions
 // ===========================================================
 
+// --- اسلایدر قبل / بعد ---
+function initBA() {
+  document.querySelectorAll('[data-ba]').forEach(card => {
+    if (card._baInit) return;
+    card._baInit = true;
+    const container = card.querySelector('.ba-container');
+    const beforeImg = card.querySelector('.ba-before');
+    const sliderLine = card.querySelector('.ba-slider');
+    const labelBefore = card.querySelector('.ba-label-before');
+    const labelAfter = card.querySelector('.ba-label-after');
+    if (!container || !beforeImg) return;
+    let isDragging = false;
+    let currentPct = 50;
+    function setPosition(pct) {
+      currentPct = Math.max(0, Math.min(100, pct));
+      beforeImg.style.clipPath = 'inset(0 ' + (100 - currentPct) + '% 0 0)';
+      sliderLine.style.left = currentPct + '%';
+      labelBefore.style.opacity = currentPct > 20 ? '1' : '0';
+      labelAfter.style.opacity = currentPct < 80 ? '1' : '0';
+      container.setAttribute('aria-valuenow', Math.round(currentPct));
+    }
+    function updateFromPointer(x) {
+      const rect = container.getBoundingClientRect();
+      const pos = (x - rect.left) / rect.width;
+      setPosition(pos * 100);
+    }
+    container.addEventListener('mousedown', function(e) { isDragging = true; updateFromPointer(e.clientX); });
+    container.addEventListener('touchstart', function(e) { isDragging = true; updateFromPointer(e.touches[0].clientX); }, { passive: true });
+    window.addEventListener('mousemove', function(e) { if (isDragging) updateFromPointer(e.clientX); });
+    window.addEventListener('touchmove', function(e) { if (isDragging) updateFromPointer(e.touches[0].clientX); }, { passive: true });
+    window.addEventListener('mouseup', function() { isDragging = false; });
+    window.addEventListener('touchend', function() { isDragging = false; });
+    var STEP = 5;
+    container.addEventListener('keydown', function(e) {
+      switch (e.key) {
+        case 'ArrowRight': setPosition(currentPct + STEP); e.preventDefault(); break;
+        case 'ArrowLeft': setPosition(currentPct - STEP); e.preventDefault(); break;
+        case 'Home': setPosition(0); e.preventDefault(); break;
+        case 'End': setPosition(100); e.preventDefault(); break;
+        default: return;
+      }
+    });
+    setPosition(50);
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
   // --- Shared utility ---
@@ -271,85 +317,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // اعمال اسلایدر روی تمام سکشن‌ها
   document.querySelectorAll('.doctors-slider-wrapper').forEach(initSlider);
 
-  // --- اسلایدر قبل / بعد ---
-  document.querySelectorAll('[data-ba]').forEach(card => {
-    const container = card.querySelector('.ba-container');
-    const beforeImg = card.querySelector('.ba-before');
-    const sliderLine = card.querySelector('.ba-slider');
-    const labelBefore = card.querySelector('.ba-label-before');
-    const labelAfter = card.querySelector('.ba-label-after');
-    let isDragging = false;
-    let currentPct = 50;
-
-    // هسته‌ی مشترک: موقعیت رو با درصد (نه مختصات موس) تنظیم می‌کنه،
-    // تا هم ورودی موس/لمس و هم صفحه‌کلید از همینجا استفاده کنن
-    function setPosition(pct) {
-      currentPct = Math.max(0, Math.min(100, pct));
-      beforeImg.style.clipPath = `inset(0 ${100 - currentPct}% 0 0)`;
-      sliderLine.style.left = `${currentPct}%`;
-      // لیبل سمت چپ (before) فقط وقتی اسلایدر > 20% باشه
-      labelBefore.style.opacity = currentPct > 20 ? '1' : '0';
-      // لیبل سمت راست (after) فقط وقتی اسلایدر < 80% باشه
-      labelAfter.style.opacity = currentPct < 80 ? '1' : '0';
-      container.setAttribute('aria-valuenow', Math.round(currentPct));
-    }
-
-    function updateFromPointer(x) {
-      const rect = container.getBoundingClientRect();
-      const pos = (x - rect.left) / rect.width;
-      setPosition(pos * 100);
-    }
-
-    container.addEventListener('mousedown', e => {
-      isDragging = true;
-      updateFromPointer(e.clientX);
-    });
-
-    container.addEventListener('touchstart', e => {
-      isDragging = true;
-      updateFromPointer(e.touches[0].clientX);
-    }, { passive: true });
-
-    window.addEventListener('mousemove', e => {
-      if (isDragging) updateFromPointer(e.clientX);
-    });
-
-    window.addEventListener('touchmove', e => {
-      if (isDragging) updateFromPointer(e.touches[0].clientX);
-    }, { passive: true });
-
-    window.addEventListener('mouseup', () => { isDragging = false; });
-    window.addEventListener('touchend', () => { isDragging = false; });
-
-    // --- پشتیبانی از صفحه‌کلید ---
-    // جهت فلش‌ها بر اساس موقعیت فیزیکی روی صفحه تنظیم شده (نه جهت متن)
-    // چون کاربر با چشم می‌بینه دستگیره به کدوم سمت حرکت می‌کنه
-    const STEP = 5;
-    container.addEventListener('keydown', e => {
-      switch (e.key) {
-        case 'ArrowRight':
-          setPosition(currentPct + STEP);
-          e.preventDefault();
-          break;
-        case 'ArrowLeft':
-          setPosition(currentPct - STEP);
-          e.preventDefault();
-          break;
-        case 'Home':
-          setPosition(0);
-          e.preventDefault();
-          break;
-        case 'End':
-          setPosition(100);
-          e.preventDefault();
-          break;
-        default:
-          return;
-      }
-    });
-
-    setPosition(50); // مقدار اولیه، هماهنگ با aria-valuenow="50" در HTML
-  });
+  // Apply BA sliders on page load
+  initBA();
 
   // --- افکت اسکرول روی هدر (کوچک‌تر شدن هنگام اسکرول) ---
   const header = document.querySelector('.header-inner');
