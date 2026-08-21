@@ -1422,7 +1422,6 @@ a {
 
 .testimonials-deck {
     position: relative;
-    height: 380px;
     width: 100%;
     max-width: 520px;
 }
@@ -1433,13 +1432,15 @@ a {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
     background: #ffffff;
     border-radius: var(--radius-lg);
     border: 2px solid transparent;
     padding: 36px 36px 28px;
     box-shadow: 0 8px 30px -12px rgba(15, 23, 42, 0.18);
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
     transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
                 opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
                 border-color 0.4s ease,
@@ -1530,6 +1531,8 @@ a {
     margin: 0 0 28px;
     border: none;
     padding: 0;
+    flex: 1;
+    overflow: hidden;
 }
 
 /* --- User Info Row --- */
@@ -1608,10 +1611,12 @@ a {
 /* --- Dots --- */
 .testimonials-dots {
     display: flex;
+    flex-direction: row-reverse;
     align-items: center;
     justify-content: center;
     gap: 8px;
     margin-top: 12px;
+    direction: ltr;
 }
 
 .testimonials-dot {
@@ -1682,7 +1687,6 @@ a {
     }
 
     .testimonials-deck {
-        height: 320px;
         max-width: 320px;
     }
 
@@ -1723,7 +1727,6 @@ a {
 
 @media (max-width: 480px) {
     .testimonials-deck {
-        height: 300px;
         max-width: 280px;
     }
 
@@ -3749,7 +3752,6 @@ html, body.post-page, .post-page .bg-grid, .post-page .tooth-pattern,
 }
 .post-testimonials .testimonials-deck {
     position: relative;
-    height: 380px;
     width: 100%;
     max-width: 520px;
 }
@@ -3858,7 +3860,7 @@ html, body.post-page, .post-page .bg-grid, .post-page .tooth-pattern,
     .post-cta-mobile { display: block; }
     .post-cta-card { display: none; }
     .post-testimonials .testimonials-deck-wrapper { gap: 20px; }
-    .post-testimonials .testimonials-deck { height: 320px; max-width: 100%; }
+    .post-testimonials .testimonials-deck { max-width: 100%; }
     .post-testimonials .testimonials-btn { width: 40px; height: 40px; }
     .post-testimonials .testimonials-btn svg { width: 20px; height: 20px; }
 }

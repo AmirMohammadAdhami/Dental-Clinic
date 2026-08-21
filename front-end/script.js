@@ -381,6 +381,30 @@ document.addEventListener('DOMContentLoaded', () => {
     let current = 0;
     let timer = null;
 
+    /* Measure tallest card & size deck to match */
+    function measureDeckHeight() {
+      cards.forEach(function (c) {
+        c.style.position = 'relative';
+        c.style.visibility = 'hidden';
+        c.style.transform = 'none';
+        c.style.opacity = '0';
+        c.style.zIndex = '1';
+      });
+      var maxH = 0;
+      cards.forEach(function (c) {
+        if (c.scrollHeight > maxH) maxH = c.scrollHeight;
+      });
+      deck.style.height = maxH + 'px';
+      cards.forEach(function (c) {
+        c.style.position = '';
+        c.style.visibility = '';
+        c.style.transform = '';
+        c.style.opacity = '';
+        c.style.zIndex = '';
+      });
+    }
+    measureDeckHeight();
+
     function update() {
       cards.forEach((card, i) => {
         const d = i - current;
