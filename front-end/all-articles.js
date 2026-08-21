@@ -1,5 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+    // Prevent browser from restoring scroll position on refresh
+    if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+
     // ================= CATEGORY FILTER =================
     var filterBtns = document.querySelectorAll('.articles-filter-btn');
     var cards = document.querySelectorAll('.article-card');
@@ -177,7 +183,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var visible = getVisibleCards();
         var totalPages = Math.ceil(visible.length / ITEMS_PER_PAGE);
         renderPaginationDots(totalPages);
-        showPage(1);
+        showPage(1, true);
     }
 
     // ================= SEARCH =================

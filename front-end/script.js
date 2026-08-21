@@ -49,6 +49,8 @@ function initBA() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  window.scrollTo(0, 0);
 
   // --- Shared utility ---
   function toPersianNum(num) {

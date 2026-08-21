@@ -26,6 +26,8 @@ function renderCards(filter){
     if(typeof initBA==='function')initBA();
 }
 document.addEventListener('DOMContentLoaded',function(){
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
     renderCards('all');
     var filterBtns=document.querySelectorAll('.ba-filter-btn');
     filterBtns.forEach(function(btn){

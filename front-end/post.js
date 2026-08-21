@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
+
     // ================= READING PROGRESS BAR =================
     var progressBar = document.getElementById('readingProgress');
     var postBody = document.getElementById('postBody');

@@ -3187,6 +3187,22 @@ body.video-modal-open .tooth-pattern {
     margin-top: 20px;
 }
 
+/* --- Mobile Popular Articles (between featured and grid) --- */
+.articles-popular-mobile {
+    display: none;
+    padding: 0 5vw 32px;
+}
+
+/* --- Mobile Only: Hide sidebar search --- */
+@media (max-width: 620px) {
+    .articles-popular-mobile {
+        display: block;
+    }
+    .sidebar-search {
+        display: none;
+    }
+}
+
 /* --- Responsive: Articles Page --- */
 @media (max-width: 1080px) {
     .articles-content-inner {
