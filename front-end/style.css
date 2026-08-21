@@ -2692,15 +2692,6 @@ body.video-modal-open .tooth-pattern {
     justify-content: center;
     transition: background 0.3s ease;
 }
-.treatment-card:hover .treatment-icon {
-    background: var(--primary);
-    color: #ffffff;
-}
-.treatment-icon img {
-    width: 28px;
-    height: 28px;
-    color: var(--primary);
-}
 .treatment-card:hover .treatment-icon img {
     color: #ffffff;
 }
