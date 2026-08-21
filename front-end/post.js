@@ -106,6 +106,56 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // ================= MEDIA GALLERY =================
+    var gallery = document.getElementById('postGallery');
+    if (gallery) {
+        var mainImg = document.getElementById('galleryMainImg');
+        var mainVideo = document.getElementById('galleryVideo');
+        var videoPlayer = mainVideo ? mainVideo.querySelector('video') : null;
+        var thumbs = gallery.querySelectorAll('.post-gallery-thumb');
+        var prevBtn = document.getElementById('galleryPrev');
+        var nextBtn = document.getElementById('galleryNext');
+        var currentIndex = 0;
+
+        function showMedia(index) {
+            if (index < 0 || index >= thumbs.length) return;
+            thumbs[currentIndex].classList.remove('is-active');
+            currentIndex = index;
+            thumbs[currentIndex].classList.add('is-active');
+
+            var thumb = thumbs[currentIndex];
+            var type = thumb.getAttribute('data-type');
+            var src = thumb.getAttribute('data-src');
+
+            if (type === 'video') {
+                mainImg.style.display = 'none';
+                mainVideo.style.display = 'block';
+                videoPlayer.src = src;
+                videoPlayer.play();
+            } else {
+                if (videoPlayer) { videoPlayer.pause(); videoPlayer.src = ''; }
+                mainVideo.style.display = 'none';
+                mainImg.style.display = '';
+                mainImg.style.opacity = '0';
+                mainImg.src = src;
+                mainImg.onload = function () {
+                    mainImg.style.transition = 'opacity 0.3s ease';
+                    mainImg.style.opacity = '1';
+                };
+            }
+        }
+
+        thumbs.forEach(function (t, i) {
+            t.addEventListener('click', function () { showMedia(i); });
+        });
+        if (prevBtn) prevBtn.addEventListener('click', function () {
+            showMedia(currentIndex > 0 ? currentIndex - 1 : thumbs.length - 1);
+        });
+        if (nextBtn) nextBtn.addEventListener('click', function () {
+            showMedia(currentIndex < thumbs.length - 1 ? currentIndex + 1 : 0);
+        });
+    }
+
     // ================= COPY LINK =================
     var copyBtn = document.getElementById('copyLinkBtn');
     if (copyBtn) {
