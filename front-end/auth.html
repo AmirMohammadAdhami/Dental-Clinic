@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ورود — دنتورا</title>
+    <link rel="stylesheet" href="style.css">
+    <script>if('scrollRestoration' in history) history.scrollRestoration='manual';</script>
+</head>
+<body>
+<div class="auth-page">
+    <!-- Backdrop -->
+    <div class="auth-backdrop"></div>
+
+    <div class="auth-card" id="authCard">
+        <!-- Progress Indicator -->
+        <div class="auth-progress">
+            <div class="auth-progress-track">
+                <div class="auth-progress-fill" id="authProgressFill"></div>
+            </div>
+            <div class="auth-progress-dots">
+                <span class="auth-dot is-active" data-step="1">۱</span>
+                <span class="auth-dot" data-step="2">۲</span>
+                <span class="auth-dot" data-step="3">۳</span>
+            </div>
+        </div>
+
+        <!-- Slides Container -->
+        <div class="auth-slides" id="authSlides">
+
+            <!-- === STEP 1: Phone === -->
+            <div class="auth-slide is-active" data-step="1">
+                <a href="index.html" class="auth-logo">
+                    <svg viewBox="0 0 48 48" width="40" height="40" fill="none"><path d="M24 6C18.5 6 14 8.6 11.2 12.4C9.3 15 9 18.3 9.4 21.5C9.8 25 10.8 28.4 11.7 31.8C12.4 34.5 13 37.4 14.6 39.7C15.5 41 17 42 18.6 41.4C20.1 40.8 20.6 39 20.9 37.6C21.4 35 21.4 32.3 21.9 29.7C22.2 28.1 22.9 26.2 24 26.2C25.1 26.2 25.8 28.1 26.1 29.7C26.6 32.3 26.6 35 27.1 37.6C27.4 39 27.9 40.8 29.4 41.4C31 42 32.5 41 33.4 39.7C35 37.4 35.6 34.5 36.3 31.8C37.2 28.4 38.2 25 38.6 21.5C39 18.3 38.7 15 36.8 12.4C34 8.6 29.5 6 24 6Z" fill="currentColor"/></svg>
+                    <span class="auth-logo-text">دنتورا</span>
+                </a>
+                <h1 class="auth-title">ورود / ثبت‌نام در دنتورا</h1>
+                <p class="auth-subtitle">برای ورود یا عضویت، شماره موبایل خود را وارد کنید.</p>
+                <form class="auth-form" id="authStep1">
+                    <div class="auth-phone-field">
+                        <span class="auth-phone-badge">🇮🇷 +۹۸</span>
+                        <input type="tel" class="auth-input auth-phone-input" id="authPhone" value="" maxlength="10" placeholder="912XXXXXXX" inputmode="numeric" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg auth-submit" id="authStep1Btn">
+                        <span class="auth-btn-text">دریافت کد تایید</span>
+                        <span class="auth-btn-spinner" style="display:none"><span class="auth-spinner"></span></span>
+                    </button>
+                </form>
+                <p class="auth-terms">ورود شما به معنای پذیرش <a href="#">شرایط و قوانین</a> دنتورا است.</p>
+            </div>
+
+            <!-- === STEP 2: OTP === -->
+            <div class="auth-slide" data-step="2">
+                <a href="index.html" class="auth-logo">
+                    <svg viewBox="0 0 48 48" width="40" height="40" fill="none"><path d="M24 6C18.5 6 14 8.6 11.2 12.4C9.3 15 9 18.3 9.4 21.5C9.8 25 10.8 28.4 11.7 31.8C12.4 34.5 13 37.4 14.6 39.7C15.5 41 17 42 18.6 41.4C20.1 40.8 20.6 39 20.9 37.6C21.4 35 21.4 32.3 21.9 29.7C22.2 28.1 22.9 26.2 24 26.2C25.1 26.2 25.8 28.1 26.1 29.7C26.6 32.3 26.6 35 27.1 37.6C27.4 39 27.9 40.8 29.4 41.4C31 42 32.5 41 33.4 39.7C35 37.4 35.6 34.5 36.3 31.8C37.2 28.4 38.2 25 38.6 21.5C39 18.3 38.7 15 36.8 12.4C34 8.6 29.5 6 24 6Z" fill="currentColor"/></svg>
+                    <span class="auth-logo-text">دنتورا</span>
+                </a>
+                <h1 class="auth-title">کد تایید را وارد کنید</h1>
+                <p class="auth-subtitle">کد ۵ رقمی ارسال‌شده به شماره <strong id="authOtpPhone">۰۹۱۲***۵۶۷۸</strong> را وارد کنید.</p>
+                <a href="#" class="auth-edit-phone" id="authBackToStep1">ویرایش شماره</a>
+                <form class="auth-form" id="authStep2">
+                    <div class="auth-otp-boxes" id="authOtpBoxes">
+                        <input type="tel" class="auth-otp-input" maxlength="1" inputmode="numeric" aria-label="رقم اول">
+                        <input type="tel" class="auth-otp-input" maxlength="1" inputmode="numeric" aria-label="رقم دوم">
+                        <input type="tel" class="auth-otp-input" maxlength="1" inputmode="numeric" aria-label="رقم سوم">
+                        <input type="tel" class="auth-otp-input" maxlength="1" inputmode="numeric" aria-label="رقم چهارم">
+                        <input type="tel" class="auth-otp-input" maxlength="1" inputmode="numeric" aria-label="رقم پنجم">
+                    </div>
+                    <div class="auth-timer-wrap">
+                        <div class="auth-circular-timer" id="authCircularTimer">
+                            <svg viewBox="0 0 36 36">
+                                <circle class="auth-timer-bg" cx="18" cy="18" r="16" fill="none" stroke-width="2"/>
+                                <circle class="auth-timer-progress" id="authTimerCircle" cx="18" cy="18" r="16" fill="none" stroke-width="2" stroke-dasharray="100.53" stroke-dashoffset="0"/>
+                            </svg>
+                            <span class="auth-timer-text" id="authTimerText">۰۱:۵۹</span>
+                        </div>
+                        <button type="button" class="auth-resend-btn" id="authResendBtn" disabled>ارسال مجدد کد</button>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg auth-submit" id="authStep2Btn">
+                        <span class="auth-btn-text">تایید و ادامه</span>
+                        <span class="auth-btn-spinner" style="display:none"><span class="auth-spinner"></span></span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- === STEP 3: Profile === -->
+            <div class="auth-slide" data-step="3">
+                <a href="index.html" class="auth-logo">
+                    <svg viewBox="0 0 48 48" width="40" height="40" fill="none"><path d="M24 6C18.5 6 14 8.6 11.2 12.4C9.3 15 9 18.3 9.4 21.5C9.8 25 10.8 28.4 11.7 31.8C12.4 34.5 13 37.4 14.6 39.7C15.5 41 17 42 18.6 41.4C20.1 40.8 20.6 39 20.9 37.6C21.4 35 21.4 32.3 21.9 29.7C22.2 28.1 22.9 26.2 24 26.2C25.1 26.2 25.8 28.1 26.1 29.7C26.6 32.3 26.6 35 27.1 37.6C27.4 39 27.9 40.8 29.4 41.4C31 42 32.5 41 33.4 39.7C35 37.4 35.6 34.5 36.3 31.8C37.2 28.4 38.2 25 38.6 21.5C39 18.3 38.7 15 36.8 12.4C34 8.6 29.5 6 24 6Z" fill="currentColor"/></svg>
+                    <span class="auth-logo-text">دنتورا</span>
+                </a>
+                <h1 class="auth-title">تکمیل اطلاعات کاربری</h1>
+                <p class="auth-subtitle">برای درج در پرونده پزشکی و رزرو نوبت، اطلاعات زیر را وارد کنید.</p>
+                <form class="auth-form" id="authStep3">
+                    <div class="auth-input-wrap auth-stagger-item" style="--i:0">
+                        <svg class="auth-input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        <input type="text" class="auth-input" id="authFirstName" placeholder="نام" autocomplete="given-name" required>
+                    </div>
+                    <div class="auth-input-wrap auth-stagger-item" style="--i:1">
+                        <svg class="auth-input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        <input type="text" class="auth-input" id="authLastName" placeholder="نام خانوادگی" autocomplete="family-name" required>
+                    </div>
+                    <div class="auth-input-wrap auth-stagger-item" style="--i:2">
+                        <svg class="auth-input-icon auth-input-icon--left" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+                        <input type="tel" class="auth-input auth-input--national" id="authNationalCode" placeholder="کد ملی (۱۰ رقمی)" maxlength="10" inputmode="numeric" autocomplete="off" required>
+                        <span class="auth-validation-tick" id="authNatTick" style="display:none">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        </span>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg auth-submit auth-stagger-item" style="--i:3">
+                        <span class="auth-btn-text">ثبت اطلاعات و ورود به پنل</span>
+                        <span class="auth-btn-spinner" style="display:none"><span class="auth-spinner"></span></span>
+                    </button>
+                </form>
+            </div>
+
+        </div>
+
+        <!-- Success State -->
+        <div class="auth-success" id="authSuccess" style="display:none">
+            <div class="auth-success-check">
+                <svg width="80" height="80" viewBox="0 0 80 80">
+                    <circle class="auth-success-circle" cx="40" cy="40" r="36" fill="none" stroke="#10b981" stroke-width="3"/>
+                    <polyline class="auth-success-tick" points="24,42 34,52 56,28" fill="none" stroke="#10b981" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h2 class="auth-success-title">خوش آمدید!</h2>
+            <p class="auth-success-text">ورود شما با موفقیت انجام شد</p>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
