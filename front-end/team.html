@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تیم تخصصی دندانپزشکان — دنتورا</title>
+    <link rel="stylesheet" href="style.css">
+    <script>if('scrollRestoration' in history) history.scrollRestoration='manual';</script>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">رفتن به محتوای اصلی</a>
+<div class="bg-grid"></div>
+<div class="tooth-pattern"></div>
+
+<header class="header">
+    <div class="header-inner">
+        <a href="index.html" class="brand" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:10px">
+            <span class="brand-icon">
+                <svg viewBox="0 0 48 48" width="30" height="30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M24 6C18.5 6 14 8.6 11.2 12.4C9.3 15 9 18.3 9.4 21.5C9.8 25 10.8 28.4 11.7 31.8C12.4 34.5 13 37.4 14.6 39.7C15.5 41 17 42 18.6 41.4C20.1 40.8 20.6 39 20.9 37.6C21.4 35 21.4 32.3 21.9 29.7C22.2 28.1 22.9 26.2 24 26.2C25.1 26.2 25.8 28.1 26.1 29.7C26.6 32.3 26.6 35 27.1 37.6C27.4 39 27.9 40.8 29.4 41.4C31 42 32.5 41 33.4 39.7C35 37.4 35.6 34.5 36.3 31.8C37.2 28.4 38.2 25 38.6 21.5C39 18.3 38.7 15 36.8 12.4C34 8.6 29.5 6 24 6Z"
+                          fill="currentColor"/>
+                </svg>
+            </span>
+            <span class="brand-name">دنتورا</span>
+        </a>
+        <div class="nav"></div>
+        <div class="header-actions">
+            <a href="team.html" class="btn btn-outline btn-sm" style="background:rgba(15,118,110,0.08);border-color:var(--primary);color:var(--primary);font-weight:700">تیم درمانی</a>
+            <a href="blog.html" class="btn btn-outline btn-sm">بلاگ</a>
+            <a href="before-after.html" class="btn btn-outline btn-sm">نمونه کارها</a>
+            <button class="btn btn-primary btn-sm">رزرو نوبت</button>
+        </div>
+        <button class="header-hamburger" id="headerHamburger" aria-label="منو" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+    <div class="header-mobile-nav" id="headerMobileNav">
+        <a href="team.html" class="header-mobile-link">تیم درمانی</a>
+        <a href="blog.html" class="header-mobile-link">بلاگ</a>
+        <a href="before-after.html" class="header-mobile-link">نمونه کارها</a>
+        <button class="btn btn-primary btn-sm header-mobile-cta">رزرو نوبت</button>
+    </div>
+</header>
+
+<!-- ================= HERO & SEARCH ================= -->
+<main class="team-hero" id="main-content" tabindex="-1">
+    <div class="team-hero-inner reveal">
+        <h1 class="team-hero-title">تیم تخصصی دندانپزشکان دنتورا</h1>
+        <p class="team-hero-subtitle">جمعی از برترین متخصصان و اساتید دندانپزشکی در کنار شما</p>
+        <div class="team-search reveal">
+            <div class="team-search-box">
+                <svg class="team-search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                <input type="text" class="team-search-input" id="teamSearchInput" placeholder="جستجوی نام پزشک..." aria-label="جستجوی نام پزشک">
+            </div>
+            <div class="team-dropdown" id="teamServiceDropdown">
+                <button class="team-dropdown-trigger" id="teamDropdownTrigger" aria-haspopup="listbox" aria-expanded="false" aria-label="انتخاب نوع خدمت">
+                    <span class="team-dropdown-value">همه خدمات</span>
+                    <svg class="team-dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                </button>
+                <ul class="team-dropdown-menu" id="teamDropdownMenu" role="listbox">
+                    <li class="team-dropdown-item is-selected" data-value="" role="option">همه خدمات</li>
+                    <li class="team-dropdown-item" data-value="implant" role="option">ایمپلنت و جراحی</li>
+                    <li class="team-dropdown-item" data-value="beauty" role="option">زیبایی و ترمیم</li>
+                    <li class="team-dropdown-item" data-value="orthodontics" role="option">ارتودنسی</li>
+                    <li class="team-dropdown-item" data-value="kids" role="option">دندانپزشکی کودکان</li>
+                    <li class="team-dropdown-item" data-value="root" role="option">درمان ریشه</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- ================= FILTER BAR ================= -->
+<section class="team-filters reveal" role="tablist" aria-label="فیلتر تخصص پزشکان">
+    <div class="team-filters-inner">
+        <button class="team-filter-pill is-active" data-filter="all" role="tab" aria-selected="true">همه پزشکان</button>
+        <button class="team-filter-pill" data-filter="beauty" role="tab" aria-selected="false">زیبایی و ترمیم</button>
+        <button class="team-filter-pill" data-filter="implant" role="tab" aria-selected="false">جراحی و ایمپلنت</button>
+        <button class="team-filter-pill" data-filter="orthodontics" role="tab" aria-selected="false">ارتودنسی</button>
+        <button class="team-filter-pill" data-filter="kids" role="tab" aria-selected="false">دندانپزشکی کودکان</button>
+        <button class="team-filter-pill" data-filter="root" role="tab" aria-selected="false">درمان ریشه</button>
+    </div>
+</section>
+
+<!-- ================= DOCTORS GRID ================= -->
+<section class="team-grid-section">
+    <div class="team-grid-inner">
+        <div class="team-grid" id="teamGrid">
+
+            <!-- Doctor Card 1 -->
+            <div class="team-doctor-card reveal-stagger" data-specialty="implant">
+                <a href="doctor.html" class="team-card-link" aria-label="مشاهده پروفایل دکتر علیرضا احمدی">
+                    <div class="team-card-img-wrap">
+                        <img src="assets/doctors/doctor-1.jpg" alt="دکتر علیرضا احمدی" class="team-card-img" loading="lazy">
+                        <span class="team-card-status team-card-status--available">
+                            <span class="team-card-status-dot"></span>
+                            آماده پذیرش
+                        </span>
+                    </div>
+                    <div class="team-card-body">
+                        <h3 class="team-card-name">دکتر علیرضا احمدی</h3>
+                        <p class="team-card-specialty">متخصص ارتودنسی | بورد تخصصی</p>
+                        <div class="team-card-stats">
+                            <span class="team-card-stat"><span class="team-card-star">⭐</span> ۴.۹ از ۵</span>
+                            <span class="team-card-stat">🎓 ۱۲ سال تجربه</span>
+                        </div>
+                        <p class="team-card-days">حضور: شنبه، دوشنبه، چهارشنبه</p>
+                    </div>
+                    <div class="team-card-actions">
+                        <span class="btn btn-primary btn-sm team-card-btn">مشاهده پروفایل و رزرو نوبت</span>
+                        <button class="team-card-quick-book" aria-label="رزرو سریع نوبت با دکتر احمدی" onclick="event.preventDefault();">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                        </button>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Doctor Card 2 -->
+            <div class="team-doctor-card reveal-stagger" data-specialty="implant">
+                <a href="doctor.html" class="team-card-link" aria-label="مشاهده پروفایل دکتر زهرا محمدی">
+                    <div class="team-card-img-wrap">
+                        <img src="assets/doctors/doctor-2.jpg" alt="دکتر زهرا محمدی" class="team-card-img" loading="lazy">
+                        <span class="team-card-status team-card-status--available">
+                            <span class="team-card-status-dot"></span>
+                            آماده پذیرش
+                        </span>
+                    </div>
+                    <div class="team-card-body">
+                        <h3 class="team-card-name">دکتر زهرا محمدی</h3>
+                        <p class="team-card-specialty">متخصص ایمپلنت و جراحی فک</p>
+                        <div class="team-card-stats">
+                            <span class="team-card-stat"><span class="team-card-star">⭐</span> ۴.۸ از ۵</span>
+                            <span class="team-card-stat">🎓 ۱۰ سال تجربه</span>
+                        </div>
+                        <p class="team-card-days">حضور: یکشنبه، سه‌شنبه، پنجشنبه</p>
+                    </div>
+                    <div class="team-card-actions">
+                        <span class="btn btn-primary btn-sm team-card-btn">مشاهده پروفایل و رزرو نوبت</span>
+                        <button class="team-card-quick-book" aria-label="رزرو سریع نوبت با دکتر محمدی" onclick="event.preventDefault();">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                        </button>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Doctor Card 3 -->
+            <div class="team-doctor-card reveal-stagger" data-specialty="beauty">
+                <a href="doctor.html" class="team-card-link" aria-label="مشاهده پروفایل دکتر محمد کریمی">
+                    <div class="team-card-img-wrap">
+                        <img src="assets/doctors/doctor-3.jpg" alt="دکتر محمد کریمی" class="team-card-img" loading="lazy">
+                        <span class="team-card-status team-card-status--available">
+                            <span class="team-card-status-dot"></span>
+                            آماده پذیرش
+                        </span>
+                    </div>
+                    <div class="team-card-body">
+                        <h3 class="team-card-name">دکتر محمد کریمی</h3>
+                        <p class="team-card-specialty">دندانپزشک زیبایی و ترمیمی</p>
+                        <div class="team-card-stats">
+                            <span class="team-card-stat"><span class="team-card-star">⭐</span> ۴.۹ از ۵</span>
+                            <span class="team-card-stat">🎓 ۸ سال تجربه</span>
+                        </div>
+                        <p class="team-card-days">حضور: شنبه تا چهارشنبه</p>
+                    </div>
+                    <div class="team-card-actions">
+                        <span class="btn btn-primary btn-sm team-card-btn">مشاهده پروفایل و رزرو نوبت</span>
+                        <button class="team-card-quick-book" aria-label="رزرو سریع نوبت با دکتر کریمی" onclick="event.preventDefault();">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                        </button>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Doctor Card 4 -->
+            <div class="team-doctor-card reveal-stagger" data-specialty="beauty">
+                <a href="doctor.html" class="team-card-link" aria-label="مشاهده پروفایل دکتر مریم ابراهیمی">
+                    <div class="team-card-img-wrap">
+                        <img src="assets/doctors/doctor-4.jpg" alt="دکتر مریم ابراهیمی" class="team-card-img" loading="lazy">
+                        <span class="team-card-status team-card-status--busy">
+                            <span class="team-card-status-dot"></span>
+                            اتمام نوبت امروز
+                        </span>
+                    </div>
+                    <div class="team-card-body">
+                        <h3 class="team-card-name">دکتر مریم ابراهیمی</h3>
+                        <p class="team-card-specialty">دندانپزشک زیبایی</p>
+                        <div class="team-card-stats">
+                            <span class="team-card-stat"><span class="team-card-star">⭐</span> ۴.۷ از ۵</span>
+                            <span class="team-card-stat">🎓 ۶ سال تجربه</span>
+                        </div>
+                        <p class="team-card-days">حضور: شنبه، دوشنبه</p>
+                    </div>
+                    <div class="team-card-actions">
+                        <span class="btn btn-primary btn-sm team-card-btn">مشاهده پروفایل و رزرو نوبت</span>
+                        <button class="team-card-quick-book" aria-label="رزرو سریع نوبت با دکتر ابراهیمی" onclick="event.preventDefault();">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                        </button>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Doctor Card 5 -->
+            <div class="team-doctor-card reveal-stagger" data-specialty="beauty">
+                <a href="doctor.html" class="team-card-link" aria-label="مشاهده پروفایل دکتر امیرمحمد فرهمندنیا">
+                    <div class="team-card-img-wrap">
+                        <img src="assets/doctors/doctor-5.jpg" alt="دکتر امیرمحمد فرهمندنیا" class="team-card-img" loading="lazy">
+                        <span class="team-card-status team-card-status--available">
+                            <span class="team-card-status-dot"></span>
+                            آماده پذیرش
+                        </span>
+                    </div>
+                    <div class="team-card-body">
+                        <h3 class="team-card-name">دکتر امیرمحمد فرهمندنیا</h3>
+                        <p class="team-card-specialty">دندانپزشک زیبایی</p>
+                        <div class="team-card-stats">
+                            <span class="team-card-stat"><span class="team-card-star">⭐</span> ۴.۸ از ۵</span>
+                            <span class="team-card-stat">🎓 ۷ سال تجربه</span>
+                        </div>
+                        <p class="team-card-days">حضور: شنبه تا پنجشنبه</p>
+                    </div>
+                    <div class="team-card-actions">
+                        <span class="btn btn-primary btn-sm team-card-btn">مشاهده پروفایل و رزرو نوبت</span>
+                        <button class="team-card-quick-book" aria-label="رزرو سریع نوبت با دکتر فرهمندنیا" onclick="event.preventDefault();">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                        </button>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Doctor Card 6 -->
+            <div class="team-doctor-card reveal-stagger" data-specialty="beauty">
+                <a href="doctor.html" class="team-card-link" aria-label="مشاهده پروفایل دکتر مهسا امیری راد">
+                    <div class="team-card-img-wrap">
+                        <img src="assets/doctors/doctor-6.jpg" alt="دکتر مهسا امیری راد" class="team-card-img" loading="lazy">
+                        <span class="team-card-status team-card-status--available">
+                            <span class="team-card-status-dot"></span>
+                            آماده پذیرش
+                        </span>
+                    </div>
+                    <div class="team-card-body">
+                        <h3 class="team-card-name">دکتر مهسا امیری راد</h3>
+                        <p class="team-card-specialty">دندانپزشک زیبایی</p>
+                        <div class="team-card-stats">
+                            <span class="team-card-stat"><span class="team-card-star">⭐</span> ۴.۹ از ۵</span>
+                            <span class="team-card-stat">🎓 ۹ سال تجربه</span>
+                        </div>
+                        <p class="team-card-days">حضور: یکشنبه تا پنجشنبه</p>
+                    </div>
+                    <div class="team-card-actions">
+                        <span class="btn btn-primary btn-sm team-card-btn">مشاهده پروفایل و رزرو نوبت</span>
+                        <button class="team-card-quick-book" aria-label="رزرو سریع نوبت با دکتر امیری راد" onclick="event.preventDefault();">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                        </button>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+
+        <!-- No results message -->
+        <div class="team-no-results" id="teamNoResults" style="display:none">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--text-faint)" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M8 11h6"/></svg>
+            <p>پزشکی با این مشخصات یافت نشد</p>
+        </div>
+    </div>
+</section>
+
+
+<!-- ================= FINAL CTA ================= -->
+<section class="team-final-cta reveal">
+    <div class="team-final-cta-inner">
+        <h2 class="team-final-cta-title">هنوز پزشک مورد نظرتان را پیدا نکرده‌اید؟</h2>
+        <p class="team-final-cta-text">پشتیبانان دنتورا شما را راهنمایی می‌کنند</p>
+        <button class="btn btn-primary btn-lg">رزرو نوبت و مشاوره رایگان</button>
+    </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="site-footer">
+    <div class="footer-inner">
+        <button class="btn btn-outline footer-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+            بازگشت به بالا
+        </button>
+        <div class="footer-auth-links">
+            <a href="login.html">ورود</a>
+            <a href="otp.html">تایید کد</a>
+            <a href="login-info.html">تکمیل پروفایل</a>
+        </div>
+        <p class="footer-copy">© ۲۰۲۶ دنتورا — تمامی حقوق محفوظ است.</p>
+    </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
