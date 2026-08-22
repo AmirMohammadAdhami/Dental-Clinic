@@ -5573,6 +5573,12 @@ html, body.post-page, .post-page .bg-grid, .post-page .tooth-pattern,
     color: #dc2626;
 }
 
+/* Dashboard icon: active state */
+.dash-nav-icon--dash {
+    background: rgba(15, 118, 110, 0.08);
+    color: var(--primary);
+}
+
 /* --- Tooltip --- */
 .dash-nav-icon[data-tooltip]::before {
     content: attr(data-tooltip);
@@ -6291,6 +6297,27 @@ html, body.post-page, .post-page .bg-grid, .post-page .tooth-pattern,
     transform: translateY(0);
 }
 
+/* ================= MOBILE BOTTOM NAVIGATION ================= */
+.dash-bottomnav {
+    display: none;
+}
+
+.dash-bottomnav-item {
+    position: relative;
+}
+
+.dash-bottomnav-badge {
+    position: absolute;
+    top: 6px;
+    right: 50%;
+    transform: translateX(14px);
+    width: 8px;
+    height: 8px;
+    background: #ef4444;
+    border-radius: 50%;
+    animation: notifPulse 2s ease-in-out infinite;
+}
+
 /* ================= DASHBOARD RESPONSIVE ================= */
 @media (max-width: 900px) {
     .dash-services-grid {
@@ -6310,23 +6337,7 @@ html, body.post-page, .post-page .bg-grid, .post-page .tooth-pattern,
 
 @media (max-width: 620px) {
     .dash-header {
-        padding: 12px 16px 0;
-    }
-
-    .dash-header-inner {
-        padding: 8px 12px 8px 16px;
-    }
-
-    .dash-greeting-text {
-        font-size: 0.92rem;
-    }
-
-    .dash-greeting-sub {
         display: none;
-    }
-
-    .dash-nav {
-        gap: 0;
     }
 
     .dash-nav-icon {
@@ -6392,6 +6403,73 @@ html, body.post-page, .post-page .bg-grid, .post-page .tooth-pattern,
         flex: 1;
         justify-content: center;
         padding: 10px 12px;
+    }
+
+    /* Bottom Nav */
+    .dash-bottomnav {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 900;
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-top: 1px solid rgba(15, 118, 110, 0.1);
+        padding: 6px 0 calc(6px + env(safe-area-inset-bottom, 0px));
+        box-shadow: 0 -4px 20px -8px rgba(15, 23, 42, 0.1);
+        transition: transform 0.3s var(--ease-smooth);
+    }
+
+    .dash-bottomnav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        padding: 6px 12px;
+        border-radius: 12px;
+        text-decoration: none;
+        color: var(--text-faint);
+        font-size: 0.7rem;
+        font-weight: 600;
+        transition: color 0.2s ease, background 0.2s ease;
+        min-width: 52px;
+    }
+
+    .dash-bottomnav-item:hover,
+    .dash-bottomnav-item.is-active {
+        color: var(--primary);
+        background: rgba(15, 118, 110, 0.06);
+    }
+
+    .dash-bottomnav-item--exit:hover {
+        color: #dc2626;
+        background: rgba(220, 38, 38, 0.06);
+    }
+
+    .dash-bottomnav-item svg {
+        flex-shrink: 0;
+    }
+
+    .dash-bottomnav-badge {
+        top: 2px;
+        right: 50%;
+        transform: translateX(16px);
+        width: 7px;
+        height: 7px;
+    }
+
+    /* Add padding to main content so footer isn't hidden behind bottom nav */
+    .dash-main {
+        padding-bottom: 100px;
+    }
+
+    /* Hide bottom nav on desktop */
+    .site-footer {
+        padding-bottom: 20px;
     }
 }
 

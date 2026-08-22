@@ -191,4 +191,40 @@
             this.style.setProperty('--glow-y', y + '%');
         });
     })();
+
+    /* ================= BOTTOM NAV ACTIVE STATE ================= */
+    (function initBottomNav() {
+        var bottomNav = document.querySelector('.dash-bottomnav');
+        if (!bottomNav) return;
+
+        var items = bottomNav.querySelectorAll('.dash-bottomnav-item');
+        var currentPage = window.location.pathname.split('/').pop() || 'dashboard.html';
+
+        items.forEach(function (item) {
+            var href = item.getAttribute('href') || '';
+            if (href === currentPage) {
+                item.classList.add('is-active');
+            }
+        });
+
+        /* Hide bottom nav when scrolling down, show when scrolling up */
+        var lastScrollY = 0;
+        var ticking = false;
+
+        window.addEventListener('scroll', function () {
+            if (!ticking) {
+                window.requestAnimationFrame(function () {
+                    var currentY = window.scrollY;
+                    if (currentY > lastScrollY && currentY > 100) {
+                        bottomNav.style.transform = 'translateY(100%)';
+                    } else {
+                        bottomNav.style.transform = 'translateY(0)';
+                    }
+                    lastScrollY = currentY;
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+    })();
 })();
