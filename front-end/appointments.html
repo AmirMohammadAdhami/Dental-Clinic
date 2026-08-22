@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مدیریت نوبت‌ها — دنتورا</title>
+    <link rel="stylesheet" href="style.css">
+    <script>if('scrollRestoration' in history) history.scrollRestoration='manual';</script>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">رفتن به محتوای اصلی</a>
+<div class="bg-grid"></div>
+<div class="tooth-pattern"></div>
+
+<!-- ================= DASHBOARD HEADER BAR ================= -->
+<header class="dash-header">
+    <div class="dash-header-inner">
+        <div class="dash-profile">
+            <div class="dash-avatar">
+                <img src="assets/hero/clinic-detail.jpg" alt="پروفایل بیمار">
+                <span class="dash-avatar-ring"></span>
+            </div>
+            <div class="dash-greeting">
+                <span class="dash-greeting-text">سلام، امیرمحمد عزیز 👋</span>
+                <span class="dash-greeting-sub">خوش آمدید به پنل شخصی شما</span>
+            </div>
+        </div>
+        <nav class="dash-nav" aria-label="منوی پنل">
+            <a href="dashboard.html" class="dash-nav-icon dash-nav-icon--dash" data-tooltip="داشبورد" aria-label="داشبورد">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+            </a>
+            <a href="appointments.html" class="dash-nav-icon dash-nav-icon--dash" data-tooltip="نوبت‌ها" aria-label="نوبت‌ها">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </a>
+            <a href="gallery.html" class="dash-nav-icon" data-tooltip="گالری" aria-label="گالری">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            </a>
+            <a href="notifications.html" class="dash-nav-icon dash-nav-icon--notif" data-tooltip="اعلان‌ها" aria-label="اعلان‌ها">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                <span class="dash-notif-badge"></span>
+            </a>
+            <a href="index.html" class="dash-nav-icon" data-tooltip="خانه" aria-label="خانه">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </a>
+            <a href="index.html" class="dash-nav-icon dash-nav-icon--exit" data-tooltip="خروج" aria-label="خروج">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            </a>
+        </nav>
+    </div>
+</header>
+
+<!-- ================= MAIN CONTENT ================= -->
+<main class="dash-main" id="main-content" tabindex="-1">
+
+    <!-- Sub-Header -->
+    <div class="dash-page-subheader">
+        <a href="dashboard.html" class="dash-back-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            بازگشت به داشبورد
+        </a>
+        <h1 class="dash-page-title">مدیریت نوبت‌ها</h1>
+        <p class="dash-page-meta">۸ نوبت</p>
+    </div>
+
+    <!-- Active Appointment Banner (same as dashboard) -->
+    <section class="dash-appointment-banner">
+        <div class="dash-appointment-inner">
+            <div class="dash-appointment-badge">
+                <span class="dash-badge-dot"></span>
+                نوبت بعدی شما
+            </div>
+            <div class="dash-appointment-body">
+                <div class="dash-appointment-info">
+                    <div class="dash-appointment-doctor">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        <div>
+                            <strong>دکتر کاوه آذرخو</strong>
+                            <span>متخصص زیبایی و ترمیمی</span>
+                        </div>
+                    </div>
+                    <div class="dash-appointment-treatment">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                        <span>چکاپ و کامپوزیت زیبایی</span>
+                    </div>
+                    <div class="dash-appointment-datetime">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        <span>دوشنبه ۲۵ مرداد — ساعت ۱۶:۳۰</span>
+                    </div>
+                </div>
+                <div class="dash-appt-banner-actions">
+                    <a href="tel:+982112345678" class="btn dash-appointment-btn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        تماس با کلینیک
+                    </a>
+                    <a href="#" class="btn dash-appointment-btn dash-appointment-btn--outline">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        مسیریابی
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Toolbar: Search + Filter + Sort -->
+    <div class="dash-apt-toolbar">
+        <div class="dash-apt-search">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" class="dash-apt-search-input" placeholder="جستجوی نام پزشک یا نوع خدمت..." id="aptSearch">
+        </div>
+        <div class="dash-apt-toolbar-row">
+            <div class="dash-apt-filters">
+                <button class="dash-filter-btn is-active" data-status="all">همه</button>
+                <button class="dash-filter-btn" data-status="done">انجام‌شده</button>
+                <button class="dash-filter-btn" data-status="pending">معلق / پیش‌رو</button>
+                <button class="dash-filter-btn" data-status="cancelled">لغوشده</button>
+            </div>
+            <div class="dash-apt-sort">
+                <label for="aptSort" class="sr-only">مرتب‌سازی</label>
+                <select id="aptSort" class="dash-apt-sort-select">
+                    <option value="newest">جدیدترین به قدیمی‌ترین</option>
+                    <option value="oldest">قدیمی‌ترین به جدیدترین</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Appointment List -->
+    <div class="dash-apt-list" id="aptList">
+
+        <!-- Appointment 1: Active -->
+        <div class="dash-apt-card" data-status="pending" data-doctor="کاوه آذرخو" data-service="کامپوزیت زیبایی">
+            <div class="dash-apt-card-status dash-apt-card-status--pending">
+                <span class="dash-apt-status-dot"></span>
+                پیش‌رو
+            </div>
+            <div class="dash-apt-card-right">
+                <div class="dash-apt-card-icon dash-apt-card-icon--beauty">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c-1.2 0-2.4.6-3 1.5C8.4 5.4 7.2 6 6 6 3.8 6 2 7.8 2 10c0 5 10 12 10 12s10-7 10-12c0-2.2-1.8-4-4-4-1.2 0-2.4-.6-3-1.5-.6-.9-1.8-1.5-3-1.5z"/></svg>
+                </div>
+                <div class="dash-apt-card-details">
+                    <strong>کامپوزیت زیبایی</strong>
+                    <span>دکتر کاوه آذرخو</span>
+                </div>
+            </div>
+            <div class="dash-apt-card-center">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <span>۲۵ مرداد ۱۴۰۵ — ساعت ۱۶:۳۰</span>
+            </div>
+            <div class="dash-apt-card-left">
+                <span class="dash-apt-tracking">
+                    <span class="dash-apt-tracking-label">کد پیگیری:</span>
+                    <span class="dash-apt-tracking-code">DNT-4821</span>
+                </span>
+                <a href="#" class="dash-apt-action-btn dash-apt-action-btn--rx">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    دانلود نسخه
+                </a>
+                <button class="dash-apt-action-btn dash-apt-action-btn--receipt">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    مشاهده رسید
+                </button>
+            </div>
+        </div>
+
+        <!-- Appointment 2: Done -->
+        <div class="dash-apt-card" data-status="done" data-doctor="امیرمحمد فرهمندنیا" data-service="ایمپلنت فک بالا">
+            <div class="dash-apt-card-status dash-apt-card-status--done">
+                <span class="dash-apt-status-dot"></span>
+                انجام‌شده
+            </div>
+            <div class="dash-apt-card-right">
+                <div class="dash-apt-card-icon dash-apt-card-icon--implant">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C9 2 7 4 7 7c0 2 1 4 2 6l1 5h4l1-5c1-2 2-4 2-6 0-3-2-5-5-5z"/></svg>
+                </div>
+                <div class="dash-apt-card-details">
+                    <strong>ایمپلنت فک بالا</strong>
+                    <span>دکتر امیرمحمد فرهمندنیا</span>
+                </div>
+            </div>
+            <div class="dash-apt-card-center">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <span>۱۵ تیر ۱۴۰۵ — ساعت ۱۰:۰۰</span>
+            </div>
+            <div class="dash-apt-card-left">
+                <span class="dash-apt-tracking">
+                    <span class="dash-apt-tracking-label">کد پیگیری:</span>
+                    <span class="dash-apt-tracking-code">DNT-4756</span>
+                </span>
+                <a href="#" class="dash-apt-action-btn dash-apt-action-btn--rx">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    دانلود نسخه
+                </a>
+                <button class="dash-apt-action-btn dash-apt-action-btn--receipt">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    مشاهده رسید
+                </button>
+            </div>
+        </div>
+
+        <!-- Appointment 3: Done -->
+        <div class="dash-apt-card" data-status="done" data-doctor="کاوه آذرخو" data-service="لمینت سرامیکی">
+            <div class="dash-apt-card-status dash-apt-card-status--done">
+                <span class="dash-apt-status-dot"></span>
+                انجام‌شده
+            </div>
+            <div class="dash-apt-card-right">
+                <div class="dash-apt-card-icon dash-apt-card-icon--laminate">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+                </div>
+                <div class="dash-apt-card-details">
+                    <strong>لمینت سرامیکی</strong>
+                    <span>دکتر کاوه آذرخو</span>
+                </div>
+            </div>
+            <div class="dash-apt-card-center">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <span>۳ خرداد ۱۴۰۵ — ساعت ۱۴:۳۰</span>
+            </div>
+            <div class="dash-apt-card-left">
+                <span class="dash-apt-tracking">
+                    <span class="dash-apt-tracking-label">کد پیگیری:</span>
+                    <span class="dash-apt-tracking-code">DNT-4690</span>
+                </span>
+                <a href="#" class="dash-apt-action-btn dash-apt-action-btn--rx">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    دانلود نسخه
+                </a>
+                <button class="dash-apt-action-btn dash-apt-action-btn--receipt">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    مشاهده رسید
+                </button>
+            </div>
+        </div>
+
+        <!-- Appointment 4: Done -->
+        <div class="dash-apt-card" data-status="done" data-doctor="مهسا امیری راد" data-service="جرم‌گیری و بلیچینگ">
+            <div class="dash-apt-card-status dash-apt-card-status--done">
+                <span class="dash-apt-status-dot"></span>
+                انجام‌شده
+            </div>
+            <div class="dash-apt-card-right">
+                <div class="dash-apt-card-icon dash-apt-card-icon--clean">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v18"/><path d="M18 3v18"/><path d="M6 12h12"/></svg>
+                </div>
+                <div class="dash-apt-card-details">
+                    <strong>جرم‌گیری و بلیچینگ</strong>
+                    <span>دکتر مهسا امیری راد</span>
+                </div>
+            </div>
+            <div class="dash-apt-card-center">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <span>۱۸ اردیبهشت ۱۴۰۵ — ساعت ۰۹:۳۰</span>
+            </div>
+            <div class="dash-apt-card-left">
+                <span class="dash-apt-tracking">
+                    <span class="dash-apt-tracking-label">کد پیگیری:</span>
+                    <span class="dash-apt-tracking-code">DNT-4612</span>
+                </span>
+                <a href="#" class="dash-apt-action-btn dash-apt-action-btn--rx">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    دانلود نسخه
+                </a>
+                <button class="dash-apt-action-btn dash-apt-action-btn--receipt">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    مشاهده رسید
+                </button>
+            </div>
+        </div>
+
+        <!-- Appointment 5: Cancelled -->
+        <div class="dash-apt-card dash-apt-card--cancelled" data-status="cancelled" data-doctor="امیرمحمد فرهمندنیا" data-service="ونیر سرامیکی">
+            <div class="dash-apt-card-status dash-apt-card-status--cancelled">
+                <span class="dash-apt-status-dot"></span>
+                لغوشده
+            </div>
+            <div class="dash-apt-card-right">
+                <div class="dash-apt-card-icon dash-apt-card-icon--veneer">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                </div>
+                <div class="dash-apt-card-details">
+                    <strong>ونیر سرامیکی</strong>
+                    <span>دکتر امیرمحمد فرهمندنیا</span>
+                </div>
+            </div>
+            <div class="dash-apt-card-center">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <span>۲ فروردین ۱۴۰۵ — ساعت ۱۱:۰۰</span>
+            </div>
+            <div class="dash-apt-card-left">
+                <span class="dash-apt-tracking">
+                    <span class="dash-apt-tracking-label">کد پیگیری:</span>
+                    <span class="dash-apt-tracking-code">DNT-4580</span>
+                </span>
+            </div>
+        </div>
+
+        <!-- Appointment 6: Done -->
+        <div class="dash-apt-card" data-status="done" data-doctor="کاوه آذرخو" data-service="چکاپ دوره‌ای">
+            <div class="dash-apt-card-status dash-apt-card-status--done">
+                <span class="dash-apt-status-dot"></span>
+                انجام‌شده
+            </div>
+            <div class="dash-apt-card-right">
+                <div class="dash-apt-card-icon dash-apt-card-icon--checkup">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                </div>
+                <div class="dash-apt-card-details">
+                    <strong>چکاپ دوره‌ای</strong>
+                    <span>دکتر کاوه آذرخو</span>
+                </div>
+            </div>
+            <div class="dash-apt-card-center">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <span>۲ فروردین ۱۴۰۵ — ساعت ۱۱:۰۰</span>
+            </div>
+            <div class="dash-apt-card-left">
+                <span class="dash-apt-tracking">
+                    <span class="dash-apt-tracking-label">کد پیگیری:</span>
+                    <span class="dash-apt-tracking-code">DNT-4540</span>
+                </span>
+                <a href="#" class="dash-apt-action-btn dash-apt-action-btn--rx">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    دانلود نسخه
+                </a>
+                <button class="dash-apt-action-btn dash-apt-action-btn--receipt">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    مشاهده رسید
+                </button>
+            </div>
+        </div>
+
+        <!-- Appointment 7: Pending -->
+        <div class="dash-apt-card" data-status="pending" data-doctor="مهسا امیری راد" data-service="عصب‌کشی">
+            <div class="dash-apt-card-status dash-apt-card-status--pending">
+                <span class="dash-apt-status-dot"></span>
+                پیش‌رو
+            </div>
+            <div class="dash-apt-card-right">
+                <div class="dash-apt-card-icon dash-apt-card-icon--root">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                </div>
+                <div class="dash-apt-card-details">
+                    <strong>عصب‌کشی</strong>
+                    <span>دکتر مهسا امیری راد</span>
+                </div>
+            </div>
+            <div class="dash-apt-card-center">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <span>۱۰ شهریور ۱۴۰۵ — ساعت ۰۹:۰۰</span>
+            </div>
+            <div class="dash-apt-card-left">
+                <span class="dash-apt-tracking">
+                    <span class="dash-apt-tracking-label">کد پیگیری:</span>
+                    <span class="dash-apt-tracking-code">DNT-4903</span>
+                </span>
+            </div>
+        </div>
+
+        <!-- Appointment 8: Cancelled -->
+        <div class="dash-apt-card dash-apt-card--cancelled" data-status="cancelled" data-doctor="امیرمحمد فرهمندنیا" data-service="کامپوزیت ونیر">
+            <div class="dash-apt-card-status dash-apt-card-status--cancelled">
+                <span class="dash-apt-status-dot"></span>
+                لغوشده
+            </div>
+            <div class="dash-apt-card-right">
+                <div class="dash-apt-card-icon dash-apt-card-icon--beauty">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c-1.2 0-2.4.6-3 1.5C8.4 5.4 7.2 6 6 6 3.8 6 2 7.8 2 10c0 5 10 12 10 12s10-7 10-12c0-2.2-1.8-4-4-4-1.2 0-2.4-.6-3-1.5-.6-.9-1.8-1.5-3-1.5z"/></svg>
+                </div>
+                <div class="dash-apt-card-details">
+                    <strong>کامپوزیت ونیر</strong>
+                    <span>دکتر امیرمحمد فرهمندنیا</span>
+                </div>
+            </div>
+            <div class="dash-apt-card-center">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <span>۲۰ بهمن ۱۴۰۴ — ساعت ۱۵:۰۰</span>
+            </div>
+            <div class="dash-apt-card-left">
+                <span class="dash-apt-tracking">
+                    <span class="dash-apt-tracking-label">کد پیگیری:</span>
+                    <span class="dash-apt-tracking-code">DNT-4488</span>
+                </span>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<!-- ================= MOBILE BOTTOM NAV ================= -->
+<nav class="dash-bottomnav" aria-label="منوی پایین">
+    <a href="dashboard.html" class="dash-bottomnav-item dash-bottomnav-item--dash">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+        <span>داشبورد</span>
+    </a>
+    <a href="appointments.html" class="dash-bottomnav-item is-active">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span>نوبت‌ها</span>
+    </a>
+    <a href="gallery.html" class="dash-bottomnav-item">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <span>گالری</span>
+    </a>
+    <a href="notifications.html" class="dash-bottomnav-item dash-bottomnav-item--notif">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span>اعلان‌ها</span>
+        <span class="dash-bottomnav-badge"></span>
+    </a>
+    <a href="index.html" class="dash-bottomnav-item">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>خانه</span>
+    </a>
+    <a href="index.html" class="dash-bottomnav-item dash-bottomnav-item--exit">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        <span>خروج</span>
+    </a>
+</nav>
+
+<!-- ================= FOOTER ================= -->
+<footer class="site-footer">
+    <div class="footer-inner">
+        <button class="btn btn-outline footer-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+            بازگشت به بالا
+        </button>
+        <div class="footer-auth-links">
+            <a href="index.html">صفحه اصلی</a>
+            <a href="auth.html">ورود / ثبت‌نام</a>
+        </div>
+        <p class="footer-copy">© ۲۰۲۶ دنتورا — تمامی حقوق محفوظ است.</p>
+    </div>
+</footer>
+
+<script src="appointments.js"></script>
+</body>
+</html>
