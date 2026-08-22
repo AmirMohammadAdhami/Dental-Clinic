@@ -1,16 +1,16 @@
 var BA_CARDS = [
-    {t:"implant",before:"assets/before-after/1-before.jpg",after:"assets/before-after/1-after.jpg",desc:"جایگزینی دندان از دست رفته با ایمپلنت تیتانیومی و روکش سرامیکی",label:"ایمپلنت"},
-    {t:"implant",before:"assets/before-after/2-before.jpg",after:"assets/before-after/2-after.jpg",desc:"ایمپلنت کامل فک پایین با پروتز ثابت تمام سرامیکی",label:"ایمپلنت"},
-    {t:"implant",before:"assets/before-after/3-before.jpg",after:"assets/before-after/3-after.jpg",desc:"جایگزینی یک دندان از دست رفته بدون تراش دندان‌های مجاور",label:"ایمپلنت"},
-    {t:"veneer",before:"assets/before-after/4-before.jpg",after:"assets/before-after/4-after.jpg",desc:"اصلاح شکل و رنگ دندان‌ها با ونیر سرامیکی نازک و طبیعی",label:"ونیر"},
-    {t:"veneer",before:"assets/before-after/1-before.jpg",after:"assets/before-after/1-after.jpg",desc:"اصلاح ناهمراهی خفیف دندان‌ها بدون ارتودنسی با ونیر",label:"ونیر"},
-    {t:"veneer",before:"assets/before-after/2-before.jpg",after:"assets/before-after/2-after.jpg",desc:"ترمیم لب‌پریدگی و تغییر رنگ دندان‌های جلویی",label:"ونیر"},
-    {t:"laminate",before:"assets/before-after/3-before.jpg",after:"assets/before-after/3-after.jpg",desc:"طراحی لبخند با لمینت سرامیکی ۸ واحد بالا و ۶ واحد پایین",label:"لمینت"},
-    {t:"laminate",before:"assets/before-after/4-before.jpg",after:"assets/before-after/4-after.jpg",desc:"رفع زردی شدید و تغییر فرم دندان‌ها با لمینت پرسلن",label:"لمینت"},
-    {t:"laminate",before:"assets/before-after/1-before.jpg",after:"assets/before-after/1-after.jpg",desc:"ترکیب لمینت و بلیچینگ برای نتیجه طبیعی و درخشان",label:"لمینت"},
-    {t:"composite",before:"assets/before-after/2-before.jpg",after:"assets/before-after/2-after.jpg",desc:"ترمیم سریع و اقتصادی لبخند با کامپوزیت ونیر بدون تراش",label:"کامپوزیت"},
-    {t:"composite",before:"assets/before-after/3-before.jpg",after:"assets/before-after/3-after.jpg",desc:"بازسازی دندان‌های شکسته و لب‌پریده با کامپوزیت همرنگ",label:"کامپوزیت"},
-    {t:"composite",before:"assets/before-after/4-before.jpg",after:"assets/before-after/4-after.jpg",desc:"بستن فاصله بین دندان‌ها (دیاستما) با کامپوزیت بدون ارتودنسی",label:"کامپوزیت"}
+    {t:"implant",before:"../../assets/before-after/1-before.jpg",after:"../../assets/before-after/1-after.jpg",desc:"جایگزینی دندان از دست رفته با ایمپلنت تیتانیومی و روکش سرامیکی",label:"ایمپلنت"},
+    {t:"implant",before:"../../assets/before-after/2-before.jpg",after:"../../assets/before-after/2-after.jpg",desc:"ایمپلنت کامل فک پایین با پروتز ثابت تمام سرامیکی",label:"ایمپلنت"},
+    {t:"implant",before:"../../assets/before-after/3-before.jpg",after:"../../assets/before-after/3-after.jpg",desc:"جایگزینی یک دندان از دست رفته بدون تراش دندان‌های مجاور",label:"ایمپلنت"},
+    {t:"veneer",before:"../../assets/before-after/4-before.jpg",after:"../../assets/before-after/4-after.jpg",desc:"اصلاح شکل و رنگ دندان‌ها با ونیر سرامیکی نازک و طبیعی",label:"ونیر"},
+    {t:"veneer",before:"../../assets/before-after/1-before.jpg",after:"../../assets/before-after/1-after.jpg",desc:"اصلاح ناهمراهی خفیف دندان‌ها بدون ارتودنسی با ونیر",label:"ونیر"},
+    {t:"veneer",before:"../../assets/before-after/2-before.jpg",after:"../../assets/before-after/2-after.jpg",desc:"ترمیم لب‌پریدگی و تغییر رنگ دندان‌های جلویی",label:"ونیر"},
+    {t:"laminate",before:"../../assets/before-after/3-before.jpg",after:"../../assets/before-after/3-after.jpg",desc:"طراحی لبخند با لمینت سرامیکی ۸ واحد بالا و ۶ واحد پایین",label:"لمینت"},
+    {t:"laminate",before:"../../assets/before-after/4-before.jpg",after:"../../assets/before-after/4-after.jpg",desc:"رفع زردی شدید و تغییر فرم دندان‌ها با لمینت پرسلن",label:"لمینت"},
+    {t:"laminate",before:"../../assets/before-after/1-before.jpg",after:"../../assets/before-after/1-after.jpg",desc:"ترکیب لمینت و بلیچینگ برای نتیجه طبیعی و درخشان",label:"لمینت"},
+    {t:"composite",before:"../../assets/before-after/2-before.jpg",after:"../../assets/before-after/2-after.jpg",desc:"ترمیم سریع و اقتصادی لبخند با کامپوزیت ونیر بدون تراش",label:"کامپوزیت"},
+    {t:"composite",before:"../../assets/before-after/3-before.jpg",after:"../../assets/before-after/3-after.jpg",desc:"بازسازی دندان‌های شکسته و لب‌پریده با کامپوزیت همرنگ",label:"کامپوزیت"},
+    {t:"composite",before:"../../assets/before-after/4-before.jpg",after:"../../assets/before-after/4-after.jpg",desc:"بستن فاصله بین دندان‌ها (دیاستما) با کامپوزیت بدون ارتودنسی",label:"کامپوزیت"}
 ];
 function renderCards(filter){
     var grid=document.getElementById('baGrid');
