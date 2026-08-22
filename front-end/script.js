@@ -569,3 +569,347 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
+
+// ================= TEAM PAGE — FILTER & SEARCH =================
+document.addEventListener('DOMContentLoaded', function () {
+  var teamGrid = document.getElementById('teamGrid');
+  if (!teamGrid) return;
+
+  var cards = Array.from(teamGrid.querySelectorAll('.team-doctor-card'));
+  var pills = Array.from(document.querySelectorAll('.team-filter-pill'));
+  var searchInput = document.getElementById('teamSearchInput');
+  var noResults = document.getElementById('teamNoResults');
+
+  /* Custom Dropdown */
+  var dropdown = document.getElementById('teamServiceDropdown');
+  var dropdownTrigger = document.getElementById('teamDropdownTrigger');
+  var dropdownMenu = document.getElementById('teamDropdownMenu');
+  var dropdownValue = dropdownTrigger ? dropdownTrigger.querySelector('.team-dropdown-value') : null;
+  var dropdownItems = dropdownMenu ? Array.from(dropdownMenu.querySelectorAll('.team-dropdown-item')) : [];
+  var selectedService = '';
+  var activeFilter = 'all';
+
+  function applyFilters() {
+    var query = searchInput ? searchInput.value.trim().toLowerCase() : '';
+    var visible = 0;
+
+    cards.forEach(function (card, idx) {
+      var specialty = card.getAttribute('data-specialty') || '';
+      var name = (card.querySelector('.team-card-name') || {}).textContent || '';
+      var cardSpecialty = (card.querySelector('.team-card-specialty') || {}).textContent || '';
+      var text = (name + ' ' + cardSpecialty).toLowerCase();
+
+      var matchFilter = activeFilter === 'all' || specialty === activeFilter;
+      var matchSearch = !query || text.indexOf(query) !== -1;
+      var matchService = !selectedService || specialty === selectedService;
+
+      var show = matchFilter && matchSearch && matchService;
+
+      if (show) {
+        card.classList.remove('team-card-hidden');
+        card.style.position = '';
+        card.style.visibility = '';
+        card.classList.remove('team-card-visible');
+        void card.offsetWidth;
+        card.classList.add('team-card-visible');
+        card.style.animationDelay = (visible * 0.06) + 's';
+        visible++;
+      } else {
+        card.classList.remove('team-card-visible');
+        card.classList.add('team-card-hidden');
+      }
+    });
+
+    if (noResults) noResults.style.display = visible === 0 ? 'block' : 'none';
+  }
+
+  pills.forEach(function (pill) {
+    pill.addEventListener('click', function () {
+      pills.forEach(function (p) { p.classList.remove('is-active'); p.setAttribute('aria-selected', 'false'); });
+      pill.classList.add('is-active');
+      pill.setAttribute('aria-selected', 'true');
+      activeFilter = pill.getAttribute('data-filter');
+      applyFilters();
+    });
+  });
+
+  if (searchInput) searchInput.addEventListener('input', applyFilters);
+
+  if (dropdownTrigger && dropdownMenu) {
+    dropdownTrigger.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var isOpen = dropdown.classList.toggle('is-open');
+      dropdownTrigger.setAttribute('aria-expanded', isOpen);
+    });
+
+    dropdownItems.forEach(function (item) {
+      item.addEventListener('click', function () {
+        dropdownItems.forEach(function (i) { i.classList.remove('is-selected'); });
+        item.classList.add('is-selected');
+        selectedService = item.getAttribute('data-value');
+        if (dropdownValue) dropdownValue.textContent = item.textContent;
+        dropdown.classList.remove('is-open');
+        dropdownTrigger.setAttribute('aria-expanded', 'false');
+        applyFilters();
+      });
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!dropdown.contains(e.target)) {
+        dropdown.classList.remove('is-open');
+        dropdownTrigger.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    dropdownMenu.addEventListener('click', function (e) { e.stopPropagation(); });
+  }
+});
+
+// ================= DOCTOR PAGE — Calendar, Reviews, BA Filter =================
+document.addEventListener('DOMContentLoaded', function () {
+  /* --- Persian Calendar --- */
+  var calDays = document.getElementById('docCalDays');
+  var calMonth = document.getElementById('docCalMonth');
+  var calPrev = document.getElementById('docCalPrev');
+  var calNext = document.getElementById('docCalNext');
+  if (calDays && calMonth) {
+    var jalaliMonths = ['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
+    var today = new Date();
+    var jY = today.getFullYear() - 621 + (today.getMonth() < 2 ? 0 : 1);
+    var jM = ((today.getMonth() + 9) % 12);
+    var calYear = jY, calMonthIdx = jM;
+
+    function renderCalendar() {
+      calMonth.textContent = jalaliMonths[calMonthIdx] + ' ' + calYear;
+      var daysInMonth = 31;
+      if (calMonthIdx >= 6 && calMonthIdx < 11) daysInMonth = 30;
+      if (calMonthIdx === 11) daysInMonth = 29;
+      var startDay = (calMonthIdx < 6 ? calMonthIdx + 1 : calMonthIdx - 5);
+      var offset = (startDay + 1) % 7;
+      var html = '';
+      for (var i = 0; i < offset; i++) html += '<button class="doc-cal-day is-empty" disabled></button>';
+      for (var d = 1; d <= daysInMonth; d++) {
+        var isToday = (d === today.getDate() && calMonthIdx === jM && calYear === jY);
+        var isPast = (calYear < jY || (calYear === jY && calMonthIdx < jM) || (calYear === jY && calMonthIdx === jM && d < today.getDate()));
+        var cls = 'doc-cal-day';
+        if (isToday) cls += ' is-today';
+        if (isPast) cls += ' is-disabled';
+        html += '<button class="' + cls + '"' + (isPast ? ' disabled' : '') + '>' + d + '</button>';
+      }
+      calDays.innerHTML = html;
+      calDays.querySelectorAll('.doc-cal-day:not(.is-disabled):not(.is-empty)').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          calDays.querySelectorAll('.doc-cal-day').forEach(function (b) { b.classList.remove('is-selected'); });
+          btn.classList.add('is-selected');
+        });
+      });
+    }
+    if (calPrev) calPrev.addEventListener('click', function () { calMonthIdx = (calMonthIdx + 11) % 12; if (calMonthIdx === 11) calYear--; renderCalendar(); });
+    if (calNext) calNext.addEventListener('click', function () { calMonthIdx = (calMonthIdx + 1) % 12; if (calMonthIdx === 0) calYear++; renderCalendar(); });
+    renderCalendar();
+  }
+
+  /* --- Booking Type Toggle --- */
+  var bookingBtns = document.querySelectorAll('.doc-booking-type-btn');
+  bookingBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      bookingBtns.forEach(function (b) { b.classList.remove('is-active'); });
+      btn.classList.add('is-active');
+    });
+  });
+
+  /* --- Time Slots --- */
+  var slotBtns = document.querySelectorAll('.doc-slot-btn:not(.is-disabled)');
+  slotBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      slotBtns.forEach(function (b) { b.classList.remove('is-selected'); });
+      btn.classList.add('is-selected');
+    });
+  });
+
+  /* --- BA Gallery Filter --- */
+  var baPills = document.querySelectorAll('.doc-ba-pill');
+  var baCards = document.querySelectorAll('.doc-ba-card');
+  baPills.forEach(function (pill) {
+    pill.addEventListener('click', function () {
+      baPills.forEach(function (p) { p.classList.remove('is-active'); });
+      pill.classList.add('is-active');
+      var f = pill.getAttribute('data-filter');
+      baCards.forEach(function (card) {
+        if (f === 'all' || card.getAttribute('data-type') === f) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  /* --- Star Rating --- */
+  var starBtns = document.querySelectorAll('.doc-star-btn');
+  var selectedStars = 0;
+  starBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      selectedStars = parseInt(btn.getAttribute('data-star'));
+      starBtns.forEach(function (b) {
+        var s = parseInt(b.getAttribute('data-star'));
+        b.textContent = s <= selectedStars ? '★' : '☆';
+        b.classList.toggle('is-active', s <= selectedStars);
+      });
+    });
+  });
+
+  /* --- Review Form --- */
+  var reviewForm = document.getElementById('docReviewForm');
+  if (reviewForm) {
+    reviewForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      alert('نظر شما با موفقیت ثبت شد و پس از تایید نمایش داده خواهد شد.');
+      reviewForm.reset();
+      selectedStars = 0;
+      starBtns.forEach(function (b) { b.textContent = '☆'; b.classList.remove('is-active'); });
+    });
+  }
+});
+
+// ================= AUTH PAGES =================
+
+// --- Login: Phone Form ---
+(function () {
+  var phoneForm = document.getElementById('authPhoneForm');
+  if (!phoneForm) return;
+  phoneForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var phone = document.getElementById('authPhone');
+    if (phone && phone.value.length === 11) {
+      window.location.href = 'otp.html';
+    }
+  });
+})();
+
+// --- OTP: Boxes, Timer, Resend ---
+setTimeout(function () {
+  var otpForm = document.getElementById('authOtpForm');
+  if (!otpForm) return;
+  var boxes = document.querySelectorAll('.auth-otp-input');
+  if (!boxes.length) return;
+  var timerEl = document.getElementById('authTimerCount');
+  var resendBtn = document.getElementById('authResendBtn');
+  var seconds = 119;
+  var timerInterval = null;
+
+  function moveToNext(idx) {
+    if (idx < boxes.length - 1) {
+      setTimeout(function () { boxes[idx + 1].focus(); }, 10);
+    }
+  }
+  function moveToPrev(idx) {
+    if (idx > 0) {
+      setTimeout(function () { boxes[idx - 1].focus(); }, 10);
+    }
+  }
+  function updateFilled(box) {
+    if (box.value) box.classList.add('filled');
+    else box.classList.remove('filled');
+  }
+
+  for (var i = 0; i < boxes.length; i++) {
+    (function (idx) {
+      var box = boxes[idx];
+
+      box.addEventListener('input', function () {
+        box.value = box.value.replace(/[^0-9]/g, '').slice(-1);
+        updateFilled(box);
+        if (box.value) moveToNext(idx);
+      });
+
+      box.addEventListener('keyup', function (e) {
+        if (e.key === 'Backspace' && !box.value && idx > 0) {
+          boxes[idx - 1].value = '';
+          updateFilled(boxes[idx - 1]);
+          boxes[idx - 1].focus();
+        }
+      });
+
+      box.addEventListener('focus', function () {
+        box.select();
+      });
+
+      box.addEventListener('paste', function (e) {
+        e.preventDefault();
+        var text = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, '');
+        for (var j = 0; j < Math.min(text.length, boxes.length); j++) {
+          boxes[j].value = text[j];
+          updateFilled(boxes[j]);
+        }
+        var last = Math.min(text.length, boxes.length) - 1;
+        if (last >= 0) boxes[last].focus();
+      });
+    })(i);
+  }
+  // Focus first box on load
+  setTimeout(function () { boxes[0].focus(); }, 100);
+
+  // Timer
+  function startTimer() {
+    seconds = 119;
+    resendBtn.disabled = true;
+    timerEl.parentElement.style.display = '';
+    resendBtn.style.display = 'none';
+    clearInterval(timerInterval);
+    timerInterval = setInterval(function () {
+      seconds--;
+      var m = Math.floor(seconds / 60);
+      var s = seconds % 60;
+      timerEl.textContent = (m < 10 ? '۰' : '') + toFa(m) + ':' + (s < 10 ? '۰' : '') + toFa(s);
+      if (seconds <= 0) {
+        clearInterval(timerInterval);
+        timerEl.parentElement.style.display = 'none';
+        resendBtn.style.display = '';
+        resendBtn.disabled = false;
+      }
+    }, 1000);
+  }
+
+  function toFa(n) {
+    var fa = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+    return String(n).split('').map(function (d) { return fa[parseInt(d)] || d; }).join('');
+  }
+
+  if (resendBtn) resendBtn.addEventListener('click', function () {
+    startTimer();
+  });
+
+  startTimer();
+
+  otpForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var code = '';
+    boxes.forEach(function (b) { code += b.value; });
+    if (code.length === boxes.length) {
+      window.location.href = 'login-info.html';
+    }
+  });
+}, 200);
+
+// --- Profile: National Code Validation ---
+(function () {
+  var profileForm = document.getElementById('authProfileForm');
+  if (!profileForm) return;
+  var nationalInput = document.getElementById('authNationalCode');
+  if (nationalInput) {
+    nationalInput.addEventListener('input', function () {
+      nationalInput.value = nationalInput.value.replace(/[^0-9]/g, '');
+    });
+  }
+  profileForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (nationalInput && nationalInput.value.length !== 10) {
+      nationalInput.style.borderColor = '#ef4444';
+      nationalInput.focus();
+      return;
+    }
+    alert('اطلاعات شما با موفقیت ثبت شد!');
+    window.location.href = 'index.html';
+  });
+})();
