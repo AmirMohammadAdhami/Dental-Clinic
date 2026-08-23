@@ -1027,33 +1027,6 @@
 }
 
 
-/* ================= MOBILE STICKY CTA ================= */
-/* ================= MOBILE STICKY CTA ================= */
-.mobile-sticky-cta {
-    display: none;
-}
-
-@media (max-width: 620px) {
-    .mobile-sticky-cta {
-        display: block;
-        position: fixed;
-        inset-inline: 16px;
-        bottom: calc(16px + env(safe-area-inset-bottom, 0px));
-        z-index: 60;
-        transform: translateY(120%);
-        transition: transform 0.4s var(--ease-smooth);
-    }
-
-    .mobile-sticky-cta.is-visible {
-        transform: translateY(0);
-    }
-
-    .mobile-sticky-cta .btn {
-        width: 100%;
-        box-shadow: 0 14px 34px -10px rgba(15, 118, 110, 0.55);
-    }
-}
-
 
 /* ================= TESTIMONIALS SECTION ================= */
 /* ================= TESTIMONIALS SECTION ================= */

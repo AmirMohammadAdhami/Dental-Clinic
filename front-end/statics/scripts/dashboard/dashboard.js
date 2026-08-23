@@ -27,45 +27,59 @@
         onScroll();
     })();
 
-    /* ================= TOOLTIP BEHAVIOR ================= */
-    (function initTooltips() {
-        const icons = document.querySelectorAll('.dash-nav-icon[data-tooltip]');
+    /* ================= NAV PILL (real <span>, push via margin) ================= */
+    (function initNavPills() {
+        var icons = document.querySelectorAll('.dash-nav-icon[data-tooltip]');
         if (!icons.length) return;
 
+        /* Create a <span> pill inside each icon */
         icons.forEach(function (icon) {
-            /* Desktop: show tooltip on hover */
+            var pill = document.createElement('span');
+            pill.className = 'dash-nav-pill';
+            pill.textContent = icon.getAttribute('data-tooltip');
+            icon.appendChild(pill);
+        });
+
+        var pills = document.querySelectorAll('.dash-nav-pill');
+
+        function clearPush() {
+            icons.forEach(function (icon) {
+                icon.style.marginLeft = '';
+            });
+            pills.forEach(function (p) { p.classList.remove('is-active'); });
+        }
+
+        icons.forEach(function (icon, index) {
             icon.addEventListener('mouseenter', function () {
-                this.classList.add('tooltip-visible');
+                clearPush();
+                pills[index].classList.add('is-active');
+
+                /* Push the adjacent icon to the right (lower index in DOM = right in RTL)
+                   by adding margin-left. Only the immediate neighbour needs the margin;
+                   items further right ride along for free. */
+                if (index > 0) {
+                    var pillW = pills[index].scrollWidth || 100;
+                    icons[index - 1].style.marginLeft = (pillW + 10) + 'px';
+                }
             });
+
             icon.addEventListener('mouseleave', function () {
-                this.classList.remove('tooltip-visible');
+                clearPush();
             });
 
-            /* Mobile: toggle tooltip on tap */
+            /* Mobile: toggle on tap */
             icon.addEventListener('click', function (e) {
-                /* If it's an actual link, let it navigate on first tap */
-                const isVisible = this.classList.contains('tooltip-visible');
-
-                /* Hide all other tooltips */
-                icons.forEach(function (other) {
-                    if (other !== icon) other.classList.remove('tooltip-visible');
-                });
-
-                /* On mobile, first tap shows tooltip, second tap navigates */
-                if (!isVisible && window.innerWidth <= 620) {
+                var wasActive = pills[index].classList.contains('is-active');
+                clearPush();
+                if (!wasActive && window.innerWidth <= 620) {
                     e.preventDefault();
-                    this.classList.add('tooltip-visible');
+                    pills[index].classList.add('is-active');
                 }
             });
         });
 
-        /* Close tooltips when tapping outside */
         document.addEventListener('click', function (e) {
-            if (!e.target.closest('.dash-nav-icon')) {
-                icons.forEach(function (icon) {
-                    icon.classList.remove('tooltip-visible');
-                });
-            }
+            if (!e.target.closest('.dash-nav-icon')) clearPush();
         });
     })();
 

@@ -172,7 +172,19 @@
 }
 
 /* --- Section Header: Pill Badge --- */
-
+.dash-services-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(15, 118, 110, 0.1);
+    color: var(--primary);
+    padding: 6px 18px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-bottom: 14px;
+    border: 1px solid rgba(15, 118, 110, 0.15);
+}
 
 .dash-services-title {
     font-size: 1.6rem !important;
@@ -338,65 +350,14 @@
 
 .dash-gallery-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-    max-width: 800px;
-    margin: 0 auto;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
 }
 
-.dash-gallery-card {
-    background: #ffffff;
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    border: 1px solid rgba(15, 118, 110, 0.1);
-    box-shadow: 0 4px 16px -6px rgba(15, 23, 42, 0.08);
-    transition: transform 0.35s var(--ease-smooth), box-shadow 0.35s ease;
-}
-
-.dash-gallery-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 32px -8px rgba(15, 118, 110, 0.15);
-}
-
-.dash-gallery-img {
-    position: relative;
-    width: 100%;
-    padding-bottom: 70%;
-    overflow: hidden;
-    background: #e2e8f0;
-}
-
-.dash-gallery-img .ba-img {
-    transition: none;
-}
-
-.dash-gallery-card:hover .dash-gallery-img .ba-after {
-    transform: none;
-}
-
-/* Download Button */
+/* Download Button feedback */
 .dash-img-action.downloading {
     background: #22c55e;
     color: #ffffff;
-}
-
-/* Card Info */
-.dash-gallery-info {
-    padding: 14px 18px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.dash-gallery-treatment {
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: var(--text);
-}
-
-.dash-gallery-date {
-    font-size: 0.8rem;
-    color: var(--text-faint);
 }
 
 /* CTA Button */

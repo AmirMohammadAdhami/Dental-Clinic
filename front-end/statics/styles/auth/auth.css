@@ -116,16 +116,7 @@
     to { opacity: 0; transform: translateX(40px); }
 }
 
-/* --- Logo & Typography --- */
-.auth-logo {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    color: var(--primary);
-    margin-bottom: 24px;
-}
-.auth-logo-text { font-size: 1.3rem; font-weight: 800; }
+/* --- Typography --- */
 .auth-title {
     font-size: 1.15rem;
     font-weight: 800;
@@ -363,6 +354,42 @@
     100% { transform: translateY(-50%) scale(1); opacity: 1; }
 }
 
+/* --- Button Row --- */
+.auth-btn-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 8px;
+    height: 42px;
+}
+.auth-btn-row .auth-submit {
+    margin-top: 0;
+    flex: 1;
+    height: 42px;
+    padding: 0 20px;
+}
+.auth-home-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: rgba(15,118,110,0.08);
+    color: var(--primary);
+    text-decoration: none;
+    flex-shrink: 0;
+    transition: background 0.25s, color 0.25s;
+}
+.auth-home-btn:hover {
+    background: var(--primary-dark);
+    color: #fff;
+}
+.auth-home-btn svg {
+    pointer-events: none;
+}
+
 /* --- Button --- */
 .auth-submit {
     margin-top: 8px;
@@ -393,7 +420,7 @@
 .auth-terms {
     font-size: 0.75rem;
     color: var(--text-faint);
-    margin-top: 18px;
+    margin-top: 4px;
     line-height: 1.6;
 }
 .auth-terms a { color: var(--primary); text-decoration: none; }

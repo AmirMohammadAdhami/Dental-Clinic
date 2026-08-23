@@ -106,7 +106,7 @@
     height: 44px;
     border-radius: 50%;
     color: var(--text-muted);
-    transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+    transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease, margin-left 0.28s ease;
 }
 
 .dash-nav-icon:hover {
@@ -118,6 +118,7 @@
 .dash-nav-icon:active {
     transform: translateY(0) scale(0.95);
 }
+
 
 /* Exit button: red tone */
 .dash-nav-icon--exit:hover {
@@ -131,49 +132,34 @@
     color: var(--primary);
 }
 
-/* --- Tooltip --- */
-.dash-nav-icon[data-tooltip]::before {
-    content: attr(data-tooltip);
+/* --- Nav pill (real element, created by JS) --- */
+.dash-nav-pill {
     position: absolute;
-    bottom: calc(100% + 8px);
-    left: 50%;
-    transform: translateX(-50%) translateY(4px);
+    left: calc(100% + 6px);
+    top: 50%;
+    transform: translateY(-50%);
     background: var(--text);
-    color: #ffffff;
-    font-size: 0.78rem;
+    color: #fff;
+    font-size: 0.75rem;
     font-weight: 600;
-    padding: 6px 14px;
+    padding: 0 12px;
+    height: 28px;
+    line-height: 28px;
     border-radius: 999px;
     white-space: nowrap;
     pointer-events: none;
     opacity: 0;
-    transition: opacity 0.2s ease, transform 0.2s ease;
+    max-width: 0;
+    overflow: hidden;
+    transition: opacity 0.22s ease, max-width 0.28s ease, padding 0.22s ease;
     z-index: 20;
+    box-shadow: 0 4px 14px -2px rgba(15, 23, 42, 0.18);
 }
 
-.dash-nav-icon[data-tooltip]::after {
-    content: '';
-    position: absolute;
-    bottom: calc(100% + 2px);
-    left: 50%;
-    transform: translateX(-50%);
-    border: 5px solid transparent;
-    border-top-color: var(--text);
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-    z-index: 20;
-}
-
-.dash-nav-icon.tooltip-visible::before,
-.dash-nav-icon:hover::before {
+.dash-nav-pill.is-active {
     opacity: 1;
-    transform: translateX(-50%) translateY(0);
-}
-
-.dash-nav-icon.tooltip-visible::after,
-.dash-nav-icon:hover::after {
-    opacity: 1;
+    max-width: 200px;
+    padding: 0 12px;
 }
 
 /* --- Notification Badge --- */
@@ -267,6 +253,10 @@
 
     .dash-services-container {
         padding: 32px 24px 28px;
+    }
+
+    .dash-gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .dash-appointment-body {

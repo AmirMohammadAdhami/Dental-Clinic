@@ -87,38 +87,42 @@
                 self.classList.remove('notif-mark-all--done');
             }, 2000);
         });
-    })();
-
-    /* ================= TOOLTIP BEHAVIOR ================= */
-    (function initTooltips() {
+    })();    /* ================= NAV PILL (real <span>, push via margin) ================= */
+    (function initNavPills() {
         var icons = document.querySelectorAll('.dash-nav-icon[data-tooltip]');
         if (!icons.length) return;
-
         icons.forEach(function (icon) {
+            var pill = document.createElement('span');
+            pill.className = 'dash-nav-pill';
+            pill.textContent = icon.getAttribute('data-tooltip');
+            icon.appendChild(pill);
+        });
+        var pills = document.querySelectorAll('.dash-nav-pill');
+        function clearPush() {
+            icons.forEach(function (icon) { icon.style.marginLeft = ''; });
+            pills.forEach(function (p) { p.classList.remove('is-active'); });
+        }
+        icons.forEach(function (icon, index) {
             icon.addEventListener('mouseenter', function () {
-                this.classList.add('tooltip-visible');
+                clearPush();
+                pills[index].classList.add('is-active');
+                if (index > 0) {
+                    var pillW = pills[index].scrollWidth || 100;
+                    icons[index - 1].style.marginLeft = (pillW + 10) + 'px';
+                }
             });
-            icon.addEventListener('mouseleave', function () {
-                this.classList.remove('tooltip-visible');
-            });
+            icon.addEventListener('mouseleave', function () { clearPush(); });
             icon.addEventListener('click', function (e) {
-                var isVisible = this.classList.contains('tooltip-visible');
-                icons.forEach(function (other) {
-                    if (other !== icon) other.classList.remove('tooltip-visible');
-                });
-                if (!isVisible && window.innerWidth <= 620) {
+                var wasActive = pills[index].classList.contains('is-active');
+                clearPush();
+                if (!wasActive && window.innerWidth <= 620) {
                     e.preventDefault();
-                    this.classList.add('tooltip-visible');
+                    pills[index].classList.add('is-active');
                 }
             });
         });
-
         document.addEventListener('click', function (e) {
-            if (!e.target.closest('.dash-nav-icon')) {
-                icons.forEach(function (icon) {
-                    icon.classList.remove('tooltip-visible');
-                });
-            }
+            if (!e.target.closest('.dash-nav-icon')) clearPush();
         });
     })();
 

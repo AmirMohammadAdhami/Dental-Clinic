@@ -24,6 +24,7 @@
     border-radius: 999px;
     padding: 10px 14px 10px 24px;
     box-shadow: 0 8px 30px -12px rgba(15, 23, 42, 0.12);
+    overflow: visible;
 }
 
 /* برند سمت راست (چون dir=rtl هست، اولین آیتم در فلو سمت راست می‌نشیند) */
@@ -60,7 +61,7 @@
 .header-actions {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 6px;
 }
 
 
@@ -91,21 +92,29 @@
 .nav-link {
     position: relative;
     text-decoration: none;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 999px;
+    transition: color 0.2s ease, background 0.2s ease;
 }
 
 .nav-link:hover {
     color: var(--primary);
+    background: rgba(15, 118, 110, 0.06);
 }
 
 .nav-link.is-active {
     color: var(--primary);
     font-weight: 700;
+    background: rgba(15, 118, 110, 0.08);
 }
 
 .nav-link.is-active::after {
     content: '';
     position: absolute;
-    bottom: -6px;
+    bottom: 2px;
     right: 50%;
     transform: translateX(50%);
     width: 5px;
@@ -555,7 +564,13 @@ button:focus-visible {
     }
 
     .header {
-        display: none;
+        display: none !important;
+        padding: 0 !important;
+    }
+
+    /* Push content up on mobile (header hidden) */
+    .hero, .team-hero, .blog-page, .post-page, .doc-hero, .ba-page, .articles-page {
+        padding-top: 10px !important;
     }
 
     .site-footer {

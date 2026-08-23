@@ -357,24 +357,6 @@ document.addEventListener('DOMContentLoaded', () => {
     revealEls.forEach(el => el.classList.add('is-visible'));
   }
 
-  // --- دکمه شناور رزرو نوبت در موبایل ---
-  const mobileCta = document.querySelector('.mobile-sticky-cta');
-
-  if (mobileCta && heroSection) {
-    const ctaObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        // وقتی هیرو از دید خارج شد، دکمه شناور نمایش داده میشه
-        mobileCta.classList.toggle('is-visible', !entry.isIntersecting);
-      });
-    }, { threshold: 0 });
-
-    ctaObserver.observe(heroSection);
-
-    mobileCta.querySelector('.btn').addEventListener('click', () => {
-      console.log('درخواست رزرو نوبت (موبایل) ثبت شد.');
-    });
-  }
-
   // ================= TESTIMONIALS STACKED DECK =================
   const deck = document.querySelector('.testimonials-deck');
   if (deck) {
