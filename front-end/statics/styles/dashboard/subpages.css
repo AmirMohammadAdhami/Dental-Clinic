@@ -314,11 +314,11 @@
 }
 
 .dash-lightbox-prev {
-    right: -60px;
+    left: -60px;
 }
 
 .dash-lightbox-next {
-    left: -60px;
+    right: -60px;
 }
 
 .dash-lightbox-info {
@@ -824,11 +824,11 @@
     }
 
     .dash-lightbox-prev {
-        right: 8px;
+        left: 8px;
     }
 
     .dash-lightbox-next {
-        left: 8px;
+        right: 8px;
     }
 
     .dash-lightbox-close {

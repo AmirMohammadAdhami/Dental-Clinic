@@ -534,11 +534,41 @@
 }
 
 .sel-modal-selected-info {
+    position: relative;
     display: flex;
-    gap: 12px;
-    font-size: 0.92rem;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 16px;
+    font-size: 0.85rem;
     font-weight: 700;
     color: var(--text);
+    background: #f0fdf9;
+    border-radius: 12px;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.sel-modal-selected-info::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 14px;
+    background: conic-gradient(from 0deg, #10b981, #34d399, #6ee7b7, #a7f3d0, #34d399, #10b981);
+    z-index: -1;
+    animation: sel-border-spin 2.5s linear infinite;
+}
+
+.sel-modal-selected-info::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    border-radius: 10px;
+    background: #f0fdf9;
+    z-index: -1;
+}
+
+@keyframes sel-border-spin {
+    to { transform: rotate(360deg); }
 }
 
 .sel-modal-confirm-btn {

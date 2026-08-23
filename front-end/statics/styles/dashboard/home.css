@@ -159,23 +159,48 @@
 }
 
 /* ================= SERVICES GRID ================= */
-.dash-services {
+.dash-services-wrapper {
     margin-bottom: 56px;
+    padding: 0;
 }
 
+.dash-services-container {
+    background: linear-gradient(180deg, rgba(209, 250, 229, 0.8) 0%, rgba(204, 251, 241, 0.3) 100%);
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(16, 185, 129, 0.15);
+    padding: 40px 36px 36px;
+}
+
+/* --- Section Header: Pill Badge --- */
+
+
+.dash-services-title {
+    font-size: 1.6rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.02em;
+}
+
+.dash-services-subtitle {
+    font-size: 1rem !important;
+    color: var(--text-muted) !important;
+    font-weight: 500;
+}
+
+/* --- Grid --- */
 .dash-services-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 22px;
 }
 
+/* --- Card --- */
 .dash-service-card {
     position: relative;
     background: #ffffff;
     border: 1px solid rgba(15, 118, 110, 0.1);
     border-radius: var(--radius-md);
     padding: 28px 24px 24px;
-    box-shadow: 0 2px 12px -4px rgba(15, 23, 42, 0.06);
+    box-shadow: 0 4px 16px -6px rgba(15, 23, 42, 0.06);
     text-decoration: none;
     color: inherit;
     display: flex;
@@ -186,22 +211,55 @@
 }
 
 .dash-service-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 16px 36px -12px rgba(15, 118, 110, 0.18);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px -12px rgba(15, 118, 110, 0.22);
     border-color: var(--primary);
 }
 
+/* --- Service Badge --- */
+.dash-service-badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.dash-service-badge--popular {
+    background: linear-gradient(135deg, #dcfce7, #d1fae5);
+    color: #166534;
+    border: 1px solid rgba(22, 101, 52, 0.15);
+}
+
+.dash-service-badge--special {
+    background: linear-gradient(135deg, #fef3c7, #fef9c3);
+    color: #92400e;
+    border: 1px solid rgba(146, 64, 14, 0.15);
+}
+
+/* --- Icon --- */
 .dash-service-icon {
-    width: 60px;
-    height: 60px;
-    border-radius: 16px;
-    background: linear-gradient(135deg, rgba(15, 118, 110, 0.08), rgba(153, 246, 228, 0.15));
+    /*width: 100px;*/
+    /*height: 100px;*/
+    border-radius: 18px;
+    /*background: rgba(16, 185, 129, 0.1);*/
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 18px;
     color: var(--primary);
     transition: background 0.3s ease, color 0.3s ease;
+    overflow: hidden;
+}
+
+.dash-service-icon img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 10px;
 }
 
 .dash-service-card:hover .dash-service-icon {
@@ -209,6 +267,11 @@
     color: #ffffff;
 }
 
+.dash-service-card:hover .dash-service-icon img {
+    filter: brightness(1.2);
+}
+
+/* --- Title & Desc --- */
 .dash-service-title {
     font-size: 1.05rem;
     font-weight: 700;
@@ -223,6 +286,7 @@
     flex: 1;
 }
 
+/* --- Arrow --- */
 .dash-service-arrow {
     position: absolute;
     bottom: 20px;
@@ -241,7 +305,7 @@
 .dash-service-card:hover .dash-service-arrow {
     background: var(--primary);
     color: #ffffff;
-    transform: translateX(-3px);
+    transform: translateX(-4px);
 }
 
 /* Ripple Effect */
