@@ -763,13 +763,32 @@
     }
 
     .dash-filter-bar {
-        padding: 12px 14px;
-        gap: 6px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding: 14px 16px;
+        gap: 8px;
+        margin-left: -16px;
+        margin-right: -16px;
+        width: calc(100% + 32px);
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        position: relative;
+        mask-image: linear-gradient(to right, transparent 0px, black 16px, black calc(100% - 16px), transparent 100%);
+        -webkit-mask-image: linear-gradient(to right, transparent 0px, black 16px, black calc(100% - 16px), transparent 100%);
+    }
+
+    .dash-filter-bar::-webkit-scrollbar {
+        display: none;
     }
 
     .dash-filter-btn {
-        padding: 7px 14px;
+        padding: 8px 18px;
         font-size: 0.82rem;
+        flex-shrink: 0;
+        scroll-snap-align: start;
     }
 
     .dash-apt-card {

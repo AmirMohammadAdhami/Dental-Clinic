@@ -248,7 +248,8 @@
 /* ================= DASHBOARD RESPONSIVE ================= */
 @media (max-width: 900px) {
     .dash-services-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
+        gap: 16px;
     }
 
     .dash-services-container {
@@ -256,7 +257,8 @@
     }
 
     .dash-gallery-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
+        gap: 16px;
     }
 
     .dash-appointment-body {

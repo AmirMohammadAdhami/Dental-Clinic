@@ -39,7 +39,7 @@
 }
 .doc-hero-status {
     position: absolute;
-    top: 14px;
+    bottom: 14px;
     right: 14px;
     display: flex;
     align-items: center;

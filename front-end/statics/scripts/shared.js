@@ -114,15 +114,5 @@ document.addEventListener('DOMContentLoaded', function () {
     links[idx].classList.add('is-active');
   }
 
-  /* Hide bottom nav on scroll down, show on scroll up */
-  var lastY = 0;
-  window.addEventListener('scroll', function () {
-    var y = window.scrollY;
-    if (y > lastY && y > 80) {
-      bottomNav.style.transform = 'translateY(100%)';
-    } else {
-      bottomNav.style.transform = 'translateY(0)';
-    }
-    lastY = y;
-  }, { passive: true });
+  // Bottom nav stays fixed at all times — no hide on scroll
 });

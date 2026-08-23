@@ -242,6 +242,7 @@
 
 .sel-btn-profile {
     flex: 0 0 auto;
+    text-align: center;
 }
 
 .sel-btn-book {

@@ -64,6 +64,14 @@
     gap: 6px;
 }
 
+.nav-center {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+    justify-content: center;
+}
+
 
 /* ================= DESKTOP NAV & CTA ================= */
 /* ================= DESKTOP NAV & CTA ================= */
@@ -191,6 +199,7 @@
 .reveal.is-visible {
     opacity: 1;
     transform: translateY(0);
+    padding-top: 2px;
 }
 
 .reveal-stagger.is-visible .doctor-card {
@@ -621,7 +630,7 @@ button:focus-visible {
 .mobile-search-fab {
     display: none;
     position: fixed;
-    top: 90px;
+    top: 15px;
     right: 20px;
     z-index: 900;
     width: 44px;

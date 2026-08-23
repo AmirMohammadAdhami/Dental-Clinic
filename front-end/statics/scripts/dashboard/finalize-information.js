@@ -231,25 +231,6 @@
                 item.classList.add('is-active');
             }
         });
-
-        var lastScrollY = 0;
-        var ticking = false;
-
-        window.addEventListener('scroll', function () {
-            if (!ticking) {
-                window.requestAnimationFrame(function () {
-                    var currentY = window.scrollY;
-                    if (currentY > lastScrollY && currentY > 100) {
-                        bottomNav.style.transform = 'translateY(100%)';
-                    } else {
-                        bottomNav.style.transform = 'translateY(0)';
-                    }
-                    lastScrollY = currentY;
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        }, { passive: true });
     })();
 
 })();

@@ -74,6 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
             btn.classList.add('is-active');
             btn.setAttribute('aria-selected', 'true');
             applyFilter(true);
+            window.scrollTo({ top: document.querySelector('.articles-filters-section').offsetTop - 100, behavior: 'smooth' });
         });
     });
 
@@ -183,7 +184,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var visible = getVisibleCards();
         var totalPages = Math.ceil(visible.length / ITEMS_PER_PAGE);
         renderPaginationDots(totalPages);
-        showPage(1, true);
+        showPage(1);
     }
 
     // ================= SEARCH =================

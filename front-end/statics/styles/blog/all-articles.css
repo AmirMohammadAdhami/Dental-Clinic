@@ -7,7 +7,7 @@
 
 /* --- Hero Section --- */
 .articles-hero {
-    padding: 80px 5vw 40px;
+    padding: 10px 5vw 40px;
     text-align: center;
 }
 .articles-hero-inner {
@@ -504,7 +504,25 @@
     .articles-sidebar {
         grid-template-columns: 1fr;
     }
+    .articles-sidebar .sidebar-popular {
+        display: none;
+    }
     .articles-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .articles-filters {
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 4px;
+        scroll-snap-type: x proximity;
+    }
+    .articles-filters::-webkit-scrollbar { display: none; }
+    .articles-filter-btn {
+        flex-shrink: 0;
+        scroll-snap-align: center;
     }
 }
