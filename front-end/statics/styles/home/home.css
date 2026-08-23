@@ -1679,7 +1679,7 @@
 .cta-banner-pattern {
     position: absolute;
     inset: 0;
-    background-image: url('assets/call-to-action/c-t-a.jpg');
+    background-image: url('../../../assets/call-to-action/c-t-a.jpg');
     background-size: cover;
     background-position: center;
     opacity: 0.15;
