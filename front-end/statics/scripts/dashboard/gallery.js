@@ -29,6 +29,15 @@
                 if (counter) {
                     counter.textContent = visibleCount + ' تصویر';
                 }
+
+                // Rebuild lightbox image list from visible cards
+                allImages.length = 0;
+                cards.forEach(function (card) {
+                    if (card.style.display === 'none') return;
+                    var baAfter = card.querySelector('.ba-after');
+                    var imgEl = baAfter || card.querySelector('.dash-img-card-img img');
+                    if (imgEl) allImages.push(imgEl.src);
+                });
             });
         });
     })();
@@ -48,9 +57,10 @@
         var allImages = [];
         var currentIndex = 0;
 
-        // Build image list from visible cards
+        // Build image list from visible cards (use ba-after if present, otherwise first img)
         document.querySelectorAll('.dash-img-card').forEach(function (card) {
-            var imgEl = card.querySelector('.dash-img-card-img img');
+            var baAfter = card.querySelector('.ba-after');
+            var imgEl = baAfter || card.querySelector('.dash-img-card-img img');
             if (imgEl) {
                 allImages.push(imgEl.src);
             }
@@ -127,6 +137,57 @@
                     btn.innerHTML = orig;
                 }, 1500);
             });
+        });
+    })();
+
+    /* ================= BEFORE-AFTER SLIDER ================= */
+    (function initBA() {
+        document.querySelectorAll('[data-ba]').forEach(function (card) {
+            if (card._baInit) return;
+            card._baInit = true;
+            var beforeImg = card.querySelector('.ba-before');
+            var sliderLine = card.querySelector('.ba-slider');
+            var labelBefore = card.querySelector('.ba-label-before');
+            var labelAfter = card.querySelector('.ba-label-after');
+            if (!beforeImg) return;
+            var isDragging = false;
+            var currentPct = 50;
+            function setPosition(pct) {
+                currentPct = Math.max(0, Math.min(100, pct));
+                beforeImg.style.clipPath = 'inset(0 ' + (100 - currentPct) + '% 0 0)';
+                if (sliderLine) sliderLine.style.left = currentPct + '%';
+                if (labelBefore) labelBefore.style.opacity = currentPct > 20 ? '1' : '0';
+                if (labelAfter) labelAfter.style.opacity = currentPct < 80 ? '1' : '0';
+                card.setAttribute('aria-valuenow', Math.round(currentPct));
+            }
+            function updateFromPointer(x) {
+                var rect = card.getBoundingClientRect();
+                var pos = (x - rect.left) / rect.width;
+                setPosition(pos * 100);
+            }
+            card.addEventListener('mousedown', function (e) {
+                // Don't intercept clicks on buttons
+                if (e.target.closest('button')) return;
+                isDragging = true; updateFromPointer(e.clientX);
+            });
+            card.addEventListener('touchstart', function (e) {
+                if (e.target.closest('button')) return;
+                isDragging = true; updateFromPointer(e.touches[0].clientX);
+            }, { passive: true });
+            window.addEventListener('mousemove', function (e) { if (isDragging) updateFromPointer(e.clientX); });
+            window.addEventListener('touchmove', function (e) { if (isDragging) updateFromPointer(e.touches[0].clientX); }, { passive: true });
+            window.addEventListener('mouseup', function () { isDragging = false; });
+            window.addEventListener('touchend', function () { isDragging = false; });
+            card.addEventListener('keydown', function (e) {
+                var STEP = 5;
+                switch (e.key) {
+                    case 'ArrowRight': setPosition(currentPct + STEP); e.preventDefault(); break;
+                    case 'ArrowLeft': setPosition(currentPct - STEP); e.preventDefault(); break;
+                    case 'Home': setPosition(0); e.preventDefault(); break;
+                    case 'End': setPosition(100); e.preventDefault(); break;
+                }
+            });
+            setPosition(50);
         });
     })();
 

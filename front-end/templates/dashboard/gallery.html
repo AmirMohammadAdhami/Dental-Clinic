@@ -63,256 +63,171 @@
             بازگشت به داشبورد
         </a>
         <h1 class="dash-page-title">گالری تصاویر اختصاصی شما</h1>
-        <p class="dash-page-meta">۱۲ تصویر</p>
+        <p class="dash-page-meta">۷ تصویر</p>
     </div>
 
     <!-- Filter Bar -->
     <div class="dash-filter-bar">
         <button class="dash-filter-btn is-active" data-filter="all">همه تصاویر</button>
-        <button class="dash-filter-btn" data-filter="before-after">قبل و بعد درمان</button>
-        <button class="dash-filter-btn" data-filter="xray">رادیولوژی / OPG</button>
-        <button class="dash-filter-btn" data-filter="prescription">نسخه‌ها و پرونده</button>
+        <button class="dash-filter-btn" data-filter="implant">ایمپلنت</button>
+        <button class="dash-filter-btn" data-filter="veneer">ونیر</button>
+        <button class="dash-filter-btn" data-filter="laminate">لمینت</button>
+        <button class="dash-filter-btn" data-filter="composite">کامپوزیت</button>
     </div>
 
     <!-- Image Grid -->
     <div class="dash-gallery-full-grid" id="galleryGrid">
-        <!-- Card 1: Before/After - Implant -->
-        <div class="dash-img-card" data-type="before-after" data-treatment="ایمپلنت" data-doctor="دکتر کاوه آذرخو" data-date="مرداد ۱۴۰۵">
-            <div class="dash-img-card-img">
-                <img src="../../assets/before-after/1-after.jpg" alt="ایمپلنت - بعد">
-                <span class="dash-img-badge">ایمپلنت</span>
-                <div class="dash-img-overlay">
-                    <button class="dash-img-action dash-img-zoom" data-index="0" aria-label="بزرگ‌نمایی">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-                    </button>
-                    <button class="dash-img-action dash-img-download" data-src="../../assets/before-after/1-after.jpg" aria-label="دانلود تصویر">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    </button>
-                </div>
+        <!-- Card 1: Implant -->
+        <div class="dash-img-card" data-type="implant" data-treatment="ایمپلنت" data-doctor="دکتر کاوه آذرخو" data-date="مرداد ۱۴۰۵">
+            <div class="dash-img-card-img" data-ba tabindex="0" role="slider" aria-label="مقایسه قبل و بعد ایمپلنت">
+                <img class="ba-img ba-after" src="../../assets/before-after/1-after.jpg" alt="ایمپلنت - بعد">
+                <img class="ba-img ba-before" src="../../assets/before-after/1-before.jpg" alt="ایمپلنت - قبل">
+                <div class="ba-slider"><div class="ba-handle"></div></div>
+                <span class="ba-label ba-label-before">قبل</span>
+                <span class="ba-label ba-label-after">بعد</span>
+                <button class="dash-img-action dash-img-download" data-src="../../assets/before-after/1-after.jpg" aria-label="دانلود تصویر">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                </button>
+                <button class="dash-img-action dash-img-zoom" data-index="0" aria-label="بزرگ‌نمایی">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                </button>
             </div>
             <div class="dash-img-card-info">
+                <span class="dash-img-badge">ایمپلنت</span>
                 <span class="dash-img-card-doctor">دکتر کاوه آذرخو</span>
                 <span class="dash-img-card-date">مرداد ۱۴۰۵</span>
             </div>
         </div>
 
-        <!-- Card 2: Before/After - Veneer -->
-        <div class="dash-img-card" data-type="before-after" data-treatment="ونیر" data-doctor="دکتر امیرمحمد فرهمندنیا" data-date="تیر ۱۴۰۵">
-            <div class="dash-img-card-img">
-                <img src="../../assets/before-after/2-after.jpg" alt="ونیر - بعد">
-                <span class="dash-img-badge">ونیر</span>
-                <div class="dash-img-overlay">
-                    <button class="dash-img-action dash-img-zoom" data-index="1" aria-label="بزرگ‌نمایی">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-                    </button>
-                    <button class="dash-img-action dash-img-download" data-src="../../assets/before-after/2-after.jpg" aria-label="دانلود تصویر">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    </button>
-                </div>
+        <!-- Card 2: Veneer -->
+        <div class="dash-img-card" data-type="veneer" data-treatment="ونیر" data-doctor="دکتر امیرمحمد فرهمندنیا" data-date="تیر ۱۴۰۵">
+            <div class="dash-img-card-img" data-ba tabindex="0" role="slider" aria-label="مقایسه قبل و بعد ونیر">
+                <img class="ba-img ba-after" src="../../assets/before-after/2-after.jpg" alt="ونیر - بعد">
+                <img class="ba-img ba-before" src="../../assets/before-after/2-before.jpg" alt="ونیر - قبل">
+                <div class="ba-slider"><div class="ba-handle"></div></div>
+                <span class="ba-label ba-label-before">قبل</span>
+                <span class="ba-label ba-label-after">بعد</span>
+                <button class="dash-img-action dash-img-download" data-src="../../assets/before-after/2-after.jpg" aria-label="دانلود تصویر">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                </button>
+                <button class="dash-img-action dash-img-zoom" data-index="1" aria-label="بزرگ‌نمایی">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                </button>
             </div>
             <div class="dash-img-card-info">
+                <span class="dash-img-badge">ونیر</span>
                 <span class="dash-img-card-doctor">دکتر امیرمحمد فرهمندنیا</span>
                 <span class="dash-img-card-date">تیر ۱۴۰۵</span>
             </div>
         </div>
 
-        <!-- Card 3: Before/After - Laminate -->
-        <div class="dash-img-card" data-type="before-after" data-treatment="لمینت" data-doctor="دکتر مهسا امیری راد" data-date="خرداد ۱۴۰۵">
-            <div class="dash-img-card-img">
-                <img src="../../assets/before-after/3-after.jpg" alt="لمینت - بعد">
-                <span class="dash-img-badge">لمینت</span>
-                <div class="dash-img-overlay">
-                    <button class="dash-img-action dash-img-zoom" data-index="2" aria-label="بزرگ‌نمایی">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-                    </button>
-                    <button class="dash-img-action dash-img-download" data-src="../../assets/before-after/3-after.jpg" aria-label="دانلود تصویر">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    </button>
-                </div>
+        <!-- Card 3: Laminate -->
+        <div class="dash-img-card" data-type="laminate" data-treatment="لمینت" data-doctor="دکتر مهسا امیری راد" data-date="خرداد ۱۴۰۵">
+            <div class="dash-img-card-img" data-ba tabindex="0" role="slider" aria-label="مقایسه قبل و بعد لمینت">
+                <img class="ba-img ba-after" src="../../assets/before-after/3-after.jpg" alt="لمینت - بعد">
+                <img class="ba-img ba-before" src="../../assets/before-after/3-before.jpg" alt="لمینت - قبل">
+                <div class="ba-slider"><div class="ba-handle"></div></div>
+                <span class="ba-label ba-label-before">قبل</span>
+                <span class="ba-label ba-label-after">بعد</span>
+                <button class="dash-img-action dash-img-download" data-src="../../assets/before-after/3-after.jpg" aria-label="دانلود تصویر">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                </button>
+                <button class="dash-img-action dash-img-zoom" data-index="2" aria-label="بزرگ‌نمایی">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                </button>
             </div>
             <div class="dash-img-card-info">
+                <span class="dash-img-badge">لمینت</span>
                 <span class="dash-img-card-doctor">دکتر مهسا امیری راد</span>
                 <span class="dash-img-card-date">خرداد ۱۴۰۵</span>
             </div>
         </div>
 
-        <!-- Card 4: Before/After - Composite -->
-        <div class="dash-img-card" data-type="before-after" data-treatment="کامپوزیت" data-doctor="دکتر امیرمحمد فرهمندنیا" data-date="اردیبهشت ۱۴۰۵">
-            <div class="dash-img-card-img">
-                <img src="../../assets/before-after/4-after.jpg" alt="کامپوزیت - بعد">
-                <span class="dash-img-badge">کامپوزیت</span>
-                <div class="dash-img-overlay">
-                    <button class="dash-img-action dash-img-zoom" data-index="3" aria-label="بزرگ‌نمایی">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-                    </button>
-                    <button class="dash-img-action dash-img-download" data-src="../../assets/before-after/4-after.jpg" aria-label="دانلود تصویر">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    </button>
-                </div>
+        <!-- Card 4: Composite -->
+        <div class="dash-img-card" data-type="composite" data-treatment="کامپوزیت" data-doctor="دکتر امیرمحمد فرهمندنیا" data-date="اردیبهشت ۱۴۰۵">
+            <div class="dash-img-card-img" data-ba tabindex="0" role="slider" aria-label="مقایسه قبل و بعد کامپوزیت">
+                <img class="ba-img ba-after" src="../../assets/before-after/4-after.jpg" alt="کامپوزیت - بعد">
+                <img class="ba-img ba-before" src="../../assets/before-after/4-before.jpg" alt="کامپوزیت - قبل">
+                <div class="ba-slider"><div class="ba-handle"></div></div>
+                <span class="ba-label ba-label-before">قبل</span>
+                <span class="ba-label ba-label-after">بعد</span>
+                <button class="dash-img-action dash-img-download" data-src="../../assets/before-after/4-after.jpg" aria-label="دانلود تصویر">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                </button>
+                <button class="dash-img-action dash-img-zoom" data-index="3" aria-label="بزرگ‌نمایی">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                </button>
             </div>
             <div class="dash-img-card-info">
+                <span class="dash-img-badge">کامپوزیت</span>
                 <span class="dash-img-card-doctor">دکتر امیرمحمد فرهمندنیا</span>
                 <span class="dash-img-card-date">اردیبهشت ۱۴۰۵</span>
             </div>
         </div>
 
-        <!-- Card 5: Xray -->
-        <div class="dash-img-card" data-type="xray" data-treatment="رادیولوژی" data-doctor="دکتر کاوه آذرخو" data-date="فروردین ۱۴۰۵">
-            <div class="dash-img-card-img">
-                <img src="../../assets/before-after/1-before.jpg" alt="رادیولوژی OPG">
-                <span class="dash-img-badge dash-img-badge--xray">رادیولوژی</span>
-                <div class="dash-img-overlay">
-                    <button class="dash-img-action dash-img-zoom" data-index="4" aria-label="بزرگ‌نمایی">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-                    </button>
-                    <button class="dash-img-action dash-img-download" data-src="../../assets/before-after/1-before.jpg" aria-label="دانلود تصویر">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    </button>
-                </div>
+        <!-- Card 5: Implant 2 -->
+        <div class="dash-img-card" data-type="implant" data-treatment="ایمپلنت" data-doctor="دکتر کاوه آذرخو" data-date="بهمن ۱۴۰۴">
+            <div class="dash-img-card-img" data-ba tabindex="0" role="slider" aria-label="مقایسه قبل و بعد ایمپلنت ۲">
+                <img class="ba-img ba-after" src="../../assets/before-after/1-after.jpg" alt="ایمپلنت - بعد">
+                <img class="ba-img ba-before" src="../../assets/before-after/1-before.jpg" alt="ایمپلنت - قبل">
+                <div class="ba-slider"><div class="ba-handle"></div></div>
+                <span class="ba-label ba-label-before">قبل</span>
+                <span class="ba-label ba-label-after">بعد</span>
+                <button class="dash-img-action dash-img-download" data-src="../../assets/before-after/1-after.jpg" aria-label="دانلود تصویر">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                </button>
+                <button class="dash-img-action dash-img-zoom" data-index="4" aria-label="بزرگ‌نمایی">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                </button>
             </div>
             <div class="dash-img-card-info">
-                <span class="dash-img-card-doctor">دکتر کاوه آذرخو</span>
-                <span class="dash-img-card-date">فروردین ۱۴۰۵</span>
-            </div>
-        </div>
-
-        <!-- Card 6: Xray -->
-        <div class="dash-img-card" data-type="xray" data-treatment="رادیولوژی" data-doctor="دکتر کاوه آذرخو" data-date="اسفند ۱۴۰۴">
-            <div class="dash-img-card-img">
-                <img src="../../assets/before-after/2-before.jpg" alt="رادیولوژی">
-                <span class="dash-img-badge dash-img-badge--xray">رادیولوژی</span>
-                <div class="dash-img-overlay">
-                    <button class="dash-img-action dash-img-zoom" data-index="5" aria-label="بزرگ‌نمایی">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-                    </button>
-                    <button class="dash-img-action dash-img-download" data-src="../../assets/before-after/2-before.jpg" aria-label="دانلود تصویر">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    </button>
-                </div>
-            </div>
-            <div class="dash-img-card-info">
-                <span class="dash-img-card-doctor">دکتر کاوه آذرخو</span>
-                <span class="dash-img-card-date">اسفند ۱۴۰۴</span>
-            </div>
-        </div>
-
-        <!-- Card 7: Prescription -->
-        <div class="dash-img-card" data-type="prescription" data-treatment="نسخه" data-doctor="دکتر مهسا امیری راد" data-date="فروردین ۱۴۰۵">
-            <div class="dash-img-card-img">
-                <img src="../../assets/before-after/3-before.jpg" alt="نسخه پزشکی">
-                <span class="dash-img-badge dash-img-badge--rx">نسخه</span>
-                <div class="dash-img-overlay">
-                    <button class="dash-img-action dash-img-zoom" data-index="6" aria-label="بزرگ‌نمایی">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-                    </button>
-                    <button class="dash-img-action dash-img-download" data-src="../../assets/before-after/3-before.jpg" aria-label="دانلود تصویر">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    </button>
-                </div>
-            </div>
-            <div class="dash-img-card-info">
-                <span class="dash-img-card-doctor">دکتر مهسا امیری راد</span>
-                <span class="dash-img-card-date">فروردین ۱۴۰۵</span>
-            </div>
-        </div>
-
-        <!-- Card 8: Prescription -->
-        <div class="dash-img-card" data-type="prescription" data-treatment="نسخه" data-doctor="دکتر کاوه آذرخو" data-date="اسفند ۱۴۰۴">
-            <div class="dash-img-card-img">
-                <img src="../../assets/before-after/4-before.jpg" alt="پرونده تصویری">
-                <span class="dash-img-badge dash-img-badge--rx">پرونده</span>
-                <div class="dash-img-overlay">
-                    <button class="dash-img-action dash-img-zoom" data-index="7" aria-label="بزرگ‌نمایی">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-                    </button>
-                    <button class="dash-img-action dash-img-download" data-src="../../assets/before-after/4-before.jpg" aria-label="دانلود تصویر">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    </button>
-                </div>
-            </div>
-            <div class="dash-img-card-info">
-                <span class="dash-img-card-doctor">دکتر کاوه آذرخو</span>
-                <span class="dash-img-card-date">اسفند ۱۴۰۴</span>
-            </div>
-        </div>
-
-        <!-- Card 9: Before/After - Implant 2 -->
-        <div class="dash-img-card" data-type="before-after" data-treatment="ایمپلنت" data-doctor="دکتر کاوه آذرخو" data-date="بهمن ۱۴۰۴">
-            <div class="dash-img-card-img">
-                <img src="../../assets/before-after/1-before.jpg" alt="ایمپلنت - قبل">
                 <span class="dash-img-badge">ایمپلنت</span>
-                <div class="dash-img-overlay">
-                    <button class="dash-img-action dash-img-zoom" data-index="8" aria-label="بزرگ‌نمایی">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-                    </button>
-                    <button class="dash-img-action dash-img-download" data-src="../../assets/before-after/1-before.jpg" aria-label="دانلود تصویر">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    </button>
-                </div>
-            </div>
-            <div class="dash-img-card-info">
                 <span class="dash-img-card-doctor">دکتر کاوه آذرخو</span>
                 <span class="dash-img-card-date">بهمن ۱۴۰۴</span>
             </div>
         </div>
 
-        <!-- Card 10: Before/After - Veneer 2 -->
-        <div class="dash-img-card" data-type="before-after" data-treatment="ونیر" data-doctor="دکتر امیرمحمد فرهمندنیا" data-date="دی ۱۴۰۴">
-            <div class="dash-img-card-img">
-                <img src="../../assets/before-after/2-before.jpg" alt="ونیر - قبل">
-                <span class="dash-img-badge">ونیر</span>
-                <div class="dash-img-overlay">
-                    <button class="dash-img-action dash-img-zoom" data-index="9" aria-label="بزرگ‌نمایی">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-                    </button>
-                    <button class="dash-img-action dash-img-download" data-src="../../assets/before-after/2-before.jpg" aria-label="دانلود تصویر">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    </button>
-                </div>
+        <!-- Card 6: Veneer 2 -->
+        <div class="dash-img-card" data-type="veneer" data-treatment="ونیر" data-doctor="دکتر امیرمحمد فرهمندنیا" data-date="دی ۱۴۰۴">
+            <div class="dash-img-card-img" data-ba tabindex="0" role="slider" aria-label="مقایسه قبل و بعد ونیر ۲">
+                <img class="ba-img ba-after" src="../../assets/before-after/2-after.jpg" alt="ونیر - بعد">
+                <img class="ba-img ba-before" src="../../assets/before-after/2-before.jpg" alt="ونیر - قبل">
+                <div class="ba-slider"><div class="ba-handle"></div></div>
+                <span class="ba-label ba-label-before">قبل</span>
+                <span class="ba-label ba-label-after">بعد</span>
+                <button class="dash-img-action dash-img-download" data-src="../../assets/before-after/2-after.jpg" aria-label="دانلود تصویر">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                </button>
+                <button class="dash-img-action dash-img-zoom" data-index="5" aria-label="بزرگ‌نمایی">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                </button>
             </div>
             <div class="dash-img-card-info">
+                <span class="dash-img-badge">ونیر</span>
                 <span class="dash-img-card-doctor">دکتر امیرمحمد فرهمندنیا</span>
                 <span class="dash-img-card-date">دی ۱۴۰۴</span>
             </div>
         </div>
 
-        <!-- Card 11: Before/After - Laminate 2 -->
-        <div class="dash-img-card" data-type="before-after" data-treatment="لمینت" data-doctor="دکتر مهسا امیری راد" data-date="آذر ۱۴۰۴">
-            <div class="dash-img-card-img">
-                <img src="../../assets/before-after/3-before.jpg" alt="لمینت - قبل">
-                <span class="dash-img-badge">لمینت</span>
-                <div class="dash-img-overlay">
-                    <button class="dash-img-action dash-img-zoom" data-index="10" aria-label="بزرگ‌نمایی">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-                    </button>
-                    <button class="dash-img-action dash-img-download" data-src="../../assets/before-after/3-before.jpg" aria-label="دانلود تصویر">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    </button>
-                </div>
+        <!-- Card 7: Laminate 2 -->
+        <div class="dash-img-card" data-type="laminate" data-treatment="لمینت" data-doctor="دکتر مهسا امیری راد" data-date="آذر ۱۴۰۴">
+            <div class="dash-img-card-img" data-ba tabindex="0" role="slider" aria-label="مقایسه قبل و بعد لمینت ۲">
+                <img class="ba-img ba-after" src="../../assets/before-after/3-after.jpg" alt="لمینت - بعد">
+                <img class="ba-img ba-before" src="../../assets/before-after/3-before.jpg" alt="لمینت - قبل">
+                <div class="ba-slider"><div class="ba-handle"></div></div>
+                <span class="ba-label ba-label-before">قبل</span>
+                <span class="ba-label ba-label-after">بعد</span>
+                <button class="dash-img-action dash-img-download" data-src="../../assets/before-after/3-after.jpg" aria-label="دانلود تصویر">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                </button>
+                <button class="dash-img-action dash-img-zoom" data-index="6" aria-label="بزرگ‌نمایی">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                </button>
             </div>
             <div class="dash-img-card-info">
+                <span class="dash-img-badge">لمینت</span>
                 <span class="dash-img-card-doctor">دکتر مهسا امیری راد</span>
                 <span class="dash-img-card-date">آذر ۱۴۰۴</span>
-            </div>
-        </div>
-
-        <!-- Card 12: Xray -->
-        <div class="dash-img-card" data-type="xray" data-treatment="رادیولوژی" data-doctor="دکتر کاوه آذرخو" data-date="آبان ۱۴۰۴">
-            <div class="dash-img-card-img">
-                <img src="../../assets/before-after/4-before.jpg" alt="رادیولوژی">
-                <span class="dash-img-badge dash-img-badge--xray">OPG</span>
-                <div class="dash-img-overlay">
-                    <button class="dash-img-action dash-img-zoom" data-index="11" aria-label="بزرگ‌نمایی">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
-                    </button>
-                    <button class="dash-img-action dash-img-download" data-src="../../assets/before-after/4-before.jpg" aria-label="دانلود تصویر">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    </button>
-                </div>
-            </div>
-            <div class="dash-img-card-info">
-                <span class="dash-img-card-doctor">دکتر کاوه آذرخو</span>
-                <span class="dash-img-card-date">آبان ۱۴۰۴</span>
             </div>
         </div>
     </div>

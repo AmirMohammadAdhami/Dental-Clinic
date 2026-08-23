@@ -366,18 +366,12 @@
     background: #e2e8f0;
 }
 
-.dash-gallery-img img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s var(--ease-smooth);
+.dash-gallery-img .ba-img {
+    transition: none;
 }
 
-.dash-gallery-card:hover .dash-gallery-img img {
-    transform: scale(1.05);
+.dash-gallery-card:hover .dash-gallery-img .ba-after {
+    transform: none;
 }
 
 /* Download Button */
@@ -420,29 +414,12 @@
     100% { transform: scale(1); }
 }
 
-/* Before / After Labels */
-.dash-gallery-overlay {
+/* Download Button */
+.dash-gallery-download {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: space-between;
-    padding: 0 12px 12px;
-    z-index: 5;
-    pointer-events: none;
-}
-
-.dash-gallery-label-before,
-.dash-gallery-label-after {
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: #ffffff;
-    background: rgba(0, 0, 0, 0.45);
-    padding: 4px 14px;
-    border-radius: 999px;
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    top: 12px;
+    left: 12px;
+    z-index: 15;
 }
 
 /* Card Info */

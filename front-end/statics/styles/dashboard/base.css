@@ -499,3 +499,127 @@
     }
 }
 
+
+/* ================= BEFORE-AFTER SLIDER (shared) ================= */
+.ba-container {
+    position: relative;
+    cursor: col-resize;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.ba-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+}
+
+.ba-before {
+    z-index: 1;
+    clip-path: inset(0 50% 0 0);
+}
+
+.ba-after {
+    z-index: 0;
+}
+
+.ba-slider {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 3px;
+    background: #ffffff;
+    z-index: 3;
+    transform: translateX(-50%);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+}
+
+.ba-handle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    background: #ffffff;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s var(--ease-smooth), box-shadow 0.2s ease;
+}
+
+.ba-container:hover .ba-handle,
+.ba-container:focus-visible .ba-handle {
+    transform: translate(-50%, -50%) scale(1.1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+
+.ba-container:active .ba-handle {
+    transform: translate(-50%, -50%) scale(0.96);
+}
+
+.ba-container:focus-visible {
+    outline: 3px solid var(--secondary);
+    outline-offset: -3px;
+}
+
+.ba-handle::before,
+.ba-handle::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-style: solid;
+}
+
+.ba-handle::before {
+    border-width: 6px 8px 6px 0;
+    border-color: transparent var(--primary) transparent transparent;
+    margin-right: 2px;
+}
+
+.ba-handle::after {
+    border-width: 6px 0 6px 8px;
+    border-color: transparent transparent transparent var(--primary);
+    margin-left: 2px;
+}
+
+.ba-label {
+    position: absolute;
+    bottom: 12px;
+    z-index: 10;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #ffffff;
+    background: rgba(0, 0, 0, 0.45);
+    padding: 4px 12px;
+    pointer-events: none;
+    border-radius: 999px;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    transition: opacity 0.2s ease;
+}
+
+.ba-label-before {
+    left: 12px;
+}
+
+.ba-label-after {
+    right: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ba-handle {
+        transition: none !important;
+    }
+    .ba-label {
+        transition: none !important;
+    }
+}
+
