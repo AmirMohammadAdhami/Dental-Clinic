@@ -375,51 +375,9 @@
 }
 
 /* Download Button */
-.dash-gallery-download {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: none;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    color: var(--primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 5;
-    transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
-}
-
-.dash-gallery-download:hover {
-    background: var(--primary);
-    color: #ffffff;
-    transform: scale(1.1);
-}
-
-.dash-gallery-download.downloading {
+.dash-img-action.downloading {
     background: #22c55e;
     color: #ffffff;
-    animation: downloadBounce 0.5s var(--ease-smooth);
-}
-
-@keyframes downloadBounce {
-    0% { transform: scale(1); }
-    40% { transform: scale(1.2); }
-    100% { transform: scale(1); }
-}
-
-/* Download Button */
-.dash-gallery-download {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    z-index: 15;
 }
 
 /* Card Info */

@@ -108,20 +108,29 @@
 
     /* ================= GALLERY DOWNLOAD BUTTON ================= */
     (function initGalleryDownload() {
-        var downloadBtns = document.querySelectorAll('.dash-gallery-download');
+        var downloadBtns = document.querySelectorAll('.dash-img-download');
         if (!downloadBtns.length) return;
 
         downloadBtns.forEach(function (btn) {
             btn.addEventListener('click', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
+                var src = btn.dataset.src;
+                if (!src) return;
 
-                /* Visual feedback: briefly enlarge and change icon */
+                var a = document.createElement('a');
+                a.href = src;
+                a.download = src.split('/').pop();
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+
+                /* Visual feedback */
                 this.classList.add('downloading');
                 var originalHTML = this.innerHTML;
 
                 this.innerHTML =
-                    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+                    '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
                     '<polyline points="20 6 9 17 4 12"/>' +
                     '</svg>';
 
@@ -129,7 +138,7 @@
                 setTimeout(function () {
                     self.classList.remove('downloading');
                     self.innerHTML = originalHTML;
-                }, 1800);
+                }, 1500);
             });
         });
     })();

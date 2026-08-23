@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
-// ================= HAMBURGER MENU (all pages) =================
+// ================= HAMBURGER MENU (legacy pages) =================
 document.addEventListener('DOMContentLoaded', function () {
   var hamburger = document.getElementById('headerHamburger');
   var mobileNav = document.getElementById('headerMobileNav');
@@ -90,4 +90,39 @@ document.addEventListener('DOMContentLoaded', function () {
       mobileNav.classList.remove('is-open');
     }
   });
+});
+
+// ================= MOBILE BOTTOM NAV ACTIVE STATE =================
+document.addEventListener('DOMContentLoaded', function () {
+  var bottomNav = document.querySelector('.site-main-nav');
+  if (!bottomNav) return;
+
+  var currentPage = window.location.pathname.split('/').pop() || 'index.html';
+  var links = bottomNav.querySelectorAll('.site-main-nav-item');
+  var pageMap = {
+    'index.html': 0,
+    'team.html': 1,
+    'blog.html': 3,
+    'before-after.html': 2,
+    'all-articles.html': 3,
+    'post.html': 3,
+    'doctor.html': 1
+  };
+
+  var idx = pageMap[currentPage];
+  if (idx !== undefined && links[idx]) {
+    links[idx].classList.add('is-active');
+  }
+
+  /* Hide bottom nav on scroll down, show on scroll up */
+  var lastY = 0;
+  window.addEventListener('scroll', function () {
+    var y = window.scrollY;
+    if (y > lastY && y > 80) {
+      bottomNav.style.transform = 'translateY(100%)';
+    } else {
+      bottomNav.style.transform = 'translateY(0)';
+    }
+    lastY = y;
+  }, { passive: true });
 });
