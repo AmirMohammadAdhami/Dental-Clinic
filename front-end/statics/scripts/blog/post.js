@@ -173,4 +173,108 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // ================= TESTIMONIALS STACKED DECK =================
+    var postDeck = document.querySelector('.post-testimonials .testimonials-deck');
+    if (postDeck) {
+        var postCards = Array.from(postDeck.querySelectorAll('.testimonial-card'));
+        var postDotsContainer = document.querySelector('.post-testimonials .testimonials-dots');
+        var postPrevBtn = document.querySelector('.post-testimonials .testimonials-prev');
+        var postNextBtn = document.querySelector('.post-testimonials .testimonials-next');
+        var postTotal = postCards.length;
+        var postCurrent = 0;
+        var postTimer = null;
+
+        function measurePostDeckHeight() {
+            postCards.forEach(function (c) {
+                c.style.position = 'relative';
+                c.style.visibility = 'hidden';
+                c.style.transform = 'none';
+                c.style.opacity = '0';
+                c.style.zIndex = '1';
+            });
+            var maxH = 0;
+            postCards.forEach(function (c) {
+                if (c.scrollHeight > maxH) maxH = c.scrollHeight;
+            });
+            postDeck.style.height = maxH + 'px';
+            postCards.forEach(function (c) {
+                c.style.position = '';
+                c.style.visibility = '';
+                c.style.transform = '';
+                c.style.opacity = '';
+                c.style.zIndex = '';
+            });
+        }
+        measurePostDeckHeight();
+
+        function updatePostTestimonials() {
+            postCards.forEach(function (card, i) {
+                var d = i - postCurrent;
+                var p = 'hidden';
+                if (d === 0) p = 'front';
+                else if (d === 1) p = 'next-1';
+                else if (d === 2) p = 'next-2';
+                else if (d === -1) p = 'prev-1';
+                else if (d === -2) p = 'prev-2';
+                card.setAttribute('data-pos', p);
+            });
+            if (postDotsContainer) {
+                postDotsContainer.querySelectorAll('.testimonials-dot').forEach(function (d, i) {
+                    d.classList.toggle('is-active', i === postCurrent);
+                });
+            }
+            if (postPrevBtn) postPrevBtn.disabled = postCurrent <= 0;
+            if (postNextBtn) postNextBtn.disabled = postCurrent >= postTotal - 1;
+        }
+
+        function goToPostTestimonial(i) {
+            postCurrent = (i + postTotal) % postTotal;
+            updatePostTestimonials();
+        }
+
+        function schedulePostTestimonials() {
+            clearTimeout(postTimer);
+            postTimer = setTimeout(function tick() {
+                postCurrent = (postCurrent + 1) % postTotal;
+                updatePostTestimonials();
+                postTimer = setTimeout(tick, 8000);
+            }, 8000);
+        }
+
+        function buildPostDots() {
+            if (!postDotsContainer) return;
+            postDotsContainer.innerHTML = '';
+            for (var i = 0; i < postTotal; i++) {
+                var dot = document.createElement('button');
+                dot.type = 'button';
+                dot.className = 'testimonials-dot';
+                dot.setAttribute('role', 'tab');
+                dot.setAttribute('aria-label', 'رفتن به نظر ' + (i + 1) + ' از ' + postTotal);
+                dot.addEventListener('click', (function (idx) {
+                    return function () { goToPostTestimonial(idx); schedulePostTestimonials(); };
+                })(i));
+                postDotsContainer.appendChild(dot);
+            }
+        }
+
+        if (postPrevBtn) postPrevBtn.addEventListener('click', function () { goToPostTestimonial(postCurrent - 1); schedulePostTestimonials(); });
+        if (postNextBtn) postNextBtn.addEventListener('click', function () { goToPostTestimonial(postCurrent + 1); schedulePostTestimonials(); });
+
+        postDeck.addEventListener('mouseenter', function () { clearTimeout(postTimer); });
+        postDeck.addEventListener('mouseleave', schedulePostTestimonials);
+
+        var postTx = 0;
+        postDeck.addEventListener('touchstart', function (e) { postTx = e.touches[0].clientX; clearTimeout(postTimer); }, { passive: true });
+        postDeck.addEventListener('touchend', function (e) {
+            var dx = e.changedTouches[0].clientX - postTx;
+            if (dx < -50) goToPostTestimonial(postCurrent + 1);
+            else if (dx > 50) goToPostTestimonial(postCurrent - 1);
+            schedulePostTestimonials();
+        }, { passive: true });
+
+        buildPostDots();
+        updatePostTestimonials();
+        schedulePostTestimonials();
+    }
+
 });

@@ -199,7 +199,6 @@
 .reveal.is-visible {
     opacity: 1;
     transform: translateY(0);
-    padding-top: 2px;
 }
 
 .reveal-stagger.is-visible .doctor-card {
