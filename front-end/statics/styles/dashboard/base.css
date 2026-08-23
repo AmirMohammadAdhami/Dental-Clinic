@@ -247,18 +247,8 @@
 
 /* ================= DASHBOARD RESPONSIVE ================= */
 @media (max-width: 900px) {
-    .dash-services-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
-
     .dash-services-container {
         padding: 32px 24px 28px;
-    }
-
-    .dash-gallery-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
     }
 
     .dash-appointment-body {
@@ -316,23 +306,13 @@
         font-size: 1.3rem !important;
     }
 
-    .dash-services-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
-
     .dash-service-card {
         padding: 22px 20px 20px;
     }
 
-    .dash-gallery-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
-
     .dash-past-card {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: flex-end;
         gap: 14px;
         padding: 18px 18px;
     }

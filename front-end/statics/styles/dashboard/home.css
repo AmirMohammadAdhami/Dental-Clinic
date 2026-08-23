@@ -575,3 +575,28 @@
     transform: translateY(0) scale(0.97);
 }
 
+/* ================= RESPONSIVE: SERVICES & GALLERY GRIDS ================= */
+@media (max-width: 900px) {
+    .dash-services-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .dash-gallery-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+
+@media (max-width: 620px) {
+    .dash-services-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .dash-gallery-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+
