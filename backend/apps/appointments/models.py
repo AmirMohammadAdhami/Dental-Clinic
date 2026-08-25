@@ -1,6 +1,7 @@
 from django.db import models
 from ..accounts.models import User
 import secrets
+
 from backend.apps.doctors.models import Doctor
 
 
@@ -29,7 +30,6 @@ class Appointment(models.Model):
         DONE = "DONE", 'Done'
         CANCELLED = "CANCELLED", 'Cancelled'
 
-
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name='appointments')
 
     patient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='appointments', null=True, blank=True)
@@ -37,7 +37,7 @@ class Appointment(models.Model):
     last_name = models.CharField(max_length=100, null=True, blank=True)
     national_code = models.CharField(null=True, blank=True, max_length=10)
 
-    tracking_code = models.CharField(max_length=20,unique=True, editable=False)
+    tracking_code = models.CharField(max_length=20, unique=True, editable=False)
 
     appointment_date = models.DateTimeField()
 
@@ -61,8 +61,28 @@ class Appointment(models.Model):
             self.tracking_code = self.generate_tracking_code()
         super().save(*args, **kwargs)
 
-
     @staticmethod
     def generate_tracking_code():
         return f"DNT-{secrets.token_hex(4).upper()}"
 
+    def __str__(self):
+        return f'{self.doctor.last_name}-{self.tracking_code}'
+
+
+class Testimonial(models.Model):
+    class Status(models.TextChoices):
+        PENDING = 'PENDING', 'Pending'
+        APPROVED = 'APPROVED', 'Approved'
+        REJECTED = 'REJECTED', 'Rejected'
+
+    appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE, related_name='testimonials')
+
+    content = models.TextField()
+    rating = models.IntegerField()
+
+    status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.appointment.patient.first_name + " " + self.appointment.patient.last_name
