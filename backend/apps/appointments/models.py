@@ -41,7 +41,7 @@ class Appointment(models.Model):
 
     appointment_date = models.DateTimeField()
 
-    price = models.DecimalField(max)
+    price = models.DecimalField(max_digits=12, decimal_places=0)
 
     prescription_file = models.FileField(upload_to='appointments/prescriptions/', null=True, blank=True)
 
@@ -85,4 +85,7 @@ class Testimonial(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.appointment.patient.first_name + " " + self.appointment.patient.last_name
+        if self.appointment.patient:
+            return self.appointment.patient.first_name + " " + self.appointment.patient.last_name
+        else:
+            return self.appointment.first_name + " " + self.appointment.last_name

@@ -16,7 +16,7 @@ class ArticleMedia(models.Model):
 
     article = models.ForeignKey('Article', on_delete=models.CASCADE, related_name='media')
     media_type = models.CharField(max_length=10, choices=MediaTypes)
-    file = models.FileField(upload_to=f'blog/article-media-{article.primary_key}', null=True, blank=True)
+    file = models.FileField(upload_to=f'blog/article-media/', null=True, blank=True)
     video_url = models.URLField(max_length=200, null=True, blank=True)
 
 
@@ -86,7 +86,7 @@ class Comment(models.Model):
         APPROVED = 'APPROVED', 'Approved'
         REJECTED = 'REJECTED', 'Rejected'
 
-    user = models.ForeignKey(Doctor, on_delete=models.DO_NOTHING, related_name='comments')
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='comments')
     article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='comments')
     content = models.TextField()
 
