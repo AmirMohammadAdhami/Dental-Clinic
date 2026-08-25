@@ -1,3 +1,68 @@
 from django.db import models
+from ..accounts.models import User
+import secrets
+from backend.apps.doctors.models import Doctor
+
 
 # Create your models here.
+class Service(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    icon = models.ImageField(upload_to='services/icons/')
+    badge = models.CharField(null=True, blank=True, max_length=25)
+
+    def __str__(self):
+        return self.name
+
+
+class MedicalRecord(models.Model):
+    description = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.description
+
+
+class Appointment(models.Model):
+    class Status(models.TextChoices):
+        PENDING = "PENDING", 'Pending'
+        RESERVED = "RESERVED", 'Reserved'
+        DONE = "DONE", 'Done'
+        CANCELLED = "CANCELLED", 'Cancelled'
+
+
+    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name='appointments')
+
+    patient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='appointments', null=True, blank=True)
+    first_name = models.CharField(max_length=100, null=True, blank=True)
+    last_name = models.CharField(max_length=100, null=True, blank=True)
+    national_code = models.CharField(null=True, blank=True, max_length=10)
+
+    tracking_code = models.CharField(max_length=20,unique=True, editable=False)
+
+    appointment_date = models.DateTimeField()
+
+    price = models.DecimalField(max)
+
+    prescription_file = models.FileField(upload_to='appointments/prescriptions/', null=True, blank=True)
+
+    medical_records = models.ManyToManyField(MedicalRecord, blank=True, related_name='appointments')
+
+    status = models.CharField(
+        max_length=10,
+        choices=Status.choices,
+        default=Status.PENDING,
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if not self.tracking_code:
+            self.tracking_code = self.generate_tracking_code()
+        super().save(*args, **kwargs)
+
+
+    @staticmethod
+    def generate_tracking_code():
+        return f"DNT-{secrets.token_hex(4).upper()}"
+

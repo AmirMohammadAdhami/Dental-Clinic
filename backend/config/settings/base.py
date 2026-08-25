@@ -46,8 +46,7 @@ local_apps = ['apps.accounts.apps.AccountsConfig',
               'apps.appointments.apps.AppointmentsConfig',
               'apps.blog.apps.BlogConfig',
               'apps.doctors.apps.DoctorsConfig',
-              'apps.gallery.apps.GalleryConfig',
-              'apps.services.apps.ServicesConfig',]
+              'apps.gallery.apps.GalleryConfig',]
 
 
 INSTALLED_APPS = django_apps + local_apps

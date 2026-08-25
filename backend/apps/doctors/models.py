@@ -1,6 +1,7 @@
 from django.db import models
 from ..accounts.models import User
 from django.utils.text import slugify
+from ..appointments.models import Service
 
 
 # Create your models here.
@@ -14,7 +15,7 @@ class Doctor(models.Model):
     years_of_experience = models.IntegerField()
     bio = models.TextField()
 
-    services_offered = models.ManyToManyField()
+    services_offered = models.ManyToManyField(Service, related_name='doctors_offered')
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -31,7 +32,7 @@ class Doctor(models.Model):
 
 class DoctorTestimonial(models.Model):
     doctor = models.OneToOneField(Doctor, on_delete=models.CASCADE, related_name='testimonial')
-    video = models.FileField()
+    video = models.FileField(upload_to='doctors/testimonials/')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -56,7 +57,7 @@ class Assistant(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='assistant')
 
     speciality = models.CharField()
-    blog_photo = models.ImageField()
+    blog_photo = models.ImageField(upload_to='assistants/blog_photos/')
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
