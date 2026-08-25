@@ -1,12 +1,13 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from time import timezone
+from django.utils import timezone
 
 
 class User(AbstractUser):
     username = None
 
     phone = models.CharField(
+        max_length = 11,
         unique=True,
         verbose_name="Phone number",
     )
