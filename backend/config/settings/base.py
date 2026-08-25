@@ -22,9 +22,9 @@ env = environ.Env()
 
 environ.Env.read_env(BASE_DIR / ".env")
 
+#User Model
+AUTH_USER_MODEL = 'accounts.User'
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")
