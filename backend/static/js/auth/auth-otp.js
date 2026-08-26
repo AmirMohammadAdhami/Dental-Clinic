@@ -46,6 +46,13 @@ setTimeout(function () {
       setTimeout(function () { boxes[idx + 1].focus(); }, 10);
     }
   }
+  function autoSubmitIfComplete() {
+    var code = '';
+    boxes.forEach(function (b) { code += b.value; });
+    if (code.length === boxes.length) {
+      setTimeout(function () { otpForm.dispatchEvent(new Event('submit')); }, 200);
+    }
+  }
   function updateFilled(box) {
     if (box.value) box.classList.add('filled');
     else box.classList.remove('filled');
@@ -60,6 +67,7 @@ setTimeout(function () {
         box.value = toEnDigits(box.value).replace(/[^0-9]/g, '').slice(-1);
         updateFilled(box);
         if (box.value) moveToNext(idx);
+        if (idx === boxes.length - 1 && box.value) autoSubmitIfComplete();
       });
 
       box.addEventListener('keyup', function (e) {
@@ -143,9 +151,10 @@ setTimeout(function () {
       otpForm.style.display = 'none';
       if (successEl) successEl.style.display = '';
 
-      // Redirect to profile page
+      // Redirect to next URL from data attribute or default
       setTimeout(function () {
-        window.location.href = otpForm.getAttribute('data-next-url') || 'login-info.html';
+        var nextUrl = otpForm.getAttribute('data-next-url') || 'login-info.html';
+        window.location.href = nextUrl;
       }, 1500);
     }, 800);
   });
