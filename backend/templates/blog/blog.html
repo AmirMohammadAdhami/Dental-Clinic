@@ -1,15 +1,12 @@
-{% extends "base.html" %}
+{% extends "bases/base.html" %}
 {% load static %}
 
 {% block css %}
-    <link rel="stylesheet" href="{% static "css/base.css" %}">
-    <link rel="stylesheet" href="{% static "css/shared.css" %}">
     <link rel="stylesheet" href="{% static "css/blog/blog.css" %}">
     <link rel="stylesheet" href="{% static "css/blog/treatment-cards.css" %}">
 {% endblock %}
 
 {% block js %}
-<script src="{% static "js/shared.js" %}"></script>
 <script src="{% static "js/blog/blog.js" %}"></script>
 {% endblock %}
 
@@ -35,10 +32,10 @@
                         <p class="faq-desc">درد دندان می‌تواند ناشی از پوسیدگی، عفونت لثه، شکستگی یا حساسیت دندانی باشد.
                             در صورت تداوم درد حتماً به متخصص مراجعه کنید.</p>
                         <p class="faq-treatments-label">درمان‌های پیشنهادی:</p>
-                        <div class="faq-treatments"><a href="all-articles.html?cat=care" class="faq-treatment-link">درمان ریشه (عصب‌کشی)</a><a
-                                href="all-articles.html?cat=care" class="faq-treatment-link">ترمیم دندان پوسیده</a><a href="#"
+                        <div class="faq-treatments"><a href="{% url 'blog:all_articles' %}?cat=care" class="faq-treatment-link">درمان ریشه (عصب‌کشی)</a><a
+                                href="{% url 'blog:all_articles' %}?cat=care" class="faq-treatment-link">ترمیم دندان پوسیده</a><a href="#"
                                                                                              class="faq-treatment-link">روکش
-                            دندان</a><a href="all-articles.html?cat=implant" class="faq-treatment-link">کشیدن دندان</a></div>
+                            دندان</a><a href="{% url 'blog:all_articles' %}?cat=implant" class="faq-treatment-link">کشیدن دندان</a></div>
                     </div>
                 </div>
             </div>
@@ -53,7 +50,7 @@
                         <p class="faq-desc">از دست دادن دندان تأثیر زیادی بر زیبایی، تکلم و جویدن غذا دارد. راه‌حل‌های
                             مدرن امکان بازگرداندن لبخند را فراهم کرده‌اند.</p>
                         <p class="faq-treatments-label">درمان‌های پیشنهادی:</p>
-                        <div class="faq-treatments"><a href="all-articles.html?cat=implant" class="faq-treatment-link">ایمپلنت دندان</a><a href="#"
+                        <div class="faq-treatments"><a href="{% url 'blog:all_articles' %}?cat=implant" class="faq-treatment-link">ایمپلنت دندان</a><a href="#"
                                                                                                                class="faq-treatment-link">بریج
                             دندانی</a><a href="#" class="faq-treatment-link">دندان مصنوعی</a></div>
                     </div>
@@ -70,8 +67,8 @@
                         <p class="faq-desc">زردی دندان می‌تواند ناشی از مصرف چای، قهوه، سیگار یا عوامل ژنتیکی باشد.
                             روش‌های مختلفی برای سفید کردن دندان وجود دارد.</p>
                         <p class="faq-treatments-label">درمان‌های پیشنهادی:</p>
-                        <div class="faq-treatments"><a href="all-articles.html?cat=beauty" class="faq-treatment-link">بلیچینگ حرفه‌ای</a><a
-                                href="all-articles.html?cat=beauty" class="faq-treatment-link">لمینت سرامیکی</a><a href="#"
+                        <div class="faq-treatments"><a href="{% url 'blog:all_articles' %}?cat=beauty" class="faq-treatment-link">بلیچینگ حرفه‌ای</a><a
+                                href="{% url 'blog:all_articles' %}?cat=beauty" class="faq-treatment-link">لمینت سرامیکی</a><a href="#"
                                                                                         class="faq-treatment-link">کامپوزیت
                             ونیر</a></div>
                     </div>
@@ -88,10 +85,10 @@
                         <p class="faq-desc">پوسیدگی دندان اگر به موقع درمان نشود می‌تواند به عصب دندان برسد و درد شدیدی
                             ایجاد کند. تشخیص زودهنگام و ترمیم بهترین راه‌حل است.</p>
                         <p class="faq-treatments-label">درمان‌های پیشنهادی:</p>
-                        <div class="faq-treatments"><a href="all-articles.html?cat=care" class="faq-treatment-link">ترمیم (پر کردن) دندان</a><a
-                                href="all-articles.html?cat=implant" class="faq-treatment-link">روکش سرامیکی</a><a href="#"
+                        <div class="faq-treatments"><a href="{% url 'blog:all_articles' %}?cat=care" class="faq-treatment-link">ترمیم (پر کردن) دندان</a><a
+                                href="{% url 'blog:all_articles' %}?cat=implant" class="faq-treatment-link">روکش سرامیکی</a><a href="#"
                                                                                        class="faq-treatment-link">ایمپلنت
-                            دندان</a><a href="all-articles.html?cat=implant" class="faq-treatment-link">کشیدن و جایگزینی</a></div>
+                            دندان</a><a href="{% url 'blog:all_articles' %}?cat=implant" class="faq-treatment-link">کشیدن و جایگزینی</a></div>
                     </div>
                 </div>
             </div>
@@ -99,28 +96,28 @@
         <section class="treatments-section reveal">
             <h2 class="treatments-title">انواع درمان‌ها</h2>
             <div class="treatments-grid">
-                <a href="all-articles.html?cat=implant" class="treatment-card">
+                <a href="{% url 'blog:all_articles' %}?cat=implant" class="treatment-card">
                     <div class="treatment-icon"><img src="{% static 'images/blog-icons/implant.jpg' %}" alt="ایمپلنت"></div>
                     <span class="treatment-name">ایمپلنت</span></a>
-                <a href="all-articles.html?cat=beauty" class="treatment-card">
+                <a href="{% url 'blog:all_articles' %}?cat=beauty" class="treatment-card">
                     <div class="treatment-icon"><img src="{% static 'images/blog-icons/veneer.jpg' %}" alt="ونیر"></div>
                     <span class="treatment-name">ونیر</span></a>
-                <a href="all-articles.html?cat=beauty" class="treatment-card">
+                <a href="{% url 'blog:all_articles' %}?cat=beauty" class="treatment-card">
                     <div class="treatment-icon"><img src="{% static 'images/blog-icons/laminate.jpg' %}" alt="لمینت"></div>
                     <span class="treatment-name">لمینت</span></a>
-                <a href="all-articles.html?cat=beauty" class="treatment-card">
+                <a href="{% url 'blog:all_articles' %}?cat=beauty" class="treatment-card">
                     <div class="treatment-icon"><img src="{% static 'images/blog-icons/composite.jpg' %}" alt="کامپوزیت"></div>
                     <span class="treatment-name">کامپوزیت</span></a>
-                <a href="all-articles.html?cat=beauty" class="treatment-card">
+                <a href="{% url 'blog:all_articles' %}?cat=beauty" class="treatment-card">
                     <div class="treatment-icon"><img src="{% static 'images/blog-icons/bleaching.jpg' %}" alt="بلیچینگ"></div>
                     <span class="treatment-name">بلیچینگ</span></a>
-                <a href="all-articles.html?cat=beauty" class="treatment-card">
+                <a href="{% url 'blog:all_articles' %}?cat=beauty" class="treatment-card">
                     <div class="treatment-icon"><img src="{% static 'images/blog-icons/orthodontics.jpg' %}" alt="ارتودنسی"></div>
                     <span class="treatment-name">ارتودنسی</span></a>
-                <a href="all-articles.html?cat=implant" class="treatment-card">
+                <a href="{% url 'blog:all_articles' %}?cat=implant" class="treatment-card">
                     <div class="treatment-icon"><img src="{% static 'images/blog-icons/dental-crown.jpg' %}" alt="روکش دندان"></div>
                     <span class="treatment-name">روکش دندان</span></a>
-                <a href="all-articles.html?cat=care" class="treatment-card">
+                <a href="{% url 'blog:all_articles' %}?cat=care" class="treatment-card">
                     <div class="treatment-icon"><img src="{% static 'images/blog-icons/root-canal.jpg' %}" alt="عصب کشی"></div>
                     <span class="treatment-name">عصب‌کشی</span></a>
             </div>

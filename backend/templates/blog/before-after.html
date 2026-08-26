@@ -1,15 +1,12 @@
-{% extends "base.html" %}
+{% extends "bases/base.html" %}
 {% load static %}
 
 {% block css %}
-    <link rel="stylesheet" href="{% static "css/base.css" %}">
-    <link rel="stylesheet" href="{% static "css/shared.css" %}">
     <link rel="stylesheet" href="{% static "css/home/home.css" %}">
     <link rel="stylesheet" href="{% static "css/blog/before-after-page.css" %}">
 {% endblock %}
 
 {% block js %}
-<script src="{% static "js/shared.js" %}"></script>
 <script src="{% static "js/home/home.js" %}"></script>
 <script src="{% static "js/blog/before-after.js" %}"></script>
 {% endblock %}
@@ -30,7 +27,201 @@
             <button class="ba-filter-btn" data-filter="laminate" role="tab" aria-selected="false">لمینت</button>
             <button class="ba-filter-btn" data-filter="composite" role="tab" aria-selected="false">کامپوزیت</button>
         </div>
-        <div class="ba-grid" id="baGrid"></div>
+
+        <div class="ba-grid" id="baGrid">
+            <!-- ایمپلنت ۱ -->
+            <div class="ba-card-item" data-treatment="implant">
+                <div class="doctor-card" data-ba>
+                    <div class="doctor-img ba-container" tabindex="0" role="slider"
+                         aria-label="مقایسه قبل و بعد ایمپلنت" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+                        <img class="ba-img ba-after" src="{% static 'images/before-after/1-after.jpg' %}" alt="نتیجه بعد از ایمپلنت">
+                        <img class="ba-img ba-before" src="{% static 'images/before-after/1-before.jpg' %}" alt="وضعیت قبل از ایمپلنت">
+                        <div class="ba-slider"><div class="ba-handle"></div></div>
+                        <span class="ba-label ba-label-before">قبل</span>
+                        <span class="ba-label ba-label-after">بعد</span>
+                    </div>
+                </div>
+                <p class="ba-card-desc">جایگزینی دندان از دست رفته با ایمپلنت تیتانیومی و روکش سرامیکی</p>
+                <span class="ba-card-tag" data-filter-link="implant">ایمپلنت</span>
+            </div>
+
+            <!-- ایمپلنت ۲ -->
+            <div class="ba-card-item" data-treatment="implant">
+                <div class="doctor-card" data-ba>
+                    <div class="doctor-img ba-container" tabindex="0" role="slider"
+                         aria-label="مقایسه قبل و بعد ایمپلنت" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+                        <img class="ba-img ba-after" src="{% static 'images/before-after/2-after.jpg' %}" alt="نتیجه بعد از ایمپلنت">
+                        <img class="ba-img ba-before" src="{% static 'images/before-after/2-before.jpg' %}" alt="وضعیت قبل از ایمپلنت">
+                        <div class="ba-slider"><div class="ba-handle"></div></div>
+                        <span class="ba-label ba-label-before">قبل</span>
+                        <span class="ba-label ba-label-after">بعد</span>
+                    </div>
+                </div>
+                <p class="ba-card-desc">ایمپلنت کامل فک پایین با پروتز ثابت تمام سرامیکی</p>
+                <span class="ba-card-tag" data-filter-link="implant">ایمپلنت</span>
+            </div>
+
+            <!-- ایمپلنت ۳ -->
+            <div class="ba-card-item" data-treatment="implant">
+                <div class="doctor-card" data-ba>
+                    <div class="doctor-img ba-container" tabindex="0" role="slider"
+                         aria-label="مقایسه قبل و بعد ایمپلنت" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+                        <img class="ba-img ba-after" src="{% static 'images/before-after/3-after.jpg' %}" alt="نتیجه بعد از ایمپلنت">
+                        <img class="ba-img ba-before" src="{% static 'images/before-after/3-before.jpg' %}" alt="وضعیت قبل از ایمپلنت">
+                        <div class="ba-slider"><div class="ba-handle"></div></div>
+                        <span class="ba-label ba-label-before">قبل</span>
+                        <span class="ba-label ba-label-after">بعد</span>
+                    </div>
+                </div>
+                <p class="ba-card-desc">جایگزینی یک دندان از دست رفته بدون تراش دندان‌های مجاور</p>
+                <span class="ba-card-tag" data-filter-link="implant">ایمپلنت</span>
+            </div>
+
+            <!-- ونیر ۱ -->
+            <div class="ba-card-item" data-treatment="veneer">
+                <div class="doctor-card" data-ba>
+                    <div class="doctor-img ba-container" tabindex="0" role="slider"
+                         aria-label="مقایسه قبل و بعد ونیر" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+                        <img class="ba-img ba-after" src="{% static 'images/before-after/4-after.jpg' %}" alt="نتیجه بعد از ونیر">
+                        <img class="ba-img ba-before" src="{% static 'images/before-after/4-before.jpg' %}" alt="وضعیت قبل از ونیر">
+                        <div class="ba-slider"><div class="ba-handle"></div></div>
+                        <span class="ba-label ba-label-before">قبل</span>
+                        <span class="ba-label ba-label-after">بعد</span>
+                    </div>
+                </div>
+                <p class="ba-card-desc">اصلاح شکل و رنگ دندان‌ها با ونیر سرامیکی نازک و طبیعی</p>
+                <span class="ba-card-tag" data-filter-link="veneer">ونیر</span>
+            </div>
+
+            <!-- ونیر ۲ -->
+            <div class="ba-card-item" data-treatment="veneer">
+                <div class="doctor-card" data-ba>
+                    <div class="doctor-img ba-container" tabindex="0" role="slider"
+                         aria-label="مقایسه قبل و بعد ونیر" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+                        <img class="ba-img ba-after" src="{% static 'images/before-after/1-after.jpg' %}" alt="نتیجه بعد از ونیر">
+                        <img class="ba-img ba-before" src="{% static 'images/before-after/1-before.jpg' %}" alt="وضعیت قبل از ونیر">
+                        <div class="ba-slider"><div class="ba-handle"></div></div>
+                        <span class="ba-label ba-label-before">قبل</span>
+                        <span class="ba-label ba-label-after">بعد</span>
+                    </div>
+                </div>
+                <p class="ba-card-desc">اصلاح ناهمراهی خفیف دندان‌ها بدون ارتودنسی با ونیر</p>
+                <span class="ba-card-tag" data-filter-link="veneer">ونیر</span>
+            </div>
+
+            <!-- ونیر ۳ -->
+            <div class="ba-card-item" data-treatment="veneer">
+                <div class="doctor-card" data-ba>
+                    <div class="doctor-img ba-container" tabindex="0" role="slider"
+                         aria-label="مقایسه قبل و بعد ونیر" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+                        <img class="ba-img ba-after" src="{% static 'images/before-after/2-after.jpg' %}" alt="نتیجه بعد از ونیر">
+                        <img class="ba-img ba-before" src="{% static 'images/before-after/2-before.jpg' %}" alt="وضعیت قبل از ونیر">
+                        <div class="ba-slider"><div class="ba-handle"></div></div>
+                        <span class="ba-label ba-label-before">قبل</span>
+                        <span class="ba-label ba-label-after">بعد</span>
+                    </div>
+                </div>
+                <p class="ba-card-desc">ترمیم لب‌پریدگی و تغییر رنگ دندان‌های جلویی</p>
+                <span class="ba-card-tag" data-filter-link="veneer">ونیر</span>
+            </div>
+
+            <!-- لمینت ۱ -->
+            <div class="ba-card-item" data-treatment="laminate">
+                <div class="doctor-card" data-ba>
+                    <div class="doctor-img ba-container" tabindex="0" role="slider"
+                         aria-label="مقایسه قبل و بعد لمینت" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+                        <img class="ba-img ba-after" src="{% static 'images/before-after/3-after.jpg' %}" alt="نتیجه بعد از لمینت">
+                        <img class="ba-img ba-before" src="{% static 'images/before-after/3-before.jpg' %}" alt="وضعیت قبل از لمینت">
+                        <div class="ba-slider"><div class="ba-handle"></div></div>
+                        <span class="ba-label ba-label-before">قبل</span>
+                        <span class="ba-label ba-label-after">بعد</span>
+                    </div>
+                </div>
+                <p class="ba-card-desc">طراحی لبخند با لمینت سرامیکی ۸ واحد بالا و ۶ واحد پایین</p>
+                <span class="ba-card-tag" data-filter-link="laminate">لمینت</span>
+            </div>
+
+            <!-- لمینت ۲ -->
+            <div class="ba-card-item" data-treatment="laminate">
+                <div class="doctor-card" data-ba>
+                    <div class="doctor-img ba-container" tabindex="0" role="slider"
+                         aria-label="مقایسه قبل و بعد لمینت" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+                        <img class="ba-img ba-after" src="{% static 'images/before-after/4-after.jpg' %}" alt="نتیجه بعد از لمینت">
+                        <img class="ba-img ba-before" src="{% static 'images/before-after/4-before.jpg' %}" alt="وضعیت قبل از لمینت">
+                        <div class="ba-slider"><div class="ba-handle"></div></div>
+                        <span class="ba-label ba-label-before">قبل</span>
+                        <span class="ba-label ba-label-after">بعد</span>
+                    </div>
+                </div>
+                <p class="ba-card-desc">رفع زردی شدید و تغییر فرم دندان‌ها با لمینت پرسلن</p>
+                <span class="ba-card-tag" data-filter-link="laminate">لمینت</span>
+            </div>
+
+            <!-- لمینت ۳ -->
+            <div class="ba-card-item" data-treatment="laminate">
+                <div class="doctor-card" data-ba>
+                    <div class="doctor-img ba-container" tabindex="0" role="slider"
+                         aria-label="مقایسه قبل و بعد لمینت" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+                        <img class="ba-img ba-after" src="{% static 'images/before-after/1-after.jpg' %}" alt="نتیجه بعد از لمینت">
+                        <img class="ba-img ba-before" src="{% static 'images/before-after/1-before.jpg' %}" alt="وضعیت قبل از لمینت">
+                        <div class="ba-slider"><div class="ba-handle"></div></div>
+                        <span class="ba-label ba-label-before">قبل</span>
+                        <span class="ba-label ba-label-after">بعد</span>
+                    </div>
+                </div>
+                <p class="ba-card-desc">ترکیب لمینت و بلیچینگ برای نتیجه طبیعی و درخشان</p>
+                <span class="ba-card-tag" data-filter-link="laminate">لمینت</span>
+            </div>
+
+            <!-- کامپوزیت ۱ -->
+            <div class="ba-card-item" data-treatment="composite">
+                <div class="doctor-card" data-ba>
+                    <div class="doctor-img ba-container" tabindex="0" role="slider"
+                         aria-label="مقایسه قبل و بعد کامپوزیت" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+                        <img class="ba-img ba-after" src="{% static 'images/before-after/2-after.jpg' %}" alt="نتیجه بعد از کامپوزیت">
+                        <img class="ba-img ba-before" src="{% static 'images/before-after/2-before.jpg' %}" alt="وضعیت قبل از کامپوزیت">
+                        <div class="ba-slider"><div class="ba-handle"></div></div>
+                        <span class="ba-label ba-label-before">قبل</span>
+                        <span class="ba-label ba-label-after">بعد</span>
+                    </div>
+                </div>
+                <p class="ba-card-desc">ترمیم سریع و اقتصادی لبخند با کامپوزیت ونیر بدون تراش</p>
+                <span class="ba-card-tag" data-filter-link="composite">کامپوزیت</span>
+            </div>
+
+            <!-- کامپوزیت ۲ -->
+            <div class="ba-card-item" data-treatment="composite">
+                <div class="doctor-card" data-ba>
+                    <div class="doctor-img ba-container" tabindex="0" role="slider"
+                         aria-label="مقایسه قبل و بعد کامپوزیت" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+                        <img class="ba-img ba-after" src="{% static 'images/before-after/3-after.jpg' %}" alt="نتیجه بعد از کامپوزیت">
+                        <img class="ba-img ba-before" src="{% static 'images/before-after/3-before.jpg' %}" alt="وضعیت قبل از کامپوزیت">
+                        <div class="ba-slider"><div class="ba-handle"></div></div>
+                        <span class="ba-label ba-label-before">قبل</span>
+                        <span class="ba-label ba-label-after">بعد</span>
+                    </div>
+                </div>
+                <p class="ba-card-desc">بازسازی دندان‌های شکسته و لب‌پریده با کامپوزیت همرنگ</p>
+                <span class="ba-card-tag" data-filter-link="composite">کامپوزیت</span>
+            </div>
+
+            <!-- کامپوزیت ۳ -->
+            <div class="ba-card-item" data-treatment="composite">
+                <div class="doctor-card" data-ba>
+                    <div class="doctor-img ba-container" tabindex="0" role="slider"
+                         aria-label="مقایسه قبل و بعد کامپوزیت" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+                        <img class="ba-img ba-after" src="{% static 'images/before-after/4-after.jpg' %}" alt="نتیجه بعد از کامپوزیت">
+                        <img class="ba-img ba-before" src="{% static 'images/before-after/4-before.jpg' %}" alt="وضعیت قبل از کامپوزیت">
+                        <div class="ba-slider"><div class="ba-handle"></div></div>
+                        <span class="ba-label ba-label-before">قبل</span>
+                        <span class="ba-label ba-label-after">بعد</span>
+                    </div>
+                </div>
+                <p class="ba-card-desc">بستن فاصله بین دندان‌ها (دیاستما) با کامپوزیت بدون ارتودنسی</p>
+                <span class="ba-card-tag" data-filter-link="composite">کامپوزیت</span>
+            </div>
+        </div>
+
         <nav class="ba-pagination reveal" aria-label="صفحه‌بندی نمونه کارها">
             <button class="ba-page-btn" aria-label="صفحه بعد">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"

@@ -1,15 +1,12 @@
-{% extends "base.html" %}
+{% extends "bases/base.html" %}
 {% load static %}
 
 {% block css %}
-    <link rel="stylesheet" href="{% static "css/base.css" %}">
-    <link rel="stylesheet" href="{% static "css/shared.css" %}">
     <link rel="stylesheet" href="{% static "css/home/home.css" %}">
     <link rel="stylesheet" href="{% static "css/blog/doctor.css" %}">
 {% endblock %}
 
 {% block js %}
-<script src="{% static "js/shared.js" %}"></script>
 <script src="{% static "js/blog/doctor.js" %}"></script>
 {% endblock %}
 
@@ -24,7 +21,7 @@
             <span class="doc-hero-status"><span class="doc-hero-status-dot"></span>آماده پذیرش</span>
         </div>
         <div class="doc-hero-info">
-            <div class="doc-hero-breadcrumb"><a href="team.html">تیم درمانی</a> / <span>دکتر علیرضا احمدی</span></div>
+            <div class="doc-hero-breadcrumb"><a href="{% url 'blog:team' %}">تیم درمانی</a> / <span>دکتر علیرضا احمدی</span></div>
             <h1 class="doc-hero-name">دکتر علیرضا احمدی</h1>
             <p class="doc-hero-license">کد نظام پزشکی: ۱۲۳۴۵۶۷۸۹۰</p>
             <p class="doc-hero-specialty">متخصص ارتودنسی | بورد تخصصی</p>
@@ -165,7 +162,7 @@
                     مقالات و ویدیوهای آموزشی
                 </h2>
                 <div class="doc-articles-grid">
-                    <a href="post.html" class="doc-article-card">
+                    <a href="{% url 'blog:post_detail' slug='some-slug' %}" class="doc-article-card">
                         <div class="doc-article-thumb">
                             <img src="{% static 'images/home-video-preview/preview-1.jpg' %}" alt="انواع ارتودنسی" loading="lazy">
                             <div class="doc-article-play">
@@ -177,7 +174,7 @@
                             <h4>انواع ارتودنسی و مزایا و معایب هرکدام</h4>
                         </div>
                     </a>
-                    <a href="blog.html" class="doc-article-card">
+                    <a href="{% url 'blog:blog_index' %}" class="doc-article-card">
                         <div class="doc-article-thumb">
                             <img src="{% static 'images/home-video-preview/preview-2.jpg' %}" alt="کامپوزیت ونیر لمینت" loading="lazy">
                         </div>

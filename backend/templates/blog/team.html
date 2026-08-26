@@ -1,14 +1,11 @@
-{% extends "base.html" %}
+{% extends "bases/base.html" %}
 {% load static %}
 
 {% block css %}
-    <link rel="stylesheet" href="{% static "css/base.css" %}">
-    <link rel="stylesheet" href="{% static "css/shared.css" %}">
     <link rel="stylesheet" href="{% static "css/blog/team.css" %}">
 {% endblock %}
 
 {% block js %}
-<script src="{% static "js/shared.js" %}"></script>
 <script src="{% static "js/blog/team.js" %}"></script>
 {% endblock %}
 
@@ -62,7 +59,7 @@
 
             <!-- Doctor Card 1 -->
             <div class="team-doctor-card reveal-stagger" data-specialty="implant">
-                <a href="doctor.html" class="team-card-link" aria-label="مشاهده پروفایل دکتر علیرضا احمدی">
+                <a href="{% url 'blog:doctor_detail' slug='ali-reza-ahmadi' %}" class="team-card-link" aria-label="مشاهده پروفایل دکتر علیرضا احمدی">
                     <div class="team-card-img-wrap">
                         <img src="{% static 'images/doctors/doctor-1.jpg' %}" alt="دکتر علیرضا احمدی" class="team-card-img" loading="lazy">
                         <span class="team-card-status team-card-status--available">
@@ -90,7 +87,7 @@
 
             <!-- Doctor Card 2 -->
             <div class="team-doctor-card reveal-stagger" data-specialty="implant">
-                <a href="doctor.html" class="team-card-link" aria-label="مشاهده پروفایل دکتر زهرا محمدی">
+                <a href="{% url 'blog:doctor_detail' slug='zahra-mohammadi' %}" class="team-card-link" aria-label="مشاهده پروفایل دکتر زهرا محمدی">
                     <div class="team-card-img-wrap">
                         <img src="{% static 'images/doctors/doctor-2.jpg' %}" alt="دکتر زهرا محمدی" class="team-card-img" loading="lazy">
                         <span class="team-card-status team-card-status--available">
@@ -118,7 +115,7 @@
 
             <!-- Doctor Card 3 -->
             <div class="team-doctor-card reveal-stagger" data-specialty="beauty">
-                <a href="doctor.html" class="team-card-link" aria-label="مشاهده پروفایل دکتر محمد کریمی">
+                <a href="{% url 'blog:doctor_detail' slug='mohammad-karimi' %}" class="team-card-link" aria-label="مشاهده پروفایل دکتر محمد کریمی">
                     <div class="team-card-img-wrap">
                         <img src="{% static 'images/doctors/doctor-3.jpg' %}" alt="دکتر محمد کریمی" class="team-card-img" loading="lazy">
                         <span class="team-card-status team-card-status--available">
@@ -146,7 +143,7 @@
 
             <!-- Doctor Card 4 -->
             <div class="team-doctor-card reveal-stagger" data-specialty="beauty">
-                <a href="doctor.html" class="team-card-link" aria-label="مشاهده پروفایل دکتر مریم ابراهیمی">
+                <a href="{% url 'blog:doctor_detail' slug='maryam-ebrahimi' %}" class="team-card-link" aria-label="مشاهده پروفایل دکتر مریم ابراهیمی">
                     <div class="team-card-img-wrap">
                         <img src="{% static 'images/doctors/doctor-4.jpg' %}" alt="دکتر مریم ابراهیمی" class="team-card-img" loading="lazy">
                         <span class="team-card-status team-card-status--busy">
@@ -174,7 +171,7 @@
 
             <!-- Doctor Card 5 -->
             <div class="team-doctor-card reveal-stagger" data-specialty="beauty">
-                <a href="doctor.html" class="team-card-link" aria-label="مشاهده پروفایل دکتر امیرمحمد فرهمندنیا">
+                <a href="{% url 'blog:doctor_detail' slug='amirmohammad-farhmandnia' %}" class="team-card-link" aria-label="مشاهده پروفایل دکتر امیرمحمد فرهمندنیا">
                     <div class="team-card-img-wrap">
                         <img src="{% static 'images/doctors/doctor-5.jpg' %}" alt="دکتر امیرمحمد فرهمندنیا" class="team-card-img" loading="lazy">
                         <span class="team-card-status team-card-status--available">
@@ -202,7 +199,7 @@
 
             <!-- Doctor Card 6 -->
             <div class="team-doctor-card reveal-stagger" data-specialty="beauty">
-                <a href="doctor.html" class="team-card-link" aria-label="مشاهده پروفایل دکتر مهسا امیری راد">
+                <a href="{% url 'blog:doctor_detail' slug='mahsa-amirirad' %}" class="team-card-link" aria-label="مشاهده پروفایل دکتر مهسا امیری راد">
                     <div class="team-card-img-wrap">
                         <img src="{% static 'images/doctors/doctor-6.jpg' %}" alt="دکتر مهسا امیری راد" class="team-card-img" loading="lazy">
                         <span class="team-card-status team-card-status--available">

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "bases/base.html" %}
 
 {% load static %}
 
@@ -7,14 +7,11 @@
 {% block title %}مجله سلامت دهان و دندان — دنتورا{% endblock %}
 
 {% block css %}
-    <link rel="stylesheet" href="{% static "css/base.css" %}">
-    <link rel="stylesheet" href="{% static "css/shared.css" %}">
     <link rel="stylesheet" href="{% static "css/blog/before-after-page.css" %}">
     <link rel="stylesheet" href="{% static "css/blog/all-articles.css" %}">
 {% endblock %}
 
 {% block js %}
-    <script src="{% static "js/shared.js" %}"></script>
     <script src="{% static "js/blog/all-articles.js" %}"></script>
 {% endblock %}
 
@@ -37,7 +34,7 @@
         <section class="articles-featured reveal">
             <div class="articles-featured-inner">
                 <div class="featured-card">
-                    <a href="post.html" class="featured-card-img">
+                    <a href="{% url 'blog:post_detail' slug='some-slug' %}" class="featured-card-img">
                         <img src="{% static 'images/home-video-preview/preview-1.jpg' %}" alt="مقاله ویژه">
                         <span class="featured-badge">مقاله ویژه</span>
                     </a>
@@ -79,23 +76,23 @@
                 <ol class="sidebar-popular-list">
                     <li class="sidebar-popular-item">
                         <span class="sidebar-popular-num">۱</span>
-                        <a href="post.html" class="sidebar-popular-link">راهنمای جامع انواع ارتودنسی</a>
+                        <a href="{% url 'blog:post_detail' slug='some-slug' %}" class="sidebar-popular-link">راهنمای جامع انواع ارتودنسی</a>
                     </li>
                     <li class="sidebar-popular-item">
                         <span class="sidebar-popular-num">۲</span>
-                        <a href="post.html" class="sidebar-popular-link">ایمپلنت فوری: آیا در یک روز ممکن است؟</a>
+                        <a href="{% url 'blog:post_detail' slug='some-slug' %}" class="sidebar-popular-link">ایمپلنت فوری: آیا در یک روز ممکن است؟</a>
                     </li>
                     <li class="sidebar-popular-item">
                         <span class="sidebar-popular-num">۳</span>
-                        <a href="post.html" class="sidebar-popular-link">کامپوزیت، ونیر یا لمینت؟</a>
+                        <a href="{% url 'blog:post_detail' slug='some-slug' %}" class="sidebar-popular-link">کامپوزیت، ونیر یا لمینت؟</a>
                     </li>
                     <li class="sidebar-popular-item">
                         <span class="sidebar-popular-num">۴</span>
-                        <a href="post.html" class="sidebar-popular-link">سوالات متداول لمینت دندان</a>
+                        <a href="{% url 'blog:post_detail' slug='some-slug' %}" class="sidebar-popular-link">سوالات متداول لمینت دندان</a>
                     </li>
                     <li class="sidebar-popular-item">
                         <span class="sidebar-popular-num">۵</span>
-                        <a href="post.html" class="sidebar-popular-link">۱۰ عادت روزانه برای دندان‌های سالم</a>
+                        <a href="{% url 'blog:post_detail' slug='some-slug' %}" class="sidebar-popular-link">۱۰ عادت روزانه برای دندان‌های سالم</a>
                     </li>
                 </ol>
             </div>
@@ -136,7 +133,7 @@
                     <div class="articles-grid">
 
                         <article class="article-card" data-category="beauty">
-                            <a href="post.html" class="article-card-link">
+                            <a href="{% url 'blog:post_detail' slug='some-slug' %}" class="article-card-link">
                                 <div class="article-card-thumb">
                                     <img src="{% static 'images/home-video-preview/preview-2.jpg' %}" alt="طیف رنگی کامپوزیت">
                                     <span class="article-card-readtime">۶ دقیقه</span>
@@ -163,7 +160,7 @@
                         </article>
 
                         <article class="article-card" data-category="implant">
-                            <a href="post.html" class="article-card-link">
+                            <a href="{% url 'blog:post_detail' slug='some-slug' %}" class="article-card-link">
                                 <div class="article-card-thumb">
                                     <img src="{% static 'images/home-video-preview/preview-3.jpg' %}" alt="بهترین زمان ایمپلنت">
                                     <span class="article-card-readtime">۱۰ دقیقه</span>
@@ -190,7 +187,7 @@
                         </article>
 
                         <article class="article-card" data-category="care">
-                            <a href="post.html" class="article-card-link">
+                            <a href="{% url 'blog:post_detail' slug='some-slug' %}" class="article-card-link">
                                 <div class="article-card-thumb">
                                     <img src="{% static 'images/home-video-preview/preview-4.jpg' %}" alt="کامپوزیت ونیر لمینت">
                                     <span class="article-card-readtime">۷ دقیقه</span>
@@ -217,7 +214,7 @@
                         </article>
 
                         <article class="article-card" data-category="implant">
-                            <a href="post.html" class="article-card-link">
+                            <a href="{% url 'blog:post_detail' slug='some-slug' %}" class="article-card-link">
                                 <div class="article-card-thumb">
                                     <img src="{% static 'images/home-video-preview/preview-5.jpg' %}" alt="انواع روکش دندان">
                                     <span class="article-card-readtime">۹ دقیقه</span>
@@ -243,7 +240,7 @@
                         </article>
 
                         <article class="article-card" data-category="beauty">
-                            <a href="post.html" class="article-card-link">
+                            <a href="{% url 'blog:post_detail' slug='some-slug' %}" class="article-card-link">
                                 <div class="article-card-thumb">
                                     <img src="{% static 'images/home-video-preview/preview-6.jpg' %}" alt="سوالات متداول">
                                     <span class="article-card-readtime">۵ دقیقه</span>
@@ -270,7 +267,7 @@
                         </article>
 
                         <article class="article-card" data-category="care">
-                            <a href="post.html" class="article-card-link">
+                            <a href="{% url 'blog:post_detail' slug='some-slug' %}" class="article-card-link">
                                 <div class="article-card-thumb">
                                     <img src="{% static 'images/hero/dentist-work.jpg' %}" alt="مراقبت روزانه دندان">
                                     <span class="article-card-readtime">۴ دقیقه</span>
@@ -296,7 +293,7 @@
                         </article>
 
                         <article class="article-card" data-category="kids">
-                            <a href="post.html" class="article-card-link">
+                            <a href="{% url 'blog:post_detail' slug='some-slug' %}" class="article-card-link">
                                 <div class="article-card-thumb">
                                     <img src="{% static 'images/hero/happy-patient.jpg' %}" alt="دندانپزشکی کودکان">
                                     <span class="article-card-readtime">۶ دقیقه</span>
@@ -323,7 +320,7 @@
                         </article>
 
                         <article class="article-card" data-category="implant">
-                            <a href="post.html" class="article-card-link">
+                            <a href="{% url 'blog:post_detail' slug='some-slug' %}" class="article-card-link">
                                 <div class="article-card-thumb">
                                     <img src="{% static 'images/hero/clinic-detail.jpg' %}" alt="ایمپلنت فوری">
                                     <span class="article-card-readtime">۱۱ دقیقه</span>
@@ -349,7 +346,7 @@
                         </article>
 
                         <article class="article-card" data-category="kids">
-                            <a href="post.html" class="article-card-link">
+                            <a href="{% url 'blog:post_detail' slug='some-slug' %}" class="article-card-link">
                                 <div class="article-card-thumb">
                                     <img src="{% static 'images/hero/patient-woman.jpg' %}" alt="اولین ویزیت کودک">
                                     <span class="article-card-readtime">۵ دقیقه</span>

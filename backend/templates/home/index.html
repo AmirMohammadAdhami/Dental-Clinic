@@ -1,14 +1,11 @@
-{% extends "base.html" %}
+{% extends "bases/base.html" %}
 {% load static %}
 
 {% block css %}
-    <link rel="stylesheet" href="{% static "css/base.css" %}">
-    <link rel="stylesheet" href="{% static "css/shared.css" %}">
     <link rel="stylesheet" href="{% static "css/home/home.css" %}">
 {% endblock %}
 
 {% block js %}
-<script src="{% static "js/shared.js" %}"></script>
 <script src="{% static "js/home/home.js" %}"></script>
 {% endblock %}
 
@@ -118,7 +115,7 @@
                 <div class="doctors-slider">
                     <div class="doctors-track">
 
-                        <a href="../blog/doctor.html" class="doctor-card" aria-label="سوابق دکتر علیرضا احمدی">
+                        <a href="{% url 'blog:doctor_detail' slug='ali-reza-ahmadi' %}" class="doctor-card" aria-label="سوابق دکتر علیرضا احمدی">
                             <div class="doctor-img">
                                 <img src="{% static 'images/doctors/doctor-1.jpg' %}" alt="دکتر علیرضا احمدی">
                                 <div class="doctor-overlay">
@@ -130,7 +127,7 @@
                             <p class="doctor-university">دانشگاه علوم پزشکی تهران</p>
                         </a>
 
-                        <a href="../blog/doctor.html" class="doctor-card" aria-label="سوابق دکتر زهرا محمدی">
+                        <a href="{% url 'blog:doctor_detail' slug='zahra-mohammadi' %}" class="doctor-card" aria-label="سوابق دکتر زهرا محمدی">
                             <div class="doctor-img">
                                 <img src="{% static 'images/doctors/doctor-2.jpg' %}" alt="دکتر زهرا محمدی">
                                 <div class="doctor-overlay">
@@ -142,7 +139,7 @@
                             <p class="doctor-university">دانشگاه علوم پزشکی شیراز</p>
                         </a>
 
-                        <a href="../blog/doctor.html" class="doctor-card" aria-label="سوابق دکتر محمد کریمی">
+                        <a href="{% url 'blog:doctor_detail' slug='mohammad-karimi' %}" class="doctor-card" aria-label="سوابق دکتر محمد کریمی">
                             <div class="doctor-img">
                                 <img src="{% static 'images/doctors/doctor-3.jpg' %}" alt="دکتر محمد کریمی">
                                 <div class="doctor-overlay">
@@ -154,7 +151,7 @@
                             <p class="doctor-university">دانشگاه علوم پزشکی اصفهان</p>
                         </a>
 
-                        <a href="../blog/doctor.html" class="doctor-card" aria-label="سوابق دکتر مریم ابراهیمی">
+                        <a href="{% url 'blog:doctor_detail' slug='maryam-ebrahimi' %}" class="doctor-card" aria-label="سوابق دکتر مریم ابراهیمی">
                             <div class="doctor-img">
                                 <img src="{% static 'images/doctors/doctor-4.jpg' %}" alt="دکتر مریم ابراهیمی">
                                 <div class="doctor-overlay">
@@ -166,7 +163,7 @@
                             <p class="doctor-university">دانشگاه علوم پزشکی اصفهان</p>
                         </a>
 
-                        <a href="../blog/doctor.html" class="doctor-card" aria-label="سوابق دکتر امیرمحمد فرهمندنیا">
+                        <a href="{% url 'blog:doctor_detail' slug='amirmohammad-farhmandnia' %}" class="doctor-card" aria-label="سوابق دکتر امیرمحمد فرهمندنیا">
                             <div class="doctor-img">
                                 <img src="{% static 'images/doctors/doctor-5.jpg' %}" alt="دکتر امیرمحمد فرهمندنیا">
                                 <div class="doctor-overlay">
@@ -178,7 +175,7 @@
                             <p class="doctor-university">دانشگاه علوم پزشکی اصفهان</p>
                         </a>
 
-                        <a href="../blog/doctor.html" class="doctor-card" aria-label="سوابق دکتر مهسا امیری راد">
+                        <a href="{% url 'blog:doctor_detail' slug='mahsa-amirirad' %}" class="doctor-card" aria-label="سوابق دکتر مهسا امیری راد">
                             <div class="doctor-img">
                                 <img src="{% static 'images/doctors/doctor-6.jpg' %}" alt="دکتر مهسا امیری راد">
                                 <div class="doctor-overlay">
@@ -368,7 +365,7 @@
             </div>
 
             <div class="samples-cta">
-                <a href="../blog/before-after.html" class="btn btn-primary btn-lg" style="text-decoration:none">مشاهده
+                <a href="{% url 'blog:before_after' %}" class="btn btn-primary btn-lg" style="text-decoration:none">مشاهده
                     نمونه‌ کارها</a>
             </div>
         </div>
@@ -667,7 +664,7 @@
             </div>
 
             <div class="video-blog-cta">
-                <a href="../blog/all-articles.html" class="btn btn-outline btn-lg"
+                <a href="{% url 'blog:all_articles' %}" class="btn btn-outline btn-lg"
                    style="color: white; border-color: rgba(255,255,255,0.3); text-decoration:none;">مشاهده همه ویدیوها و
                     مقالات</a>
             </div>

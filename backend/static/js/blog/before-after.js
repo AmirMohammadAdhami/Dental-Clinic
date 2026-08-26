@@ -1,55 +1,125 @@
-var BA_CARDS = [
-    {t:"implant",before:"../../assets/before-after/1-before.jpg",after:"../../assets/before-after/1-after.jpg",desc:"جایگزینی دندان از دست رفته با ایمپلنت تیتانیومی و روکش سرامیکی",label:"ایمپلنت"},
-    {t:"implant",before:"../../assets/before-after/2-before.jpg",after:"../../assets/before-after/2-after.jpg",desc:"ایمپلنت کامل فک پایین با پروتز ثابت تمام سرامیکی",label:"ایمپلنت"},
-    {t:"implant",before:"../../assets/before-after/3-before.jpg",after:"../../assets/before-after/3-after.jpg",desc:"جایگزینی یک دندان از دست رفته بدون تراش دندان‌های مجاور",label:"ایمپلنت"},
-    {t:"veneer",before:"../../assets/before-after/4-before.jpg",after:"../../assets/before-after/4-after.jpg",desc:"اصلاح شکل و رنگ دندان‌ها با ونیر سرامیکی نازک و طبیعی",label:"ونیر"},
-    {t:"veneer",before:"../../assets/before-after/1-before.jpg",after:"../../assets/before-after/1-after.jpg",desc:"اصلاح ناهمراهی خفیف دندان‌ها بدون ارتودنسی با ونیر",label:"ونیر"},
-    {t:"veneer",before:"../../assets/before-after/2-before.jpg",after:"../../assets/before-after/2-after.jpg",desc:"ترمیم لب‌پریدگی و تغییر رنگ دندان‌های جلویی",label:"ونیر"},
-    {t:"laminate",before:"../../assets/before-after/3-before.jpg",after:"../../assets/before-after/3-after.jpg",desc:"طراحی لبخند با لمینت سرامیکی ۸ واحد بالا و ۶ واحد پایین",label:"لمینت"},
-    {t:"laminate",before:"../../assets/before-after/4-before.jpg",after:"../../assets/before-after/4-after.jpg",desc:"رفع زردی شدید و تغییر فرم دندان‌ها با لمینت پرسلن",label:"لمینت"},
-    {t:"laminate",before:"../../assets/before-after/1-before.jpg",after:"../../assets/before-after/1-after.jpg",desc:"ترکیب لمینت و بلیچینگ برای نتیجه طبیعی و درخشان",label:"لمینت"},
-    {t:"composite",before:"../../assets/before-after/2-before.jpg",after:"../../assets/before-after/2-after.jpg",desc:"ترمیم سریع و اقتصادی لبخند با کامپوزیت ونیر بدون تراش",label:"کامپوزیت"},
-    {t:"composite",before:"../../assets/before-after/3-before.jpg",after:"../../assets/before-after/3-after.jpg",desc:"بازسازی دندان‌های شکسته و لب‌پریده با کامپوزیت همرنگ",label:"کامپوزیت"},
-    {t:"composite",before:"../../assets/before-after/4-before.jpg",after:"../../assets/before-after/4-after.jpg",desc:"بستن فاصله بین دندان‌ها (دیاستما) با کامپوزیت بدون ارتودنسی",label:"کامپوزیت"}
-];
-function renderCards(filter){
-    var grid=document.getElementById('baGrid');
-    grid.innerHTML='';
-    BA_CARDS.forEach(function(c){
-        if(filter!=='all'&&c.t!==filter)return;
-        var d=document.createElement('div');
-        d.className='ba-card-item';
-        d.setAttribute('data-treatment',c.t);
-        d.innerHTML='<div class="doctor-card" data-ba><div class="doctor-img ba-container" tabindex="0" role="slider"><img class="ba-img ba-after" src="'+c.after+'" alt="نتیجه"><img class="ba-img ba-before" src="'+c.before+'" alt="وضعیت قبل"><div class="ba-slider"><div class="ba-handle"></div></div><span class="ba-label ba-label-before">قبل</span><span class="ba-label ba-label-after">بعد</span></div></div><p class="ba-card-desc">'+c.desc+'</p><span class="ba-card-tag" data-filter-link="'+c.t+'">'+c.label+'</span>';
-        grid.appendChild(d);
-    });
-    if(typeof initBA==='function')initBA();
-}
-document.addEventListener('DOMContentLoaded',function(){
+// Before/After page functionality
+// Images are in HTML, JS only handles filtering and slider
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Scroll restoration
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
-    renderCards('all');
-    var filterBtns=document.querySelectorAll('.ba-filter-btn');
-    filterBtns.forEach(function(btn){
-        btn.addEventListener('click',function(){
-            filterBtns.forEach(function(b){b.classList.remove('is-active');b.setAttribute('aria-selected','false')});
+
+    // Filter functionality
+    var filterBtns = document.querySelectorAll('.ba-filter-btn');
+    var cardItems = document.querySelectorAll('.ba-card-item');
+
+    filterBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            // Update active state
+            filterBtns.forEach(function(b) {
+                b.classList.remove('is-active');
+                b.setAttribute('aria-selected', 'false');
+            });
             btn.classList.add('is-active');
-            btn.setAttribute('aria-selected','true');
-            renderCards(btn.dataset.filter);
+            btn.setAttribute('aria-selected', 'true');
+
+            var filter = btn.dataset.filter;
+
+            // Filter cards
+            cardItems.forEach(function(card) {
+                if (filter === 'all' || card.dataset.treatment === filter) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
         });
     });
-    document.addEventListener('click',function(e){
-        var tag=e.target.closest('[data-filter-link]');
-        if(!tag)return;
-        var target=tag.getAttribute('data-filter-link');
-        var btn=document.querySelector('.ba-filter-btn[data-filter="'+target+'"]');
-        if(btn)btn.click();
+
+    // Tag click functionality
+    document.addEventListener('click', function(e) {
+        var tag = e.target.closest('[data-filter-link]');
+        if (!tag) return;
+        var target = tag.getAttribute('data-filter-link');
+        var btn = document.querySelector('.ba-filter-btn[data-filter="' + target + '"]');
+        if (btn) btn.click();
     });
-    var pageBtns=document.querySelectorAll('.ba-page-num');
-    pageBtns.forEach(function(b){
-        b.addEventListener('click',function(){
-            pageBtns.forEach(function(x){x.classList.remove('is-active')});
+
+    // Pagination functionality
+    var pageBtns = document.querySelectorAll('.ba-page-num');
+    pageBtns.forEach(function(b) {
+        b.addEventListener('click', function() {
+            pageBtns.forEach(function(x) { x.classList.remove('is-active'); });
             b.classList.add('is-active');
+        });
+    });
+
+    // Before/After slider functionality
+    var baContainers = document.querySelectorAll('.ba-container');
+    baContainers.forEach(function(container) {
+        var slider = container.querySelector('.ba-slider');
+        var handle = container.querySelector('.ba-handle');
+        var beforeImg = container.querySelector('.ba-before');
+
+        if (!slider || !handle || !beforeImg) return;
+
+        var isDragging = false;
+
+        function updateSlider(x) {
+            var rect = container.getBoundingClientRect();
+            var pos = (x - rect.left) / rect.width;
+            pos = Math.max(0, Math.min(1, pos));
+
+            slider.style.left = (pos * 100) + '%';
+            beforeImg.style.clipPath = 'inset(0 ' + ((1 - pos) * 100) + '% 0 0)';
+            container.setAttribute('aria-valuenow', Math.round(pos * 100));
+        }
+
+        container.addEventListener('mousedown', function(e) {
+            isDragging = true;
+            updateSlider(e.clientX);
+        });
+
+        document.addEventListener('mousemove', function(e) {
+            if (!isDragging) return;
+            e.preventDefault();
+            updateSlider(e.clientX);
+        });
+
+        document.addEventListener('mouseup', function() {
+            isDragging = false;
+        });
+
+        // Touch support
+        container.addEventListener('touchstart', function(e) {
+            isDragging = true;
+            updateSlider(e.touches[0].clientX);
+        });
+
+        container.addEventListener('touchmove', function(e) {
+            if (!isDragging) return;
+            e.preventDefault();
+            updateSlider(e.touches[0].clientX);
+        });
+
+        container.addEventListener('touchend', function() {
+            isDragging = false;
+        });
+
+        // Keyboard support
+        container.addEventListener('keydown', function(e) {
+            var currentVal = parseInt(container.getAttribute('aria-valuenow')) || 50;
+            var step = 5;
+
+            if (e.key === 'ArrowLeft') {
+                currentVal = Math.min(100, currentVal + step);
+            } else if (e.key === 'ArrowRight') {
+                currentVal = Math.max(0, currentVal - step);
+            } else {
+                return;
+            }
+
+            e.preventDefault();
+            slider.style.left = currentVal + '%';
+            beforeImg.style.clipPath = 'inset(0 ' + (100 - currentVal) + '% 0 0)';
+            container.setAttribute('aria-valuenow', currentVal);
         });
     });
 });

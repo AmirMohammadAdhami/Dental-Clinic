@@ -1,15 +1,12 @@
-{% extends "base.html" %}
+{% extends "bases/base.html" %}
 {% load static %}
 
 {% block css %}
-    <link rel="stylesheet" href="{% static "css/base.css" %}">
-    <link rel="stylesheet" href="{% static "css/shared.css" %}">
     <link rel="stylesheet" href="{% static "css/home/home.css" %}">
     <link rel="stylesheet" href="{% static "css/blog/post.css" %}">
 {% endblock %}
 
 {% block js %}
-<script src="{% static "js/shared.js" %}"></script>
 <script src="{% static "js/blog/post.js" %}"></script>
 {% endblock %}
 
@@ -36,11 +33,11 @@
 
             <!-- Breadcrumb -->
             <nav class="post-breadcrumb" aria-label="مسیر صفحه">
-                <a href="index.html">خانه</a>
+                <a href="{% url 'core:home' %}">خانه</a>
                 <span class="post-breadcrumb-sep">/</span>
-                <a href="all-articles.html">بلاگ</a>
+                <a href="{% url 'blog:all_articles' %}">بلاگ</a>
                 <span class="post-breadcrumb-sep">/</span>
-                <a href="all-articles.html?cat=beauty">زیبایی و لمینت</a>
+                <a href="{% url 'blog:all_articles' %}?cat=beauty">زیبایی و لمینت</a>
                 <span class="post-breadcrumb-sep">/</span>
                 <span class="post-breadcrumb-current">راهنمای جامع انواع ارتودنسی</span>
             </nav>
@@ -404,7 +401,7 @@
                 <section class="post-related">
                     <h2 class="post-related-title">مقالات مرتبط</h2>
                     <div class="post-related-grid">
-                        <article class="article-card"><a href="post.html" class="article-card-link">
+                        <article class="article-card"><a href="{% url 'blog:post_detail' slug='some-slug' %}" class="article-card-link">
                             <div class="article-card-thumb"><img src="{% static 'images/home-video-preview/preview-2.jpg' %}"
                                                                  alt="طیف رنگی کامپوزیت"><span
                                     class="article-card-readtime">۶ دقیقه</span></div>
@@ -423,7 +420,7 @@
                                                                                 stroke-linejoin="round"><path
                                         d="M15 18l-6-6 6-6"/></svg></span></div>
                         </a></article>
-                        <article class="article-card"><a href="post.html" class="article-card-link">
+                        <article class="article-card"><a href="{% url 'blog:post_detail' slug='some-slug' %}" class="article-card-link">
                             <div class="article-card-thumb"><img src="{% static 'images/home-video-preview/preview-3.jpg' %}"
                                                                  alt="بهترین زمان ایمپلنت"><span
                                     class="article-card-readtime">۱۰ دقیقه</span></div>
@@ -442,7 +439,7 @@
                                                                                 stroke-linejoin="round"><path
                                         d="M15 18l-6-6 6-6"/></svg></span></div>
                         </a></article>
-                        <article class="article-card"><a href="post.html" class="article-card-link">
+                        <article class="article-card"><a href="{% url 'blog:post_detail' slug='some-slug' %}" class="article-card-link">
                             <div class="article-card-thumb"><img src="{% static 'images/home-video-preview/preview-5.jpg' %}"
                                                                  alt="انواع روکش"><span class="article-card-readtime">۹ دقیقه</span>
                             </div>
