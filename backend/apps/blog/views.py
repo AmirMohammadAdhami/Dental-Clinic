@@ -16,16 +16,6 @@ def post_detail(request, slug):
     return render(request, 'blog/post.html')
 
 
-def team(request):
-    """Render the team/doctors listing page."""
-    return render(request, 'blog/team.html')
-
-
-def doctor_detail(request, slug):
-    """Render a single doctor profile."""
-    return render(request, 'blog/doctor.html')
-
-
 def before_after(request):
     """Render the before/after gallery page."""
     return render(request, 'blog/before-after.html')

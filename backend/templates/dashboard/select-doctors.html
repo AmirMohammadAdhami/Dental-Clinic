@@ -17,7 +17,7 @@
 
     <!-- ================= HERO SECTION ================= -->
     <section class="sel-hero">
-        <a href="dashboard.html" class="sel-back-link">
+        <a href="{% url 'dashboard:dashboard' %}" class="sel-back-link">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="19" y1="12" x2="5" y2="12"/>
                 <polyline points="12 19 5 12 12 5"/>
@@ -69,7 +69,7 @@
                 </div>
             </div>
             <div class="sel-doctor-actions">
-                <a href="../blog/doctor.html" class="btn btn-outline btn-sm sel-btn-profile">مشاهده پروفایل</a>
+                <a href="{% url 'doctors:doctor_detail' slug='amir-mohammad-adhami' %}" class="btn btn-outline btn-sm sel-btn-profile">مشاهده پروفایل</a>
                 <button class="btn btn-primary btn-sm sel-btn-book" data-doctor="آذرخو">انتخاب و مشاهده زمان‌ها ←</button>
             </div>
         </div>
@@ -96,7 +96,7 @@
                 </div>
             </div>
             <div class="sel-doctor-actions">
-                <a href="../blog/doctor.html" class="btn btn-outline btn-sm sel-btn-profile">مشاهده پروفایل</a>
+                <a href="{% url 'doctors:doctor_detail' slug='amir-mohammad-adhami' %}" class="btn btn-outline btn-sm sel-btn-profile">مشاهده پروفایل</a>
                 <button class="btn btn-primary btn-sm sel-btn-book" data-doctor="فرهمندنیا">انتخاب و مشاهده زمان‌ها ←</button>
             </div>
         </div>
@@ -123,7 +123,7 @@
                 </div>
             </div>
             <div class="sel-doctor-actions">
-                <a href="../blog/doctor.html" class="btn btn-outline btn-sm sel-btn-profile">مشاهده پروفایل</a>
+                <a href="{% url 'doctors:doctor_detail' slug='amir-mohammad-adhami' %}" class="btn btn-outline btn-sm sel-btn-profile">مشاهده پروفایل</a>
                 <button class="btn btn-primary btn-sm sel-btn-book" data-doctor="امیری‌راد">انتخاب و مشاهده زمان‌ها ←</button>
             </div>
         </div>
@@ -150,7 +150,7 @@
                 </div>
             </div>
             <div class="sel-doctor-actions">
-                <a href="../blog/doctor.html" class="btn btn-outline btn-sm sel-btn-profile">مشاهده پروفایل</a>
+                <a href="{% url 'doctors:doctor_detail' slug='amir-mohammad-adhami' %}" class="btn btn-outline btn-sm sel-btn-profile">مشاهده پروفایل</a>
                 <button class="btn btn-primary btn-sm sel-btn-book" data-doctor="احمدی">انتخاب و مشاهده زمان‌ها ←</button>
             </div>
         </div>
@@ -177,7 +177,7 @@
                 </div>
             </div>
             <div class="sel-doctor-actions">
-                <a href="../blog/doctor.html" class="btn btn-outline btn-sm sel-btn-profile">مشاهده پروفایل</a>
+                <a href="{% url 'doctors:doctor_detail' slug='amir-mohammad-adhami' %}" class="btn btn-outline btn-sm sel-btn-profile">مشاهده پروفایل</a>
                 <button class="btn btn-primary btn-sm sel-btn-book" data-doctor="بهرامی">انتخاب و مشاهده زمان‌ها ←</button>
             </div>
         </div>
@@ -204,7 +204,7 @@
                 </div>
             </div>
             <div class="sel-doctor-actions">
-                <a href="../blog/doctor.html" class="btn btn-outline btn-sm sel-btn-profile">مشاهده پروفایل</a>
+                <a href="{% url 'doctors:doctor_detail' slug='amir-mohammad-adhami' %}" class="btn btn-outline btn-sm sel-btn-profile">مشاهده پروفایل</a>
                 <button class="btn btn-primary btn-sm sel-btn-book" data-doctor="محمدی">انتخاب و مشاهده زمان‌ها ←</button>
             </div>
         </div>
@@ -258,7 +258,7 @@
                 <span id="selectedDayText"></span>
                 <span id="selectedTimeText"></span>
             </div>
-            <a href="finalize-information.html" class="btn btn-primary btn-lg sel-modal-confirm-btn">
+            <a href="{% url 'dashboard:finalize_information' tracking_code='maaadar' %}" class="btn btn-primary btn-lg sel-modal-confirm-btn">
                 تایید زمان و ادامه ثبت نام ←
             </a>
         </div>

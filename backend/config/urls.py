@@ -5,6 +5,8 @@ from django.conf import settings
 from backend.apps.core import urls as core_urls
 from backend.apps.blog import urls as blog_urls
 from backend.apps.accounts import urls as accounts_urls
+from backend.apps.appointments import urls as appointments_urls
+from backend.apps.doctors import urls as doctors_urls
 
 
 urlpatterns = [
@@ -12,6 +14,8 @@ urlpatterns = [
     path('', include(core_urls)),
     path('blog/', include(blog_urls)),
     path('accounts/', include(accounts_urls)),
+    path('dashboard/', include(appointments_urls)),
+    path('doctors/', include(doctors_urls)),
 ]
 
 

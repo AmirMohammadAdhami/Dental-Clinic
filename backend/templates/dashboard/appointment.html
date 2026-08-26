@@ -19,7 +19,7 @@
 
         <!-- Sub-Header -->
         <div class="dash-page-subheader">
-            <a href="dashboard.html" class="dash-back-btn">
+            <a href="{% url 'dashboard:dashboard' %}" class="dash-back-btn">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                      stroke-linecap="round" stroke-linejoin="round">
                     <line x1="19" y1="12" x2="5" y2="12"/>
@@ -203,7 +203,7 @@
 
         <!-- ================= SECTION 5: DASHBOARD LINK ================= -->
         <section class="receipt-dashboard-link dash-section">
-            <a href="dashboard.html" class="receipt-dashboard-btn">
+            <a href="{% url 'dashboard:dashboard' %}" class="receipt-dashboard-btn">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                      stroke-linecap="round" stroke-linejoin="round">
                     <rect x="3" y="3" width="7" height="9" rx="1"/>
