@@ -4,12 +4,14 @@ from django.conf.urls.static import static
 from django.conf import settings
 from backend.apps.core import urls as core_urls
 from backend.apps.blog import urls as blog_urls
+from backend.apps.accounts import urls as accounts_urls
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(core_urls)),
     path('blog/', include(blog_urls)),
+    path('accounts/', include(accounts_urls)),
 ]
 
 
