@@ -42,8 +42,8 @@
         <nav class="nav-center">
             <a href="{% url 'core:home' %}" class="nav-link is-active">صفحه اصلی</a>
             <a href="{% url 'blog:team' %}" class="nav-link">تیم درمانی</a>
-            <a href="../blog/before-after.html" class="nav-link">نمونه کارها</a>
-            <a href="../blog/blog.html" class="nav-link">بلاگ</a>
+            <a href="{% url 'blog:before_after' %}" class="nav-link">نمونه کارها</a>
+            <a href="{% url 'blog:blog_index' %}" class="nav-link">بلاگ</a>
         </nav>
 
         <!-- سمت چپ: دکمه رزرو -->
