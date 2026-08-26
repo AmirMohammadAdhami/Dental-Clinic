@@ -51,7 +51,7 @@
 
         <!-- سمت چپ: دکمه رزرو -->
         <div class="header-actions">
-            <a href="{% url 'accounts:auth' %}" class="btn btn-primary btn-sm btn-primary-cta" style="text-decoration:none">ورود / ثبت‌نام</a>
+            <a href="{% url 'accounts:login' %}" class="btn btn-primary btn-sm btn-primary-cta" style="text-decoration:none">ورود / ثبت‌نام</a>
         </div>
     </div>
 </header>
@@ -69,7 +69,7 @@
             بازگشت به بالا
         </button>
         <div class="footer-auth-links">
-            <a href="{% url 'accounts:auth' %}">ورود / ثبت‌نام</a>
+            <a href="{% url 'accounts:login' %}">ورود / ثبت‌نام</a>
             <a href="../dashboard/dashboard.html">پنل بیمار</a>
         </div>
         <p class="footer-copy">© ۲۰۲۶ دنتورا — تمامی حقوق محفوظ است.</p>
@@ -83,7 +83,7 @@
     <a href="{% url 'blog:team' %}" class="site-main-nav-item"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>پزشکان</span></a>
     <a href="../dashboard/select-doctors.html" class="site-main-nav-cta" aria-label="رزرو نوبت"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></a>
     <a href="{% url 'blog:blog_index' %}" class="site-main-nav-item"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span>بلاگ</span></a>
-    <a href="{% url 'accounts:auth' %}" class="site-main-nav-item"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>پروفایل</span></a>
+    <a href="{% url 'accounts:login' %}" class="site-main-nav-item"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>پروفایل</span></a>
 </nav>
 
 <script src="{% static "js/shared.js" %}"></script>

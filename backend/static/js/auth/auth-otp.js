@@ -1,27 +1,49 @@
 /**
- * OTP Standalone Flow (login.html)
- * Extracted from script.js (lines 1034-1137)
+ * OTP Standalone Flow (otp.html)
+ * OTP boxes, circular timer, resend, phone display
  */
 
-// --- OTP: Boxes, Timer, Resend ---
 setTimeout(function () {
-  var otpForm = document.getElementById('authOtpForm');
+  var otpForm = document.getElementById('otpForm');
   if (!otpForm) return;
   var boxes = document.querySelectorAll('.auth-otp-input');
   if (!boxes.length) return;
-  var timerEl = document.getElementById('authTimerCount');
-  var resendBtn = document.getElementById('authResendBtn');
+
+  var timerEl = document.getElementById('otpTimerText');
+  var timerCircle = document.getElementById('otpTimerCircle');
+  var resendBtn = document.getElementById('otpResendBtn');
+  var phoneEl = document.getElementById('otpPhone');
+  var submitBtn = document.getElementById('otpSubmitBtn');
+  var successEl = document.getElementById('otpSuccess');
+
   var seconds = 119;
   var timerInterval = null;
+  var CIRCUMFERENCE = 2 * Math.PI * 16; // r=16
+
+  // Display phone from sessionStorage
+  try {
+    var storedPhone = sessionStorage.getItem('authPhone');
+    if (storedPhone && phoneEl) {
+      var masked = storedPhone.slice(0, 4) + '***' + storedPhone.slice(-3);
+      phoneEl.textContent = masked;
+    }
+  } catch (e) {}
+
+  // Farsi to English helper
+  function toEnDigits(str) {
+    return str.replace(/[۰-۹]/g, function (d) {
+      return String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
+    });
+  }
+
+  function toFa(n) {
+    var fa = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+    return String(n).split('').map(function (d) { return fa[parseInt(d)] || d; }).join('');
+  }
 
   function moveToNext(idx) {
     if (idx < boxes.length - 1) {
       setTimeout(function () { boxes[idx + 1].focus(); }, 10);
-    }
-  }
-  function moveToPrev(idx) {
-    if (idx > 0) {
-      setTimeout(function () { boxes[idx - 1].focus(); }, 10);
     }
   }
   function updateFilled(box) {
@@ -29,12 +51,13 @@ setTimeout(function () {
     else box.classList.remove('filled');
   }
 
+  // OTP box interactions
   for (var i = 0; i < boxes.length; i++) {
     (function (idx) {
       var box = boxes[idx];
 
       box.addEventListener('input', function () {
-        box.value = box.value.replace(/[^0-9]/g, '').slice(-1);
+        box.value = toEnDigits(box.value).replace(/[^0-9]/g, '').slice(-1);
         updateFilled(box);
         if (box.value) moveToNext(idx);
       });
@@ -66,30 +89,30 @@ setTimeout(function () {
   // Focus first box on load
   setTimeout(function () { boxes[0].focus(); }, 100);
 
-  // Timer
+  // Circular timer
   function startTimer() {
     seconds = 119;
     resendBtn.disabled = true;
-    timerEl.parentElement.style.display = '';
     resendBtn.style.display = 'none';
+    if (timerCircle) timerCircle.style.strokeDashoffset = '0';
     clearInterval(timerInterval);
     timerInterval = setInterval(function () {
       seconds--;
       var m = Math.floor(seconds / 60);
       var s = seconds % 60;
-      timerEl.textContent = (m < 10 ? '۰' : '') + toFa(m) + ':' + (s < 10 ? '۰' : '') + toFa(s);
+      if (timerEl) timerEl.textContent = (m < 10 ? '۰' : '') + toFa(m) + ':' + (s < 10 ? '۰' : '') + toFa(s);
+      if (timerCircle) {
+        var pct = seconds / 119;
+        timerCircle.style.strokeDashoffset = String(CIRCUMFERENCE * (1 - pct));
+      }
       if (seconds <= 0) {
         clearInterval(timerInterval);
-        timerEl.parentElement.style.display = 'none';
-        resendBtn.style.display = '';
         resendBtn.disabled = false;
+        resendBtn.style.display = '';
+        if (timerEl) timerEl.textContent = '';
+        if (timerCircle) timerCircle.style.strokeDashoffset = String(CIRCUMFERENCE);
       }
     }, 1000);
-  }
-
-  function toFa(n) {
-    var fa = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
-    return String(n).split('').map(function (d) { return fa[parseInt(d)] || d; }).join('');
   }
 
   if (resendBtn) resendBtn.addEventListener('click', function () {
@@ -98,12 +121,32 @@ setTimeout(function () {
 
   startTimer();
 
+  // Form submit
   otpForm.addEventListener('submit', function (e) {
     e.preventDefault();
     var code = '';
     boxes.forEach(function (b) { code += b.value; });
-    if (code.length === boxes.length) {
-      window.location.href = 'login-info.html';
+    if (code.length < boxes.length) return;
+
+    // Show loading
+    if (submitBtn) {
+      submitBtn.classList.add('is-loading');
+      submitBtn.disabled = true;
     }
+
+    setTimeout(function () {
+      if (submitBtn) {
+        submitBtn.classList.remove('is-loading');
+        submitBtn.disabled = false;
+      }
+      // Hide form, show success
+      otpForm.style.display = 'none';
+      if (successEl) successEl.style.display = '';
+
+      // Redirect to profile page
+      setTimeout(function () {
+        window.location.href = otpForm.getAttribute('data-next-url') || 'login-info.html';
+      }, 1500);
+    }, 800);
   });
 }, 200);

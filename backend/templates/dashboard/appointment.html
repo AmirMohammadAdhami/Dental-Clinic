@@ -1,0 +1,231 @@
+{% extends 'bases/dashboard_base.html' %}
+{% load static %}
+
+{% block title %}رسید نوبت — دنتورا{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/dashboard/subpages.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboard/receipt.css' %}">
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/dashboard/receipt.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}
+    <!-- ================= MAIN CONTENT ================= -->
+    <main class="dash-main" id="main-content" tabindex="-1">
+
+        <!-- Sub-Header -->
+        <div class="dash-page-subheader">
+            <a href="dashboard.html" class="dash-back-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"/>
+                    <polyline points="12 19 5 12 12 5"/>
+                </svg>
+                بازگشت به داشبورد
+            </a>
+            <h1 class="dash-page-title">رسید نوبت</h1>
+            <p class="dash-page-meta">جزئیات نوبت ثبت‌شده شما</p>
+        </div>
+
+        <!-- ================= SECTION 1: SUCCESS HEADER ================= -->
+        <section class="receipt-success">
+            <div class="receipt-checkmark">
+                <div class="receipt-checkmark-circle">
+                    <svg class="receipt-checkmark-svg" viewBox="0 0 24 24">
+                        <polyline points="6 12 10 16 18 8"/>
+                    </svg>
+                </div>
+                <div class="receipt-checkmark-ring"></div>
+            </div>
+
+            <h2 class="receipt-success-title">نوبت شما با موفقیت ثبت شد 🎉</h2>
+            <p class="receipt-success-subtitle">رسید شما در پنل شخصی قابل مشاهده است</p>
+
+            <!-- Tracking Code -->
+            <div class="receipt-tracking-box">
+                <div class="receipt-tracking-info">
+                    <span class="receipt-tracking-label">کد پیگیری نوبت</span>
+                    <span class="receipt-tracking-code" id="receiptTrackingCode">DNT-4821</span>
+                </div>
+                <div class="receipt-tracking-divider"></div>
+                <button class="receipt-copy-btn" id="receiptCopyBtn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                    </svg>
+                    <span>کپی کد</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 2: RECEIPT SUMMARY ================= -->
+        <section class="receipt-summary dash-section">
+            <h3 class="receipt-summary-title">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="16" y1="13" x2="8" y2="13"/>
+                    <line x1="16" y1="17" x2="8" y2="17"/>
+                    <polyline points="10 9 9 9 8 9"/>
+                </svg>
+                خلاصه رسید
+            </h3>
+
+            <div class="receipt-summary-row">
+                <div class="receipt-summary-row-left">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    نام پزشک
+                </div>
+                <div class="receipt-summary-row-right">دکتر کاوه آذرخو</div>
+            </div>
+
+            <div class="receipt-summary-row">
+                <div class="receipt-summary-row-left">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                    </svg>
+                    نوع خدمت
+                </div>
+                <div class="receipt-summary-row-right">کامپوزیت زیبایی</div>
+            </div>
+
+            <div class="receipt-summary-row">
+                <div class="receipt-summary-row-left">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                        <line x1="16" y1="2" x2="16" y2="6"/>
+                        <line x1="8" y1="2" x2="8" y2="6"/>
+                        <line x1="3" y1="10" x2="21" y2="10"/>
+                    </svg>
+                    تاریخ و ساعت
+                </div>
+                <div class="receipt-summary-row-right">۲۵ مرداد ۱۴۰۵ — ساعت ۱۶:۳۰</div>
+            </div>
+
+            <div class="receipt-summary-row receipt-summary-row--total">
+                <div class="receipt-summary-row-left">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="1" x2="12" y2="23"/>
+                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                    </svg>
+                    مبلغ پرداختی
+                </div>
+                <div class="receipt-summary-row-right">۲۵,۰۰۰,۰۰۰ تومان</div>
+            </div>
+
+            <a href="#" class="receipt-pdf-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                </svg>
+                دانلود فاکتور PDF
+            </a>
+        </section>
+
+        <!-- ================= SECTION 3: QUICK ACTIONS ================= -->
+        <section class="receipt-quick-actions dash-section">
+            <a href="tel:+982112345678" class="receipt-call-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+                </svg>
+                تماس با پشتیبانی کلینیک دنتورا
+            </a>
+        </section>
+
+        <!-- ================= SECTION 4: NAVIGATION APPS ================= -->
+        <section class="receipt-navigation dash-section">
+            <h3 class="receipt-nav-title">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                </svg>
+                مسیریابی تا کلینیک
+            </h3>
+            <p class="receipt-nav-subtitle">آدرس: تهران، خیابان ولیعصر، نبش کوچه گل</p>
+
+            <div class="receipt-nav-grid">
+                <!-- Neshan -->
+                <a href="https://neshan.org/36.315610443115234,59.571197509765625/Dentura"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="receipt-nav-app"
+                   data-app="نشان">
+                    <div class="receipt-nav-app-icon">
+                        <img src="{% static 'images/appointment-icons/neshan.webp' %}" alt="نشان">
+                    </div>
+                    <span class="receipt-nav-app-name">نشان</span>
+                    <span class="receipt-nav-app-desc">مسیریابی با نشان</span>
+                </a>
+
+                <!-- Balad -->
+                <a href="https://balad.ir/p/36.31561,59.57119?q=Dentura"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="receipt-nav-app"
+                   data-app="بلد">
+                    <div class="receipt-nav-app-icon">
+                        <img src="{% static 'images/appointment-icons/balad.png' %}" alt="بلد">
+                    </div>
+                    <span class="receipt-nav-app-name">بلد</span>
+                    <span class="receipt-nav-app-desc">مسیریابی با بلد</span>
+                </a>
+
+                <!-- Google Maps -->
+                <a href="https://www.google.com/maps/dir/?api=1&destination=36.31561,59.57119&destination_place_id=Dentura"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="receipt-nav-app"
+                   data-app="Google Maps">
+                    <div class="receipt-nav-app-icon">
+                        <img src="{% static 'images/appointment-icons/google-maps.png' %}" alt="Google Maps">
+                    </div>
+                    <span class="receipt-nav-app-name">Google Maps</span>
+                    <span class="receipt-nav-app-desc">مسیریابی با گوگل مپس</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 5: DASHBOARD LINK ================= -->
+        <section class="receipt-dashboard-link dash-section">
+            <a href="dashboard.html" class="receipt-dashboard-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="7" height="9" rx="1"/>
+                    <rect x="14" y="3" width="7" height="5" rx="1"/>
+                    <rect x="14" y="12" width="7" height="9" rx="1"/>
+                    <rect x="3" y="16" width="7" height="5" rx="1"/>
+                </svg>
+                بازگشت به داشبورد
+            </a>
+        </section>
+
+    </main>
+
+    <!-- ================= TOAST ================= -->
+    <div class="receipt-toast" id="receiptToast"></div>
+
+{% endblock %}
+
+
+
+
+
+
+
+

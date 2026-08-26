@@ -1,0 +1,259 @@
+{% extends 'bases/dashboard_base.html' %}
+{% load static %}
+
+{% block title %}مرکز اطلاع‌رسانی — دنتورا{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/dashboard/notifications.css' %}">
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/dashboard/notifications.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<!-- ================= MAIN CONTENT ================= -->
+<main class="dash-main" id="main-content" tabindex="-1">
+
+    <!-- ================= NOTIFICATIONS HEADER ================= -->
+    <section class="notif-hero">
+        <div class="notif-hero-inner">
+            <div class="notif-hero-text">
+                <h1 class="notif-hero-title">مرکز اطلاع‌رسانی و یادآوری‌ها</h1>
+                <p class="notif-hero-subtitle">تمام پیام‌ها و تنظیمات یادآوری شما در یک مکان</p>
+            </div>
+            <button class="btn btn-outline btn-sm notif-mark-all-btn" id="notifMarkAllBtn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                    <circle cx="8.5" cy="7" r="4"/>
+                    <polyline points="17 11 19 13 23 9"/>
+                </svg>
+                علامت‌گذاری همه به عنوان خوانده‌شده
+            </button>
+        </div>
+    </section>
+
+    <!-- ================= TABS ================= -->
+    <div class="notif-tabs" role="tablist">
+        <button class="notif-tab notif-tab--active" role="tab" aria-selected="true" data-tab="messages" id="tab-messages" aria-controls="panel-messages">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+            </svg>
+            پیام‌ها و اعلان‌ها
+        </button>
+        <button class="notif-tab" role="tab" aria-selected="false" data-tab="settings" id="tab-settings" aria-controls="panel-settings">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+            تنظیمات یادآوری
+        </button>
+    </div>
+
+    <!-- ================= TAB 1: MESSAGES & NOTIFICATIONS ================= -->
+    <div class="notif-panel notif-panel--active" id="panel-messages" role="tabpanel" aria-labelledby="tab-messages">
+
+        <!-- امروز -->
+        <div class="notif-date-group">
+            <h3 class="notif-date-label">امروز</h3>
+
+            <!-- unread -->
+            <div class="notif-card notif-card--unread">
+                <div class="notif-card-dot"></div>
+                <div class="notif-card-icon notif-card-icon--green">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                        <line x1="16" y1="2" x2="16" y2="6"/>
+                        <line x1="8" y1="2" x2="8" y2="6"/>
+                        <line x1="3" y1="10" x2="21" y2="10"/>
+                    </svg>
+                </div>
+                <div class="notif-card-content">
+                    <p class="notif-card-text">نوبت شما با <strong>دکتر کاوه آذرخو</strong> برای فردا ساعت <strong>۱۶:۳۰</strong> ثبت شده است.</p>
+                    <span class="notif-card-meta">۱۰ دقیقه پیش</span>
+                </div>
+            </div>
+
+            <!-- unread -->
+            <div class="notif-card notif-card--unread">
+                <div class="notif-card-dot"></div>
+                <div class="notif-card-icon notif-card-icon--blue">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                        <polyline points="21 15 16 10 5 21"/>
+                    </svg>
+                </div>
+                <div class="notif-card-content">
+                    <p class="notif-card-text">عکس جدیدی در <strong>گالری قبل/بعد</strong> شما قرار گرفت — نتیجه لمینت سرامیکی.</p>
+                    <span class="notif-card-meta">۳۵ دقیقه پیش</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- دیروز -->
+        <div class="notif-date-group">
+            <h3 class="notif-date-label">دیروز</h3>
+
+            <!-- read -->
+            <div class="notif-card">
+                <div class="notif-card-icon notif-card-icon--orange">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y1="13"/>
+                        <line x1="16" y1="17" x2="8" y1="17"/>
+                        <polyline points="10 9 9 9 8 9"/>
+                    </svg>
+                </div>
+                <div class="notif-card-content">
+                    <p class="notif-card-text">نسخه پزشکی جدیدی از <strong>دکتر آذرخو</strong> برای شما ثبت شد. جهت مشاهده جزئیات به پنل مراجعه کنید.</p>
+                    <span class="notif-card-meta">دیروز — ۱۴:۲۰</span>
+                </div>
+            </div>
+
+            <!-- read -->
+            <div class="notif-card">
+                <div class="notif-card-icon notif-card-icon--green">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                    </svg>
+                </div>
+                <div class="notif-card-content">
+                    <p class="notif-card-text">یادآوری: نوبت چکاپ ۶ ماهه شما در <strong>۳ ماه آینده</strong> فرا می‌رسد.</p>
+                    <span class="notif-card-meta">دیروز — ۰۹:۰۰</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- هفته گذشته -->
+        <div class="notif-date-group">
+            <h3 class="notif-date-label">هفته گذشته</h3>
+
+            <!-- read -->
+            <div class="notif-card">
+                <div class="notif-card-icon notif-card-icon--blue">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                        <polyline points="21 15 16 10 5 21"/>
+                    </svg>
+                </div>
+                <div class="notif-card-content">
+                    <p class="notif-card-text">فایل درمانی شما (عکس CBCT) توسط تیم درمانی آپلود شد.</p>
+                    <span class="notif-card-meta">۵ روز پیش</span>
+                </div>
+            </div>
+
+            <!-- read -->
+            <div class="notif-card">
+                <div class="notif-card-icon notif-card-icon--orange">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y1="13"/>
+                        <line x1="16" y1="17" x2="8" y1="17"/>
+                    </svg>
+                </div>
+                <div class="notif-card-content">
+                    <p class="notif-card-text">پیش‌فاکتور درمان لمینت سرامیکی صادر شد. مبلغ قابل پرداخت: <strong>۱۲,۰۰۰,۰۰۰ تومان</strong>.</p>
+                    <span class="notif-card-meta">۱ هفته پیش</span>
+                </div>
+            </div>
+
+            <!-- read -->
+            <div class="notif-card">
+                <div class="notif-card-icon notif-card-icon--green">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                </div>
+                <div class="notif-card-content">
+                    <p class="notif-card-text">نوبت قبلی شما با دکتر فرهمندنیا با موفقیت تکمیل شد.</p>
+                    <span class="notif-card-meta">۱ هفته پیش</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty State fallback (hidden by default) -->
+        <div class="notif-empty" id="notifEmpty" style="display:none;">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.4">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+            </svg>
+            <p>پیام جدیدی ندارید 🎉</p>
+        </div>
+    </div>
+
+    <!-- ================= TAB 2: REMINDER SETTINGS ================= -->
+    <div class="notif-panel" id="panel-settings" role="tabpanel" aria-labelledby="tab-settings" hidden>
+
+        <div class="notif-settings-grid">
+
+            <!-- SMS Reminder -->
+            <div class="notif-settings-card">
+                <div class="notif-settings-header">
+                    <div class="notif-settings-icon notif-settings-icon--green">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                    </div>
+                    <div class="notif-settings-info">
+                        <h3 class="notif-settings-title">یادآوری پیامکی</h3>
+                        <p class="notif-settings-desc">ارسال پیامک یادآوری ۲۴ ساعت قبل از نوبت</p>
+                    </div>
+                </div>
+                <label class="notif-toggle" aria-label="فعال‌سازی یادآوری پیامکی">
+                    <input type="checkbox" class="notif-toggle-input" checked>
+                    <span class="notif-toggle-slider"></span>
+                </label>
+            </div>
+
+            <!-- WhatsApp -->
+            <div class="notif-settings-card">
+                <div class="notif-settings-header">
+                    <div class="notif-settings-icon notif-settings-icon--emerald">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                        </svg>
+                    </div>
+                    <div class="notif-settings-info">
+                        <h3 class="notif-settings-title">واتساپ</h3>
+                        <p class="notif-settings-desc">ارسال پیش‌فاکتور و رسید در واتساپ</p>
+                    </div>
+                </div>
+                <label class="notif-toggle" aria-label="فعال‌سازی ارسال واتساپ">
+                    <input type="checkbox" class="notif-toggle-input" checked>
+                    <span class="notif-toggle-slider"></span>
+                </label>
+            </div>
+
+            <!-- 6-month Checkup -->
+            <div class="notif-settings-card">
+                <div class="notif-settings-header">
+                    <div class="notif-settings-icon notif-settings-icon--blue">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                            <line x1="16" y1="2" x2="16" y2="6"/>
+                            <line x1="8" y1="2" x2="8" y2="6"/>
+                            <line x1="3" y1="10" x2="21" y2="10"/>
+                        </svg>
+                    </div>
+                    <div class="notif-settings-info">
+                        <h3 class="notif-settings-title">یادآوری چکاپ دوره‌ای</h3>
+                        <p class="notif-settings-desc">اعلان یادآوری چکاپ ۶ ماهه از طریق پیامک</p>
+                    </div>
+                </div>
+                <label class="notif-toggle" aria-label="فعال‌سازی یادآوری چکاپ">
+                    <input type="checkbox" class="notif-toggle-input">
+                    <span class="notif-toggle-slider"></span>
+                </label>
+            </div>
+
+        </div>
+    </div>
+
+</main>
+
+{% endblock %}

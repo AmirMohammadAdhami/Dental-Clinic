@@ -1,5 +1,82 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-<head><meta charset="UTF-8"><meta http-equiv="refresh" content="0;url=auth.html"><title>ریدایرکت — دنتورا</title></head>
-<body><p style="text-align:center;margin-top:40px;font-family:sans-serif">در حال انتقال... <a href="auth.html">کلیک کنید</a></p></body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تایید کد — دنتورا</title>
+    <link rel="stylesheet" href="../../statics/styles/base.css">
+    <link rel="stylesheet" href="../../statics/styles/shared.css">
+    <link rel="stylesheet" href="../../statics/styles/auth/auth.css">
+    <script>if('scrollRestoration' in history) history.scrollRestoration='manual';</script>
+</head>
+<body>
+<div class="auth-page">
+    <!-- Backdrop -->
+    <div class="auth-backdrop"></div>
+
+    <div class="auth-card">
+        <!-- Progress Indicator -->
+        <div class="auth-progress">
+            <div class="auth-progress-track">
+                <div class="auth-progress-fill" style="width: 66%"></div>
+            </div>
+            <div class="auth-progress-dots">
+                <span class="auth-dot is-completed" data-step="1">۱</span>
+                <span class="auth-dot is-active" data-step="2">۲</span>
+                <span class="auth-dot" data-step="3">۳</span>
+            </div>
+        </div>
+
+        <!-- OTP Form -->
+        <div class="auth-slide is-active">
+            <h1 class="auth-title">کد تایید را وارد کنید</h1>
+            <p class="auth-subtitle">کد ۵ رقمی ارسال‌شده به شماره <strong id="otpPhone">۰۹۱۲***۵۶۷۸</strong> را وارد کنید.</p>
+            <a href="login.html" class="auth-edit-phone">ویرایش شماره</a>
+            <form class="auth-form" id="otpForm">
+                <div class="auth-otp-boxes" id="otpBoxes">
+                    <input type="tel" class="auth-otp-input" maxlength="1" inputmode="numeric" aria-label="رقم اول">
+                    <input type="tel" class="auth-otp-input" maxlength="1" inputmode="numeric" aria-label="رقم دوم">
+                    <input type="tel" class="auth-otp-input" maxlength="1" inputmode="numeric" aria-label="رقم سوم">
+                    <input type="tel" class="auth-otp-input" maxlength="1" inputmode="numeric" aria-label="رقم چهارم">
+                    <input type="tel" class="auth-otp-input" maxlength="1" inputmode="numeric" aria-label="رقم پنجم">
+                </div>
+                <div class="auth-timer-wrap">
+                    <div class="auth-circular-timer" id="otpCircularTimer">
+                        <svg viewBox="0 0 36 36">
+                            <circle class="auth-timer-bg" cx="18" cy="18" r="16" fill="none" stroke-width="2"/>
+                            <circle class="auth-timer-progress" id="otpTimerCircle" cx="18" cy="18" r="16" fill="none" stroke-width="2" stroke-dasharray="100.53" stroke-dashoffset="0"/>
+                        </svg>
+                        <span class="auth-timer-text" id="otpTimerText">۰۱:۵۹</span>
+                    </div>
+                    <button type="button" class="auth-resend-btn" id="otpResendBtn" disabled>ارسال مجدد کد</button>
+                </div>
+                <div class="auth-btn-row">
+                    <button type="submit" class="btn btn-primary auth-submit" id="otpSubmitBtn">
+                        <span class="auth-btn-text">تایید و ادامه</span>
+                        <span class="auth-btn-spinner" style="display:none"><span class="auth-spinner"></span></span>
+                    </button>
+                    <a href="../home/index.html" class="auth-home-btn" title="خانه">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Success State -->
+        <div class="auth-success" id="otpSuccess" style="display:none">
+            <div class="auth-success-check">
+                <svg width="80" height="80" viewBox="0 0 80 80">
+                    <circle class="auth-success-circle" cx="40" cy="40" r="36" fill="none" stroke="#10b981" stroke-width="3"/>
+                    <polyline class="auth-success-tick" points="24,42 34,52 56,28" fill="none" stroke="#10b981" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h2 class="auth-success-title">تایید شد!</h2>
+            <p class="auth-success-text">کد شما با موفقیت تایید شد</p>
+        </div>
+    </div>
+</div>
+
+<script src="../../statics/scripts/shared.js"></script>
+<script src="../../statics/scripts/auth/auth-otp.js"></script>
+</body>
 </html>

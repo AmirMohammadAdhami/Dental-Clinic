@@ -1,5 +1,100 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head><meta charset="UTF-8"><meta http-equiv="refresh" content="0;url=auth.html"><title>ریدایرکت — دنتورا</title></head>
-<body><p style="text-align:center;margin-top:40px;font-family:sans-serif">در حال انتقال... <a href="auth.html">کلیک کنید</a></p></body>
-</html>
+{% extends 'bases/auth_base.html' %}
+{% load static %}
+
+
+{% block title %}تکمیل اطلاعات — دنتورا{% endblock %}
+
+
+
+{% block js %}<script src="{% static 'js/auth/auth-profile.js' %}"></script>{% endblock %}
+
+{% block content %}
+	
+
+<div class="auth-page">
+    <!-- Backdrop -->
+    <div class="auth-backdrop"></div>
+
+    <div class="auth-card">
+        <!-- Progress Indicator -->
+        <div class="auth-progress">
+            <div class="auth-progress-track">
+                <div class="auth-progress-fill" style="width: 100%"></div>
+            </div>
+            <div class="auth-progress-dots">
+                <span class="auth-dot is-completed" data-step="1">۱</span>
+                <span class="auth-dot is-completed" data-step="2">۲</span>
+                <span class="auth-dot is-active" data-step="3">۳</span>
+            </div>
+        </div>
+
+        <!-- Profile Form -->
+        <div class="auth-slide is-active">
+            <h1 class="auth-title">تکمیل اطلاعات کاربری</h1>
+            <p class="auth-subtitle">برای درج در پرونده پزشکی و رزرو نوبت، اطلاعات زیر را وارد کنید.</p>
+            <form class="auth-form" id="profileForm">
+                <div class="auth-input-wrap auth-stagger-item" style="--i:0">
+                    <svg class="auth-input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    <input type="text" class="auth-input" id="profileFirstName" placeholder="نام"
+                           autocomplete="given-name" required>
+                </div>
+                <div class="auth-input-wrap auth-stagger-item" style="--i:1">
+                    <svg class="auth-input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    <input type="text" class="auth-input" id="profileLastName" placeholder="نام خانوادگی"
+                           autocomplete="family-name" required>
+                </div>
+                <div class="auth-input-wrap auth-stagger-item" style="--i:2">
+                    <svg class="auth-input-icon auth-input-icon--left" width="20" height="20" viewBox="0 0 24 24"
+                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                         stroke-linejoin="round">
+                        <rect x="2" y="5" width="20" height="14" rx="2"/>
+                        <path d="M2 10h20"/>
+                    </svg>
+                    <input type="tel" class="auth-input auth-input--national" id="profileNationalCode"
+                           placeholder="کد ملی (۱۰ رقمی)" maxlength="10" inputmode="numeric" autocomplete="off"
+                           required>
+                    <span class="auth-validation-tick" id="profileNatTick" style="display:none">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"
+                             stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    </span>
+                </div>
+                <div class="auth-btn-row auth-stagger-item" style="--i:3">
+                    <button type="submit" class="btn btn-primary auth-submit">
+                        <span class="auth-btn-text">ثبت اطلاعات و ورود به پنل</span>
+                        <span class="auth-btn-spinner" style="display:none"><span class="auth-spinner"></span></span>
+                    </button>
+                    <a href="../home/index.html" class="auth-home-btn" title="خانه">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                            <polyline points="9 22 9 12 15 12 15 22"/>
+                        </svg>
+                    </a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Success State -->
+        <div class="auth-success" id="profileSuccess" style="display:none">
+            <div class="auth-success-check">
+                <svg width="80" height="80" viewBox="0 0 80 80">
+                    <circle class="auth-success-circle" cx="40" cy="40" r="36" fill="none" stroke="#10b981"
+                            stroke-width="3"/>
+                    <polyline class="auth-success-tick" points="24,42 34,52 56,28" fill="none" stroke="#10b981"
+                              stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h2 class="auth-success-title">خوش آمدید!</h2>
+            <p class="auth-success-text">ورود شما با موفقیت انجام شد</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
