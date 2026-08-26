@@ -1,7 +1,6 @@
 from django.db import models
 from ..accounts.models import User
 from django.utils.text import slugify
-from ..appointments.models import Service
 
 
 # Create your models here.
@@ -15,7 +14,7 @@ class Doctor(models.Model):
     years_of_experience = models.IntegerField()
     bio = models.TextField()
 
-    services_offered = models.ManyToManyField(Service, related_name='doctors_offered')
+    services_offered = models.ManyToManyField('appointments.Service', related_name='doctors_offered')
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

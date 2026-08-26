@@ -2,8 +2,6 @@ from django.db import models
 from ..accounts.models import User
 import secrets
 
-from backend.apps.doctors.models import Doctor
-
 
 # Create your models here.
 class Service(models.Model):
@@ -30,7 +28,7 @@ class Appointment(models.Model):
         DONE = "DONE", 'Done'
         CANCELLED = "CANCELLED", 'Cancelled'
 
-    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name='appointments')
+    doctor = models.ForeignKey('doctors.Doctor', on_delete=models.CASCADE, related_name='appointments')
 
     patient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='appointments', null=True, blank=True)
     first_name = models.CharField(max_length=100, null=True, blank=True)

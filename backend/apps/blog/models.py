@@ -1,9 +1,6 @@
 from django.db import models
-from ..doctors.models import Doctor
-from ..appointments.models import Service
 from django.utils.text import slugify
 from ..accounts.models import User
-from ..appointments.models import Appointment
 
 
 # Create your models here.
@@ -58,12 +55,12 @@ class ArticleView(models.Model):
 
 
 class Article(models.Model):
-    author = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name='articles')
+    author = models.ForeignKey('doctors.Doctor', on_delete=models.CASCADE, related_name='articles')
 
     slug = models.SlugField(unique=True)
 
     title = models.CharField(max_length=150)
-    category = models.ForeignKey(Service, on_delete=models.DO_NOTHING)
+    category = models.ForeignKey('appointments.Service', on_delete=models.DO_NOTHING)
     abstract = models.TextField()
     content = models.TextField()
 
@@ -107,7 +104,7 @@ class Comment(models.Model):
 class FAQ(models.Model):
     question = models.TextField()
     answer_text = models.TextField()
-    categories = models.ManyToManyField(Service)
+    categories = models.ManyToManyField('appointments.Service')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -119,7 +116,7 @@ class BeforeAfter(models.Model):
     after_image = models.ImageField(upload_to=f'blog/before-after-image/')
     description = models.TextField()
 
-    appointment = models.OneToOneField(Appointment, on_delete=models.CASCADE, related_name='before-after')
+    appointment = models.OneToOneField('appointments.Appointment', on_delete=models.CASCADE, related_name='before_after')
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

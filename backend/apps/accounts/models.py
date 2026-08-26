@@ -1,10 +1,29 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.utils import timezone
 
 
+class UserManager(BaseUserManager):
+    def create_user(self, phone, national_code, password=None, **extra_fields):
+        if not phone:
+            raise ValueError('Phone number is required')
+        if not national_code:
+            raise ValueError('National code is required')
+        user = self.model(phone=phone, national_code=national_code, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, phone, national_code, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('is_active', True)
+        return self.create_user(phone, national_code, password, **extra_fields)
+
+
 class User(AbstractUser):
     username = None
+    objects = UserManager()
 
     phone = models.CharField(
         max_length = 11,
