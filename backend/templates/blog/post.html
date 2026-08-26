@@ -1,44 +1,23 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>راهنمای جامع انواع ارتودنسی — دنتورا</title>
-    <link rel="stylesheet" href="../../statics/styles/base.css">
-    <link rel="stylesheet" href="../../statics/styles/shared.css">
-    <link rel="stylesheet" href="../../statics/styles/home/home.css">
-    <link rel="stylesheet" href="../../statics/styles/blog/post.css">
-    <script>if ('scrollRestoration' in history) history.scrollRestoration = 'manual';</script>
-</head>
-<body>
-<a href="#main-content" class="skip-link">رفتن به محتوای اصلی</a>
-<div class="bg-grid"></div>
-<div class="tooth-pattern"></div>
+{% extends "base.html" %}
+{% load static %}
 
+{% block css %}
+    <link rel="stylesheet" href="{% static "css/base.css" %}">
+    <link rel="stylesheet" href="{% static "css/shared.css" %}">
+    <link rel="stylesheet" href="{% static "css/home/home.css" %}">
+    <link rel="stylesheet" href="{% static "css/blog/post.css" %}">
+{% endblock %}
+
+{% block js %}
+<script src="{% static "js/shared.js" %}"></script>
+<script src="{% static "js/blog/post.js" %}"></script>
+{% endblock %}
+
+{% block title %}راهنمای جامع انواع ارتودنسی — دنتورا{% endblock %}
+
+{% block content %}
 <!-- Reading Progress Bar -->
 <div class="reading-progress" id="readingProgress"></div>
-
-<header class="header">
-    <div class="header-inner">
-        <a href="../home/index.html" class="brand"
-           style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:10px">
-            <span class="brand-icon"><svg viewBox="0 0 48 48" width="30" height="30" fill="none"
-                                          xmlns="http://www.w3.org/2000/svg"><path
-                    d="M24 6C18.5 6 14 8.6 11.2 12.4C9.3 15 9 18.3 9.4 21.5C9.8 25 10.8 28.4 11.7 31.8C12.4 34.5 13 37.4 14.6 39.7C15.5 41 17 42 18.6 41.4C20.1 40.8 20.6 39 20.9 37.6C21.4 35 21.4 32.3 21.9 29.7C22.2 28.1 22.9 26.2 24 26.2C25.1 26.2 25.8 28.1 26.1 29.7C26.6 32.3 26.6 35 27.1 37.6C27.4 39 27.9 40.8 29.4 41.4C31 42 32.5 41 33.4 39.7C35 37.4 35.6 34.5 36.3 31.8C37.2 28.4 38.2 25 38.6 21.5C39 18.3 38.7 15 36.8 12.4C34 8.6 29.5 6 24 6Z"
-                    fill="currentColor"/></svg></span>
-            <span class="brand-name">دنتورا</span>
-        </a>
-        <nav class="nav-center">
-            <a href="../home/index.html" class="nav-link">صفحه اصلی</a>
-            <a href="team.html" class="nav-link">تیم درمانی</a>
-            <a href="before-after.html" class="nav-link">نمونه کارها</a>
-            <a href="blog.html" class="nav-link is-active">بلاگ</a>
-        </nav>
-        <div class="header-actions">
-            <a href="../auth/auth.html" class="btn btn-primary btn-sm btn-primary-cta" style="text-decoration:none">ورود / ثبت‌نام</a>
-        </div>
-    </div>
-</header>
 
 <!-- Mobile Floating Search Button -->
 <button class="mobile-search-fab" aria-label="جستجوی مقالات" id="mobileSearchFab">
@@ -57,7 +36,7 @@
 
             <!-- Breadcrumb -->
             <nav class="post-breadcrumb" aria-label="مسیر صفحه">
-                <a href="../home/index.html">خانه</a>
+                <a href="index.html">خانه</a>
                 <span class="post-breadcrumb-sep">/</span>
                 <a href="all-articles.html">بلاگ</a>
                 <span class="post-breadcrumb-sep">/</span>
@@ -75,7 +54,7 @@
             <!-- Meta Bar -->
             <div class="post-meta">
                 <div class="post-meta-author">
-                    <img src="../../assets/doctors/doctor-1.jpg" alt="دکتر علیرضا احمدی" class="post-meta-avatar">
+                    <img src="{% static 'images/doctors/doctor-1.jpg' %}" alt="دکتر علیرضا احمدی" class="post-meta-avatar">
                     <div>
                         <span class="post-meta-name">دکتر علیرضا احمدی</span>
                         <span class="post-meta-specialty">متخصص ارتودنسی</span>
@@ -85,12 +64,12 @@
                     <span class="post-meta-date">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                              stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4"
-                                                                                                   width="18"
-                                                                                                   height="18" rx="2"
-                                                                                                   ry="2"/><line x1="16"
-                                                                                                                 y1="2"
-                                                                                                                 x2="16"
-                                                                                                                 y2="6"/><line
+                                                                                               width="18"
+                                                                                               height="18" rx="2"
+                                                                                               ry="2"/><line x1="16"
+                                                                                                             y1="2"
+                                                                                                             x2="16"
+                                                                                                             y2="6"/><line
                                 x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                         بروزرسانی: ۱۵ مرداد ۱۴۰۵
                     </span>
@@ -127,7 +106,7 @@
             <div class="post-gallery" id="postGallery">
                 <!-- Main Media -->
                 <div class="post-gallery-main">
-                    <img src="../../assets/home-video-preview/preview-1.jpg" alt="انواع ارتودنسی" class="post-gallery-img"
+                    <img src="{% static 'images/home-video-preview/preview-1.jpg' %}" alt="انواع ارتودنسی" class="post-gallery-img"
                          id="galleryMainImg">
                     <div class="post-gallery-video" id="galleryVideo" style="display:none;">
                         <video class="post-gallery-video-player" controls>
@@ -151,20 +130,20 @@
                 <!-- Thumbnails -->
                 <div class="post-gallery-thumbs" id="galleryThumbs">
                     <button class="post-gallery-thumb is-active" data-index="0" data-type="image"
-                            data-src="../../assets/home-video-preview/preview-1.jpg" aria-label="عکس ۱">
-                        <img src="../../assets/home-video-preview/preview-1.jpg" alt="">
+                            data-src="{% static 'images/home-video-preview/preview-1.jpg' %}" aria-label="عکس ۱">
+                        <img src="{% static 'images/home-video-preview/preview-1.jpg' %}" alt="">
                     </button>
                     <button class="post-gallery-thumb" data-index="1" data-type="image"
-                            data-src="../../assets/home-video-preview/preview-2.jpg" aria-label="عکس ۲">
-                        <img src="../../assets/home-video-preview/preview-2.jpg" alt="">
+                            data-src="{% static 'images/home-video-preview/preview-2.jpg' %}" aria-label="عکس ۲">
+                        <img src="{% static 'images/home-video-preview/preview-2.jpg' %}" alt="">
                     </button>
                     <button class="post-gallery-thumb" data-index="2" data-type="image"
-                            data-src="../../assets/home-video-preview/preview-3.jpg" aria-label="عکس ۳">
-                        <img src="../../assets/home-video-preview/preview-3.jpg" alt="">
+                            data-src="{% static 'images/home-video-preview/preview-3.jpg' %}" aria-label="عکس ۳">
+                        <img src="{% static 'images/home-video-preview/preview-3.jpg' %}" alt="">
                     </button>
                     <button class="post-gallery-thumb" data-index="3" data-type="video"
                             data-src="https://www.w3schools.com/html/mov_bbb.mp4" aria-label="ویدیو">
-                        <img src="../../assets/home-video-preview/preview-4.jpg" alt="">
+                        <img src="{% static 'images/home-video-preview/preview-4.jpg' %}" alt="">
                         <span class="post-gallery-thumb-play">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
                         </span>
@@ -274,7 +253,7 @@
 
                 <!-- Author Bio -->
                 <div class="post-author-box">
-                    <img src="../../assets/doctors/doctor-1.jpg" alt="دکتر علیرضا احمدی" class="post-author-img">
+                    <img src="{% static 'images/doctors/doctor-1.jpg' %}" alt="دکتر علیرضا احمدی" class="post-author-img">
                     <div class="post-author-info">
                         <h3 class="post-author-name">دکتر علیرضا احمدی</h3>
                         <p class="post-author-specialty">متخصص ارتودنسی — دانشگاه علوم پزشکی تهران</p>
@@ -358,9 +337,6 @@
                                     <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor">
                                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                                     </svg>
-                                    <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                                    </svg>
                                 </div>
                                 <blockquote class="testimonial-quote">بلیچینگ حرفه‌ای انجام دادم و واقعاً راضی‌ام. رنگ
                                     دندانام خیلی بهتر شده و لبخندم درخشان‌تر از همیشه‌ست.
@@ -400,7 +376,7 @@
                         <div class="post-comment-reply">
                             <div class="post-comment-header">
                                 <div class="post-comment-user">
-                                    <img src="../../assets/doctors/doctor-1.jpg" alt="دکتر احمدی" class="post-comment-reply-avatar">
+                                    <img src="{% static 'images/doctors/doctor-1.jpg' %}" alt="دکتر احمدی" class="post-comment-reply-avatar">
                                     <div>
                                         <span class="post-comment-name">دکتر علیرضا احمدی</span>
                                         <span class="post-comment-badge">پاسخ دندانپزشک</span>
@@ -429,12 +405,12 @@
                     <h2 class="post-related-title">مقالات مرتبط</h2>
                     <div class="post-related-grid">
                         <article class="article-card"><a href="post.html" class="article-card-link">
-                            <div class="article-card-thumb"><img src="../../assets/home-video-preview/preview-2.jpg"
+                            <div class="article-card-thumb"><img src="{% static 'images/home-video-preview/preview-2.jpg' %}"
                                                                  alt="طیف رنگی کامپوزیت"><span
                                     class="article-card-readtime">۶ دقیقه</span></div>
                             <div class="article-card-body">
                                 <div class="article-card-meta">
-                                    <div class="article-card-author"><img src="../../assets/doctors/doctor-3.jpg"
+                                    <div class="article-card-author"><img src="{% static 'images/doctors/doctor-3.jpg' %}"
                                                                           alt="دکتر محمد کریمی"
                                                                           class="article-card-avatar"><span>دکتر محمد کریمی</span>
                                     </div>
@@ -448,12 +424,12 @@
                                         d="M15 18l-6-6 6-6"/></svg></span></div>
                         </a></article>
                         <article class="article-card"><a href="post.html" class="article-card-link">
-                            <div class="article-card-thumb"><img src="../../assets/home-video-preview/preview-3.jpg"
+                            <div class="article-card-thumb"><img src="{% static 'images/home-video-preview/preview-3.jpg' %}"
                                                                  alt="بهترین زمان ایمپلنت"><span
                                     class="article-card-readtime">۱۰ دقیقه</span></div>
                             <div class="article-card-body">
                                 <div class="article-card-meta">
-                                    <div class="article-card-author"><img src="../../assets/doctors/doctor-2.jpg"
+                                    <div class="article-card-author"><img src="{% static 'images/doctors/doctor-2.jpg' %}"
                                                                           alt="دکتر زهرا محمدی"
                                                                           class="article-card-avatar"><span>دکتر زهرا محمدی</span>
                                     </div>
@@ -467,12 +443,12 @@
                                         d="M15 18l-6-6 6-6"/></svg></span></div>
                         </a></article>
                         <article class="article-card"><a href="post.html" class="article-card-link">
-                            <div class="article-card-thumb"><img src="../../assets/home-video-preview/preview-5.jpg"
+                            <div class="article-card-thumb"><img src="{% static 'images/home-video-preview/preview-5.jpg' %}"
                                                                  alt="انواع روکش"><span class="article-card-readtime">۹ دقیقه</span>
                             </div>
                             <div class="article-card-body">
                                 <div class="article-card-meta">
-                                    <div class="article-card-author"><img src="../../assets/doctors/doctor-6.jpg"
+                                    <div class="article-card-author"><img src="{% static 'images/doctors/doctor-6.jpg' %}"
                                                                           alt="دکتر مهسا امیری راد"
                                                                           class="article-card-avatar"><span>دکتر مهسا امیری راد</span>
                                     </div>
@@ -527,7 +503,7 @@
                 <div class="post-sidebar-card post-reviewer">
                     <div class="post-reviewer-badge">✓ بررسی علمی</div>
                     <div class="post-reviewer-inner">
-                        <img src="../../assets/doctors/doctor-1.jpg" alt="دکتر علیرضا احمدی" class="post-reviewer-img">
+                        <img src="{% static 'images/doctors/doctor-1.jpg' %}" alt="دکتر علیرضا احمدی" class="post-reviewer-img">
                         <div>
                             <h4 class="post-reviewer-name">دکتر علیرضا احمدی</h4>
                             <p class="post-reviewer-specialty">متخصص ارتودنسی</p>
@@ -554,30 +530,4 @@
         </div>
     </div>
 </div>
-
-<footer class="site-footer">
-    <div class="footer-inner">
-        <button class="btn btn-outline footer-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                 stroke-linecap="round" stroke-linejoin="round">
-                <path d="M18 15l-6-6-6 6"/>
-            </svg>
-            بازگشت به بالا
-        </button>
-        <div class="footer-auth-links">
-            <a href="../auth/auth.html">ورود / ثبت‌نام</a>
-            <a href="../dashboard/dashboard.html">پنل بیمار</a>
-        </div>
-        <p class="footer-copy">© ۲۰۲۶ دنتورا — تمامی حقوق محفوظ است.</p>
-    </div></footer>
-<nav class="site-main-nav" aria-label="منوی پایین">
-    <a href="../home/index.html" class="site-main-nav-item"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>خانه</span></a>
-    <a href="team.html" class="site-main-nav-item"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>پزشکان</span></a>
-    <a href="../dashboard/select-doctors.html" class="site-main-nav-cta" aria-label="رزرو نوبت"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></a>
-    <a href="blog.html" class="site-main-nav-item"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span>بلاگ</span></a>
-    <a href="../auth/auth.html" class="site-main-nav-item"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>پروفایل</span></a>
-</nav>
-<script src="../../statics/scripts/shared.js"></script>
-<script src="../../statics/scripts/blog/post.js"></script>
-</body>
-</html>
+{% endblock %}
