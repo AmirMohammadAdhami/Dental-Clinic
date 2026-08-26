@@ -1,0 +1,597 @@
+/* ===========================================================
+   Dentura — Dashboard Base Styles
+   Extracted from style.css (multiple ranges)
+=========================================================== */
+
+/* ================= DASHBOARD HEADER BAR ================= */
+/* ================= DASHBOARD MAIN ================= */
+/* ================= SECTION HEADERS ================= */
+/* =====================================================================
+   DASHBOARD — Patient Panel Styles
+   ===================================================================== */
+
+/* ================= DASHBOARD HEADER BAR ================= */
+.dash-header {
+    position: sticky;
+    top: 0;
+    z-index: 910;
+    padding: 16px 5vw 0;
+    transition: padding 0.3s var(--ease-smooth);
+}
+
+.dash-header-inner {
+    max-width: 1160px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(15, 118, 110, 0.1);
+    border-radius: 999px;
+    padding: 10px 18px 10px 24px;
+    box-shadow: 0 8px 32px -12px rgba(15, 23, 42, 0.12);
+    transition: box-shadow 0.35s var(--ease-smooth), padding 0.35s var(--ease-smooth), background 0.35s ease;
+}
+
+.dash-header.is-scrolled .dash-header-inner {
+    padding-top: 7px;
+    padding-bottom: 7px;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 10px 34px -12px rgba(15, 23, 42, 0.22);
+}
+
+/* --- Profile & Greeting --- */
+.dash-profile {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.dash-avatar {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.dash-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.dash-avatar-ring {
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 2.5px solid #22c55e;
+    pointer-events: none;
+}
+
+.dash-greeting {
+    display: flex;
+    flex-direction: column;
+}
+
+.dash-greeting-text {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.4;
+}
+
+.dash-greeting-sub {
+    font-size: 0.82rem;
+    color: var(--text-faint);
+    margin-top: 2px;
+}
+
+/* --- Navigation Icons --- */
+.dash-nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.dash-nav-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    color: var(--text-muted);
+    transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease, margin-left 0.28s ease;
+}
+
+.dash-nav-icon:hover {
+    background: rgba(15, 118, 110, 0.08);
+    color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.dash-nav-icon:active {
+    transform: translateY(0) scale(0.95);
+}
+
+
+/* Exit button: red tone */
+.dash-nav-icon--exit:hover {
+    background: rgba(220, 38, 38, 0.08);
+    color: #dc2626;
+}
+
+/* Dashboard icon: active state */
+.dash-nav-icon--dash {
+    background: rgba(15, 118, 110, 0.08);
+    color: var(--primary);
+}
+
+/* --- Nav pill (real element, created by JS) --- */
+.dash-nav-pill {
+    position: absolute;
+    left: calc(100% + 6px);
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--text);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0 12px;
+    height: 28px;
+    line-height: 28px;
+    border-radius: 999px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    max-width: 0;
+    overflow: hidden;
+    transition: opacity 0.22s ease, max-width 0.28s ease, padding 0.22s ease;
+    z-index: 20;
+    box-shadow: 0 4px 14px -2px rgba(15, 23, 42, 0.18);
+}
+
+.dash-nav-pill.is-active {
+    opacity: 1;
+    max-width: 200px;
+    padding: 0 12px;
+}
+
+/* --- Notification Badge --- */
+.dash-nav-icon--notif {
+    position: relative;
+}
+
+.dash-notif-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 10px;
+    height: 10px;
+    background: #ef4444;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    animation: notifPulse 2s ease-in-out infinite;
+}
+
+@keyframes notifPulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.25); opacity: 0.7; }
+}
+
+/* ================= DASHBOARD MAIN ================= */
+.dash-main {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 28px 5vw 80px;
+}
+
+/* ================= SECTION HEADERS ================= */
+.dash-section-header {
+    text-align: center;
+    margin-bottom: 36px;
+}
+
+.dash-section-title {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 8px;
+}
+
+.dash-section-subtitle {
+    font-size: 0.95rem;
+    color: var(--text-faint);
+    line-height: 1.7;
+}
+
+
+/* ================= SCROLL REVEAL (Dashboard) ================= */
+/* ================= SCROLL REVEAL (Dashboard) ================= */
+.dash-section {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dash-section.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ================= MOBILE BOTTOM NAVIGATION ================= */
+.dash-bottomnav {
+    display: none;
+}
+
+.dash-bottomnav-item {
+    position: relative;
+}
+
+.dash-bottomnav-badge {
+    position: absolute;
+    top: 6px;
+    right: 50%;
+    transform: translateX(14px);
+    width: 8px;
+    height: 8px;
+    background: #ef4444;
+    border-radius: 50%;
+    animation: notifPulse 2s ease-in-out infinite;
+}
+
+/* ================= DASHBOARD RESPONSIVE ================= */
+@media (max-width: 900px) {
+    .dash-services-container {
+        padding: 32px 24px 28px;
+    }
+
+    .dash-appointment-body {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .dash-appointment-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 620px) {
+    .dash-header {
+        display: none;
+    }
+
+    .dash-nav-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .dash-nav-icon svg {
+        width: 17px;
+        height: 17px;
+    }
+
+    .dash-notif-badge {
+        width: 8px;
+        height: 8px;
+        top: 5px;
+        right: 4px;
+        border-width: 1.5px;
+    }
+
+    .dash-main {
+        padding: 20px 5vw 60px;
+    }
+
+    .dash-appointment-inner {
+        padding: 24px 20px;
+    }
+
+    .dash-appointment-datetime {
+        font-size: 0.95rem;
+    }
+
+    .dash-services-container {
+        padding: 28px 18px 24px;
+        border-radius: var(--radius-md);
+    }
+
+    .dash-services-title {
+        font-size: 1.3rem !important;
+    }
+
+    .dash-service-card {
+        padding: 22px 20px 20px;
+    }
+
+    .dash-past-card {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 14px;
+        padding: 18px 18px;
+    }
+
+    .dash-past-center {
+        font-size: 0.82rem;
+    }
+
+    .dash-past-left {
+        width: 100%;
+    }
+
+    .dash-past-btn {
+        flex: 1;
+        justify-content: center;
+        padding: 10px 12px;
+    }
+
+    /* Bottom Nav */
+    .dash-bottomnav {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 900;
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-top: 1px solid rgba(15, 118, 110, 0.1);
+        padding: 6px 0 calc(6px + env(safe-area-inset-bottom, 0px));
+        box-shadow: 0 -4px 20px -8px rgba(15, 23, 42, 0.1);
+        transition: transform 0.3s var(--ease-smooth);
+    }
+
+    .dash-bottomnav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        padding: 6px 12px;
+        border-radius: 12px;
+        text-decoration: none;
+        color: var(--text-faint);
+        font-size: 0.7rem;
+        font-weight: 600;
+        transition: color 0.2s ease, background 0.2s ease;
+        min-width: 52px;
+    }
+
+    .dash-bottomnav-item:hover,
+    .dash-bottomnav-item.is-active {
+        color: var(--primary);
+        background: rgba(15, 118, 110, 0.06);
+    }
+
+    .dash-bottomnav-item--exit:hover {
+        color: #dc2626;
+        background: rgba(220, 38, 38, 0.06);
+    }
+
+    .dash-bottomnav-item svg {
+        flex-shrink: 0;
+    }
+
+    .dash-bottomnav-badge {
+        top: 2px;
+        right: 50%;
+        transform: translateX(16px);
+        width: 7px;
+        height: 7px;
+    }
+
+    /* Add padding to main content so footer isn't hidden behind bottom nav */
+    .dash-main {
+        padding-bottom: 100px;
+    }
+
+    /* Hide bottom nav on desktop */
+    .site-footer {
+        padding-bottom: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .dash-avatar {
+        width: 40px;
+        height: 40px;
+    }
+
+    .dash-avatar-ring {
+        inset: -2px;
+        border-width: 2px;
+    }
+
+    .dash-greeting-text {
+        font-size: 0.85rem;
+    }
+
+    .dash-section-title {
+        font-size: 1.3rem;
+    }
+}
+
+
+
+/* ================= DASHBOARD REDUCED MOTION ================= */
+/* ================= DASHBOARD REDUCED MOTION ================= */
+@media (prefers-reduced-motion: reduce) {
+    .dash-section,
+    .dash-service-card,
+    .dash-gallery-card,
+    .dash-past-card,
+    .dash-appointment-btn,
+    .dash-gallery-all-btn,
+    .dash-past-all-btn {
+        transition: none !important;
+    }
+
+    .dash-section {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    .dash-notif-badge {
+        animation: none !important;
+    }
+
+    .notif-card--unread,
+    .notif-toggle-slider,
+    .notif-toggle-slider::before,
+    .notif-tab,
+    .sel-doctor-card,
+    .sel-filter-pill,
+    .sel-slot-btn,
+    .sel-cal-card,
+    .sel-modal-panel,
+    .notif-settings-card {
+        transition: none !important;
+    }
+
+    .notif-card-dot {
+        animation: none !important;
+    }
+
+    .sel-avail-dot {
+        animation: none !important;
+    }
+
+    .notif-panel--active,
+    .sel-slots-section,
+    .sel-modal-footer {
+        animation: none !important;
+    }
+}
+
+
+/* ================= BEFORE-AFTER SLIDER (shared) ================= */
+.ba-container {
+    position: relative;
+    cursor: col-resize;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.ba-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+}
+
+.ba-before {
+    z-index: 1;
+    clip-path: inset(0 50% 0 0);
+}
+
+.ba-after {
+    z-index: 0;
+}
+
+.ba-slider {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 3px;
+    background: #ffffff;
+    z-index: 3;
+    transform: translateX(-50%);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+}
+
+.ba-handle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    background: #ffffff;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s var(--ease-smooth), box-shadow 0.2s ease;
+}
+
+.ba-container:hover .ba-handle,
+.ba-container:focus-visible .ba-handle {
+    transform: translate(-50%, -50%) scale(1.1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+
+.ba-container:active .ba-handle {
+    transform: translate(-50%, -50%) scale(0.96);
+}
+
+.ba-container:focus-visible {
+    outline: 3px solid var(--secondary);
+    outline-offset: -3px;
+}
+
+.ba-handle::before,
+.ba-handle::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-style: solid;
+}
+
+.ba-handle::before {
+    border-width: 6px 8px 6px 0;
+    border-color: transparent var(--primary) transparent transparent;
+    margin-right: 2px;
+}
+
+.ba-handle::after {
+    border-width: 6px 0 6px 8px;
+    border-color: transparent transparent transparent var(--primary);
+    margin-left: 2px;
+}
+
+.ba-label {
+    position: absolute;
+    bottom: 12px;
+    z-index: 10;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #ffffff;
+    background: rgba(0, 0, 0, 0.45);
+    padding: 4px 12px;
+    pointer-events: none;
+    border-radius: 999px;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    transition: opacity 0.2s ease;
+}
+
+.ba-label-before {
+    left: 12px;
+}
+
+.ba-label-after {
+    right: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ba-handle {
+        transition: none !important;
+    }
+    .ba-label {
+        transition: none !important;
+    }
+}
+

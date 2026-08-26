@@ -1,0 +1,639 @@
+/* ===========================================================
+   Dashboard Select Doctors Page Styles
+   Extracted from style.css (lines 6879-7476)
+=========================================================== */
+
+/* ========================================================================
+   SELECT DOCTORS PAGE
+   ======================================================================== */
+
+/* --- Hero --- */
+.sel-hero {
+    margin-bottom: 28px;
+}
+
+.sel-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-faint);
+    margin-bottom: 16px;
+    transition: color 0.25s ease, gap 0.25s ease;
+    text-decoration: none;
+}
+
+.sel-back-link:hover {
+    color: var(--primary);
+    gap: 12px;
+}
+
+.sel-hero-title {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 6px;
+}
+
+.sel-hero-subtitle {
+    font-size: 0.95rem;
+    color: var(--text-faint);
+}
+
+.sel-hero-subtitle strong {
+    color: var(--primary);
+    font-weight: 700;
+}
+
+/* --- Filter Bar --- */
+.sel-filters {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+}
+
+.sel-filters-label {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-faint);
+}
+
+.sel-filters-pills {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.sel-filter-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    border: 1.5px solid rgba(15,118,110,0.12);
+    background: #ffffff;
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    font-family: inherit;
+}
+
+.sel-filter-pill:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.sel-filter-pill--active {
+    background: var(--primary);
+    color: #ffffff;
+    border-color: var(--primary);
+    box-shadow: 0 4px 14px -4px rgba(15,118,110,0.45);
+}
+
+.sel-filter-pill--active:hover {
+    background: var(--primary-dark);
+    color: #ffffff;
+}
+
+/* --- Doctor Cards Grid --- */
+.sel-doctors-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.sel-doctor-card {
+    background: #ffffff;
+    border: 1px solid rgba(15,118,110,0.1);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 12px -4px rgba(15,23,42,0.06);
+    transition: transform 0.35s var(--ease-smooth), box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.sel-doctor-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 36px -12px rgba(15,118,110,0.18);
+    border-color: var(--primary);
+}
+
+/* Image */
+.sel-doctor-img-wrap {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    background: #e2e8f0;
+}
+
+.sel-doctor-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s var(--ease-smooth);
+}
+
+.sel-doctor-card:hover .sel-doctor-img {
+    transform: scale(1.05);
+}
+
+/* Availability Badge (glass capsule) */
+.sel-doctor-availability {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.88);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #16a34a;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.sel-avail-dot {
+    width: 7px;
+    height: 7px;
+    background: #22c55e;
+    border-radius: 50%;
+    animation: livePulse 2s ease-in-out infinite;
+}
+
+@keyframes livePulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Info */
+.sel-doctor-info {
+    padding: 18px 20px 0;
+    flex: 1;
+}
+
+.sel-doctor-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+}
+
+.sel-doctor-specialty {
+    font-size: 0.85rem;
+    color: var(--text-faint);
+    margin-bottom: 10px;
+}
+
+.sel-doctor-rating {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.sel-stars {
+    font-size: 0.85rem;
+}
+
+.sel-rating-num {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.sel-review-count {
+    font-size: 0.78rem;
+    color: var(--text-faint);
+}
+
+.sel-doctor-exp {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    color: var(--text-faint);
+    padding: 8px 0;
+    border-top: 1px solid rgba(15,118,110,0.06);
+}
+
+/* Actions */
+.sel-doctor-actions {
+    display: flex;
+    gap: 8px;
+    padding: 12px 16px 14px;
+    margin-top: auto;
+}
+
+.sel-doctor-actions .btn {
+    padding: 9px 14px;
+    font-size: 0.82rem;
+}
+
+.sel-btn-profile {
+    flex: 0 0 auto;
+    text-align: center;
+}
+
+.sel-btn-book {
+    flex: 1;
+    white-space: nowrap;
+    font-size: 0.8rem;
+}
+
+/* --- Calendar Modal --- */
+.sel-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.sel-modal-overlay.sel-modal-open {
+    pointer-events: auto;
+    opacity: 1;
+    visibility: visible;
+}
+
+.sel-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(15,23,42,0.45);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.sel-modal-panel {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-height: 85vh;
+    background: #ffffff;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    box-shadow: 0 -10px 40px rgba(15,23,42,0.2);
+    display: flex;
+    flex-direction: column;
+    transform: translateY(100%);
+    transition: transform 0.45s var(--ease-smooth);
+}
+
+.sel-modal-open .sel-modal-panel {
+    transform: translateY(0);
+}
+
+/* Modal Header */
+.sel-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 28px 18px;
+    border-bottom: 1px solid rgba(15,118,110,0.08);
+    flex-shrink: 0;
+}
+
+.sel-modal-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.sel-modal-title span {
+    color: var(--primary);
+}
+
+.sel-modal-close {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(15,118,110,0.06);
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease;
+}
+
+.sel-modal-close:hover {
+    background: rgba(220,38,38,0.08);
+    color: #dc2626;
+}
+
+/* Modal Body */
+.sel-modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px 28px;
+}
+
+/* Calendar Section */
+.sel-cal-section {
+    margin-bottom: 28px;
+}
+
+.sel-cal-title {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 16px;
+}
+
+/* Horizontal Calendar Strip */
+.sel-cal-strip {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+}
+
+.sel-cal-strip::-webkit-scrollbar {
+    height: 4px;
+}
+
+.sel-cal-strip::-webkit-scrollbar-track {
+    background: rgba(15,118,110,0.05);
+    border-radius: 4px;
+}
+
+.sel-cal-strip::-webkit-scrollbar-thumb {
+    background: rgba(15,118,110,0.2);
+    border-radius: 4px;
+}
+
+.sel-cal-card {
+    flex: 0 0 auto;
+    width: 82px;
+    background: #ffffff;
+    border: 2px solid rgba(15,118,110,0.1);
+    border-radius: var(--radius-sm);
+    padding: 14px 8px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    scroll-snap-align: start;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.sel-cal-card:hover:not(.sel-cal-card--disabled) {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px -2px rgba(15,118,110,0.15);
+}
+
+.sel-cal-card--active {
+    border-color: #22c55e !important;
+    box-shadow: 0 0 0 3px rgba(34,197,94,0.15), 0 4px 12px -2px rgba(34,197,94,0.2) !important;
+}
+
+.sel-cal-card--disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    background: #f8fafc;
+}
+
+.sel-cal-day-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--text-faint);
+}
+
+.sel-cal-day-num {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1;
+}
+
+.sel-cal-card--disabled .sel-cal-day-num {
+    color: var(--text-faint);
+}
+
+.sel-cal-month-label {
+    font-size: 0.68rem;
+    color: var(--text-faint);
+}
+
+.sel-cal-badge {
+    font-size: 0.62rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 999px;
+    margin-top: 2px;
+}
+
+.sel-cal-badge--closed {
+    background: rgba(100,116,139,0.1);
+    color: #64748b;
+}
+
+.sel-cal-badge--full {
+    background: rgba(239,68,68,0.08);
+    color: #dc2626;
+}
+
+/* Time Slots */
+.sel-slots-section {
+    animation: notifFadeIn 0.3s ease;
+}
+
+.sel-slots-group {
+    margin-bottom: 24px;
+}
+
+.sel-slots-group-title {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 14px;
+}
+
+.sel-slots-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Slot Button (capsule) */
+.sel-slot-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 12px 20px;
+    border-radius: 999px;
+    border: 1.5px solid rgba(15,118,110,0.12);
+    background: #ffffff;
+    cursor: pointer;
+    transition: all 0.25s var(--ease-smooth);
+    font-family: inherit;
+}
+
+.sel-slot-btn:hover:not(.sel-slot-btn--disabled) {
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px -2px rgba(15,118,110,0.2);
+    transform: translateY(-2px);
+}
+
+.sel-slot-btn--active {
+    background: var(--primary) !important;
+    border-color: var(--primary) !important;
+    box-shadow: 0 6px 18px -4px rgba(15,118,110,0.5) !important;
+}
+
+.sel-slot-btn--active .sel-slot-time,
+.sel-slot-btn--active .sel-slot-price {
+    color: #ffffff !important;
+}
+
+.sel-slot-btn--disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: #f8fafc;
+}
+
+.sel-slot-time {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.sel-slot-price {
+    font-size: 0.7rem;
+    color: var(--text-faint);
+}
+
+/* Modal Footer */
+.sel-modal-footer {
+    padding: 18px 28px 24px;
+    border-top: 1px solid rgba(15,118,110,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-shrink: 0;
+    animation: notifFadeIn 0.3s ease;
+}
+
+.sel-modal-selected-info {
+    position: relative;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 16px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text);
+    background: #f0fdf9;
+    border-radius: 12px;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.sel-modal-selected-info::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 14px;
+    background: conic-gradient(from 0deg, #10b981, #34d399, #6ee7b7, #a7f3d0, #34d399, #10b981);
+    z-index: -1;
+    animation: sel-border-spin 2.5s linear infinite;
+}
+
+.sel-modal-selected-info::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    border-radius: 10px;
+    background: #f0fdf9;
+    z-index: -1;
+}
+
+@keyframes sel-border-spin {
+    to { transform: rotate(360deg); }
+}
+
+.sel-modal-confirm-btn {
+    flex-shrink: 0;
+    min-width: 200px;
+    justify-content: center;
+}
+
+/* --- Select Doctors Responsive --- */
+@media (max-width: 900px) {
+    .sel-doctors-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 620px) {
+    .sel-doctors-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .sel-doctor-actions {
+        flex-direction: column;
+    }
+
+    .sel-doctor-img-wrap {
+        height: 180px;
+    }
+
+    .sel-modal-panel {
+        max-height: 92vh;
+    }
+
+    .sel-modal-header {
+        padding: 20px 20px 14px;
+    }
+
+    .sel-modal-body {
+        padding: 20px;
+    }
+
+    .sel-modal-footer {
+        flex-direction: column;
+        padding: 16px 20px 20px;
+    }
+
+    .sel-modal-confirm-btn {
+        width: 100%;
+    }
+
+    .sel-cal-card {
+        width: 72px;
+        padding: 12px 6px 10px;
+    }
+
+    .sel-filters-pills {
+        width: 100%;
+    }
+
+    .sel-filter-pill {
+        flex: 1;
+        justify-content: center;
+        padding: 10px 12px;
+        font-size: 0.82rem;
+    }
+}
+
