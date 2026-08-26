@@ -42,14 +42,17 @@ django_apps = ['django.contrib.admin',
                'django.contrib.messages',
                'django.contrib.staticfiles', ]
 
-local_apps = ['apps.accounts.apps.AccountsConfig',
-              'apps.appointments.apps.AppointmentsConfig',
-              'apps.blog.apps.BlogConfig',
-              'apps.core.apps.CoreConfig',
-              'apps.doctors.apps.DoctorsConfig',]
+local_apps = ['backend.apps.accounts.apps.AccountsConfig',
+              'backend.apps.appointments.apps.AppointmentsConfig',
+              'backend.apps.blog.apps.BlogConfig',
+              'backend.apps.core.apps.CoreConfig',
+              'backend.apps.doctors.apps.DoctorsConfig',]
+
+third_party_apps = ["rest_framework",
+                    ]
 
 
-INSTALLED_APPS = django_apps + local_apps
+INSTALLED_APPS = django_apps + third_party_apps + local_apps
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -7,7 +7,7 @@ from backend.apps.blog import urls as blog_urls
 from backend.apps.accounts import urls as accounts_urls
 from backend.apps.appointments import urls as appointments_urls
 from backend.apps.doctors import urls as doctors_urls
-
+from backend.api import urls as api_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -16,6 +16,8 @@ urlpatterns = [
     path('accounts/', include(accounts_urls)),
     path('dashboard/', include(appointments_urls)),
     path('doctors/', include(doctors_urls)),
+    path('api/', include(api_urls)),
+    path('api-auth/', include("rest_framework.urls"))
 ]
 
 

@@ -321,8 +321,58 @@ document.addEventListener('DOMContentLoaded', () => {
     slide();
   }
 
-  // اعمال اسلایدر روی تمام سکشن‌ها
-  document.querySelectorAll('.doctors-slider-wrapper').forEach(initSlider);
+  // ================= FETCH DOCTORS FROM API =================
+  async function fetchAndRenderDoctors() {
+    const track = document.getElementById('doctorsTrack');
+    if (!track) return;
+
+    try {
+      const res = await fetch('/api/doctors/');
+      if (!res.ok) throw new Error('API response not OK');
+      const doctors = await res.json();
+
+      track.innerHTML = '';
+
+      doctors.forEach(doc => {
+        const photoUrl = doc.doctor_photos?.blog_photo || '/static/images/doctors/default.jpg';
+        const a = document.createElement('a');
+        a.href = '/doctors/' + doc.slug + '/';
+        a.className = 'doctor-card';
+        a.setAttribute('aria-label', 'سوابق دکتر ' + doc.full_name);
+        a.innerHTML = `
+          <div class="doctor-img">
+            <img src="${photoUrl}" alt="دکتر ${doc.full_name}">
+            <div class="doctor-overlay">
+              <span class="doctor-overlay-text">سوابق دکتر</span>
+            </div>
+          </div>
+          <h3 class="doctor-name">دکتر ${doc.full_name}</h3>
+          <p class="doctor-specialty">${doc.speciality}</p>
+          <p class="doctor-university">${doc.university}</p>
+        `;
+        track.appendChild(a);
+      });
+
+      // بازмقداردهی اسلایدر بعد از رندر دینامیک
+      const doctorsWrapper = track.closest('.doctors-slider-wrapper');
+      if (doctorsWrapper) {
+        initSlider(doctorsWrapper);
+      }
+
+    } catch (err) {
+      console.error('خطا در دریافت لیست دکترها:', err);
+    }
+  }
+
+  fetchAndRenderDoctors();
+
+  // اعمال اسلایدر روی تمام سکشن‌ها (دستیاران هنوز هاردکد هستند)
+  document.querySelectorAll('.doctors-slider-wrapper').forEach(wrapper => {
+    // فقط سکشن‌هایی که کارت دارن رو اسلایدر کن (دکترها بعد از fetch ری‌اینیت میشن)
+    if (wrapper.querySelector('.doctor-card')) {
+      initSlider(wrapper);
+    }
+  });
 
   // Apply BA sliders on page load
   initBA();
