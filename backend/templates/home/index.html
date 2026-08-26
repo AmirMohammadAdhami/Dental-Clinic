@@ -1,0 +1,696 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static "css/base.css" %}">
+    <link rel="stylesheet" href="{% static "css/shared.css" %}">
+    <link rel="stylesheet" href="{% static "css/home/home.css" %}">
+{% endblock %}
+
+{% block js %}
+<script src="{% static "js/shared.js" %}"></script>
+<script src="{% static "js/home/home.js" %}"></script>
+{% endblock %}
+
+{% block title %}دنتورا — جایی که اعتماد به نفس شما با لبخندتان آغاز می‌شود{% endblock %}
+
+{% block content %}
+    <main class="hero" id="main-content" tabindex="-1">
+        <!-- Background glow effect -->
+        <div class="hero-glow"></div>
+
+        <!-- SVG Smile curve decorative element -->
+        <svg class="hero-smile-svg" viewBox="0 0 600 120" fill="none" xmlns="http://www.w3.org/2000/svg"
+             aria-hidden="true">
+            <path class="smile-path" d="M50 40 Q300 120 550 40" stroke="url(#smileGradient)" stroke-width="1.5"
+                  stroke-linecap="round" fill="none"/>
+            <defs>
+                <linearGradient id="smileGradient" x1="50" y1="40" x2="550" y2="40" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="var(--primary)" stop-opacity="0"/>
+                    <stop offset="30%" stop-color="var(--primary)" stop-opacity="0.3"/>
+                    <stop offset="70%" stop-color="var(--primary)" stop-opacity="0.3"/>
+                    <stop offset="100%" stop-color="var(--primary)" stop-opacity="0"/>
+                </linearGradient>
+            </defs>
+        </svg>
+
+        <div class="hero-inner" data-parallax-bg>
+
+            <h1 class="hero-title">
+                <span class="line hero-line-1">جایی که اعتماد به نفس شما</span>
+                <span class="line accent hero-line-2">با لبخندتان آغاز می‌شود</span>
+            </h1>
+
+            <p class="hero-subtitle">
+                دندانپزشکی زیبایی و ترمیمی، با تمرکز بر لبخندی طبیعی و ماندگار
+            </p>
+
+            <div class="hero-cta">
+                <button class="btn btn-primary btn-lg hero-btn-primary">رزرو نوبت آنلاین</button>
+                <button class="btn btn-outline btn-lg hero-btn-outline">مشاهده نمونه کارها</button>
+            </div>
+
+            <!-- ================= LIVE SOCIAL PROOF ================= -->
+            <div class="live-proof" aria-live="polite">
+                <span class="live-dot"></span>
+                <span class="live-text">الان <strong id="live-count">۲۴</strong> نفر در حال رزرو نوبت هستند</span>
+            </div>
+
+            <div class="gallery">
+                <div class="tile tile-photo tile-photo-4" data-parallax-card="0.7" data-float-duration="5.2"
+                     data-float-delay="0">
+                    <img src="../../assets/hero/clinic-detail.jpg" alt="فضای مطب">
+                </div>
+
+                <div class="tile tile-photo tile-photo-1" data-parallax-card="1" data-float-duration="4.5"
+                     data-float-delay="1.2">
+                    <img src="../../assets/hero/patient-woman.jpg" alt="درمان دندان‌پزشکی">
+                </div>
+
+                <div class="tile tile-photo tile-photo-2" data-parallax-card="0.85" data-float-duration="5.8"
+                     data-float-delay="0.6">
+                    <img src="../../assets/hero/dentist-work.jpg" alt="پزشک در حال معاینه">
+                </div>
+
+                <div class="tile tile-photo tile-photo-3" data-parallax-card="0.9" data-float-duration="4.8"
+                     data-float-delay="2.1">
+                    <img src="../../assets/hero/happy-patient.jpg" alt="بیمار خندان">
+                </div>
+
+                <div class="tile tile-accent" data-parallax-card="0.8" data-float-duration="5.5" data-float-delay="1.8">
+                    <div class="tile-accent-photo">
+                        <img src="../../assets/hero/smile-detail.jpg" alt="لبخند بیمار">
+                    </div>
+                    <div class="tile-accent-info">
+                        <div class="tile-stat-block">
+                            <div class="tile-number" data-count-to="15" data-count-suffix="+">۰<span>+</span></div>
+                            <div class="tile-label">سال سابقه<br>خدمات درمانی</div>
+                        </div>
+                        <div class="tile-divider"></div>
+                        <div class="tile-stat-block">
+                            <div class="tile-number" data-count-to="5" data-count-suffix="هزار+">۰<span>هزار+</span>
+                            </div>
+                            <div class="tile-label">لبخند رضایت‌مند</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </main>
+
+    <!-- ================= DOCTORS SLIDER ================= -->
+    <section class="doctors-section">
+        <div class="doctors-inner reveal">
+            <h2 class="doctors-title">تیم درمانی دنتورا</h2>
+            <p class="doctors-subtitle">متخصصان مجرب دنتورا، کنار شما در هر مرحله از درمان</p>
+
+            <div class="doctors-slider-wrapper reveal-stagger" role="region" aria-roledescription="اسلایدر"
+                 aria-label="تیم درمانی">
+                <button class="slider-arrow slider-arrow-right" aria-label="کارت قبلی">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                              stroke-linejoin="round"/>
+                    </svg>
+                </button>
+
+                <div class="doctors-slider">
+                    <div class="doctors-track">
+
+                        <a href="../blog/doctor.html" class="doctor-card" aria-label="سوابق دکتر علیرضا احمدی">
+                            <div class="doctor-img">
+                                <img src="../../assets/doctors/doctor-1.jpg" alt="دکتر علیرضا احمدی">
+                                <div class="doctor-overlay">
+                                    <span class="doctor-overlay-text">سوابق دکتر</span>
+                                </div>
+                            </div>
+                            <h3 class="doctor-name">دکتر علیرضا احمدی</h3>
+                            <p class="doctor-specialty">ارتودنسی</p>
+                            <p class="doctor-university">دانشگاه علوم پزشکی تهران</p>
+                        </a>
+
+                        <a href="../blog/doctor.html" class="doctor-card" aria-label="سوابق دکتر زهرا محمدی">
+                            <div class="doctor-img">
+                                <img src="../../assets/doctors/doctor-2.jpg" alt="دکتر زهرا محمدی">
+                                <div class="doctor-overlay">
+                                    <span class="doctor-overlay-text">سوابق دکتر</span>
+                                </div>
+                            </div>
+                            <h3 class="doctor-name">دکتر زهرا محمدی</h3>
+                            <p class="doctor-specialty">ایمپلنت و جراحی فک</p>
+                            <p class="doctor-university">دانشگاه علوم پزشکی شیراز</p>
+                        </a>
+
+                        <a href="../blog/doctor.html" class="doctor-card" aria-label="سوابق دکتر محمد کریمی">
+                            <div class="doctor-img">
+                                <img src="../../assets/doctors/doctor-3.jpg" alt="دکتر محمد کریمی">
+                                <div class="doctor-overlay">
+                                    <span class="doctor-overlay-text">سوابق دکتر</span>
+                                </div>
+                            </div>
+                            <h3 class="doctor-name">دکتر محمد کریمی</h3>
+                            <p class="doctor-specialty">دندان‌پزشکی زیبایی</p>
+                            <p class="doctor-university">دانشگاه علوم پزشکی اصفهان</p>
+                        </a>
+
+                        <a href="../blog/doctor.html" class="doctor-card" aria-label="سوابق دکتر مریم ابراهیمی">
+                            <div class="doctor-img">
+                                <img src="../../assets/doctors/doctor-4.jpg" alt="دکتر مریم ابراهیمی">
+                                <div class="doctor-overlay">
+                                    <span class="doctor-overlay-text">سوابق دکتر</span>
+                                </div>
+                            </div>
+                            <h3 class="doctor-name">دکتر مریم ابراهیمی</h3>
+                            <p class="doctor-specialty">دندان‌پزشکی زیبایی</p>
+                            <p class="doctor-university">دانشگاه علوم پزشکی اصفهان</p>
+                        </a>
+
+                        <a href="../blog/doctor.html" class="doctor-card" aria-label="سوابق دکتر امیرمحمد فرهمندنیا">
+                            <div class="doctor-img">
+                                <img src="../../assets/doctors/doctor-5.jpg" alt="دکتر امیرمحمد فرهمندنیا">
+                                <div class="doctor-overlay">
+                                    <span class="doctor-overlay-text">سوابق دکتر</span>
+                                </div>
+                            </div>
+                            <h3 class="doctor-name">دکتر امیرمحمد فرهمندنیا</h3>
+                            <p class="doctor-specialty">دندان‌پزشکی زیبایی</p>
+                            <p class="doctor-university">دانشگاه علوم پزشکی اصفهان</p>
+                        </a>
+
+                        <a href="../blog/doctor.html" class="doctor-card" aria-label="سوابق دکتر مهسا امیری راد">
+                            <div class="doctor-img">
+                                <img src="../../assets/doctors/doctor-6.jpg" alt="دکتر مهسا امیری راد">
+                                <div class="doctor-overlay">
+                                    <span class="doctor-overlay-text">سوابق دکتر</span>
+                                </div>
+                            </div>
+                            <h3 class="doctor-name">دکتر مهسا امیری راد</h3>
+                            <p class="doctor-specialty">دندان‌پزشکی زیبایی</p>
+                            <p class="doctor-university">دانشگاه علوم پزشکی اصفهان</p>
+                        </a>
+
+                    </div>
+                </div>
+
+                <button class="slider-arrow slider-arrow-left" aria-label="کارت بعدی">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                              stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="slider-dots" role="tablist" aria-label="موقعیت اسلایدر تیم درمانی"></div>
+            <span class="sr-only" aria-live="polite"></span>
+        </div>
+    </section>
+
+    <!-- ================= ASSISTANTS SLIDER ================= -->
+    <section class="assistants-section">
+        <div class="doctors-inner reveal">
+            <h2 class="doctors-title">دستیاران دنتورا</h2>
+            <p class="doctors-subtitle">دستیاران حرفه‌ای و متعهد دنتورا، همراه شما در تمام مراحل درمان</p>
+
+            <div class="doctors-slider-wrapper reveal-stagger" role="region" aria-roledescription="اسلایدر"
+                 aria-label="دستیاران">
+                <button class="slider-arrow slider-arrow-right" aria-label="کارت قبلی">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                              stroke-linejoin="round"/>
+                    </svg>
+                </button>
+
+                <div class="doctors-slider">
+                    <div class="doctors-track">
+
+                        <div class="doctor-card">
+                            <div class="doctor-img">
+                                <img src="../../assets/assistants/assistant-1.jpg" alt="نیلوفر رضایی">
+                            </div>
+                            <h3 class="doctor-name">نیلوفر رضایی</h3>
+                            <p class="doctor-specialty">دستیار ارتودنسی</p>
+                        </div>
+
+                        <div class="doctor-card">
+                            <div class="doctor-img">
+                                <img src="../../assets/assistants/assistant-2.jpg" alt="پارسا کیمیا">
+                            </div>
+                            <h3 class="doctor-name">پارسا کیمیا</h3>
+                            <p class="doctor-specialty">دستیار جراحی</p>
+                        </div>
+
+                        <div class="doctor-card">
+                            <div class="doctor-img">
+                                <img src="../../assets/assistants/assistant-3.jpg" alt="مرجان کاظمی">
+                            </div>
+                            <h3 class="doctor-name">مرجان کاظمی</h3>
+                            <p class="doctor-specialty">دستیار درمان ریشه</p>
+                        </div>
+
+                        <div class="doctor-card">
+                            <div class="doctor-img">
+                                <img src="../../assets/assistants/assistant-4.jpg" alt="رضا نوری">
+                            </div>
+                            <h3 class="doctor-name">رضا نوری</h3>
+                            <p class="doctor-specialty">دستیار دندان‌پزشکی زیبایی</p>
+                        </div>
+
+                        <div class="doctor-card">
+                            <div class="doctor-img">
+                                <img src="../../assets/assistants/assistant-5.jpg" alt="الهام موسوی">
+                            </div>
+                            <h3 class="doctor-name">الهام موسوی</h3>
+                            <p class="doctor-specialty">دستیار ایمپلنت</p>
+                        </div>
+
+                        <div class="doctor-card">
+                            <div class="doctor-img">
+                                <img src="../../assets/assistants/assistant-6.jpg" alt="علی اکبری">
+                            </div>
+                            <h3 class="doctor-name">علی اکبری</h3>
+                            <p class="doctor-specialty">دستیار ایمپلنت</p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <button class="slider-arrow slider-arrow-left" aria-label="کارت بعدی">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                              stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="slider-dots" role="tablist" aria-label="موقعیت اسلایدر دستیاران"></div>
+            <span class="sr-only" aria-live="polite"></span>
+        </div>
+    </section>
+
+    <!-- ================= BEFORE / AFTER ================= -->
+    <section class="samples-section">
+        <div class="samples-inner reveal">
+            <h2 class="samples-title">نمونه کارهای ما</h2>
+            <p class="samples-subtitle">نتیجه واقعی درمان‌های دنتورا را ببینید</p>
+
+            <div class="samples-grid reveal-stagger">
+
+                <div class="doctor-card" data-ba>
+                    <div class="doctor-img ba-container" tabindex="0" role="slider"
+                         aria-label="مقایسه قبل و بعد لمینت سرامیکی ۸ واحد، با کشیدن یا کلیدهای جهت‌نما"
+                         aria-valuemin="0"
+                         aria-valuemax="100" aria-valuenow="50">
+                        <img class="ba-img ba-after" src="../../assets/before-after/1-after.jpg"
+                             alt="نتیجه بعد از لمینت سرامیکی ۸ واحد">
+                        <img class="ba-img ba-before" src="../../assets/before-after/1-before.jpg"
+                             alt="وضعیت قبل از لمینت سرامیکی ۸ واحد">
+                        <div class="ba-slider">
+                            <div class="ba-handle"></div>
+                        </div>
+                        <span class="ba-label ba-label-before">قبل</span>
+                        <span class="ba-label ba-label-after">بعد</span>
+                    </div>
+                    <p class="doctor-name">لمینت سرامیکی ۸ واحد</p>
+                </div>
+
+                <div class="doctor-card" data-ba>
+                    <div class="doctor-img ba-container" tabindex="0" role="slider"
+                         aria-label="مقایسه قبل و بعد اصلاح طرح لبخند، با کشیدن یا کلیدهای جهت‌نما" aria-valuemin="0"
+                         aria-valuemax="100" aria-valuenow="50">
+                        <img class="ba-img ba-after" src="../../assets/before-after/2-after.jpg"
+                             alt="نتیجه بعد از اصلاح طرح لبخند">
+                        <img class="ba-img ba-before" src="../../assets/before-after/2-before.jpg"
+                             alt="وضعیت قبل از اصلاح طرح لبخند">
+                        <div class="ba-slider">
+                            <div class="ba-handle"></div>
+                        </div>
+                        <span class="ba-label ba-label-before">قبل</span>
+                        <span class="ba-label ba-label-after">بعد</span>
+                    </div>
+                    <p class="doctor-name">اصلاح طرح لبخند</p>
+                </div>
+
+                <div class="doctor-card" data-ba>
+                    <div class="doctor-img ba-container" tabindex="0" role="slider"
+                         aria-label="مقایسه قبل و بعد ایمپلنت و روکش، با کشیدن یا کلیدهای جهت‌نما" aria-valuemin="0"
+                         aria-valuemax="100" aria-valuenow="50">
+                        <img class="ba-img ba-after" src="../../assets/before-after/3-after.jpg"
+                             alt="نتیجه بعد از ایمپلنت و روکش">
+                        <img class="ba-img ba-before" src="../../assets/before-after/3-before.jpg"
+                             alt="وضعیت قبل از ایمپلنت و روکش">
+                        <div class="ba-slider">
+                            <div class="ba-handle"></div>
+                        </div>
+                        <span class="ba-label ba-label-before">قبل</span>
+                        <span class="ba-label ba-label-after">بعد</span>
+                    </div>
+                    <p class="doctor-name">ایمپلنت و روکش</p>
+                </div>
+
+                <div class="doctor-card" data-ba>
+                    <div class="doctor-img ba-container" tabindex="0" role="slider"
+                         aria-label="مقایسه قبل و بعد بلیچینگ حرفه‌ای، با کشیدن یا کلیدهای جهت‌نما" aria-valuemin="0"
+                         aria-valuemax="100" aria-valuenow="50">
+                        <img class="ba-img ba-after" src="../../assets/before-after/4-after.jpg"
+                             alt="نتیجه بعد از بلیچینگ حرفه‌ای">
+                        <img class="ba-img ba-before" src="../../assets/before-after/4-before.jpg"
+                             alt="وضعیت قبل از بلیچینگ حرفه‌ای">
+                        <div class="ba-slider">
+                            <div class="ba-handle"></div>
+                        </div>
+                        <span class="ba-label ba-label-before">قبل</span>
+                        <span class="ba-label ba-label-after">بعد</span>
+                    </div>
+                    <p class="doctor-name">بلیچینگ حرفه‌ای</p>
+                </div>
+
+            </div>
+
+            <div class="samples-cta">
+                <a href="../blog/before-after.html" class="btn btn-primary btn-lg" style="text-decoration:none">مشاهده
+                    نمونه‌ کارها</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= TESTIMONIALS ================= -->
+    <section class="testimonials-section">
+        <div class="testimonials-inner reveal">
+            <h2 class="testimonials-title">نظرات بیماران ما</h2>
+            <p class="testimonials-subtitle">تجربه واقعی بیماران دنتورا از درمان و لبخند جدیدشان</p>
+
+            <div class="testimonials-deck-wrapper">
+                <button class="testimonials-btn testimonials-prev" aria-label="نظر قبلی">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                              stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <div class="testimonials-deck" role="region" aria-roledescription="کارت نظرات"
+                     aria-label="نظرات بیماران">
+                    <div class="testimonial-card" data-index="0">
+                        <div class="testimonial-stars">
+                            <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                            <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                            <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                            <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                            <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                        </div>
+                        <blockquote class="testimonial-quote">
+                            بعد از سال‌ها خجالت کشیدن از لبخندم، بالاخره تصمیم گرفتم لمینت انجام بدم. نتیجه فوق‌العاده
+                            بود و
+                            الان با اعتماد به نفس کامل می‌خندم. ممنونم تیم دنتورا!"
+                        </blockquote>
+                        <div class="testimonial-user">
+                            <span class="testimonial-name">سارا احمدی</span>
+                            <span class="testimonial-badge">درمان: لمینت سرامیکی</span>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card" data-index="1">
+                        <div class="testimonial-stars">
+                            <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                            <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                            <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                            <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                            <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                        </div>
+                        <blockquote class="testimonial-quote">
+                            ایمپلنت دندانم رو توی دنتورا انجام دادم. روند درمان خیلی حرفه‌ای بود و نتیجه نهایی دقیقاً
+                            همون
+                            چیزی بود که می‌خواستم. قطعاً به همه پیشنهاد می‌کنم.
+                        </blockquote>
+                        <div class="testimonial-user">
+                            <span class="testimonial-name">رضا محمدی</span>
+                            <span class="testimonial-badge">درمان: ایمپلنت دندان</span>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card" data-index="2">
+                        <div class="testimonial-stars">
+                            <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                            <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                            <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                            <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                            <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                        </div>
+                        <blockquote class="testimonial-quote">
+                            اصلاح طرح لبخندم رو شروع کردم و از همون جلسه اول متوجه شدم که جای درستی اومدم. صبر و دقت
+                            دکترها
+                            واقعاً قابل تقدیره. لبخندم عالی شده!"
+                        </blockquote>
+                        <div class="testimonial-user">
+                            <span class="testimonial-name">مریم کریمی</span>
+                            <span class="testimonial-badge">درمان: اصلاح طرح لبخند</span>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card" data-index="3">
+                        <div class="testimonial-stars">
+                            <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                            <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                            <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                            <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                            <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                        </div>
+                        <blockquote class="testimonial-quote">
+                            بلیچینگ حرفه‌ای انجام دادم و واقعاً راضی‌ام. رنگ دندانام خیلی بهتر شده و لبخندم درخشان‌تر از
+                            همیشه‌ست. محیط مطب هم خیلی آرام و حرفه‌ایه.
+                        </blockquote>
+                        <div class="testimonial-user">
+                            <span class="testimonial-name">امیر حسینی</span>
+                            <span class="testimonial-badge">درمان: بلیچینگ حرفه‌ای</span>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card" data-index="4">
+                        <div class="testimonial-stars">
+                            <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                            <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                            <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                            <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                            <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                        </div>
+                        <blockquote class="testimonial-quote">
+                            ارتودنسیم رو شش ماه پیش شروع کردم و پیشرفت عالی بود. دکتر احمدی با دقت و حوصله تمام مراحل رو
+                            توضیح دادن و من خیالم راحت بود.
+                        </blockquote>
+                        <div class="testimonial-user">
+                            <span class="testimonial-name">نیلوفر رضایی</span>
+                            <span class="testimonial-badge">درمان: ارتودنسی</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="testimonials-btn testimonials-next" aria-label="نظر بعدی">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                              stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="testimonials-dots" role="tablist" aria-label="موقعیت نظرات"></div>
+        </div>
+    </section>
+
+    <!-- ================= CTA BANNER ================= -->
+    <section class="cta-banner-section">
+        <div class="cta-banner-pattern"></div>
+        <div class="cta-banner-card reveal">
+            <h2 class="cta-banner-title">آماده ایجاد تغییر در زیبایی و سلامت لبخندتان هستید؟</h2>
+            <p class="cta-banner-subtitle">همین حالا معاینه خود را آنلاین ثبت کنید و از مشاوره تخصصی پزشکان دنتورا
+                بهره‌مند
+                شوید.</p>
+            <button class="btn btn-primary btn-lg cta-banner-btn">رزرو آنلاین نوبت</button>
+        </div>
+    </section>
+
+    <!-- ================= VIDEO BLOG SECTION ================= -->
+    <section class="video-blog-section">
+        <div class="video-blog-inner reveal">
+            <h2 class="video-blog-title">ویدیوهای آموزشی و بلاگ تخصصی دنتورا</h2>
+            <p class="video-blog-subtitle">ویدیوهای آموزشی و بلاگ های تخصصی ما را تماشا کنید</p>
+
+            <div class="video-blog-grid reveal-stagger">
+                <div class="video-card">
+                    <div class="video-card-thumb">
+                        <img src="../../assets/home-video-preview/preview-1.jpg" alt="دکتر علیرضا احمدی">
+                        <div class="video-play-btn" data-video="https://www.w3schools.com/html/mov_bbb.mp4">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="white">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="video-card-info">
+                        <span class="video-card-name">دکتر علیرضا احمدی</span>
+                        <span class="video-card-role">ارتودنسی</span>
+                        <h4 class="video-card-title">انواع ارتودنسی و مزایا و معایب هرکدام</h4>
+                        <a href="#" class="video-card-cta">مشاهده ادامه بلاگ</a>
+                    </div>
+                </div>
+
+                <div class="video-card">
+                    <div class="video-card-thumb">
+                        <img src="../../assets/home-video-preview/preview-2.jpg" alt="دکتر محمد کریمی">
+                        <div class="video-play-btn" data-video="https://www.w3schools.com/html/mov_bbb.mp4">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="white">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="video-card-info">
+                        <span class="video-card-name">دکتر محمد کریمی</span>
+                        <span class="video-card-role">زیبایی</span>
+                        <h4 class="video-card-title">طیف رنگی کامپوزیت</h4>
+                        <a href="#" class="video-card-cta">مشاهده ادامه بلاگ</a>
+                    </div>
+                </div>
+
+                <div class="video-card">
+                    <div class="video-card-thumb">
+                        <img src="../../assets/home-video-preview/preview-3.jpg" alt="دکتر زهرا محمدی">
+                        <div class="video-play-btn" data-video="https://www.w3schools.com/html/mov_bbb.mp4">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="white">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="video-card-info">
+                        <span class="video-card-name">دکتر زهرا محمدی</span>
+                        <span class="video-card-role">ایمپلنت و جراحی فک</span>
+                        <h4 class="video-card-title">بهتره چه تایمی ایمپلنت کنیم؟</h4>
+                        <a href="#" class="video-card-cta">مشاهده ادامه بلاگ</a>
+                    </div>
+                </div>
+
+                <div class="video-card">
+                    <div class="video-card-thumb">
+                        <img src="../../assets/home-video-preview/preview-4.jpg" alt="دکتر امیرمحمد فرهمندنیا">
+                        <div class="video-play-btn" data-video="https://www.w3schools.com/html/mov_bbb.mp4">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="white">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="video-card-info">
+                        <span class="video-card-name">دکتر امیرمحمد فرهمندنیا</span>
+                        <span class="video-card-role">زیبایی</span>
+                        <h4 class="video-card-title">کامپوزیت، ونیر، لمینت؛ بالاخره کدوم؟</h4>
+                        <a href="#" class="video-card-cta">مشاهده ادامه بلاگ</a>
+                    </div>
+                </div>
+
+                <div class="video-card">
+                    <div class="video-card-thumb">
+                        <img src="../../assets/home-video-preview/preview-5.jpg" alt="دکتر مهسا امیری راد">
+                        <div class="video-play-btn" data-video="https://www.w3schools.com/html/mov_bbb.mp4">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="white">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="video-card-info">
+                        <span class="video-card-name">دکتر مهسا امیری راد</span>
+                        <span class="video-card-role">زیبایی</span>
+                        <h4 class="video-card-title">انواع روکش ها</h4>
+                        <a href="#" class="video-card-cta">مشاهده ادامه بلاگ</a>
+                    </div>
+                </div>
+
+                <div class="video-card">
+                    <div class="video-card-thumb">
+                        <img src="../../assets/home-video-preview/preview-6.jpg" alt="دکتر مریم ابراهیمی">
+                        <div class="video-play-btn" data-video="https://www.w3schools.com/html/mov_bbb.mp4">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="white">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="video-card-info">
+                        <span class="video-card-name">دکتر مریم ابراهیمی</span>
+                        <span class="video-card-role">زیبایی</span>
+                        <h4 class="video-card-title">سوالات متداول شما</h4>
+                        <a href="#" class="video-card-cta">مشاهده ادامه بلاگ</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-blog-cta">
+                <a href="../blog/all-articles.html" class="btn btn-outline btn-lg"
+                   style="color: white; border-color: rgba(255,255,255,0.3); text-decoration:none;">مشاهده همه ویدیوها و
+                    مقالات</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Modal (outside sections for blur isolation) -->
+    <div class="video-modal" id="videoModal">
+        <div class="video-modal-overlay"></div>
+        <div class="video-modal-content">
+            <button class="video-modal-close" aria-label="بستن ویدیو">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+            <video class="video-modal-player" controls>
+                <source src="" type="video/mp4">
+                مرورگر شما از پخش ویدیو پشتیبانی نمی‌کند.
+            </video>
+        </div>
+    </div>
+
+{% endblock %}
+

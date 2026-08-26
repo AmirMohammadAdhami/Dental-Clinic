@@ -45,6 +45,7 @@ django_apps = ['django.contrib.admin',
 local_apps = ['apps.accounts.apps.AccountsConfig',
               'apps.appointments.apps.AppointmentsConfig',
               'apps.blog.apps.BlogConfig',
+              'apps.core.apps.CoreConfig',
               'apps.doctors.apps.DoctorsConfig',]
 
 
