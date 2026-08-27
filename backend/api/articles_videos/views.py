@@ -9,28 +9,18 @@ class ArticleListApiView(ListAPIView):
 
     queryset = (
         Article.objects
-        .select_related(
-            'author__user',
-            'category',
-        )
+        .select_related('author__user', 'category')
         .prefetch_related(
             Prefetch(
                 'media',
-                queryset=ArticleMedia.objects.filter(
-                    media_type=ArticleMedia.MediaTypes.VIDEO
-                )
+                queryset=ArticleMedia.objects.all()
+
             )
         )
         .only(
-            'id',
+            'id', 'title', 'slug', 'is_published',
             'author__user__full_name',
-            'title',
-            'slug',
             'category__name',
-            'is_published',
-        )
-        .filter(
-            media__media_type=ArticleMedia.MediaTypes.VIDEO
         )
         .distinct()
     )

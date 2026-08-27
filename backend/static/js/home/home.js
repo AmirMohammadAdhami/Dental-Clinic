@@ -516,6 +516,59 @@ document.addEventListener('DOMContentLoaded', () => {
 
   fetchAndRenderTestimonials();
 
+  // --- Fetch and render video blog cards from API ---
+  async function fetchAndRenderVideos() {
+    const grid = document.getElementById('videoBlogGrid');
+    if (!grid) return;
+
+    try {
+      const res = await fetch('/api/home-videos/');
+      if (!res.ok) throw new Error('API response not OK');
+      const articles = toArray(await res.json());
+
+      grid.innerHTML = '';
+
+      articles.forEach((article) => {
+        // پیدا کردن اولین تصویر برای کاور
+        const files = article.files || [];
+        const firstImage = files.find(f => f.media_type === 'IMAGE' && f.file);
+        const coverSrc = firstImage ? firstImage.file : '/static/images/home-video-preview/preview-1.jpg';
+
+        // پیدا کردن اولین ویدیو برای پلی
+        const firstVideo = files.find(f => f.media_type === 'VIDEO' && (f.video_url || f.file));
+        const videoSrc = firstVideo ? (firstVideo.video_url || firstVideo.file || '') : '';
+
+        const card = document.createElement('div');
+        card.className = 'video-card';
+        card.innerHTML = `
+          <div class="video-card-thumb">
+            <img src="${coverSrc}" alt="${article.full_name}">
+            <div class="video-play-btn" data-video="${videoSrc}">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="white">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="video-card-info">
+            <span class="video-card-name">${article.full_name}</span>
+            <span class="video-card-role">${article.category_name}</span>
+            <h4 class="video-card-title">${article.title}</h4>
+            <a href="/blog/article/${article.slug}/" class="video-card-cta">مشاهده ادامه بلاگ</a>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      // راه‌اندازی مجدد ویدیو مودال برای کارت‌های جدید
+      initVideoModal();
+
+    } catch (err) {
+      console.error('خطا در دریافت ویدیوهای آموزشی:', err);
+    }
+  }
+
+  fetchAndRenderVideos();
+
   // Apply BA sliders on page load
   initBA();
 
@@ -690,49 +743,63 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ================= VIDEO MODAL =================
-  const videoModal = document.getElementById('videoModal');
-  const videoModalPlayer = videoModal.querySelector('.video-modal-player');
-  const videoModalClose = videoModal.querySelector('.video-modal-close');
-  const videoModalOverlay = videoModal.querySelector('.video-modal-overlay');
+  function initVideoModal() {
+    const videoModal = document.getElementById('videoModal');
+    if (!videoModal) return;
+    const videoModalPlayer = videoModal.querySelector('.video-modal-player');
+    const videoModalClose = videoModal.querySelector('.video-modal-close');
+    const videoModalOverlay = videoModal.querySelector('.video-modal-overlay');
 
-  // Open video modal
-  document.querySelectorAll('.video-play-btn[data-video]').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      const videoSrc = this.getAttribute('data-video');
-      if (videoSrc) {
-        videoModalPlayer.querySelector('source').src = videoSrc;
-        videoModalPlayer.load();
-        videoModal.classList.add('is-active');
-        document.body.classList.add('video-modal-open');
-        videoModalPlayer.play();
-        document.body.style.overflow = 'hidden';
+    // Remove old listeners by cloning buttons
+    videoModalClose.replaceWith(videoModalClose.cloneNode(true));
+    videoModalOverlay.replaceWith(videoModalOverlay.cloneNode(true));
+
+    const newClose = videoModal.querySelector('.video-modal-close');
+    const newOverlay = videoModal.querySelector('.video-modal-overlay');
+
+    // Open video modal — only bind to play buttons that don't have a listener yet
+    document.querySelectorAll('.video-play-btn[data-video]').forEach(btn => {
+      if (btn.dataset.modalInit) return;
+      btn.dataset.modalInit = '1';
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const videoSrc = this.getAttribute('data-video');
+        if (videoSrc) {
+          videoModalPlayer.querySelector('source').src = videoSrc;
+          videoModalPlayer.load();
+          videoModal.classList.add('is-active');
+          document.body.classList.add('video-modal-open');
+          videoModalPlayer.play();
+          document.body.style.overflow = 'hidden';
+        }
+      });
+    });
+
+    // Close video modal function
+    function closeVideoModal() {
+      videoModal.classList.remove('is-active');
+      document.body.classList.remove('video-modal-open');
+      videoModalPlayer.pause();
+      videoModalPlayer.currentTime = 0;
+      videoModalPlayer.querySelector('source').src = '';
+      document.body.style.overflow = '';
+    }
+
+    // Close on button click
+    newClose.addEventListener('click', closeVideoModal);
+
+    // Close on overlay click
+    newOverlay.addEventListener('click', closeVideoModal);
+
+    // Close on Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && videoModal.classList.contains('is-active')) {
+        closeVideoModal();
       }
     });
-  });
-
-  // Close video modal function
-  function closeVideoModal() {
-    videoModal.classList.remove('is-active');
-    document.body.classList.remove('video-modal-open');
-    videoModalPlayer.pause();
-    videoModalPlayer.currentTime = 0;
-    videoModalPlayer.querySelector('source').src = '';
-    document.body.style.overflow = '';
   }
 
-  // Close on button click
-  videoModalClose.addEventListener('click', closeVideoModal);
-
-  // Close on overlay click
-  videoModalOverlay.addEventListener('click', closeVideoModal);
-
-  // Close on Escape key
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && videoModal.classList.contains('is-active')) {
-      closeVideoModal();
-    }
-  });
+  initVideoModal();
 
 });
