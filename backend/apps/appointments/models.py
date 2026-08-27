@@ -64,7 +64,7 @@ class Appointment(models.Model):
         return f"DNT-{secrets.token_hex(4).upper()}"
 
     def __str__(self):
-        return f'{self.doctor.last_name}-{self.tracking_code}'
+        return f'{self.doctor.user.last_name}-{self.tracking_code}'
 
 
 class Testimonial(models.Model):

@@ -366,13 +366,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
   fetchAndRenderDoctors();
 
-  // اعمال اسلایدر روی تمام سکشن‌ها (دستیاران هنوز هاردکد هستند)
-  document.querySelectorAll('.doctors-slider-wrapper').forEach(wrapper => {
-    // فقط سکشن‌هایی که کارت دارن رو اسلایدر کن (دکترها بعد از fetch ری‌اینیت میشن)
-    if (wrapper.querySelector('.doctor-card')) {
-      initSlider(wrapper);
+  // ================= FETCH ASSISTANTS FROM API =================
+  async function fetchAndRenderAssistants() {
+    const track = document.getElementById('assistantsTrack');
+    if (!track) return;
+
+    try {
+      const res = await fetch('/api/assistants/');
+      if (!res.ok) throw new Error('API response not OK');
+      const assistants = await res.json();
+
+      track.innerHTML = '';
+
+      assistants.forEach(ast => {
+        const photoUrl = ast.blog_photo || '/static/images/assistants/default.jpg';
+        const div = document.createElement('div');
+        div.className = 'doctor-card';
+        div.innerHTML = `
+          <div class="doctor-img">
+            <img src="${photoUrl}" alt="${ast.full_name}">
+          </div>
+          <h3 class="doctor-name">${ast.full_name}</h3>
+          <p class="doctor-specialty">${ast.speciality}</p>
+        `;
+        track.appendChild(div);
+      });
+
+      // بازمقداردهی اسلایدر بعد از رندر دینامیک
+      const assistantsWrapper = track.closest('.doctors-slider-wrapper');
+      if (assistantsWrapper) {
+        initSlider(assistantsWrapper);
+      }
+
+    } catch (err) {
+      console.error('خطا در دریافت لیست دستیاران:', err);
     }
-  });
+  }
+
+  fetchAndRenderAssistants();
 
   // Apply BA sliders on page load
   initBA();
