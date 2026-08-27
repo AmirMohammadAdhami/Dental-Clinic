@@ -262,20 +262,55 @@
     padding: 20px 20px 12px;
     flex: 1;
 }
+.team-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
 .team-card-name {
     font-size: 1.05rem;
     font-weight: 700;
     color: var(--text);
-    margin-bottom: 4px;
+    margin: 0;
 }
 .team-card-specialty {
     font-size: 0.85rem;
     color: var(--primary);
     font-weight: 500;
+    margin: 0;
+    white-space: nowrap;
+}
+.team-card-services {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
     margin-bottom: 12px;
+}
+.team-card-service-pill {
+    font-size: 0.72rem;
+    color: var(--primary);
+    background: rgba(15, 118, 110, 0.08);
+    border: 1px solid rgba(15, 118, 110, 0.15);
+    border-radius: 20px;
+    padding: 3px 10px;
+    white-space: nowrap;
+    font-weight: 500;
+}
+.team-card-rating {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.team-card-rating--none {
+    color: var(--text-faint);
+    font-style: italic;
 }
 .team-card-stats {
     display: flex;
+    align-items: center;
     gap: 16px;
     margin-bottom: 10px;
 }

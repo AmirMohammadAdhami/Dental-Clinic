@@ -5,7 +5,8 @@ from .serializers import BeforeAfterSerializer
 class BeforeAfterListApiView(ListAPIView):
     queryset = BeforeAfter.objects.select_related(
         'appointment__doctor__user',
-        'appointment__patient'
+        'appointment__patient',
+        'appointment__service',
     ).only(
         'id', 'before_image', 'after_image', 'description',
         'created_at', 'updated_at',
@@ -17,5 +18,6 @@ class BeforeAfterListApiView(ListAPIView):
         'appointment__patient__first_name',
         'appointment__patient__last_name',
         'appointment__patient__national_code',
+        'appointment__service__name'
     )
     serializer_class = BeforeAfterSerializer
