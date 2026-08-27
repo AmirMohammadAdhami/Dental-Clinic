@@ -26,7 +26,7 @@ class User(AbstractUser):
     objects = UserManager()
 
     phone = models.CharField(
-        max_length = 11,
+        max_length=11,
         unique=True,
         verbose_name="Phone number",
     )
@@ -37,19 +37,26 @@ class User(AbstractUser):
         verbose_name="National code",
     )
 
+    full_name = models.CharField(
+        max_length=200,
+        blank=True
+    )
+
     USERNAME_FIELD = "phone"
     REQUIRED_FIELDS = ["national_code", "first_name", "last_name"]
 
     def __str__(self):
         return self.first_name + " " + self.last_name
 
-    def get_full_name(self):
-        return self.first_name + " " + self.last_name
+    def save(self, *args, **kwargs):
+        self.full_name = self.first_name + " " + self.last_name
+        super(User, self).save(*args, **kwargs)
+
 
 class OTPCode(models.Model):
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE,
-                             related_name="otp_codes",)
+                             related_name="otp_codes", )
 
     code = models.CharField(
         max_length=5,
