@@ -16,6 +16,8 @@ class Doctor(models.Model):
 
     services_offered = models.ManyToManyField('appointments.Service', related_name='doctors_offered')
 
+    working_days = models.TextField(default='از شنبه تا چهارشنبه')
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

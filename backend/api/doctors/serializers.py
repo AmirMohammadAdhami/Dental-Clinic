@@ -19,10 +19,11 @@ class DoctorSerializer(serializers.ModelSerializer):
     doctor_photos = DoctorPhotosSerializer(source='photos', read_only=True)
     services_offered = ServiceSerializer(many=True, read_only=True)
     full_name = serializers.SerializerMethodField()
+    rating = serializers.FloatField(source='average_rating', read_only=True)
 
     class Meta:
         model = Doctor
-        fields = ['id', 'slug', 'full_name', 'speciality', 'university', 'years_of_experience', 'bio', 'services_offered', 'doctor_photos']
+        fields = ['id', 'slug', 'full_name', 'speciality', 'university', 'years_of_experience','rating','working_days', 'bio', 'services_offered', 'doctor_photos']
 
     def get_full_name(self, obj):
         return obj.user.first_name + ' ' + obj.user.last_name
