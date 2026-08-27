@@ -14,13 +14,13 @@ class ArticleListApiView(ListAPIView):
             Prefetch(
                 'media',
                 queryset=ArticleMedia.objects.all()
-
-            )
+            ),
+            'author__photos',
         )
         .only(
-            'id', 'title', 'slug', 'is_published',
+            'id', 'title', 'slug', 'abstract', 'view_count', 'is_published', 'special_article',
             'author__user__full_name',
-            'category__name','created_at',
+            'category__name', 'created_at',
         )
         .distinct()
     )
