@@ -20,7 +20,7 @@ class ArticleListApiView(ListAPIView):
         .only(
             'id', 'title', 'slug', 'is_published',
             'author__user__full_name',
-            'category__name',
+            'category__name','created_at',
         )
         .distinct()
     )

@@ -68,6 +68,8 @@ class Article(models.Model):
 
     view_count = models.IntegerField(default=0)
 
+    special_article = models.BooleanField(default=False)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
