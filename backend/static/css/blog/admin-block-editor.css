@@ -1,0 +1,248 @@
+/* ================================================================
+   admin-block-editor.css
+   Styles for the content-blocks visual editor in Django admin.
+   ================================================================ */
+
+/* ── wrapper ─────────────────────────────────────────────────────── */
+.block-editor-wrapper {
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background: #f9fafb;
+    padding: 16px;
+    margin-top: 4px;
+}
+
+/* ── toolbar ─────────────────────────────────────────────────────── */
+.block-editor-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e5e7eb;
+}
+.block-editor-toolbar-title {
+    font-weight: 600;
+    font-size: 13px;
+    color: #374151;
+    white-space: nowrap;
+}
+.block-editor-add-btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.block-editor-add-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #374151;
+    font-size: 12.5px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+}
+.block-editor-add-btn:hover {
+    border-color: #0f766e;
+    color: #0f766e;
+    background: #f0fdfa;
+    box-shadow: 0 1px 3px rgba(15, 118, 110, 0.1);
+}
+
+/* ── blocks container ────────────────────────────────────────────── */
+.block-editor-blocks {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 60px;
+}
+.block-editor-blocks:empty::before {
+    content: 'هنوز بلاکی اضافه نشده. از دکمه‌های بالا استفاده کنید.';
+    display: block;
+    text-align: center;
+    padding: 24px;
+    color: #9ca3af;
+    font-size: 13px;
+    border: 2px dashed #e5e7eb;
+    border-radius: 8px;
+    background: #fff;
+}
+
+/* ── single block ────────────────────────────────────────────────── */
+.be-block {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.be-block:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+.be-block.be-dragging {
+    opacity: 0.5;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+.be-block.be-drag-over {
+    border-color: #0f766e;
+    border-style: dashed;
+}
+
+.be-block-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #f9fafb;
+    border-bottom: 1px solid #f3f4f6;
+    user-select: none;
+}
+.be-block-grip {
+    cursor: grab;
+    font-size: 16px;
+    color: #9ca3af;
+    line-height: 1;
+    padding: 2px 4px;
+    letter-spacing: -2px;
+}
+.be-block-grip:hover {
+    color: #6b7280;
+}
+.be-block-type-badge {
+    font-size: 12px;
+    font-weight: 600;
+    color: #0f766e;
+    background: rgba(15, 118, 110, 0.08);
+    padding: 2px 10px;
+    border-radius: 999px;
+}
+.be-block-index {
+    font-size: 11px;
+    color: #9ca3af;
+    margin-right: auto;
+}
+.be-block-actions {
+    display: flex;
+    gap: 4px;
+}
+
+/* ── action buttons ──────────────────────────────────────────────── */
+.be-btn {
+    width: 26px;
+    height: 26px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e5e7eb;
+    border-radius: 5px;
+    background: #ffffff;
+    color: #6b7280;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.12s ease;
+}
+.be-btn:hover {
+    background: #f3f4f6;
+    color: #374151;
+}
+.be-btn-delete:hover {
+    background: #fef2f2;
+    border-color: #fca5a5;
+    color: #dc2626;
+}
+
+/* ── block body / fields ─────────────────────────────────────────── */
+.be-block-body {
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.be-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.be-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b7280;
+    letter-spacing: -0.01em;
+}
+.be-input {
+    width: 100%;
+    padding: 7px 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 13.5px;
+    font-family: inherit;
+    color: #111827;
+    background: #ffffff;
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    box-sizing: border-box;
+}
+.be-input:focus {
+    border-color: #0f766e;
+    box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.12);
+}
+.be-textarea {
+    resize: vertical;
+    min-height: 60px;
+    line-height: 1.6;
+}
+.be-select {
+    appearance: auto;
+}
+
+/* ── source textarea wrapper ──────────────────────────────────── */
+.block-editor-source-wrapper {
+    margin-top: 8px;
+}
+.block-editor-source-wrapper details summary {
+    font-size: 12px;
+    color: #6b7280;
+    cursor: pointer;
+    user-select: none;
+}
+.block-editor-source-wrapper details summary:hover {
+    color: #374151;
+}
+.block-editor-source {
+    width: 100%;
+    min-height: 80px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    padding: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #374151;
+    resize: vertical;
+    box-sizing: border-box;
+}
+.block-editor-source:focus {
+    border-color: #0f766e;
+    box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.12);
+}
+
+/* ── responsive ──────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .block-editor-add-btns {
+        gap: 4px;
+    }
+    .block-editor-add-btn {
+        font-size: 11px;
+        padding: 4px 8px;
+    }
+    .be-block-header {
+        flex-wrap: wrap;
+    }
+}

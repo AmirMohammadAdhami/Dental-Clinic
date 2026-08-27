@@ -64,6 +64,25 @@ class Article(models.Model):
     abstract = models.TextField()
     content = models.TextField()
 
+    # ── Block-based content ──────────────────────────────────────────
+    # Structured content blocks — list of dicts, each with a "type" and "data".
+    # Supported types:
+    #   heading     { text, level (2|3) }
+    #   paragraph   { text }
+    #   tip         { title, body }
+    #   warning     { title, body }
+    #   info        { title, body }
+    #   list        { style ("bullet"|"numbered"), items [] }
+    #   quote       { text, author?, role? }
+    #   table       { caption?, headers [], rows [[]] }
+    #   image       { src, alt?, caption? }
+    #   gallery     { items: [{ src, alt?, type ("image"|"video") }] }
+    content_blocks = models.JSONField(
+        default=list,
+        blank=True,
+        help_text='Structured content blocks for the article body.',
+    )
+
     is_published = models.BooleanField(default=False)
 
     view_count = models.IntegerField(default=0)
@@ -72,6 +91,11 @@ class Article(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    @property
+    def has_blocks(self):
+        """Return True when the article uses the block-based content system."""
+        return bool(self.content_blocks)
 
     def save(self, *args, **kwargs):
         if not self.slug:

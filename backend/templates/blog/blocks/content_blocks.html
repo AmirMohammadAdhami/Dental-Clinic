@@ -1,0 +1,165 @@
+{% load content_blocks %}
+
+{# ── Content Blocks Renderer ─────────────────────────────────────── #}
+{# This template iterates over a list of block dicts and renders     #}
+{# each one with the matching HTML/CSS.                              #}
+
+{% for block in blocks %}
+
+    {# ── Heading ──────────────────────────────────────────────────── #}
+    {% if block.type == 'heading' %}
+        {% if block.data.level == '3' %}
+            <h3 class="post-body" id="section-{{ forloop.counter }}">{{ block.data.text }}</h3>
+        {% else %}
+            <h2 class="post-body" id="section-{{ forloop.counter }}">{{ block.data.text }}</h2>
+        {% endif %}
+
+    {# ── Paragraph ────────────────────────────────────────────────── #}
+    {% elif block.type == 'paragraph' %}
+        <p>{{ block.data.text|linebreaksbr }}</p>
+
+    {# ── Tip callout ──────────────────────────────────────────────── #}
+    {% elif block.type == 'tip' %}
+        <div class="post-callout post-callout-tip">
+            <span class="post-callout-icon">💡</span>
+            <div>
+                <strong>{{ block.data.title|default:"نکته مهم" }}:</strong>
+                {{ block.data.body|linebreaksbr }}
+            </div>
+        </div>
+
+    {# ── Warning callout ──────────────────────────────────────────── #}
+    {% elif block.type == 'warning' %}
+        <div class="post-callout post-callout-warning">
+            <span class="post-callout-icon">⚠️</span>
+            <div>
+                <strong>{{ block.data.title|default:"هشدار پزشکی" }}:</strong>
+                {{ block.data.body|linebreaksbr }}
+            </div>
+        </div>
+
+    {# ── Info callout ─────────────────────────────────────────────── #}
+    {% elif block.type == 'info' %}
+        <div class="post-callout post-callout-info">
+            <span class="post-callout-icon">ℹ️</span>
+            <div>
+                <strong>{{ block.data.title|default:"اطلاعات تکمیلی" }}:</strong>
+                {{ block.data.body|linebreaksbr }}
+            </div>
+        </div>
+
+    {# ── List (bullet or numbered) ────────────────────────────────── #}
+    {% elif block.type == 'list' %}
+        {% if block.data.style == 'numbered' %}
+            <ol class="post-list post-list-ordered">
+                {% for item in block.data.items %}
+                    <li>{{ item }}</li>
+                {% endfor %}
+            </ol>
+        {% else %}
+            <ul class="post-list">
+                {% for item in block.data.items %}
+                    <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+    {# ── Blockquote ───────────────────────────────────────────────── #}
+    {% elif block.type == 'quote' %}
+        <blockquote class="post-quote">
+            <p class="post-quote-text">"{{ block.data.text }}"</p>
+            {% if block.data.author %}
+                <footer class="post-quote-footer">
+                    <cite class="post-quote-author">{{ block.data.author }}</cite>
+                    {% if block.data.role %}
+                        <span class="post-quote-role"> — {{ block.data.role }}</span>
+                    {% endif %}
+                </footer>
+            {% endif %}
+        </blockquote>
+
+    {# ── Table ─────────────────────────────────────────────────────── #}
+    {% elif block.type == 'table' %}
+        <div class="post-table-wrapper">
+            {% if block.data.caption %}
+                <p class="post-table-caption">{{ block.data.caption }}</p>
+            {% endif %}
+            <table class="post-table">
+                {% if block.data.headers %}
+                <thead>
+                    <tr>
+                        {% for header in block.data.headers %}
+                            <th>{{ header }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                {% endif %}
+                <tbody>
+                    {% for row in block.data.rows %}
+                        <tr>
+                            {% for cell in row %}
+                                <td>{{ cell }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    {# ── Single image ─────────────────────────────────────────────── #}
+    {% elif block.type == 'image' %}
+        <figure class="post-figure">
+            <img src="{{ block.data.src }}" alt="{{ block.data.alt|default:'' }}" class="post-figure-img" loading="lazy">
+            {% if block.data.caption %}
+                <figcaption class="post-figure-caption">{{ block.data.caption }}</figcaption>
+            {% endif %}
+        </figure>
+
+    {# ── Image gallery ────────────────────────────────────────────── #}
+    {% elif block.type == 'gallery' %}
+        <div class="post-gallery" data-gallery-id="gallery-{{ forloop.counter }}">
+            <div class="post-gallery-main">
+                {% with first_item=block.data.items|first %}
+                {% if first_item.type == 'video' %}
+                    <div class="post-gallery-video" style="display:block;">
+                        <video class="post-gallery-video-player" controls>
+                            <source src="{{ first_item.src }}" type="video/mp4">
+                        </video>
+                    </div>
+                {% else %}
+                    <img src="{{ first_item.src }}" alt="{{ first_item.alt|default:'' }}" class="post-gallery-img" id="galleryMainImg-{{ forloop.counter }}">
+                {% endif %}
+                {% endwith %}
+                <button class="post-gallery-arrow post-gallery-prev" aria-label="عکس قبلی">‹</button>
+                <button class="post-gallery-arrow post-gallery-next" aria-label="عکس بعدی">›</button>
+            </div>
+            <div class="post-gallery-thumbs">
+                {% for item in block.data.items %}
+                <button class="post-gallery-thumb {% if forloop.first %}is-active{% endif %}"
+                        data-index="{{ forloop.counter0 }}"
+                        data-type="{{ item.type|default:'image' }}"
+                        data-src="{{ item.src }}"
+                        aria-label="آیتم {{ forloop.counter }}">
+                    <img src="{{ item.src }}" alt="{{ item.alt|default:'' }}">
+                    {% if item.type == 'video' %}
+                    <span class="post-gallery-thumb-play">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+                    </span>
+                    {% endif %}
+                </button>
+                {% endfor %}
+            </div>
+        </div>
+
+    {# ── Unknown type fallback ─────────────────────────────────────── #}
+    {% else %}
+        <div class="post-callout post-callout-info">
+            <span class="post-callout-icon">❓</span>
+            <div>نوع بلاک ناشناخته: {{ block.type }}</div>
+        </div>
+
+    {% endif %}
+
+{% empty %}
+    {# No blocks — show nothing (fallback to content field) #}
+{% endfor %}

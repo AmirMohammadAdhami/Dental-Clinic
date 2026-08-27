@@ -392,5 +392,93 @@ html, body.post-page, .post-page .bg-grid, .post-page .tooth-pattern,
     .post-testimonials .testimonials-deck { max-width: 100%; }
     .post-testimonials .testimonials-btn { width: 40px; height: 40px; }
     .post-testimonials .testimonials-btn svg { width: 20px; height: 20px; }
+    .post-table-wrapper { overflow-x: auto; }
+    .post-table { width: 100%; font-size: 0.9rem; }
+}
+
+/* ================= CONTENT BLOCK: INFO CALLOUT ================= */
+.post-callout-info { background: rgba(59,130,246,0.06); border: 1px solid rgba(59,130,246,0.2); color: var(--text-muted); }
+
+/* ================= CONTENT BLOCK: BLOCKQUOTE ================= */
+.post-quote {
+    margin: 28px 0;
+    padding: 20px 24px;
+    border-right: 4px solid var(--primary);
+    background: var(--bg-alt);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.post-quote-text {
+    font-size: 1.05rem;
+    line-height: 1.85;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 8px;
+}
+.post-quote-footer {
+    font-size: 0.88rem;
+    color: var(--text-faint);
+}
+.post-quote-author {
+    font-weight: 700;
+    color: var(--primary);
+    font-style: normal;
+}
+.post-quote-role {
+    color: var(--text-faint);
+}
+
+/* ================= CONTENT BLOCK: TABLE ================= */
+.post-table-wrapper {
+    margin: 28px 0;
+    overflow-x: auto;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(15,118,110,0.1);
+}
+.post-table-caption {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text);
+    padding: 12px 16px 0;
+    margin-bottom: 0;
+}
+.post-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+}
+.post-table th {
+    background: rgba(15,118,110,0.06);
+    padding: 10px 16px;
+    text-align: right;
+    font-weight: 700;
+    color: var(--text);
+    border-bottom: 2px solid rgba(15,118,110,0.12);
+}
+.post-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid rgba(15,118,110,0.06);
+    color: var(--text-muted);
+}
+.post-table tr:last-child td {
+    border-bottom: none;
+}
+.post-table tr:hover td {
+    background: rgba(15,118,110,0.03);
+}
+
+/* ================= CONTENT BLOCK: FIGURE ================= */
+.post-figure {
+    margin: 28px 0;
+}
+.post-figure-img {
+    width: 100%;
+    border-radius: var(--radius-sm);
+    display: block;
+}
+.post-figure-caption {
+    font-size: 0.82rem;
+    color: var(--text-faint);
+    text-align: center;
+    margin-top: 8px;
 }
 

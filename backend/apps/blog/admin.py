@@ -1,5 +1,8 @@
+from django import forms
 from django.contrib import admin
+from django.db import models
 from .models import ArticleMedia, ArticleView, Article, Comment, FAQ, BeforeAfter
+from .widgets import BlockEditorWidget
 
 
 class ArticleMediaInline(admin.TabularInline):
@@ -7,14 +10,30 @@ class ArticleMediaInline(admin.TabularInline):
     extra = 0
 
 
+class ArticleAdminForm(forms.ModelForm):
+    """Custom form with BlockEditorWidget for content_blocks."""
+
+    class Meta:
+        model = Article
+        fields = '__all__'
+        widgets = {
+            'content_blocks': BlockEditorWidget,
+        }
+
+
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
+    form = ArticleAdminForm
     list_display = ('title', 'author', 'slug', 'is_published', 'view_count', 'created_at')
     list_filter = ('is_published', 'created_at')
     search_fields = ('title', 'slug', 'content')
     readonly_fields = ('slug', 'view_count', 'created_at', 'updated_at')
     raw_id_fields = ('author', 'category')
     inlines = [ArticleMediaInline]
+
+    class Media:
+        css = {'all': ('css/blog/admin-block-editor.css',)}
+        js = ('js/blog/admin-block-editor.js',)
 
 
 @admin.register(Comment)
