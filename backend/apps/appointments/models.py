@@ -1,6 +1,7 @@
 from django.db import models
 from ..accounts.models import User
 import secrets
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 # Create your models here.
@@ -39,6 +40,8 @@ class Appointment(models.Model):
 
     appointment_date = models.DateTimeField()
 
+    service = models.ForeignKey(Service, on_delete=models.DO_NOTHING, related_name='appointments')
+
     price = models.DecimalField(max_digits=12, decimal_places=0)
 
     prescription_file = models.FileField(upload_to='appointments/prescriptions/', null=True, blank=True)
@@ -76,7 +79,10 @@ class Testimonial(models.Model):
     appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE, related_name='testimonials')
 
     content = models.TextField()
-    rating = models.IntegerField()
+    rating = models.IntegerField(validators=[
+        MinValueValidator(1),
+        MaxValueValidator(5),
+    ])
 
     status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
 

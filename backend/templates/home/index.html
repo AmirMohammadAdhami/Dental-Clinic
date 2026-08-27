@@ -171,77 +171,8 @@
             <h2 class="samples-title">نمونه کارهای ما</h2>
             <p class="samples-subtitle">نتیجه واقعی درمان‌های دنتورا را ببینید</p>
 
-            <div class="samples-grid reveal-stagger">
-
-                <div class="doctor-card" data-ba>
-                    <div class="doctor-img ba-container" tabindex="0" role="slider"
-                         aria-label="مقایسه قبل و بعد لمینت سرامیکی ۸ واحد، با کشیدن یا کلیدهای جهت‌نما"
-                         aria-valuemin="0"
-                         aria-valuemax="100" aria-valuenow="50">
-                        <img class="ba-img ba-after" src="{% static 'images/before-after/1-after.jpg' %}"
-                             alt="نتیجه بعد از لمینت سرامیکی ۸ واحد">
-                        <img class="ba-img ba-before" src="{% static 'images/before-after/1-before.jpg' %}"
-                             alt="وضعیت قبل از لمینت سرامیکی ۸ واحد">
-                        <div class="ba-slider">
-                            <div class="ba-handle"></div>
-                        </div>
-                        <span class="ba-label ba-label-before">قبل</span>
-                        <span class="ba-label ba-label-after">بعد</span>
-                    </div>
-                    <p class="doctor-name">لمینت سرامیکی ۸ واحد</p>
-                </div>
-
-                <div class="doctor-card" data-ba>
-                    <div class="doctor-img ba-container" tabindex="0" role="slider"
-                         aria-label="مقایسه قبل و بعد اصلاح طرح لبخند، با کشیدن یا کلیدهای جهت‌نما" aria-valuemin="0"
-                         aria-valuemax="100" aria-valuenow="50">
-                        <img class="ba-img ba-after" src="{% static 'images/before-after/2-after.jpg' %}"
-                             alt="نتیجه بعد از اصلاح طرح لبخند">
-                        <img class="ba-img ba-before" src="{% static 'images/before-after/2-before.jpg' %}"
-                             alt="وضعیت قبل از اصلاح طرح لبخند">
-                        <div class="ba-slider">
-                            <div class="ba-handle"></div>
-                        </div>
-                        <span class="ba-label ba-label-before">قبل</span>
-                        <span class="ba-label ba-label-after">بعد</span>
-                    </div>
-                    <p class="doctor-name">اصلاح طرح لبخند</p>
-                </div>
-
-                <div class="doctor-card" data-ba>
-                    <div class="doctor-img ba-container" tabindex="0" role="slider"
-                         aria-label="مقایسه قبل و بعد ایمپلنت و روکش، با کشیدن یا کلیدهای جهت‌نما" aria-valuemin="0"
-                         aria-valuemax="100" aria-valuenow="50">
-                        <img class="ba-img ba-after" src="{% static 'images/before-after/3-after.jpg' %}"
-                             alt="نتیجه بعد از ایمپلنت و روکش">
-                        <img class="ba-img ba-before" src="{% static 'images/before-after/3-before.jpg' %}"
-                             alt="وضعیت قبل از ایمپلنت و روکش">
-                        <div class="ba-slider">
-                            <div class="ba-handle"></div>
-                        </div>
-                        <span class="ba-label ba-label-before">قبل</span>
-                        <span class="ba-label ba-label-after">بعد</span>
-                    </div>
-                    <p class="doctor-name">ایمپلنت و روکش</p>
-                </div>
-
-                <div class="doctor-card" data-ba>
-                    <div class="doctor-img ba-container" tabindex="0" role="slider"
-                         aria-label="مقایسه قبل و بعد بلیچینگ حرفه‌ای، با کشیدن یا کلیدهای جهت‌نما" aria-valuemin="0"
-                         aria-valuemax="100" aria-valuenow="50">
-                        <img class="ba-img ba-after" src="{% static 'images/before-after/4-after.jpg' %}"
-                             alt="نتیجه بعد از بلیچینگ حرفه‌ای">
-                        <img class="ba-img ba-before" src="{% static 'images/before-after/4-before.jpg' %}"
-                             alt="وضعیت قبل از بلیچینگ حرفه‌ای">
-                        <div class="ba-slider">
-                            <div class="ba-handle"></div>
-                        </div>
-                        <span class="ba-label ba-label-before">قبل</span>
-                        <span class="ba-label ba-label-after">بعد</span>
-                    </div>
-                    <p class="doctor-name">بلیچینگ حرفه‌ای</p>
-                </div>
-
+            <div class="samples-grid reveal-stagger" id="beforeAfterGrid">
+                <!-- پر شده توسط JavaScript از API -->
             </div>
 
             <div class="samples-cta">

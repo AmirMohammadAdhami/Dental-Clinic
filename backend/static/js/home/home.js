@@ -405,6 +405,52 @@ document.addEventListener('DOMContentLoaded', () => {
 
   fetchAndRenderAssistants();
 
+  // ================= FETCH BEFORE/AFTER FROM API =================
+  async function fetchAndRenderBeforeAfter() {
+    const grid = document.getElementById('beforeAfterGrid');
+    if (!grid) return;
+
+    try {
+      const res = await fetch('/api/before-afters/');
+      if (!res.ok) throw new Error('API response not OK');
+      const items = await res.json();
+
+      grid.innerHTML = '';
+
+      items.forEach(item => {
+        const desc = item.description || '';
+        const doctorName = item.doctor_name || '';
+        const div = document.createElement('div');
+        div.className = 'doctor-card';
+        div.setAttribute('data-ba', '');
+        div.innerHTML = `
+          <div class="doctor-img ba-container" tabindex="0" role="slider"
+               aria-label="مقایسه قبل و بعد ${desc}، با کشیدن یا کلیدهای جهت‌نما"
+               aria-valuemin="0"
+               aria-valuemax="100" aria-valuenow="50">
+            <img class="ba-img ba-after" src="${item.after_image}" alt="نتیجه بعد از ${desc}">
+            <img class="ba-img ba-before" src="${item.before_image}" alt="وضعیت قبل از ${desc}">
+            <div class="ba-slider">
+              <div class="ba-handle"></div>
+            </div>
+            <span class="ba-label ba-label-before">قبل</span>
+            <span class="ba-label ba-label-after">بعد</span>
+          </div>
+          <p class="doctor-name">${desc}</p>
+        `;
+        grid.appendChild(div);
+      });
+
+      // بازمقداردهی اسلایدرهای قبل/بعد
+      initBA();
+
+    } catch (err) {
+      console.error('خطا در دریافت نمونه کارها:', err);
+    }
+  }
+
+  fetchAndRenderBeforeAfter();
+
   // Apply BA sliders on page load
   initBA();
 
