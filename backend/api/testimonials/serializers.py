@@ -2,46 +2,38 @@ from rest_framework import serializers
 from backend.apps.appointments.models import Testimonial
 
 
-
 class TestimonialSerializer(serializers.ModelSerializer):
-    patient_name = serializers.SerializerMethodField()
-    service = serializers.SerializerMethodField()
+    full_name = serializers.SerializerMethodField()
+    service_name = serializers.SerializerMethodField()
+
     class Meta:
         model = Testimonial
         fields = [
             'id',
-            'patient_name',
-            'service',
+            'full_name',
+            'service_name',
             'content',
             'rating',
             'status',
             'created_at',
         ]
 
-    def get_patient_name(self, obj):
-        appointment = obj.appointment
+    def get_full_name(self, obj):
+        try:
+            appointment = obj.appointment
+            if appointment.patient:
+                return f"{appointment.patient.first_name} {appointment.patient.last_name}".strip()
+            elif appointment.first_name or appointment.last_name:
+                return f"{appointment.first_name} {appointment.last_name}".strip()
+        except Exception:
+            pass
+        return ''
 
-        if appointment.patient:
-            patient = appointment.patient
-            return {
-                'first_name': patient.first_name,
-                'last_name': patient.last_name,
-                'national_code': patient.national_code,
-            }
-        else:
-            return {
-                'first_name': appointment.first_name,
-                'last_name': appointment.last_name,
-                'national_code': appointment.national_code,
-            }
-
-    def get_service(self, obj):
-        service = obj.appointment.service
-        return {
-            'id': service.id,
-            'name': service.name,
-            'description': service.description,
-        }
+    def get_service_name(self, obj):
+        try:
+            return obj.appointment.service.name
+        except Exception:
+            return ''
 
     def validate(self, data):
         if data['rating'] > 5 or data['rating'] < 1:

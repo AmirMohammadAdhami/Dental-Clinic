@@ -321,6 +321,15 @@ document.addEventListener('DOMContentLoaded', () => {
     slide();
   }
 
+  // ================= UTILITY: Normalize DRF Response =================
+  // DRF ممکنه response رو در {results: [...]} بپیچونه (pagination)
+  function toArray(data) {
+    if (Array.isArray(data)) return data;
+    if (data && Array.isArray(data.results)) return data.results;
+    console.warn('API response is not an array:', data);
+    return [];
+  }
+
   // ================= FETCH DOCTORS FROM API =================
   async function fetchAndRenderDoctors() {
     const track = document.getElementById('doctorsTrack');
@@ -329,7 +338,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const res = await fetch('/api/doctors/');
       if (!res.ok) throw new Error('API response not OK');
-      const doctors = await res.json();
+      const doctors = toArray(await res.json());
 
       track.innerHTML = '';
 
@@ -374,7 +383,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const res = await fetch('/api/assistants/');
       if (!res.ok) throw new Error('API response not OK');
-      const assistants = await res.json();
+      const assistants = toArray(await res.json());
 
       track.innerHTML = '';
 
@@ -413,7 +422,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const res = await fetch('/api/before-afters/');
       if (!res.ok) throw new Error('API response not OK');
-      const items = await res.json();
+      const items = toArray(await res.json());
 
       grid.innerHTML = '';
 
@@ -451,6 +460,62 @@ document.addEventListener('DOMContentLoaded', () => {
 
   fetchAndRenderBeforeAfter();
 
+  // ================= FETCH TESTIMONIALS FROM API =================
+  async function fetchAndRenderTestimonials() {
+    const deck = document.getElementById('testimonialsDeck');
+    if (!deck) return;
+
+    try {
+      const res = await fetch('/api/testimonials/');
+      if (!res.ok) throw new Error('API response not OK');
+      const testimonials = toArray(await res.json());
+
+      deck.innerHTML = '';
+
+      const starSvg = `<svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>`;
+
+      testimonials.forEach((item, index) => {
+        // ساخت ستاره‌ها بر اساس rating
+        const rating = Math.min(Math.max(parseInt(item.rating) || 0, 0), 5);
+        let starsHtml = '';
+        for (let i = 0; i < rating; i++) {
+          starsHtml += starSvg;
+        }
+
+        // نام بیمار
+        const fullName = item.full_name || 'بیمار دنتورا';
+
+        // نام خدمت
+        const serviceName = item.service_name || '';
+
+        const card = document.createElement('div');
+        card.className = 'testimonial-card';
+        card.setAttribute('data-index', index);
+        card.innerHTML = `
+          <div class="testimonial-stars">
+            ${starsHtml}
+          </div>
+          <blockquote class="testimonial-quote">
+            ${item.content}
+          </blockquote>
+          <div class="testimonial-user">
+            <span class="testimonial-name">${fullName}</span>
+            ${serviceName ? `<span class="testimonial-badge">درمان: ${serviceName}</span>` : ''}
+          </div>
+        `;
+        deck.appendChild(card);
+      });
+
+      // بازمقداردهی اسلایدر نظرات بعد از رندر دینامیک
+      initTestimonialsSlider();
+
+    } catch (err) {
+      console.error('خطا در دریافت نظرات بیماران:', err);
+    }
+  }
+
+  fetchAndRenderTestimonials();
+
   // Apply BA sliders on page load
   initBA();
 
@@ -483,11 +548,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fallback: no IntersectionObserver support, just show everything
     revealEls.forEach(el => el.classList.add('is-visible'));
   }
-
   // ================= TESTIMONIALS STACKED DECK =================
-  const deck = document.querySelector('.testimonials-deck');
-  if (deck) {
+  // این تابع بعد از رندر دینامیک کارت‌ها از API صدا زده میشه
+  function initTestimonialsSlider() {
+    const deck = document.querySelector('.testimonials-deck');
+    if (!deck) return;
+
+    // حذف کارت‌های قبلی slider (اگه re-init باشه)
+    deck.querySelectorAll('.testimonial-card').forEach(c => {
+      c.removeAttribute('data-pos');
+    });
+
     const cards = Array.from(deck.querySelectorAll('.testimonial-card'));
+    if (cards.length === 0) return;
+
     const dotsContainer = document.querySelector('.testimonials-dots');
     const prevBtn = document.querySelector('.testimonials-prev');
     const nextBtn = document.querySelector('.testimonials-next');
