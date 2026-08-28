@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
             mainEl.style.display = '';
             populate(d);
         })
-        .catch(function() { loadingEl.style.display='none'; errorEl.style.display='block'; });
+        .catch(function(err) { console.error('Article load error:', err); loadingEl.style.display='none'; errorEl.style.display='block'; });
 
     // ================= POPULATE =================
     function populate(d) {
@@ -180,11 +180,11 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
 
-        // Show first item
-        showItem(0);
-
         var ci = 0;
         var allThumbs = thumbs.querySelectorAll('.post-gallery-thumb');
+
+        // Show first item
+        showItem(0);
 
         function showItem(idx) {
             if (idx<0||idx>=items.length) return;
