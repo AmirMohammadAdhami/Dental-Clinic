@@ -39,10 +39,6 @@ class ArticleListApiView(ListModelMixin, RetrieveModelMixin,GenericViewSet):
                 .select_related('author__user', 'category')
                 .prefetch_related(
                     'media',
-                    Prefetch(
-                        'category__appointments__testimonials',
-                        queryset=DoctorReview.objects.select_related('appointment__service'),
-                    ),
                 )
                 .distinct()
             )
