@@ -73,35 +73,96 @@
     </div>
 </main>
 
+<!-- ================= FOOTER ================= -->
 <footer class="site-footer">
     <div class="footer-inner">
-        <button class="btn btn-outline footer-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                 stroke-linecap="round" stroke-linejoin="round">
-                <path d="M18 15l-6-6-6 6"/>
-            </svg>
-            بازگشت به بالا
-        </button>
-        <div class="footer-auth-links">
-            <a href="../auth/auth.html">ورود / ثبت‌نام</a>
-            <a href="../dashboard/dashboard.html">پنل بیمار</a>
+        <div class="footer-grid">
+            <div class="footer-col footer-col-brand">
+                <a href="../home/index.html" class="footer-logo">
+                    <span class="brand-icon" aria-hidden="true"></span>
+                    <span class="brand-name">دنتورا</span>
+                </a>
+                <p class="footer-brand-desc">کلینیک تخصصی دندانپزشکی دنتورا با بهره‌مندی از متخصصین مجرب و تجهیزات پیشرفته، خدمات ایمپلنت، لمینیت، ارتودنسی و زیبایی را با بالاترین کیفیت ارائه می‌دهد.</p>
+                <div class="footer-trust-badges">
+                    <span class="footer-badge">تایید نظام پزشکی</span>
+                    <span class="footer-badge">ISO 9001</span>
+                </div>
+            </div>
+            <div class="footer-col footer-col-links">
+                <div class="footer-col-block">
+                    <h4 class="footer-col-title">دسترسی سریع</h4>
+                    <nav class="footer-nav">
+                        <a href="../home/index.html">صفحه اصلی</a>
+                        <a href="team.html">تیم درمانی</a>
+                        <a href="before-after.html">نمونه‌کارها</a>
+                        <a href="blog.html">مقالات آموزشی</a>
+                    </nav>
+                </div>
+                <div class="footer-col-block">
+                    <h4 class="footer-col-title">خدمات ما</h4>
+                    <nav class="footer-nav">
+                        <a href="#">ایمپلنت دندان</a>
+                        <a href="#">لمینیت و کامپوزیت</a>
+                        <a href="#">ارتودنسی</a>
+                        <a href="#">زیبایی لبخند</a>
+                    </nav>
+                </div>
+            </div>
+            <div class="footer-col footer-col-contact">
+                <h4 class="footer-col-title">اطلاعات تماس</h4>
+                <div class="footer-contact-list">
+                    <a href="tel:+982122334455" class="footer-contact-link">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        <span dir="ltr">۰۲۱ – ۲۲ ۳۳ ۴۴ ۵۵</span>
+                    </a>
+                    <div class="footer-contact-link">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                        <span>شنبه تا پنجشنبه — ۹ صبح تا ۸ شب</span>
+                    </div>
+                    <div class="footer-contact-link">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        <span>تهران، خیابان ولیعصر، نبش کوچه ساعی، پلاک ۱۲</span>
+                    </div>
+                </div>
+                <div class="footer-nav-box">
+                    <p class="footer-nav-box-title">مسیریابی سریع تا کلینیک</p>
+                    <div class="footer-nav-actions">
+                        <a href="https://maps.google.com" target="_blank" rel="noopener" class="footer-nav-action">
+                            <img src="../../statics/images/appointment-icons/google-maps.png" alt="Google Maps" width="18" height="18" class="footer-nav-icon">
+                            Google Maps
+                        </a>
+                        <a href="https://neshan.org" target="_blank" rel="noopener" class="footer-nav-action">
+                            <img src="../../statics/images/appointment-icons/neshan.webp" alt="نشان" width="18" height="18" class="footer-nav-icon">
+                            نشان
+                        </a>
+                        <a href="https://balad.ir" target="_blank" rel="noopener" class="footer-nav-action">
+                            <img src="../../statics/images/appointment-icons/balad.png" alt="بلد" width="18" height="18" class="footer-nav-icon">
+                            بلد
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-social">
+                    <a href="https://t.me/dentura" target="_blank" rel="noopener" class="footer-social-link" aria-label="تلگرام">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    </a>
+                    <a href="https://instagram.com/dentura" target="_blank" rel="noopener" class="footer-social-link" aria-label="اینستاگرام">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                    </a>
+                </div>
+            </div>
         </div>
-                <div class="footer-contact">
-            <a href="tel:+982122334455" class="footer-contact-item">
-                <span class="footer-contact-icon">📞</span>
-                <span dir="ltr">۰۲۱ – ۲۲ ۳۳ ۴۴ ۵۵</span>
-            </a>
-            <span class="footer-contact-item">
-                <span class="footer-contact-icon">📍</span>
-                <span>تهران، خیابان ولیعصر، نبش کوچه ساعی، پلاک ۱۲</span>
-            </span>
-            <span class="footer-contact-item">
-                <span class="footer-contact-icon">🕗</span>
-                <span>شنبه تا پنجشنبه — ۹ صبح تا ۸ شب</span>
-            </span>
+        <div class="footer-bottom">
+            <div class="footer-bottom-divider"></div>
+            <div class="footer-bottom-inner">
+                <span class="footer-copy">© ۲۰۲۶ دنتورا — تمامی حقوق محفوظ است.</span>
+                <div class="footer-bottom-links">
+                    <a href="#">قوانین و مقررات</a>
+                    <a href="#">حریم خصوصی</a>
+                </div>
+            </div>
         </div>
-        <p class="footer-copy">© ۲۰۲۶ دنتورا — تمامی حقوق محفوظ است.</p>
-    </div></footer>
+    </div>
+</footer>
 <nav class="site-main-nav" aria-label="منوی پایین">
     <a href="../home/index.html" class="site-main-nav-item"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>خانه</span></a>
     <a href="team.html" class="site-main-nav-item"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>پزشکان</span></a>
