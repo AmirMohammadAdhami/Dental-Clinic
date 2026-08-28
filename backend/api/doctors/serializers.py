@@ -88,12 +88,15 @@ class DoctorDetailSerializer(serializers.ModelSerializer):
     articles = DoctorArticlesSerializer(many=True, read_only=True)
     doctor_testimonial = serializers.SerializerMethodField()
     reviews = serializers.SerializerMethodField()
+    completed_appointments_count = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Doctor
         fields = [
             'id', 'slug', 'full_name', 'speciality', 'university',
             'years_of_experience', 'working_days', 'rating', 'bio',
+            'medical_license_number',
+            'completed_appointments_count',
             'certificates', 'before_after', 'articles', 'doctor_testimonial',
             'doctor_photos', 'services_offered', 'reviews',
         ]
@@ -106,7 +109,7 @@ class DoctorDetailSerializer(serializers.ModelSerializer):
         if hasattr(obj, '_prefetched_before_after'):
             return BeforeAfterDoctorSerializer(obj._prefetched_before_after, many=True).data
         return BeforeAfterDoctorSerializer(
-            BeforeAfter.objects.filter(appointment__doctor=obj), many=True,
+            BeforeAfter.objects.filter(appointment__doctor=obj).order_by('created_at'), many=True,
         ).data
 
     def get_doctor_testimonial(self, obj):

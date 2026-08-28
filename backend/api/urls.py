@@ -12,7 +12,7 @@ app_name = 'api'
 
 urlpatterns = [
     path('doctors/', DoctorListAPIView.as_view(), name='doctor-list'),
-    path('doctors/<slug:slug>/', DoctorDetailAPIView.as_view(), name='doctor-detail'),
+    path('doctors/<str:slug>/', DoctorDetailAPIView.as_view(), name='doctor-detail'),
     path('assistants/', AssistantListAPIView.as_view(), name='assistant-list'),
     path('before-afters/', BeforeAfterListApiView.as_view(), name='before-after-list'),
     path('doctor-reviews/', DoctorReviewListApiView.as_view(), name='doctor-review-list'),

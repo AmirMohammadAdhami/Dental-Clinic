@@ -4,7 +4,7 @@ from backend.apps.doctors.models import Doctor
 from backend.apps.appointments.models import DoctorReview
 from backend.apps.blog.models import BeforeAfter
 from django.db.models.functions import Coalesce
-from django.db.models import Value, Avg, Q, F, FloatField, ExpressionWrapper
+from django.db.models import Value, Avg, Q, F, FloatField, ExpressionWrapper, Count
 from django.db.models import Prefetch
 
 
@@ -89,6 +89,10 @@ class DoctorDetailAPIView(RetrieveAPIView):
                         )
                     ),
                     Value(0.0)
-                )
+                ),
+                completed_appointments_count=Count(
+                    'appointments',
+                    filter=Q(appointments__status='DONE'),
+                ),
             )
         )

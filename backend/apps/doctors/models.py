@@ -7,7 +7,7 @@ from django.utils.text import slugify
 class Doctor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='doctor')
 
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, allow_unicode=True)
 
     speciality = models.CharField()
     university = models.CharField()
