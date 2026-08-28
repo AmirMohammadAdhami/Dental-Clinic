@@ -7,6 +7,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     window.scrollTo(0, 0);
 
+    // Apply post-page class to body so its background matches the surface color
+    document.body.classList.add('post-page');
+
     var MEDIA_BASE = window.location.origin;
 
     // ================= UTILITIES =================

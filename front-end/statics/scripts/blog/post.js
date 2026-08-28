@@ -1,6 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
     window.scrollTo(0, 0);
 
+    // Apply post-page class to body so its background matches the surface color
+    document.body.classList.add('post-page');
+
     // ================= READING PROGRESS BAR =================
     var progressBar = document.getElementById('readingProgress');
     var postBody = document.getElementById('postBody');
