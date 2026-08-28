@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Service, MedicalRecord, Appointment, Testimonial
+from .models import Service, MedicalRecord, Appointment, DoctorReview
 
 
 @admin.register(Service)
@@ -23,7 +23,7 @@ class AppointmentAdmin(admin.ModelAdmin):
     raw_id_fields = ('doctor', 'patient')
 
 
-@admin.register(Testimonial)
+@admin.register(DoctorReview)
 class TestimonialAdmin(admin.ModelAdmin):
     list_display = ('appointment', 'rating', 'status', 'created_at')
     list_filter = ('status', 'rating')

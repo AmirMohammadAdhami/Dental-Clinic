@@ -18,6 +18,8 @@ class Doctor(models.Model):
 
     working_days = models.TextField(default='از شنبه تا چهارشنبه')
 
+    medical_license_number = models.CharField(max_length=20, unique=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

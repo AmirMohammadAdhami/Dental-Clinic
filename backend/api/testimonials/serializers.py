@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from backend.apps.appointments.models import Testimonial
+from backend.apps.appointments.models import DoctorReview
 
 
 class TestimonialSerializer(serializers.ModelSerializer):
@@ -7,7 +7,7 @@ class TestimonialSerializer(serializers.ModelSerializer):
     service_name = serializers.SerializerMethodField()
 
     class Meta:
-        model = Testimonial
+        model = DoctorReview
         fields = [
             'id',
             'full_name',

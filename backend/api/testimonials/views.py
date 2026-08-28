@@ -1,11 +1,11 @@
 from rest_framework.generics import ListAPIView
 
 from backend.api.testimonials.serializers import TestimonialSerializer
-from backend.apps.appointments.models import Testimonial
+from backend.apps.appointments.models import DoctorReview
 
 
 class TestimonialListApiView(ListAPIView):
-    queryset = Testimonial.objects.select_related(
+    queryset = DoctorReview.objects.select_related(
         'appointment__doctor__user',
         'appointment__patient',
         'appointment__service'
@@ -22,5 +22,5 @@ class TestimonialListApiView(ListAPIView):
         'appointment__service__id',
         'appointment__service__name',
         'appointment__service__description',
-    ).filter(status=Testimonial.Status.APPROVED)
+    ).filter(status=DoctorReview.Status.APPROVED)
     serializer_class = TestimonialSerializer

@@ -2,6 +2,11 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+from pathlib import Path
+
+# Add the project root (parent of backend/) to sys.path so that
+# `backend` is importable as a package.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 
 def main():

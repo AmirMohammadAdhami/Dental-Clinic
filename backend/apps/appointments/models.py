@@ -70,26 +70,62 @@ class Appointment(models.Model):
         return f'{self.doctor.user.last_name}-{self.tracking_code}'
 
 
-class Testimonial(models.Model):
+class DoctorReview(models.Model):
     class Status(models.TextChoices):
         PENDING = 'PENDING', 'Pending'
         APPROVED = 'APPROVED', 'Approved'
         REJECTED = 'REJECTED', 'Rejected'
 
-    appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE, related_name='testimonials')
+    appointment = models.ForeignKey(
+        Appointment,
+        on_delete=models.CASCADE,
+        related_name='testimonials'
+    )
 
     content = models.TextField()
-    rating = models.IntegerField(validators=[
-        MinValueValidator(1),
-        MaxValueValidator(5),
-    ])
 
-    status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
+    professionalism_rating = models.PositiveSmallIntegerField(
+        validators=[
+            MinValueValidator(1),
+            MaxValueValidator(5),
+        ]
+    )
+
+    treatment_quality_rating = models.PositiveSmallIntegerField(
+        validators=[
+            MinValueValidator(1),
+            MaxValueValidator(5),
+        ]
+    )
+
+    communication_rating = models.PositiveSmallIntegerField(
+        validators=[
+            MinValueValidator(1),
+            MaxValueValidator(5),
+        ]
+    )
+
+    status = models.CharField(
+        max_length=20,
+        choices=Status.choices,
+        default=Status.PENDING
+    )
+
+    @property
+    def rating(self):
+        return (
+            self.professionalism_rating
+            + self.treatment_quality_rating
+            + self.communication_rating
+        ) / 3
 
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         if self.appointment.patient:
-            return self.appointment.patient.first_name + " " + self.appointment.patient.last_name
-        else:
-            return self.appointment.first_name + " " + self.appointment.last_name
+            return (
+                f"{self.appointment.patient.first_name} "
+                f"{self.appointment.patient.last_name}"
+            )
+
+        return f"{self.appointment.first_name} {self.appointment.last_name}"
