@@ -16,7 +16,8 @@ urlpatterns = [
     path('assistants/', AssistantListAPIView.as_view(), name='assistant-list'),
     path('before-afters/', BeforeAfterListApiView.as_view(), name='before-after-list'),
     path('doctor-reviews/', DoctorReviewListApiView.as_view(), name='doctor-review-list'),
-    path('home-videos/', ArticleListApiView.as_view(), name='home-video-list'),
+    path('home-videos/', ArticleListApiView.as_view({'get': 'list'}), name='home-video-list'),
+    path('home-videos/<str:slug>/', ArticleListApiView.as_view({'get': 'retrieve'}), name='home-video-detail'),
     path('services/', ServiceListApiView.as_view(), name='service-list'),
     path('faqs/', FAQListApiView.as_view(), name='faq-list'),
 ]

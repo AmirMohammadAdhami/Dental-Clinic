@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from backend.api.articles.serializers import ArticleMediaSerializer
+from backend.api.base_serializers import ArticleMediaSerializer
 from backend.apps.appointments.models import Service, DoctorReview
 from backend.apps.blog.models import BeforeAfter, Article
 from backend.apps.doctors.models import Doctor, DoctorPhotos, Certificate, DoctorTestimonial

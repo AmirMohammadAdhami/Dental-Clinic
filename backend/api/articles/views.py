@@ -1,6 +1,7 @@
 from rest_framework.mixins import (ListModelMixin, RetrieveModelMixin)
 from rest_framework.viewsets import GenericViewSet
 from backend.apps.blog.models import Article, ArticleMedia
+from backend.apps.appointments.models import DoctorReview
 from django.db.models import Prefetch
 from .serializers import ArticleListSerializer, ArticleDetailSerializer
 
@@ -34,5 +35,14 @@ class ArticleListApiView(ListModelMixin, RetrieveModelMixin,GenericViewSet):
             )
         elif self.action == 'retrieve':
             return (
-
+                Article.objects
+                .select_related('author__user', 'category')
+                .prefetch_related(
+                    'media',
+                    Prefetch(
+                        'category__appointments__testimonials',
+                        queryset=DoctorReview.objects.select_related('appointment__service'),
+                    ),
+                )
+                .distinct()
             )
