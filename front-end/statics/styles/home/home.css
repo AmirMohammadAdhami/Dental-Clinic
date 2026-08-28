@@ -1,7 +1,45 @@
 /* ===========================================================
    Dentura — Home Page Styles
-   Extracted from style.css (multiple ranges)
 =========================================================== */
+
+/* ================= NEON DIVIDER + GLASS SECTIONS ================= */
+.doctors-section,
+.assistants-section,
+.samples-section,
+.testimonials-section,
+.video-blog-section,
+.cta-banner-section {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 40px;
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(24px) saturate(1.8);
+    -webkit-backdrop-filter: blur(24px) saturate(1.8);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 8px 32px -8px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+.doctors-section::before,
+.assistants-section::before,
+.samples-section::before,
+.testimonials-section::before,
+.video-blog-section::before,
+.cta-banner-section::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 20%;
+    right: 20%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary), var(--accent), var(--primary), transparent);
+    box-shadow: 0 0 12px rgba(15, 118, 110, 0.6), 0 0 24px rgba(152, 246, 228, 0.35);
+    opacity: 0.7;
+    z-index: 1;
+    border-radius: 999px;
+}
+
+
 
 /* ================= HERO ================= */
 /* ================= HERO ================= */
@@ -339,13 +377,13 @@
 /* ================= DOCTORS SLIDER ================= */
 /* ================= DOCTORS SLIDER ================= */
 .doctors-section {
-    padding: 0 5vw 100px;
-    background: var(--bg-alt);
+    position: relative;
+    padding: 60px 48px 100px;
 }
 
 .assistants-section {
-    padding: 0 5vw 100px;
-    background: var(--bg);
+    position: relative;
+    padding: 60px 48px 100px;
 }
 
 .doctors-inner {
@@ -628,7 +666,9 @@
 @media (max-width: 620px) {
     .doctors-section,
     .assistants-section {
-        padding: 0 5vw 60px;
+        padding: 40px 20px 60px;
+        margin-bottom: 24px;
+        border-radius: var(--radius-md);
     }
 
     .doctors-subtitle {
@@ -655,7 +695,8 @@
 /* ================= BEFORE / AFTER SAMPLES ================= */
 /* ================= BEFORE / AFTER SAMPLES ================= */
 .samples-section {
-    background: var(--bg-alt);
+    position: relative;
+    padding: 60px 48px 0;
 }
 
 .samples-inner {
@@ -1031,8 +1072,8 @@
 /* ================= TESTIMONIALS SECTION ================= */
 /* ================= TESTIMONIALS SECTION ================= */
 .testimonials-section {
-    padding: 0 5vw 100px;
-    background: var(--bg);
+    position: relative;
+    padding: 60px 48px 100px;
 }
 
 .testimonials-inner {
@@ -1327,7 +1368,9 @@
 /* --- Responsive: Mobile --- */
 @media (max-width: 620px) {
     .testimonials-section {
-        padding: 0 5vw 60px;
+        padding: 40px 20px 60px;
+        margin-bottom: 24px;
+        border-radius: var(--radius-md);
     }
 
     .testimonials-deck-wrapper {
@@ -1486,9 +1529,8 @@
 /* ================= VIDEO BLOG SECTION ================= */
 /* ================= VIDEO BLOG SECTION ================= */
 .video-blog-section {
-    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-    padding: 0 5vw 100px;
-    color: #ffffff;
+    position: relative;
+    padding: 60px 48px 100px;
 }
 
 .video-blog-inner {
@@ -1500,14 +1542,14 @@
 .video-blog-title {
     font-size: clamp(1.8rem, 3.5vw, 2.8rem);
     font-weight: 800;
-    color: #ffffff;
+    color: var(--text);
     margin-bottom: 12px;
     padding-top: 10px;
 }
 
 .video-blog-subtitle {
     font-size: 1.05rem;
-    color: rgba(255, 255, 255, 0.75);
+    color: var(--text-muted);
     line-height: 1.8;
     max-width: 600px;
     margin: 0 auto 48px;
@@ -1521,19 +1563,19 @@
 }
 
 .video-card {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--surface);
     border-radius: var(--radius-lg);
     overflow: hidden;
     text-decoration: none;
     color: inherit;
     transition: transform 0.35s var(--ease-smooth), box-shadow 0.35s ease, background 0.35s ease;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--sidebar-card-border);
 }
 
 .video-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.4);
-    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
+    background: var(--surface-hover);
 }
 
 .video-card-thumb {
@@ -1592,21 +1634,21 @@
     display: block;
     font-weight: 700;
     font-size: 1rem;
-    color: #ffffff;
+    color: var(--text);
     margin-bottom: 2px;
 }
 
 .video-card-role {
     display: block;
     font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.72);
+    color: var(--text-muted);
     margin-bottom: 10px;
 }
 
 .video-card-title {
     font-size: 0.92rem;
     font-weight: 500;
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--text);
     line-height: 1.6;
     margin-bottom: 14px;
     display: -webkit-box;
@@ -1644,19 +1686,12 @@
 /* ================= CTA BANNER SECTION ================= */
 .cta-banner-section {
     position: relative;
-    padding: 80px 5vw;
+    padding: 80px 48px;
     overflow: hidden;
-    background: var(--bg);
 }
 
 .cta-banner-pattern {
-    position: absolute;
-    inset: 0;
-    background-image: url('../../../assets/call-to-action/c-t-a.jpg');
-    background-size: cover;
-    background-position: center;
-    opacity: 0.15;
-
+    display: none;
 }
 
 @property --cta-border-angle {
@@ -1741,7 +1776,9 @@
 
 @media (max-width: 620px) {
     .cta-banner-section {
-        padding: 40px 5vw;
+        padding: 40px 20px;
+        margin-bottom: 24px;
+        border-radius: var(--radius-md);
     }
 
     .cta-banner-card {
@@ -1852,7 +1889,9 @@ body.video-modal-open .tooth-pattern {
 
 @media (max-width: 620px) {
     .video-blog-section {
-        padding: 0 5vw 60px;
+        padding: 40px 20px 60px;
+        margin-bottom: 24px;
+        border-radius: var(--radius-md);
     }
 
     .video-blog-grid {
@@ -1872,6 +1911,7 @@ body.video-modal-open .tooth-pattern {
 
 
 
+
 /* ================= VIDEO BLOG CTA (بخش تیره — دکمه سفید) ================= */
 .video-blog-cta .btn-outline {
     color: #ffffff;
@@ -1882,3 +1922,42 @@ body.video-modal-open .tooth-pattern {
     border-color: rgba(255, 255, 255, 0.6);
     background: rgba(255, 255, 255, 0.08);
 }
+
+/* ================= DARK MODE GLASS ================= */
+:root[data-theme="dark"] .doctors-section,
+:root[data-theme="dark"] .assistants-section,
+:root[data-theme="dark"] .samples-section,
+:root[data-theme="dark"] .testimonials-section,
+:root[data-theme="dark"] .video-blog-section,
+:root[data-theme="dark"] .cta-banner-section {
+    background: rgba(13, 26, 40, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .doctors-section,
+    :root:not([data-theme="light"]) .assistants-section,
+    :root:not([data-theme="light"]) .samples-section,
+    :root:not([data-theme="light"]) .testimonials-section,
+    :root:not([data-theme="light"]) .video-blog-section,
+    :root:not([data-theme="light"]) .cta-banner-section {
+        background: rgba(13, 26, 40, 0.55);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+}
+
+/* Tablet */
+@media (max-width: 1024px) and (min-width: 621px) {
+    .doctors-section,
+    .assistants-section,
+    .samples-section,
+    .testimonials-section,
+    .video-blog-section,
+    .cta-banner-section {
+        padding: 48px 32px;
+        margin-bottom: 32px;
+    }
+}
+

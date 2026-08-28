@@ -444,8 +444,11 @@ button:focus-visible {
 /* Links Col */
 .footer-col-links {
     display: flex;
-    flex-direction: column;
-    gap: 24px;
+    flex-direction: row;
+    gap: 40px;
+}
+.footer-col-block {
+    flex: 1;
 }
 .footer-nav {
     display: flex;
@@ -720,6 +723,7 @@ a.footer-contact-link:hover { color: var(--primary); }
 
     /* Footer responsive */
     .footer-grid { grid-template-columns: 1fr; gap: 32px; text-align: center; }
+    .footer-col-links { flex-direction: column; gap: 24px; }
     .footer-nav { align-items: center; }
     .footer-contact-list { align-items: center; }
     .footer-contact-link { justify-content: center; }
