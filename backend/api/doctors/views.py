@@ -3,6 +3,7 @@ from .serializers import DoctorListSerializer, DoctorDetailSerializer
 from backend.apps.doctors.models import Doctor
 from backend.apps.appointments.models import DoctorReview
 from backend.apps.blog.models import BeforeAfter
+from backend.apps.doctors.models import Certificate
 from django.db.models.functions import Coalesce
 from django.db.models import Value, Avg, Q, F, FloatField, ExpressionWrapper, Count
 from django.db.models import Prefetch
@@ -62,7 +63,10 @@ class DoctorDetailAPIView(RetrieveAPIView):
             .prefetch_related(
                 'photos',
                 'services_offered',
-                'certificates',
+                Prefetch(
+                    'certificates',
+                    queryset=Certificate.objects.order_by('date'),
+                ),
                 'articles__media',
                 Prefetch(
                     'appointments__before_after',
