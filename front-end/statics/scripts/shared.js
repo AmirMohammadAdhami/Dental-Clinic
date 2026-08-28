@@ -94,31 +94,6 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-// ================= MOBILE BOTTOM NAV ACTIVE STATE =================
-document.addEventListener('DOMContentLoaded', function () {
-  var bottomNav = document.querySelector('.site-main-nav');
-  if (!bottomNav) return;
-
-  var currentPage = window.location.pathname.split('/').pop() || 'index.html';
-  var links = bottomNav.querySelectorAll('.site-main-nav-item');
-  var pageMap = {
-    'index.html': 0,
-    'team.html': 1,
-    'blog.html': 3,
-    'before-after.html': 2,
-    'all-articles.html': 3,
-    'post.html': 3,
-    'doctor.html': 1
-  };
-
-  var idx = pageMap[currentPage];
-  if (idx !== undefined && links[idx]) {
-    links[idx].classList.add('is-active');
-  }
-
-  // Bottom nav stays fixed at all times — no hide on scroll
-});
-
 // ================= TOOTH LOGO (تعریف یک‌جا — جلوگیری از تکرار SVG در صفحات) =================
 (function () {
   var TOOTH_SVG = '<svg viewBox="0 0 48 48" width="30" height="30" fill="none" xmlns="http://www.w3.org/2000/svg">' +
@@ -126,6 +101,13 @@ document.addEventListener('DOMContentLoaded', function () {
     '</svg>';
 
   document.addEventListener('DOMContentLoaded', function () {
+    // Inject mobile top bar if not already present (front-end static pages)
+    if (!document.querySelector('.mobile-top-bar')) {
+      var bar = document.createElement('header');
+      bar.className = 'mobile-top-bar';
+      bar.innerHTML = '<div class="mobile-top-bar-inner"><span class="brand-icon" aria-hidden="true"></span><span class="brand-name">\u062F\u0646\u062A\u0648\u0631\u0627</span></div><div class="mobile-top-bar-neon"></div>';
+      document.body.insertBefore(bar, document.body.firstChild);
+    }
     document.querySelectorAll('.brand-icon').forEach(function (el) {
       if (!el.querySelector('svg')) el.innerHTML = TOOTH_SVG;
     });

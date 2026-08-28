@@ -23,6 +23,15 @@
 <div class="bg-grid"></div>
 <div class="tooth-pattern"></div>
 
+<!-- Mobile Top Bar (visible on mobile only) -->
+<header class="mobile-top-bar">
+    <div class="mobile-top-bar-inner">
+        <span class="brand-icon" aria-hidden="true"></span>
+        <span class="brand-name">دنتورا</span>
+    </div>
+    <div class="mobile-top-bar-neon"></div>
+</header>
+
 <header class="header">
     <div class="header-inner">
 
@@ -169,7 +178,7 @@
     <a href="{% url 'accounts:login' %}" class="site-main-nav-item"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>پروفایل</span></a>
 </nav>
 
-<script src="{% static "js/shared.js" %}"></script>
+<script src="{% static "js/shared.js" %}?v=2"></script>
 {% block js %}
 {% endblock %}
 </body>
