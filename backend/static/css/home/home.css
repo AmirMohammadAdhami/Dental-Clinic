@@ -1,7 +1,26 @@
 /* ===========================================================
    Dentura — Home Page Styles
-   Extracted from style.css (multiple ranges)
 =========================================================== */
+
+/* ================= NEON DIVIDER ================= */
+.doctors-section::before,
+.assistants-section::before,
+.samples-section::before,
+.testimonials-section::before,
+.video-blog-section::before,
+.cta-banner-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--primary), var(--accent), var(--primary), transparent);
+    box-shadow: 0 0 8px rgba(15, 118, 110, 0.5), 0 0 20px rgba(152, 246, 228, 0.3);
+    opacity: 0.6;
+}
+
+
 
 /* ================= HERO ================= */
 /* ================= HERO ================= */
@@ -339,13 +358,13 @@
 /* ================= DOCTORS SLIDER ================= */
 /* ================= DOCTORS SLIDER ================= */
 .doctors-section {
-    padding: 0 5vw 100px;
-    background: var(--bg-alt);
+    position: relative;
+    padding: 60px 5vw 100px;
 }
 
 .assistants-section {
-    padding: 0 5vw 100px;
-    background: var(--bg);
+    position: relative;
+    padding: 60px 5vw 100px;
 }
 
 .doctors-inner {
@@ -655,7 +674,8 @@
 /* ================= BEFORE / AFTER SAMPLES ================= */
 /* ================= BEFORE / AFTER SAMPLES ================= */
 .samples-section {
-    background: var(--bg-alt);
+    position: relative;
+    padding-top: 60px;
 }
 
 .samples-inner {
@@ -1031,8 +1051,8 @@
 /* ================= TESTIMONIALS SECTION ================= */
 /* ================= TESTIMONIALS SECTION ================= */
 .testimonials-section {
-    padding: 0 5vw 100px;
-    background: var(--bg);
+    position: relative;
+    padding: 60px 5vw 100px;
 }
 
 .testimonials-inner {
@@ -1486,9 +1506,8 @@
 /* ================= VIDEO BLOG SECTION ================= */
 /* ================= VIDEO BLOG SECTION ================= */
 .video-blog-section {
-    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-    padding: 0 5vw 100px;
-    color: #ffffff;
+    position: relative;
+    padding: 60px 5vw 100px;
 }
 
 .video-blog-inner {
@@ -1500,14 +1519,14 @@
 .video-blog-title {
     font-size: clamp(1.8rem, 3.5vw, 2.8rem);
     font-weight: 800;
-    color: #ffffff;
+    color: var(--text);
     margin-bottom: 12px;
     padding-top: 10px;
 }
 
 .video-blog-subtitle {
     font-size: 1.05rem;
-    color: rgba(255, 255, 255, 0.75);
+    color: var(--text-muted);
     line-height: 1.8;
     max-width: 600px;
     margin: 0 auto 48px;
@@ -1521,19 +1540,19 @@
 }
 
 .video-card {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--surface);
     border-radius: var(--radius-lg);
     overflow: hidden;
     text-decoration: none;
     color: inherit;
     transition: transform 0.35s var(--ease-smooth), box-shadow 0.35s ease, background 0.35s ease;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--sidebar-card-border);
 }
 
 .video-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.4);
-    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
+    background: var(--surface-hover);
 }
 
 .video-card-thumb {
@@ -1592,21 +1611,21 @@
     display: block;
     font-weight: 700;
     font-size: 1rem;
-    color: #ffffff;
+    color: var(--text);
     margin-bottom: 2px;
 }
 
 .video-card-role {
     display: block;
     font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.72);
+    color: var(--text-muted);
     margin-bottom: 10px;
 }
 
 .video-card-title {
     font-size: 0.92rem;
     font-weight: 500;
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--text);
     line-height: 1.6;
     margin-bottom: 14px;
     display: -webkit-box;
@@ -1646,17 +1665,10 @@
     position: relative;
     padding: 80px 5vw;
     overflow: hidden;
-    background: var(--bg);
 }
 
 .cta-banner-pattern {
-    position: absolute;
-    inset: 0;
-    background-image: url('../../images/call-to-action/c-t-a.jpg');
-    background-size: cover;
-    background-position: center;
-    opacity: 0.15;
-
+    display: none;
 }
 
 @property --cta-border-angle {

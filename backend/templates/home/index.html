@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block js %}
-<script src="{% static "js/home/home.js" %}"></script>
+    <script src="{% static "js/home/home.js" %}"></script>
 {% endblock %}
 
 {% block title %}دنتورا — جایی که اعتماد به نفس شما با لبخندتان آغاز می‌شود{% endblock %}
@@ -61,12 +61,14 @@
 
                 <div class="tile tile-photo tile-photo-1" data-parallax-card="1" data-float-duration="4.5"
                      data-float-delay="1.2">
-                    <img width="768" height="1376" src="{% static 'images/hero/patient-woman.jpg' %}" alt="درمان دندان‌پزشکی">
+                    <img width="768" height="1376" src="{% static 'images/hero/patient-woman.jpg' %}"
+                         alt="درمان دندان‌پزشکی">
                 </div>
 
                 <div class="tile tile-photo tile-photo-2" data-parallax-card="0.85" data-float-duration="5.8"
                      data-float-delay="0.6">
-                    <img width="1408" height="768" src="{% static 'images/hero/dentist-work.jpg' %}" alt="پزشک در حال معاینه">
+                    <img width="1408" height="768" src="{% static 'images/hero/dentist-work.jpg' %}"
+                         alt="پزشک در حال معاینه">
                 </div>
 
                 <div class="tile tile-photo tile-photo-3" data-parallax-card="0.9" data-float-duration="4.8"
@@ -76,7 +78,8 @@
 
                 <div class="tile tile-accent" data-parallax-card="0.8" data-float-duration="5.5" data-float-delay="1.8">
                     <div class="tile-accent-photo">
-                        <img width="1408" height="768" src="{% static 'images/hero/smile-detail.jpg' %}" alt="لبخند بیمار">
+                        <img width="1408" height="768" src="{% static 'images/hero/smile-detail.jpg' %}"
+                             alt="لبخند بیمار">
                     </div>
                     <div class="tile-accent-info">
                         <div class="tile-stat-block">
@@ -211,17 +214,6 @@
         </div>
     </section>
 
-    <!-- ================= CTA BANNER ================= -->
-    <section class="cta-banner-section">
-        <div class="cta-banner-pattern"></div>
-        <div class="cta-banner-card reveal">
-            <h2 class="cta-banner-title">آماده ایجاد تغییر در زیبایی و سلامت لبخندتان هستید؟</h2>
-            <p class="cta-banner-subtitle">همین حالا معاینه خود را آنلاین ثبت کنید و از مشاوره تخصصی پزشکان دنتورا
-                بهره‌مند
-                شوید.</p>
-            <button class="btn btn-primary btn-lg cta-banner-btn">رزرو آنلاین نوبت</button>
-        </div>
-    </section>
 
     <!-- ================= VIDEO BLOG SECTION ================= -->
     <section class="video-blog-section">
@@ -235,11 +227,25 @@
 
             <div class="video-blog-cta">
                 <a href="{% url 'blog:all_articles' %}" class="btn btn-outline btn-lg"
-                   >مشاهده همه ویدیوها و
+                >مشاهده همه ویدیوها و
                     مقالات</a>
             </div>
         </div>
     </section>
+
+    <!-- ================= CTA BANNER ================= -->
+    <section class="cta-banner-section">
+        <div class="cta-banner-pattern"></div>
+        <div class="cta-banner-card reveal">
+            <h2 class="cta-banner-title">آماده ایجاد تغییر در زیبایی و سلامت لبخندتان هستید؟</h2>
+            <p class="cta-banner-subtitle">همین حالا معاینه خود را آنلاین ثبت کنید و از مشاوره تخصصی پزشکان دنتورا
+                بهره‌مند
+                شوید.</p>
+            <button class="btn btn-primary btn-lg cta-banner-btn">رزرو آنلاین نوبت</button>
+        </div>
+    </section>
+
+
 
     <!-- Video Modal (outside sections for blur isolation) -->
     <div class="video-modal" id="videoModal">
