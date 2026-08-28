@@ -383,7 +383,7 @@
 }
 .team-final-cta .btn-primary {
     background: var(--surface);
-    color: var(--primary-dark);
+    color: #ffffff;
 }
 .team-final-cta .btn-primary:hover {
     background: var(--bg);

@@ -417,7 +417,7 @@ button:focus-visible {
     margin-bottom: 14px;
 }
 .footer-logo .brand-name { font-size: 1.25rem; font-weight: 800; color: var(--footer-heading); }
-.footer-logo .brand-icon { color: var(--primary); }
+.footer-logo .brand-icon { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(145deg, var(--primary), var(--primary-dark)); color: #ffffff; box-shadow: 0 6px 16px -4px rgba(15, 118, 110, 0.55); }
 .footer-brand-desc {
     font-size: 0.85rem;
     line-height: 1.85;

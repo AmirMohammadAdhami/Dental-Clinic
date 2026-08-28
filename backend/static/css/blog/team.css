@@ -289,8 +289,8 @@
 }
 .team-card-service-pill {
     font-size: 0.72rem;
-    color: var(--primary);
-    background: rgba(15, 118, 110, 0.08);
+    color: rgb(239 239 239);
+    background: var(--primary);
     border: 1px solid rgba(15, 118, 110, 0.15);
     border-radius: 20px;
     padding: 3px 10px;
@@ -418,7 +418,7 @@
 }
 .team-final-cta .btn-primary {
     background: var(--surface);
-    color: var(--primary-dark);
+    color: #ffffff;
 }
 .team-final-cta .btn-primary:hover {
     background: var(--bg);
