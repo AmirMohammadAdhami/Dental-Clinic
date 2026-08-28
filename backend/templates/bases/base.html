@@ -5,6 +5,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap">
     <title>{% block title %}{% endblock %}</title>
 
     <link rel="stylesheet" href="{% static "css/base.css" %}">
@@ -15,7 +18,6 @@
 
     {% endblock %}
 
-    <script>if('scrollRestoration' in history) history.scrollRestoration='manual';</script>
 </head>
 <body>
 <a href="#main-content" class="skip-link">رفتن به محتوای اصلی</a>
@@ -28,13 +30,8 @@
 
         <!-- سمت راست: لوگو -->
         <div class="brand">
-            <a href="{% url 'core:home' %}" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:10px">
-      <span class="brand-icon">
-        <svg viewBox="0 0 48 48" width="30" height="30" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M24 6C18.5 6 14 8.6 11.2 12.4C9.3 15 9 18.3 9.4 21.5C9.8 25 10.8 28.4 11.7 31.8C12.4 34.5 13 37.4 14.6 39.7C15.5 41 17 42 18.6 41.4C20.1 40.8 20.6 39 20.9 37.6C21.4 35 21.4 32.3 21.9 29.7C22.2 28.1 22.9 26.2 24 26.2C25.1 26.2 25.8 28.1 26.1 29.7C26.6 32.3 26.6 35 27.1 37.6C27.4 39 27.9 40.8 29.4 41.4C31 42 32.5 41 33.4 39.7C35 37.4 35.6 34.5 36.3 31.8C37.2 28.4 38.2 25 38.6 21.5C39 18.3 38.7 15 36.8 12.4C34 8.6 29.5 6 24 6Z"
-                fill="currentColor"/>
-        </svg>
-      </span>
+            <a href="{% url 'core:home' %}" class="brand-link">
+      <span class="brand-icon" aria-hidden="true"></span>
             <span class="brand-name">دنتورا</span>
                 </a>
         </div>
@@ -51,7 +48,7 @@
 
         <!-- سمت چپ: دکمه رزرو -->
         <div class="header-actions">
-            <a href="{% url 'accounts:login' %}" class="btn btn-primary btn-sm btn-primary-cta" style="text-decoration:none">ورود / ثبت‌نام</a>
+            <a href="{% url 'accounts:login' %}" class="btn btn-primary btn-sm btn-primary-cta">ورود / ثبت‌نام</a>
         </div>
     </div>
 </header>
@@ -71,6 +68,20 @@
         <div class="footer-auth-links">
             <a href="{% url 'accounts:login' %}">ورود / ثبت‌نام</a>
             <a href="{% url 'dashboard:dashboard' %}">پنل بیمار</a>
+        </div>
+        <div class="footer-contact">
+            <a href="tel:+982122334455" class="footer-contact-item">
+                <span class="footer-contact-icon">📞</span>
+                <span dir="ltr">۰۲۱ – ۲۲ ۳۳ ۴۴ ۵۵</span>
+            </a>
+            <span class="footer-contact-item">
+                <span class="footer-contact-icon">📍</span>
+                <span>تهران، خیابان ولیعصر، نبش کوچه ساعی، پلاک ۱۲</span>
+            </span>
+            <span class="footer-contact-item">
+                <span class="footer-contact-icon">🕗</span>
+                <span>شنبه تا پنجشنبه — ۹ صبح تا ۸ شب</span>
+            </span>
         </div>
         <p class="footer-copy">© ۲۰۲۶ دنتورا — تمامی حقوق محفوظ است.</p>
     </div>

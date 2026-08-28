@@ -11,6 +11,8 @@ function toPersianNum(num) {
 
 document.addEventListener('DOMContentLoaded', function () {
 
+  var REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   // ================= IMAGE SHIMMER REMOVAL =================
   document.querySelectorAll('.tile-photo, .tile-accent-photo, .doctor-img').forEach(function (wrapper) {
     var img = wrapper.querySelector('img');
@@ -53,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // ================= BUTTON RIPPLE EFFECT =================
-  document.querySelectorAll('.btn-primary, .btn-outline').forEach(function (btn) {
+  if (!REDUCED_MOTION) document.querySelectorAll('.btn-primary, .btn-outline').forEach(function (btn) {
     btn.style.position = 'relative';
     btn.style.overflow = 'hidden';
     btn.addEventListener('click', function (e) {
@@ -116,3 +118,56 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Bottom nav stays fixed at all times — no hide on scroll
 });
+
+// ================= TOOTH LOGO (تعریف یک‌جا — جلوگیری از تکرار SVG در صفحات) =================
+(function () {
+  var TOOTH_SVG = '<svg viewBox="0 0 48 48" width="30" height="30" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+    '<path d="M24 6C18.5 6 14 8.6 11.2 12.4C9.3 15 9 18.3 9.4 21.5C9.8 25 10.8 28.4 11.7 31.8C12.4 34.5 13 37.4 14.6 39.7C15.5 41 17 42 18.6 41.4C20.1 40.8 20.6 39 20.9 37.6C21.4 35 21.4 32.3 21.9 29.7C22.2 28.1 22.9 26.2 24 26.2C25.1 26.2 25.8 28.1 26.1 29.7C26.6 32.3 26.6 35 27.1 37.6C27.4 39 27.9 40.8 29.4 41.4C31 42 32.5 41 33.4 39.7C35 37.4 35.6 34.5 36.3 31.8C37.2 28.4 38.2 25 38.6 21.5C39 18.3 38.7 15 36.8 12.4C34 8.6 29.5 6 24 6Z" fill="currentColor"/>' +
+    '</svg>';
+
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.brand-icon').forEach(function (el) {
+      if (!el.querySelector('svg')) el.innerHTML = TOOTH_SVG;
+    });
+  });
+})();
+
+// ================= DARK MODE (تم روشن/تاریک) =================
+(function () {
+  var root = document.documentElement;
+  var STORAGE_KEY = 'dentura-theme';
+
+  // اولویت: انتخاب ذخیره‌شده کاربر > تنظیمات سیستم
+  var saved = null;
+  try { saved = localStorage.getItem(STORAGE_KEY); } catch (e) {}
+  if (saved === 'dark' || saved === 'light') {
+    root.setAttribute('data-theme', saved);
+  }
+
+  function currentTheme() {
+    var t = root.getAttribute('data-theme');
+    if (t === 'dark' || t === 'light') return t;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'theme-toggle';
+    btn.setAttribute('aria-label', 'تغییر حالت روشن و تاریک');
+    btn.title = 'حالت روشن / تاریک';
+    btn.innerHTML =
+      '<svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>' +
+      '<svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>';
+
+    btn.addEventListener('click', function () {
+      var next = currentTheme() === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem(STORAGE_KEY, next); } catch (e) {}
+    });
+
+    document.body.appendChild(btn);
+  });
+})();

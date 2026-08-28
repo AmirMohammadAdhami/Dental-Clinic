@@ -11,7 +11,7 @@
 html, body.post-page, .post-page .bg-grid, .post-page .tooth-pattern,
 .post-page .post-header, .post-page .post-layout,
 .post-page .post-header-inner, .post-page .post-layout-inner {
-    background: #ffffff;
+    background: var(--surface);
 }
 .post-page {
     min-height: 100vh;
@@ -79,7 +79,7 @@ html, body.post-page, .post-page .bg-grid, .post-page .tooth-pattern,
 .post-meta-share { display: flex; align-items: center; gap: 8px; margin-right: auto; }
 .post-share-btn {
     width: 36px; height: 36px; border-radius: 50%;
-    border: 1.5px solid rgba(15,118,110,0.15); background: #ffffff;
+    border: 1.5px solid rgba(15,118,110,0.15); background: var(--surface);
     color: var(--text-muted); display: flex; align-items: center; justify-content: center;
     cursor: pointer; transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
@@ -135,11 +135,11 @@ html, body.post-page, .post-page .bg-grid, .post-page .tooth-pattern,
 }
 .post-content { min-width: 0; }
 .post-takeaways {
-    background: linear-gradient(135deg, #f0fdf9 0%, #ecfdf5 100%);
+    background: var(--takeaways-bg);
     border: 1px solid rgba(15,118,110,0.12); border-radius: var(--radius-md);
     padding: 24px 28px; margin-bottom: 40px;
 }
-.post-takeaways-title { font-size: 1rem; font-weight: 700; color: var(--primary-dark); margin-bottom: 10px; }
+.post-takeaways-title { font-size: 1rem; font-weight: 700; color: var(--takeaways-title); margin-bottom: 10px; }
 .post-takeaways p { font-size: 0.95rem; line-height: 1.85; color: var(--text-muted); }
 .post-body { font-size: 1.125rem; line-height: 2; color: var(--text); max-width: 70ch; }
 .post-body h2 { font-size: clamp(1.3rem, 2.5vw, 1.65rem); font-weight: 800; color: var(--text); margin: 40px 0 16px; line-height: 1.5; scroll-margin-top: 100px; }
@@ -195,7 +195,7 @@ html, body.post-page, .post-page .bg-grid, .post-page .tooth-pattern,
 .post-comments { border-top: 1px solid rgba(15,118,110,0.1); padding-top: 32px; margin-bottom: 48px; }
 .post-comments-title { font-size: 1.3rem; font-weight: 800; color: var(--text); margin-bottom: 24px; }
 .post-comment-form { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
-.post-comment-input { width: 100%; padding: 14px 18px; border: 1.5px solid rgba(15,118,110,0.15); border-radius: var(--radius-sm); font-family: inherit; font-size: 0.95rem; color: var(--text); background: #ffffff; outline: none; resize: vertical; transition: border-color 0.25s ease, box-shadow 0.25s ease; }
+.post-comment-input { width: 100%; padding: 14px 18px; border: 1.5px solid rgba(15,118,110,0.15); border-radius: var(--radius-sm); font-family: inherit; font-size: 0.95rem; color: var(--text); background: var(--surface); outline: none; resize: vertical; transition: border-color 0.25s ease, box-shadow 0.25s ease; }
 .post-comment-input::placeholder { color: var(--text-faint); }
 .post-comment-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(15,118,110,0.1); }
 .post-comment-form .btn { align-self: flex-start; }
@@ -216,7 +216,7 @@ html, body.post-page, .post-page .bg-grid, .post-page .tooth-pattern,
 .post-related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .post-related-grid > :nth-child(n+4) { display: none; }
 .post-related .article-card {
-    background: #ffffff;
+    background: var(--surface);
     border-radius: var(--radius-lg);
     border: 1px solid rgba(15,118,110,0.1);
     overflow: hidden;
@@ -323,7 +323,7 @@ html, body.post-page, .post-page .bg-grid, .post-page .tooth-pattern,
 
 /* ================= POST SIDEBAR ================= */
 .post-sidebar { display: flex; flex-direction: column; gap: 24px; position: sticky; top: 90px; }
-.post-sidebar-card { background: #ffffff; border-radius: var(--radius-md); border: 1px solid rgba(15,118,110,0.1); padding: 24px; box-shadow: 0 6px 20px -8px rgba(15,23,42,0.08); }
+.post-sidebar-card { background: var(--surface); border-radius: var(--radius-md); border: 1px solid var(--sidebar-card-border); padding: 24px; box-shadow: 0 6px 20px -8px rgba(15,23,42,0.08); }
 .post-sidebar-title { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 16px; }
 .post-toc-list { display: flex; flex-direction: column; gap: 0; }
 .post-toc-link { display: block; padding: 10px 14px; font-size: 0.88rem; font-weight: 600; color: var(--text-muted); text-decoration: none; border-radius: var(--radius-sm); border-right: 3px solid transparent; transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease; }

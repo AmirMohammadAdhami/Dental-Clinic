@@ -10,8 +10,6 @@
   var currentFilter = 'all';
   var currentPage = 1;
 
-  // ── Scroll restoration ──
-  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   window.scrollTo(0, 0);
 
   // ── Helpers ──

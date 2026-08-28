@@ -54,8 +54,9 @@ function initBA() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-  window.scrollTo(0, 0);
+  // اسکرول بک‌دکمه مرورگر به حالت طبیعی برگشت (حذف scrollRestoration='manual')
+
+  const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // --- Shared utility ---
   function toPersianNum(num) {
@@ -100,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 400);
     // Start floating after entrance completes
     setTimeout(() => {
-      initFloatingCards();
+      if (!REDUCED_MOTION) initFloatingCards();
       initCountAnimation();
     }, 1200);
   }, 600);
@@ -124,6 +125,13 @@ document.addEventListener('DOMContentLoaded', () => {
     statNumbers.forEach(el => {
       const target = parseInt(el.dataset.countTo, 10);
       const suffix = el.dataset.countSuffix || '';
+
+      // با reduced-motion، عدد نهایی بلافاصله نمایش داده می‌شود
+      if (REDUCED_MOTION) {
+        el.innerHTML = `${toPersianNum(target)}<span>${suffix}</span>`;
+        return;
+      }
+
       const duration = 1500;
       const startTime = performance.now();
       
@@ -196,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Start parallax animation loop
-  requestAnimationFrame(animateParallax);
+  if (!REDUCED_MOTION) requestAnimationFrame(animateParallax);
 
   // --- دکمه‌های رزرو نوبت ---
   const bookButtons = document.querySelectorAll('.btn-primary');

@@ -43,7 +43,7 @@
     align-items: center;
     gap: 10px;
     padding: 0 16px;
-    background: #fff;
+    background: var(--surface);
     border: 1.5px solid rgba(15,118,110,0.15);
     border-radius: var(--radius-sm);
     transition: border-color 0.2s;
@@ -74,7 +74,7 @@
     padding: 14px 16px 14px 20px;
     border: 1.5px solid rgba(15,118,110,0.15);
     border-radius: var(--radius-sm);
-    background: #fff;
+    background: var(--surface);
     font-family: inherit;
     font-size: 0.9rem;
     font-weight: 500;
@@ -108,7 +108,7 @@
     top: calc(100% + 6px);
     right: 0;
     min-width: 100%;
-    background: #fff;
+    background: var(--surface);
     border: 1.5px solid rgba(15,118,110,0.12);
     border-radius: var(--radius-sm);
     box-shadow: 0 12px 36px -8px rgba(15,23,42,0.15), 0 0 0 1px rgba(15,118,110,0.04);
@@ -167,7 +167,7 @@
     padding: 10px 22px;
     border: 1.5px solid rgba(15,118,110,0.18);
     border-radius: 999px;
-    background: #fff;
+    background: var(--surface);
     font-family: inherit;
     font-size: 0.88rem;
     font-weight: 600;
@@ -198,7 +198,7 @@
 
 /* --- Doctor Card --- */
 .team-doctor-card {
-    background: #fff;
+    background: var(--surface);
     border-radius: var(--radius-lg);
     overflow: hidden;
     border: 1.5px solid rgba(15,23,42,0.06);
@@ -342,7 +342,7 @@
     height: 42px;
     border-radius: 12px;
     border: 1.5px solid rgba(15,118,110,0.15);
-    background: #fff;
+    background: var(--surface);
     color: var(--primary);
     display: flex;
     align-items: center;
@@ -417,7 +417,7 @@
     margin-bottom: 24px;
 }
 .team-final-cta .btn-primary {
-    background: #fff;
+    background: var(--surface);
     color: var(--primary-dark);
 }
 .team-final-cta .btn-primary:hover {

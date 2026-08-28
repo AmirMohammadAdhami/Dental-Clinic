@@ -6,6 +6,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap">
 
     <title>{% block title %}{% endblock %}</title>
 
@@ -16,7 +19,6 @@
 
 
 
-    <script>if ('scrollRestoration' in history) history.scrollRestoration = 'manual';</script>
     {% block css %}{% endblock %}
 </head>
 <body>
@@ -30,11 +32,11 @@
     <div class="dash-header-inner">
         <div class="dash-profile">
             <div class="dash-avatar">
-                <img src="{% static 'images/hero/clinic-detail.jpg' %}" alt="پروفایل بیمار">
+                <img width="1408" height="768" src="{% static 'images/hero/clinic-detail.jpg' %}" alt="پروفایل بیمار">
                 <span class="dash-avatar-ring"></span>
             </div>
             <div class="dash-greeting">
-                <span class="dash-greeting-text">سلام، امیرمحمد عزیز 👋</span>
+                <h1 class="dash-greeting-text">سلام، امیرمحمد عزیز 👋</h1>
                 <span class="dash-greeting-sub">خوش آمدید به پنل شخصی شما</span>
             </div>
         </div>
@@ -170,6 +172,20 @@
         <div class="footer-auth-links">
             <a href="{% url 'core:home' %}">صفحه اصلی</a>
             <a href="{% url 'accounts:login' %}">ورود / ثبت‌نام</a>
+        </div>
+        <div class="footer-contact">
+            <a href="tel:+982122334455" class="footer-contact-item">
+                <span class="footer-contact-icon">📞</span>
+                <span dir="ltr">۰۲۱ – ۲۲ ۳۳ ۴۴ ۵۵</span>
+            </a>
+            <span class="footer-contact-item">
+                <span class="footer-contact-icon">📍</span>
+                <span>تهران، خیابان ولیعصر، نبش کوچه ساعی، پلاک ۱۲</span>
+            </span>
+            <span class="footer-contact-item">
+                <span class="footer-contact-icon">🕗</span>
+                <span>شنبه تا پنجشنبه — ۹ صبح تا ۸ شب</span>
+            </span>
         </div>
         <p class="footer-copy">© ۲۰۲۶ دنتورا — تمامی حقوق محفوظ است.</p>
     </div>
