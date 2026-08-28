@@ -111,15 +111,13 @@ class DoctorReview(models.Model):
         default=Status.PENDING
     )
 
-    @property
-    def rating(self):
-        return (
-            self.professionalism_rating
-            + self.treatment_quality_rating
-            + self.communication_rating
-        ) / 3
+    rating = models.FloatField(validators=[MinValueValidator(1), MaxValueValidator(5)], null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        self.rating = (self.professionalism_rating + self.treatment_quality_rating + self.communication_rating) / 3
+        super().save(*args, **kwargs)
 
     def __str__(self):
         if self.appointment.patient:

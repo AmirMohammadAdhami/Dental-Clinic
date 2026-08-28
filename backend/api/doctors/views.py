@@ -4,7 +4,7 @@ from backend.apps.doctors.models import Doctor
 from backend.apps.appointments.models import DoctorReview
 from backend.apps.blog.models import BeforeAfter
 from django.db.models.functions import Coalesce
-from django.db.models import Value, Avg, Q
+from django.db.models import Value, Avg, Q, F, FloatField, ExpressionWrapper
 from django.db.models import Prefetch
 
 
@@ -19,7 +19,12 @@ class DoctorListAPIView(ListAPIView):
         .annotate(
             average_rating=Coalesce(
                 Avg(
-                    'appointments__testimonials__rating',
+                    ExpressionWrapper(
+                        (F('appointments__testimonials__professionalism_rating')
+                         + F('appointments__testimonials__treatment_quality_rating')
+                         + F('appointments__testimonials__communication_rating')) / 3.0,
+                        output_field=FloatField(),
+                    ),
                     filter=Q(
                         appointments__testimonials__status=DoctorReview.Status.APPROVED
                     )
@@ -73,7 +78,12 @@ class DoctorDetailAPIView(RetrieveAPIView):
             .annotate(
                 average_rating=Coalesce(
                     Avg(
-                        'appointments__testimonials__rating',
+                        ExpressionWrapper(
+                            (F('appointments__testimonials__professionalism_rating')
+                             + F('appointments__testimonials__treatment_quality_rating')
+                             + F('appointments__testimonials__communication_rating')) / 3.0,
+                            output_field=FloatField(),
+                        ),
                         filter=Q(
                             appointments__testimonials__status=DoctorReview.Status.APPROVED
                         )

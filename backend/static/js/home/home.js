@@ -466,7 +466,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!deck) return;
 
     try {
-      const res = await fetch('/api/testimonials/');
+      const res = await fetch('/api/doctor-reviews/');
       if (!res.ok) throw new Error('API response not OK');
       const testimonials = toArray(await res.json());
 
@@ -475,8 +475,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const starSvg = `<svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>`;
 
       testimonials.forEach((item, index) => {
-        // ساخت ستاره‌ها بر اساس rating
-        const rating = Math.min(Math.max(parseInt(item.rating) || 0, 0), 5);
+        // ساخت ستاره‌ها بر اساس میانگین سه امتیاز
+        const avgRating = Math.round(((parseFloat(item.professionalism_rating) || 0) + (parseFloat(item.treatment_quality_rating) || 0) + (parseFloat(item.communication_rating) || 0)) / 3);
+        const rating = Math.min(Math.max(avgRating, 0), 5);
         let starsHtml = '';
         for (let i = 0; i < rating; i++) {
           starsHtml += starSvg;

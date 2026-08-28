@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var treatmentsHtml = '';
         if (faq.categories && faq.categories.length > 0) {
           var links = faq.categories.map(function (cat) {
-            return '<a href="/blog/all-articles/?cat=' + encodeURIComponent(cat.name) + '" class="faq-treatment-link">' + cat.name + '</a>';
+            return '<a href="/blog/articles/?cat=' + encodeURIComponent(cat.name) + '" class="faq-treatment-link">' + cat.name + '</a>';
           }).join('');
           treatmentsHtml =
             '<p class="faq-treatments-label">درمان‌های پیشنهادی:</p>' +
@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
       services.forEach(function (svc) {
         var iconUrl = svc.icon || '/static/images/blog-icons/default.jpg';
         var card = document.createElement('a');
-        card.href = '/blog/all-articles/?cat=' + encodeURIComponent(svc.name);
+        card.href = '/blog/articles/?cat=' + encodeURIComponent(svc.name);
         card.className = 'treatment-card';
         card.innerHTML =
           '<div class="treatment-icon"><img src="' + iconUrl + '" alt="' + svc.name + '"></div>' +
