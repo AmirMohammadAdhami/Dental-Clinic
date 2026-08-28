@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.text import slugify
 from ..accounts.models import User
+import math
+from django.utils.html import strip_tags
 
 
 # Create your models here.
@@ -91,6 +93,13 @@ class Article(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    @property
+    def reading_time(self):
+        text = strip_tags(self.content_blocks)
+        word_count = len(text.split())
+
+        return max(1, math.ceil(word_count / 200))
 
     @property
     def has_blocks(self):

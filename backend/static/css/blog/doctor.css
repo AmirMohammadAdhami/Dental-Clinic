@@ -709,6 +709,22 @@
     font-weight: 500;
 }
 
+/* --- BA Gallery on Doctor Page (1 col, larger cards) --- */
+#doc-gallery .ba-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+}
+#doc-gallery .ba-card-item .doctor-img {
+    padding-bottom: 56%;
+}
+#doc-gallery .ba-card-desc {
+    padding: 18px 24px 8px;
+    font-size: 0.95rem;
+}
+@media (max-width: 620px) {
+    #doc-gallery .ba-grid { grid-template-columns: 1fr; }
+}
+
 /* --- Responsive --- */
 @media (max-width: 900px) {
     .doc-hero-inner { flex-direction: column; align-items: center; text-align: center; }

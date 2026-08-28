@@ -131,48 +131,51 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
 
-    // Render filter pills
+    // Render filter pills (same style as before-after page)
     var filtersEl = document.getElementById('docBaFilters');
-    var pillsHtml = '<button class="doc-ba-pill is-active" data-filter="all">همه</button>';
+    var pillsHtml = '<button class="ba-filter-btn is-active" data-filter="all" role="tab" aria-selected="true">همه</button>';
     serviceNames.forEach(function (name) {
-      pillsHtml += '<button class="doc-ba-pill" data-filter="' + name + '">' + name + '</button>';
+      pillsHtml += '<button class="ba-filter-btn" data-filter="' + name + '" role="tab" aria-selected="false">' + name + '</button>';
     });
     filtersEl.innerHTML = pillsHtml;
 
-    // Render BA cards
+    // Render BA cards (same structure as before-after page)
     var grid = document.getElementById('docBaGrid');
     grid.innerHTML = items.map(function (item) {
       var desc = item.description || '';
       var serviceName = item.service_name || '';
       return (
-        '<div class="doc-ba-card" data-type="' + serviceName + '">' +
-          '<div class="doc-ba-img-wrap ba-container" tabindex="0" role="slider" ' +
-               'aria-label="مقایسه قبل و بعد ' + desc + '" ' +
-               'aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">' +
-            '<img class="ba-img ba-after" src="' + item.after_image + '" alt="بعد از ' + desc + '">' +
-            '<img class="ba-img ba-before" src="' + item.before_image + '" alt="قبل از ' + desc + '">' +
-            '<div class="ba-slider"><div class="ba-handle"></div></div>' +
-            '<span class="ba-label ba-label-before">قبل</span>' +
-            '<span class="ba-label ba-label-after">بعد</span>' +
+        '<div class="ba-card-item" data-treatment="' + serviceName + '">' +
+          '<div class="doctor-card" data-ba>' +
+            '<div class="doctor-img ba-container" tabindex="0" role="slider"' +
+              ' aria-label="مقایسه قبل و بعد ' + desc + '"' +
+              ' aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">' +
+              '<img class="ba-img ba-after" src="' + item.after_image + '" alt="نتیجه بعد از ' + desc + '">' +
+              '<img class="ba-img ba-before" src="' + item.before_image + '" alt="وضعیت قبل از ' + desc + '">' +
+              '<div class="ba-slider"><div class="ba-handle"></div></div>' +
+              '<span class="ba-label ba-label-before">قبل</span>' +
+              '<span class="ba-label ba-label-after">بعد</span>' +
+            '</div>' +
           '</div>' +
-          '<p class="doc-ba-title">' + desc + '</p>' +
+          '<p class="ba-card-desc">' + desc + '</p>' +
         '</div>'
       );
     }).join('');
 
-    // Init BA sliders
-    initBA();
+    // Init BA sliders (same as before-after page)
+    initBASliders();
 
     // Bind filter pills
-    var pills = filtersEl.querySelectorAll('.doc-ba-pill');
-    var cards = grid.querySelectorAll('.doc-ba-card');
+    var pills = filtersEl.querySelectorAll('.ba-filter-btn');
+    var cards = grid.querySelectorAll('.ba-card-item');
     pills.forEach(function (pill) {
       pill.addEventListener('click', function () {
-        pills.forEach(function (p) { p.classList.remove('is-active'); });
+        pills.forEach(function (p) { p.classList.remove('is-active'); p.setAttribute('aria-selected', 'false'); });
         pill.classList.add('is-active');
+        pill.setAttribute('aria-selected', 'true');
         var f = pill.getAttribute('data-filter');
         cards.forEach(function (card) {
-          if (f === 'all' || card.getAttribute('data-type') === f) {
+          if (f === 'all' || card.getAttribute('data-treatment') === f) {
             card.style.display = '';
           } else {
             card.style.display = 'none';
@@ -325,45 +328,56 @@ document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && modal.classList.contains('is-active')) closeModal();
     });
-  }
-
-  /* ═══════════════════════════════════════════
-     BA SLIDER (copied from home.js)
+  }  /* ═══════════════════════════════════════════
+     BA SLIDER (same as before-after.js)
      ═══════════════════════════════════════════ */
-  function initBA() {
-    document.querySelectorAll('.doc-ba-card .ba-container').forEach(function (container) {
+  function initBASliders() {
+    document.querySelectorAll('.ba-container').forEach(function (container) {
+      if (container.dataset.baInit) return;
+      container.dataset.baInit = '1';
+
+      var slider = container.querySelector('.ba-slider');
+      var handle = container.querySelector('.ba-handle');
       var beforeImg = container.querySelector('.ba-before');
-      var sliderLine = container.querySelector('.ba-slider');
-      var labelBefore = container.querySelector('.ba-label-before');
-      var labelAfter = container.querySelector('.ba-label-after');
-      if (!container || !beforeImg) return;
+      if (!slider || !handle || !beforeImg) return;
+
       var isDragging = false;
-      var currentPct = 50;
-      function setPosition(pct) {
-        currentPct = Math.max(0, Math.min(100, pct));
-        beforeImg.style.clipPath = 'inset(0 ' + (100 - currentPct) + '% 0 0)';
-        sliderLine.style.left = currentPct + '%';
-        if (labelBefore) labelBefore.style.opacity = currentPct > 20 ? '1' : '0';
-        if (labelAfter) labelAfter.style.opacity = currentPct < 80 ? '1' : '0';
-      }
-      function updateFromPointer(x) {
+
+      function updateSlider(x) {
         var rect = container.getBoundingClientRect();
-        setPosition(((x - rect.left) / rect.width) * 100);
+        var pos = (x - rect.left) / rect.width;
+        pos = Math.max(0, Math.min(1, pos));
+        slider.style.left = (pos * 100) + '%';
+        beforeImg.style.clipPath = 'inset(0 ' + ((1 - pos) * 100) + '% 0 0)';
+        container.setAttribute('aria-valuenow', Math.round(pos * 100));
       }
-      container.addEventListener('mousedown', function (e) { isDragging = true; updateFromPointer(e.clientX); });
-      container.addEventListener('touchstart', function (e) { isDragging = true; updateFromPointer(e.touches[0].clientX); }, { passive: true });
-      window.addEventListener('mousemove', function (e) { if (isDragging) updateFromPointer(e.clientX); });
-      window.addEventListener('touchmove', function (e) { if (isDragging) updateFromPointer(e.touches[0].clientX); }, { passive: true });
-      window.addEventListener('mouseup', function () { isDragging = false; });
-      window.addEventListener('touchend', function () { isDragging = false; });
-      container.addEventListener('keydown', function (e) {
-        var STEP = 5;
-        switch (e.key) {
-          case 'ArrowRight': setPosition(currentPct + STEP); e.preventDefault(); break;
-          case 'ArrowLeft': setPosition(currentPct - STEP); e.preventDefault(); break;
-        }
+
+      container.addEventListener('mousedown', function (e) {
+        isDragging = true; updateSlider(e.clientX);
       });
-      setPosition(50);
+      document.addEventListener('mousemove', function (e) {
+        if (!isDragging) return; e.preventDefault(); updateSlider(e.clientX);
+      });
+      document.addEventListener('mouseup', function () { isDragging = false; });
+
+      container.addEventListener('touchstart', function (e) {
+        isDragging = true; updateSlider(e.touches[0].clientX);
+      }, { passive: true });
+      container.addEventListener('touchmove', function (e) {
+        if (!isDragging) return; e.preventDefault(); updateSlider(e.touches[0].clientX);
+      }, { passive: false });
+      container.addEventListener('touchend', function () { isDragging = false; });
+
+      container.addEventListener('keydown', function (e) {
+        var v = parseInt(container.getAttribute('aria-valuenow')) || 50;
+        if (e.key === 'ArrowLeft') { v = Math.min(100, v + 5); }
+        else if (e.key === 'ArrowRight') { v = Math.max(0, v - 5); }
+        else return;
+        e.preventDefault();
+        slider.style.left = v + '%';
+        beforeImg.style.clipPath = 'inset(0 ' + (100 - v) + '% 0 0)';
+        container.setAttribute('aria-valuenow', v);
+      });
     });
   }
 
