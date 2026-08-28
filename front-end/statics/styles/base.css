@@ -53,6 +53,21 @@
 
     --shadow-soft: 0 20px 45px -20px rgba(15, 23, 42, 0.35);
     --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+
+    /* Footer */
+    --footer-bg: linear-gradient(180deg, #0B6B63 0%, var(--primary-dark) 40%);
+    --footer-text: rgba(255, 255, 255, 0.75);
+    --footer-heading: #ffffff;
+    --footer-link: rgba(255, 255, 255, 0.65);
+    --footer-text-muted: rgba(255, 255, 255, 0.4);
+    --footer-divider: rgba(255, 255, 255, 0.12);
+    --footer-badge-bg: rgba(255, 255, 255, 0.1);
+    --footer-badge-text: rgba(255, 255, 255, 0.85);
+    --footer-badge-border: rgba(255, 255, 255, 0.15);
+    --footer-navbox-bg: rgba(255, 255, 255, 0.08);
+    --footer-navbox-border: rgba(255, 255, 255, 0.12);
+    --footer-action-bg: rgba(255, 255, 255, 0.1);
+    --footer-action-border: rgba(255, 255, 255, 0.15);
 }
 
 /* ================= DARK THEME ================= */
@@ -81,6 +96,21 @@
     --dash-services-bg: linear-gradient(180deg, rgba(16, 185, 129, 0.08) 0%, rgba(45, 212, 191, 0.03) 100%);
     --dash-services-border: rgba(52, 211, 153, 0.28);
     --sel-selected-bg: #132A31;
+
+    /* Footer (dark) */
+    --footer-bg: linear-gradient(180deg, #071A28 0%, #0A1E2E 50%, #0D2538 100%);
+    --footer-text: rgba(200, 215, 230, 0.7);
+    --footer-heading: #E6EDF3;
+    --footer-link: rgba(200, 215, 230, 0.6);
+    --footer-text-muted: rgba(200, 215, 230, 0.35);
+    --footer-divider: rgba(255, 255, 255, 0.06);
+    --footer-badge-bg: rgba(20, 184, 166, 0.12);
+    --footer-badge-text: rgba(94, 234, 212, 0.85);
+    --footer-badge-border: rgba(20, 184, 166, 0.2);
+    --footer-navbox-bg: rgba(255, 255, 255, 0.04);
+    --footer-navbox-border: rgba(255, 255, 255, 0.08);
+    --footer-action-bg: rgba(255, 255, 255, 0.05);
+    --footer-action-border: rgba(255, 255, 255, 0.08);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -109,6 +139,21 @@
         --dash-services-bg: linear-gradient(180deg, rgba(16, 185, 129, 0.08) 0%, rgba(45, 212, 191, 0.03) 100%);
         --dash-services-border: rgba(52, 211, 153, 0.28);
         --sel-selected-bg: #132A31;
+
+        /* Footer (dark) */
+        --footer-bg: linear-gradient(180deg, #071A28 0%, #0A1E2E 50%, #0D2538 100%);
+        --footer-text: rgba(200, 215, 230, 0.7);
+        --footer-heading: #E6EDF3;
+        --footer-link: rgba(200, 215, 230, 0.6);
+        --footer-text-muted: rgba(200, 215, 230, 0.35);
+        --footer-divider: rgba(255, 255, 255, 0.06);
+        --footer-badge-bg: rgba(20, 184, 166, 0.12);
+        --footer-badge-text: rgba(94, 234, 212, 0.85);
+        --footer-badge-border: rgba(20, 184, 166, 0.2);
+        --footer-navbox-bg: rgba(255, 255, 255, 0.04);
+        --footer-navbox-border: rgba(255, 255, 255, 0.08);
+        --footer-action-bg: rgba(255, 255, 255, 0.05);
+        --footer-action-border: rgba(255, 255, 255, 0.08);
     }
 }
 
