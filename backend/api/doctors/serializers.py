@@ -3,7 +3,7 @@ from rest_framework import serializers
 from backend.api.articles.serializers import ArticleMediaSerializer
 from backend.apps.appointments.models import Service, DoctorReview
 from backend.apps.blog.models import BeforeAfter, Article
-from backend.apps.doctors.models import Doctor, DoctorPhotos, Certificate
+from backend.apps.doctors.models import Doctor, DoctorPhotos, Certificate, DoctorTestimonial
 
 
 class DoctorPhotosSerializer(serializers.ModelSerializer):
@@ -102,10 +102,11 @@ class DoctorDetailSerializer(serializers.ModelSerializer):
         return obj.user.first_name + ' ' + obj.user.last_name
 
     def get_before_after(self, obj):
-        """Collect BeforeAfter images from the doctor's appointments."""
+        """Use prefetched data if available, otherwise fallback."""
+        if hasattr(obj, '_prefetched_before_after'):
+            return BeforeAfterDoctorSerializer(obj._prefetched_before_after, many=True).data
         return BeforeAfterDoctorSerializer(
-            BeforeAfter.objects.filter(appointment__doctor=obj),
-            many=True,
+            BeforeAfter.objects.filter(appointment__doctor=obj), many=True,
         ).data
 
     def get_doctor_testimonial(self, obj):
@@ -114,9 +115,12 @@ class DoctorDetailSerializer(serializers.ModelSerializer):
         return None
 
     def get_reviews(self, obj):
-        """Collect approved reviews from the doctor's appointments."""
-        reviews = DoctorReview.objects.filter(
-            appointment__doctor=obj,
-            status=DoctorReview.Status.APPROVED,
-        )
-        return DoctorReviewSerializer(reviews, many=True).data
+        """Use prefetched data if available, otherwise fallback."""
+        if hasattr(obj, '_prefetched_reviews'):
+            return DoctorReviewSerializer(obj._prefetched_reviews, many=True).data
+        return DoctorReviewSerializer(
+            DoctorReview.objects.filter(
+                appointment__doctor=obj,
+                status=DoctorReview.Status.APPROVED,
+            ), many=True,
+        ).data

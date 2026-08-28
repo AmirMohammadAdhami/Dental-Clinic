@@ -1,10 +1,11 @@
 from rest_framework.generics import ListAPIView, RetrieveAPIView
-from rest_framework.response import Response
 from .serializers import DoctorListSerializer, DoctorDetailSerializer
 from backend.apps.doctors.models import Doctor
 from backend.apps.appointments.models import DoctorReview
+from backend.apps.blog.models import BeforeAfter
 from django.db.models.functions import Coalesce
 from django.db.models import Value, Avg, Q
+from django.db.models import Prefetch
 
 
 class DoctorListAPIView(ListAPIView):
@@ -47,6 +48,9 @@ class DoctorDetailAPIView(RetrieveAPIView):
     serializer_class = DoctorDetailSerializer
 
     def get_queryset(self):
+        approved_reviews = DoctorReview.objects.filter(
+            status=DoctorReview.Status.APPROVED
+        )
         return (
             Doctor.objects
             .select_related('user', 'testimonial')
@@ -55,6 +59,16 @@ class DoctorDetailAPIView(RetrieveAPIView):
                 'services_offered',
                 'certificates',
                 'articles__media',
+                Prefetch(
+                    'appointments__before_after',
+                    queryset=BeforeAfter.objects.select_related('appointment__service'),
+                    to_attr='_prefetched_before_after',
+                ),
+                Prefetch(
+                    'appointments__testimonials',
+                    queryset=approved_reviews,
+                    to_attr='_prefetched_reviews',
+                ),
             )
             .annotate(
                 average_rating=Coalesce(
