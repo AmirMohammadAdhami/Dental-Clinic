@@ -47,7 +47,7 @@
 
 /* --- FAQ Item --- */
 .faq-item {
-    background: #ffffff;
+    background: var(--surface);
     border: 1px solid rgba(15, 118, 110, 0.1);
     border-radius: var(--radius-md);
     margin-bottom: 12px;

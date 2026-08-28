@@ -161,7 +161,7 @@
     min-height: 320px;
     display: flex;
     flex-direction: column;
-    background: #ffffff;
+    background: var(--surface);
     border: 1px solid rgba(15, 118, 110, 0.15);
     box-shadow: var(--shadow-soft);
     padding: 0;
@@ -170,7 +170,7 @@
 .tile-accent-photo {
     flex: 1 1 0;
     min-height: 140px;
-    background: #e2e8f0;
+    background: var(--shimmer);
     overflow: hidden;
 }
 
@@ -188,7 +188,7 @@
     display: flex;
     align-items: center;
     gap: 18px;
-    background: linear-gradient(150deg, var(--accent), #ffffff 130%);
+    background: var(--tile-accent-bg);
 }
 
 .tile-stat-block {
@@ -224,7 +224,7 @@
 
 .tile-photo {
     min-height: 320px;
-    background: #e2e8f0;
+    background: var(--shimmer);
     box-shadow: var(--shadow-soft);
 }
 
@@ -407,7 +407,7 @@
     padding-bottom: 133%;
     border-radius: var(--radius-md);
     overflow: hidden;
-    background: #e2e8f0;
+    background: var(--shimmer);
     box-shadow: var(--shadow-soft);
     position: relative;
 }
@@ -556,7 +556,7 @@
     pointer-events: none;
     box-shadow: none;
     border-color: rgba(15, 118, 110, 0.1);
-    background: #f1f5f9;
+    background: var(--surface-hover);
     color: rgba(15, 23, 42, 0.3);
 }
 
@@ -692,7 +692,7 @@
     min-width: 0;
     padding: 0;
     flex-shrink: 1;
-    background: #ffffff;
+    background: var(--surface);
     border: 1px solid rgba(15, 118, 110, 0.12);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-soft);
@@ -1081,7 +1081,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    background: #ffffff;
+    background: var(--surface);
     border-radius: var(--radius-lg);
     border: 2px solid transparent;
     padding: 36px 36px 28px;
@@ -1112,7 +1112,7 @@
     border-color: transparent;
     box-shadow: 0 16px 48px -12px rgba(15, 118, 110, 0.25);
     background:
-        linear-gradient(#ffffff, #ffffff) padding-box,
+        linear-gradient(var(--surface), var(--surface)) padding-box,
         conic-gradient(from 0deg, var(--primary) 0%, var(--primary) var(--border-progress), transparent var(--border-progress)) border-box;
     animation: borderDraw 8s linear forwards;
 }
@@ -1675,7 +1675,7 @@
     z-index: 1;
     max-width: 1000px;
     margin: 0 auto;
-    background: linear-gradient(135deg, #e8f5f3 0%, #f0faf8 50%, #e8f5f3 100%);
+    background: var(--cta-card-bg);
     border-radius: var(--radius-lg);
     padding: 60px 50px;
     text-align: center;
@@ -1713,7 +1713,7 @@
 .cta-banner-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 20px 50px -12px rgba(15, 118, 110, 0.25);
-    background: linear-gradient(135deg, rgba(232, 245, 243, 0.9) 0%, rgba(240, 250, 248, 0.8) 50%, rgba(232, 245, 243, 0.9) 100%);
+    background: var(--cta-card-bg-hover);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
 }
@@ -1871,3 +1871,14 @@ body.video-modal-open .tooth-pattern {
 }
 
 
+
+/* ================= VIDEO BLOG CTA (بخش تیره — دکمه سفید) ================= */
+.video-blog-cta .btn-outline {
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.video-blog-cta .btn-outline:hover {
+    border-color: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.08);
+}

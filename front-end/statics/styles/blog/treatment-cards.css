@@ -20,7 +20,7 @@
     gap: 20px;
 }
 .treatment-card {
-    background: #ffffff;
+    background: var(--surface);
     border: 1px solid rgba(15, 118, 110, 0.1);
     border-radius: var(--radius-md);
     padding: 28px 16px;

@@ -165,9 +165,9 @@
 }
 
 .dash-services-container {
-    background: linear-gradient(180deg, rgba(209, 250, 229, 0.8) 0%, rgba(204, 251, 241, 0.3) 100%);
+    background: var(--dash-services-bg);
     border-radius: var(--radius-lg);
-    border: 1px solid rgba(16, 185, 129, 0.15);
+    border: 1px solid var(--dash-services-border);
     padding: 40px 36px 36px;
 }
 
@@ -208,7 +208,7 @@
 /* --- Card --- */
 .dash-service-card {
     position: relative;
-    background: #ffffff;
+    background: var(--surface);
     border: 1px solid rgba(15, 118, 110, 0.1);
     border-radius: var(--radius-md);
     padding: 28px 24px 24px;
@@ -407,7 +407,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #ffffff;
+    background: var(--surface);
     border: 1px solid rgba(15, 118, 110, 0.1);
     border-radius: var(--radius-sm);
     padding: 20px 24px;

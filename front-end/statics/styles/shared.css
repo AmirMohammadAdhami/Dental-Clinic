@@ -18,7 +18,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: rgba(255, 255, 255, 0.72);
+    background: var(--glass);
     backdrop-filter: blur(14px);
     border: 1px solid rgba(15, 118, 110, 0.12);
     border-radius: 999px;
@@ -230,7 +230,7 @@
 .tile-accent-photo,
 .doctor-img,
 .samples-grid .doctor-img {
-    background: linear-gradient(100deg, #e2e8f0 30%, #eef2f6 50%, #e2e8f0 70%);
+    background: linear-gradient(100deg, var(--shimmer) 30%, var(--shimmer-2) 50%, var(--shimmer) 70%);
     background-size: 200% 100%;
     animation: shimmer 1.8s ease-in-out infinite;
 }
@@ -256,7 +256,7 @@
 .doctor-img.img-loaded,
 .samples-grid .doctor-img.img-loaded {
     animation: none;
-    background: #e2e8f0;
+    background: var(--shimmer);
 }
 
 
@@ -269,7 +269,7 @@
 .header-inner.is-scrolled {
     padding-top: 7px;
     padding-bottom: 7px;
-    background: rgba(255, 255, 255, 0.92);
+    background: var(--glass-strong);
     box-shadow: 0 10px 34px -12px rgba(15, 23, 42, 0.22);
 }
 
@@ -347,7 +347,7 @@
 }
 
 ::-webkit-scrollbar-track {
-    background: #f1f5f9;
+    background: var(--surface-hover);
     border-radius: 4px;
 }
 
@@ -363,7 +363,7 @@
 
 * {
     scrollbar-width: thin;
-    scrollbar-color: var(--primary) #f1f5f9;
+    scrollbar-color: var(--primary) var(--surface-hover);
 }
 
 
@@ -524,7 +524,7 @@ button:focus-visible {
         left: 0;
         right: 0;
         z-index: 900;
-        background: rgba(255, 255, 255, 0.92);
+        background: var(--glass-strong);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
         border-top: 1px solid rgba(15, 118, 110, 0.1);
@@ -591,7 +591,7 @@ button:focus-visible {
     display: none;
     flex-direction: column;
     gap: 0;
-    background: rgba(255, 255, 255, 0.96);
+    background: var(--glass-strong);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     border: 1px solid rgba(15, 118, 110, 0.12);
@@ -672,7 +672,7 @@ button:focus-visible {
 .mobile-search-panel {
     width: 92%;
     max-width: 480px;
-    background: #ffffff;
+    background: var(--surface);
     border-radius: var(--radius-lg);
     padding: 32px 28px;
     position: relative;
@@ -814,7 +814,7 @@ button:focus-visible {
 .mobile-search-panel {
     width: 92%;
     max-width: 480px;
-    background: #ffffff;
+    background: var(--surface);
     border-radius: var(--radius-lg);
     padding: 32px 28px;
     position: relative;
@@ -891,4 +891,147 @@ button:focus-visible {
 .mobile-search-submit:hover {
     background: var(--primary-dark);
     transform: translateY(-1px);
+}
+
+/* ================= BRAND LINK (بدون استایل inline) ================= */
+.brand-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: inherit;
+}
+
+/* ================= BLOCK BUTTON ================= */
+.btn-block {
+    width: 100%;
+    justify-content: center;
+}
+
+/* ================= FOOTER CONTACT INFO ================= */
+.footer-contact {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px 28px;
+    margin-bottom: 4px;
+}
+
+.footer-contact-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+a.footer-contact-item {
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+a.footer-contact-item:hover {
+    color: #ffffff;
+}
+
+.footer-contact-icon {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+/* ================= THEME TOGGLE (دارک مود) ================= */
+.theme-toggle {
+    position: fixed;
+    bottom: 18px;
+    left: 18px;
+    z-index: 950;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 1px solid rgba(15, 118, 110, 0.18);
+    background: var(--surface);
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 10px 26px -10px rgba(15, 23, 42, 0.35);
+    transition: transform 0.25s var(--ease-smooth), box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+}
+
+.theme-toggle:hover {
+    transform: translateY(-3px) rotate(8deg);
+    border-color: var(--primary);
+}
+
+.theme-toggle:focus-visible {
+    outline: 3px solid var(--secondary);
+    outline-offset: 3px;
+}
+
+.theme-toggle svg {
+    width: 22px;
+    height: 22px;
+}
+
+.theme-toggle .icon-sun { display: none; }
+.theme-toggle .icon-moon { display: block; }
+
+:root[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+:root[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .theme-toggle .icon-sun { display: block; }
+    :root:not([data-theme="light"]) .theme-toggle .icon-moon { display: none; }
+}
+
+@media (max-width: 620px) {
+    /* بالای نویگیشن پایین در موبایل */
+    .theme-toggle {
+        bottom: 84px;
+        width: 42px;
+        height: 42px;
+    }
+}
+
+/* ================= DARK MODE EXTRAS ================= */
+:root[data-theme="dark"] .header-inner {
+    border-color: rgba(45, 212, 191, 0.16);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .header-inner {
+        border-color: rgba(45, 212, 191, 0.16);
+    }
+}
+
+/* ---- آیکون‌های JPG با پس‌زمینه سفید (لمینت، کامپوزیت و...) ----
+   در دارک مود به‌جای پس‌زمینه تیره، یک چیپ روشن زیر عکس قرار می‌گیرد
+   تا پس‌زمینه سفید عکس با آن یکی شود. */
+:root[data-theme="dark"] .treatment-icon,
+:root[data-theme="dark"] .dash-apt-card-icon,
+:root[data-theme="dark"] .dash-service-icon {
+    background: var(--icon-chip);
+    overflow: hidden;
+}
+
+:root[data-theme="dark"] .treatment-icon img,
+:root[data-theme="dark"] .dash-apt-card-icon img,
+:root[data-theme="dark"] .dash-service-icon img {
+    border-radius: inherit;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .treatment-icon,
+    :root:not([data-theme="light"]) .dash-apt-card-icon,
+    :root:not([data-theme="light"]) .dash-service-icon {
+        background: var(--icon-chip);
+        overflow: hidden;
+    }
+
+    :root:not([data-theme="light"]) .treatment-icon img,
+    :root:not([data-theme="light"]) .dash-apt-card-icon img,
+    :root:not([data-theme="light"]) .dash-service-icon img {
+        border-radius: inherit;
+    }
 }

@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap">
     <title>ورود — دنتورا</title>
     <link rel="stylesheet" href="../../statics/styles/base.css">
     <link rel="stylesheet" href="../../statics/styles/shared.css">
     <link rel="stylesheet" href="../../statics/styles/auth/auth.css">
-    <script>if('scrollRestoration' in history) history.scrollRestoration='manual';</script>
 </head>
 <body>
 <div class="auth-page">
@@ -37,7 +39,7 @@
                 <form class="auth-form" id="authStep1">
                     <div class="auth-phone-field">
                         <span class="auth-phone-badge">🇮🇷 +۹۸</span>
-                        <input type="tel" class="auth-input auth-phone-input" id="authPhone" value="" maxlength="10" placeholder="912XXXXXXX" inputmode="numeric" required>
+                        <input type="tel" class="auth-input auth-phone-input" id="authPhone" value="" maxlength="10" placeholder="۹۱۲۳۴۵۶۷۸۹" inputmode="numeric" required>
                     </div>
                     <p class="auth-terms">ورود شما به معنای پذیرش <a href="#">شرایط و قوانین</a> دنتورا است.</p>
                     <div class="auth-btn-row">
@@ -54,7 +56,7 @@
 
             <!-- === STEP 2: OTP === -->
             <div class="auth-slide" data-step="2">
-                <h1 class="auth-title">کد تایید را وارد کنید</h1>
+                <h2 class="auth-title">کد تایید را وارد کنید</h2>
                 <p class="auth-subtitle">کد ۵ رقمی ارسال‌شده به شماره <strong id="authOtpPhone">۰۹۱۲***۵۶۷۸</strong> را وارد کنید.</p>
                 <a href="#" class="auth-edit-phone" id="authBackToStep1">ویرایش شماره</a>
                 <form class="auth-form" id="authStep2">
@@ -89,7 +91,7 @@
 
             <!-- === STEP 3: Profile === -->
             <div class="auth-slide" data-step="3">
-                <h1 class="auth-title">تکمیل اطلاعات کاربری</h1>
+                <h2 class="auth-title">تکمیل اطلاعات کاربری</h2>
                 <p class="auth-subtitle">برای درج در پرونده پزشکی و رزرو نوبت، اطلاعات زیر را وارد کنید.</p>
                 <form class="auth-form" id="authStep3">
                     <div class="auth-input-wrap auth-stagger-item" style="--i:0">

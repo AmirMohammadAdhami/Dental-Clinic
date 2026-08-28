@@ -13,7 +13,7 @@
    Accent    #99F6E4  (Soft Aqua)
 =========================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap');
+/* فونت از طریق <link> در <head> صفحات لود می‌شود (با preconnect برای سرعت بیشتر) */
 
 :root {
     --primary: #0F766E;
@@ -32,8 +32,99 @@
     --radius-md: 20px;
     --radius-sm: 14px;
 
+    /* سطوح و شیشه‌ای‌ها (برای دارک مود هم استفاده می‌شوند) */
+    --surface: #ffffff;          /* کارت‌ها، اینپوت‌ها، پنل‌ها */
+    --glass: rgba(255, 255, 255, 0.72);        /* هدر شیشه‌ای */
+    --glass-strong: rgba(255, 255, 255, 0.92); /* هدر اسکرول‌شده، نویگیشن پایین */
+    --surface-hover: #f1f5f9;
+    --shimmer: #E2E8F0;          /* placeholder تصاویر قبل از لود */
+    --shimmer-2: #EEF2F6;
+    --tile-accent-bg: linear-gradient(150deg, var(--accent), #ffffff 130%);
+    --cta-card-bg: linear-gradient(135deg, #e8f5f3 0%, #f0faf8 50%, #e8f5f3 100%);
+    --cta-card-bg-hover: linear-gradient(135deg, rgba(232, 245, 243, 0.9) 0%, rgba(240, 250, 248, 0.8) 50%, rgba(232, 245, 243, 0.9) 100%);
+    --disabled-opacity: 0.45;
+    --icon-chip: #E2E8F0;        /* پس‌زمینه چیپ آیکون‌ها (فقط دارک مود استفاده می‌شود) */
+    --takeaways-bg: linear-gradient(135deg, #f0fdf9 0%, #ecfdf5 100%);
+    --takeaways-title: var(--primary-dark);
+    --sidebar-card-border: rgba(15, 118, 110, 0.1);
+    --dash-services-bg: linear-gradient(180deg, rgba(209, 250, 229, 0.8) 0%, rgba(204, 251, 241, 0.3) 100%);
+    --dash-services-border: rgba(16, 185, 129, 0.15);
+    --sel-selected-bg: #f0fdf9;
+
     --shadow-soft: 0 20px 45px -20px rgba(15, 23, 42, 0.35);
     --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ================= DARK THEME ================= */
+:root[data-theme="dark"] {
+    --bg: #0B141F;
+    --bg-alt: #0F1C2A;
+    --text: #E6EDF3;
+    --text-muted: rgba(230, 237, 243, 0.78);
+    --text-faint: rgba(230, 237, 243, 0.72);
+    --surface: #14263A;
+    --glass: rgba(13, 26, 40, 0.72);
+    --glass-strong: rgba(15, 30, 46, 0.94);
+    --secondary: #E3C05C;
+    --shadow-soft: 0 20px 45px -20px rgba(0, 0, 0, 0.65);
+    --surface-hover: #1C3049;
+    --shimmer: #17283C;
+    --shimmer-2: #1E3149;
+    --tile-accent-bg: linear-gradient(150deg, rgba(20, 184, 166, 0.2), var(--surface) 130%);
+    --cta-card-bg: linear-gradient(135deg, #12212F 0%, #172A3C 50%, #12212F 100%);
+    --cta-card-bg-hover: linear-gradient(135deg, rgba(18, 33, 47, 0.92) 0%, rgba(23, 42, 60, 0.88) 50%, rgba(18, 33, 47, 0.92) 100%);
+    --disabled-opacity: 0.65;
+    --icon-chip: #DCE5EE;
+    --takeaways-bg: linear-gradient(135deg, rgba(20, 184, 166, 0.10) 0%, rgba(16, 185, 129, 0.07) 100%);
+    --takeaways-title: #5EEAD4;
+    --sidebar-card-border: rgba(69, 224, 202, 0.25);
+    --dash-services-bg: linear-gradient(180deg, rgba(16, 185, 129, 0.08) 0%, rgba(45, 212, 191, 0.03) 100%);
+    --dash-services-border: rgba(52, 211, 153, 0.28);
+    --sel-selected-bg: #132A31;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --bg: #0B141F;
+        --bg-alt: #0F1C2A;
+        --text: #E6EDF3;
+        --text-muted: rgba(230, 237, 243, 0.78);
+        --text-faint: rgba(230, 237, 243, 0.72);
+        --surface: #14263A;
+        --glass: rgba(13, 26, 40, 0.72);
+        --glass-strong: rgba(15, 30, 46, 0.94);
+        --secondary: #E3C05C;
+        --shadow-soft: 0 20px 45px -20px rgba(0, 0, 0, 0.65);
+        --surface-hover: #1C3049;
+        --shimmer: #17283C;
+        --shimmer-2: #1E3149;
+        --tile-accent-bg: linear-gradient(150deg, rgba(20, 184, 166, 0.2), var(--surface) 130%);
+        --cta-card-bg: linear-gradient(135deg, #12212F 0%, #172A3C 50%, #12212F 100%);
+        --cta-card-bg-hover: linear-gradient(135deg, rgba(18, 33, 47, 0.92) 0%, rgba(23, 42, 60, 0.88) 50%, rgba(18, 33, 47, 0.92) 100%);
+        --disabled-opacity: 0.65;
+        --icon-chip: #DCE5EE;
+        --takeaways-bg: linear-gradient(135deg, rgba(20, 184, 166, 0.10) 0%, rgba(16, 185, 129, 0.07) 100%);
+        --takeaways-title: #5EEAD4;
+        --sidebar-card-border: rgba(69, 224, 202, 0.25);
+        --dash-services-bg: linear-gradient(180deg, rgba(16, 185, 129, 0.08) 0%, rgba(45, 212, 191, 0.03) 100%);
+        --dash-services-border: rgba(52, 211, 153, 0.28);
+        --sel-selected-bg: #132A31;
+    }
+}
+
+/* ================= REDUCED MOTION ================= */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }
 
 * {

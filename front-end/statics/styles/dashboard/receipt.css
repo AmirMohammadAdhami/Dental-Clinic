@@ -95,7 +95,7 @@
     display: inline-flex;
     align-items: center;
     gap: 16px;
-    background: #ffffff;
+    background: var(--surface);
     border: 2px solid rgba(15, 118, 110, 0.15);
     border-radius: var(--radius-md);
     padding: 20px 28px;
@@ -165,7 +165,7 @@
 
 /* ================= RECEIPT SUMMARY CARD ================= */
 .receipt-summary {
-    background: #ffffff;
+    background: var(--surface);
     border: 1px solid rgba(15, 118, 110, 0.1);
     border-radius: var(--radius-lg);
     padding: 32px;
@@ -307,7 +307,7 @@
 
 /* ================= NAVIGATION SECTION ================= */
 .receipt-navigation {
-    background: #ffffff;
+    background: var(--surface);
     border: 1px solid rgba(15, 118, 110, 0.1);
     border-radius: var(--radius-lg);
     padding: 32px;
