@@ -439,24 +439,8 @@
     flex-shrink: 0;
 }
 
-.dash-past-icon--implant {
-    background: rgba(15, 118, 110, 0.1);
-    color: var(--primary);
-}
-
-.dash-past-icon--beauty {
-    background: rgba(212, 175, 55, 0.12);
-    color: var(--secondary);
-}
-
-.dash-past-icon--clean {
-    background: rgba(34, 197, 94, 0.1);
-    color: #16a34a;
-}
-
-.dash-past-icon--checkup {
-    background: rgba(59, 130, 246, 0.1);
-    color: #2563eb;
+.dash-past-icon img{
+    border-radius: 10px;
 }
 
 .dash-past-details {
