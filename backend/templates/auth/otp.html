@@ -35,7 +35,7 @@
                 <p class="auth-subtitle">کد ۵ رقمی ارسال‌شده به شماره <strong id="otpPhone">۰۹۱۲***۵۶۷۸</strong> را وارد
                     کنید.</p>
                 <a href="{% url 'accounts:login' %}" class="auth-edit-phone">ویرایش شماره</a>
-                <form class="auth-form" id="otpForm" data-next-url="{% url 'accounts:login_info' %}">
+                <form class="auth-form" id="otpForm" data-next-url="{% url 'accounts:login_info' %}" method="post">
                     <div class="auth-otp-boxes" id="otpBoxes">
                         <input type="tel" class="auth-otp-input" maxlength="1" inputmode="numeric" aria-label="رقم اول" name="number-1">
                         <input type="tel" class="auth-otp-input" maxlength="1" inputmode="numeric" aria-label="رقم دوم" name="number-2">
@@ -54,7 +54,10 @@
                             </svg>
                             <span class="auth-timer-text" id="otpTimerText">۰۱:۵۹</span>
                         </div>
-                        <button type="button" class="auth-resend-btn" id="otpResendBtn" disabled>ارسال مجدد کد</button>
+                        <form method="POST" action="{% url 'accounts:resend-otp' %}" style="display:inline">
+                            {% csrf_token %}
+                            <button type="submit" class="auth-resend-btn" id="otpResendBtn" disabled>ارسال مجدد کد</button>
+                        </form>
                     </div>
                     <div class="auth-btn-row">
                         <button type="submit" class="btn btn-primary auth-submit" id="otpSubmitBtn">

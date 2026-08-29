@@ -28,7 +28,7 @@
         <div class="auth-slide is-active">
             <h1 class="auth-title">ورود / ثبت‌نام در دنتورا</h1>
             <p class="auth-subtitle">برای ورود یا عضویت، شماره موبایل خود را وارد کنید.</p>
-            <form class="auth-form" id="loginForm" data-next-url="{% url 'accounts:otp' %}">
+            <form class="auth-form" id="loginForm" data-next-url="{% url 'accounts:otp' %}" method="post">
                 {% csrf_token %}
                 <div class="auth-phone-field">
                     <span class="auth-phone-badge">🇮🇷 +۹۸</span>

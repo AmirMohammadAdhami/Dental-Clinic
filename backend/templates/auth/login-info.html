@@ -32,7 +32,8 @@
         <div class="auth-slide is-active">
             <h1 class="auth-title">تکمیل اطلاعات کاربری</h1>
             <p class="auth-subtitle">برای درج در پرونده پزشکی و رزرو نوبت، اطلاعات زیر را وارد کنید.</p>
-            <form class="auth-form" id="profileForm">
+            <form class="auth-form" id="profileForm" method="post" >
+                {% csrf_token %}
                 <div class="auth-input-wrap auth-stagger-item" style="--i:0">
                     <svg class="auth-input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -40,7 +41,7 @@
                         <circle cx="12" cy="7" r="4"/>
                     </svg>
                     <input type="text" class="auth-input" id="profileFirstName" placeholder="نام"
-                           autocomplete="given-name" required>
+                           autocomplete="given-name" required name="first_name">
                 </div>
                 <div class="auth-input-wrap auth-stagger-item" style="--i:1">
                     <svg class="auth-input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -49,7 +50,7 @@
                         <circle cx="12" cy="7" r="4"/>
                     </svg>
                     <input type="text" class="auth-input" id="profileLastName" placeholder="نام خانوادگی"
-                           autocomplete="family-name" required>
+                           autocomplete="family-name" required name="last_name">
                 </div>
                 <div class="auth-input-wrap auth-stagger-item" style="--i:2">
                     <svg class="auth-input-icon auth-input-icon--left" width="20" height="20" viewBox="0 0 24 24"
@@ -60,7 +61,7 @@
                     </svg>
                     <input type="tel" class="auth-input auth-input--national" id="profileNationalCode"
                            placeholder="کد ملی (۱۰ رقمی)" maxlength="10" inputmode="numeric" autocomplete="off"
-                           required>
+                           required name="national_code">
                     <span class="auth-validation-tick" id="profileNatTick" style="display:none">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"
                              stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
