@@ -37,13 +37,13 @@
                 <a href="{% url 'accounts:login' %}" class="auth-edit-phone">ویرایش شماره</a>
                 <form class="auth-form" id="otpForm" data-next-url="{% url 'accounts:login_info' %}">
                     <div class="auth-otp-boxes" id="otpBoxes">
-                        <input type="tel" class="auth-otp-input" maxlength="1" inputmode="numeric" aria-label="رقم اول">
-                        <input type="tel" class="auth-otp-input" maxlength="1" inputmode="numeric" aria-label="رقم دوم">
-                        <input type="tel" class="auth-otp-input" maxlength="1" inputmode="numeric" aria-label="رقم سوم">
+                        <input type="tel" class="auth-otp-input" maxlength="1" inputmode="numeric" aria-label="رقم اول" name="number-1">
+                        <input type="tel" class="auth-otp-input" maxlength="1" inputmode="numeric" aria-label="رقم دوم" name="number-2">
+                        <input type="tel" class="auth-otp-input" maxlength="1" inputmode="numeric" aria-label="رقم سوم" name="number-3">
                         <input type="tel" class="auth-otp-input" maxlength="1" inputmode="numeric"
-                               aria-label="رقم چهارم">
+                               aria-label="رقم چهارم" name="number-4">
                         <input type="tel" class="auth-otp-input" maxlength="1" inputmode="numeric"
-                               aria-label="رقم پنجم">
+                               aria-label="رقم پنجم" name="number-5">
                     </div>
                     <div class="auth-timer-wrap">
                         <div class="auth-circular-timer" id="otpCircularTimer">

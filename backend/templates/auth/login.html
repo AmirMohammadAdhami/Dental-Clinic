@@ -29,9 +29,10 @@
             <h1 class="auth-title">ورود / ثبت‌نام در دنتورا</h1>
             <p class="auth-subtitle">برای ورود یا عضویت، شماره موبایل خود را وارد کنید.</p>
             <form class="auth-form" id="loginForm" data-next-url="{% url 'accounts:otp' %}">
+                {% csrf_token %}
                 <div class="auth-phone-field">
                     <span class="auth-phone-badge">🇮🇷 +۹۸</span>
-                    <input type="tel" class="auth-input auth-phone-input" id="loginPhone" value="" maxlength="10" placeholder="912XXXXXXX" inputmode="numeric" required>
+                    <input type="tel" class="auth-input auth-phone-input" id="loginPhone" value="" maxlength="11" placeholder="912XXXXXXX" inputmode="numeric" name="phone_number" required>
                 </div>
                 <p class="auth-terms">ورود شما به معنای پذیرش <a href="#">شرایط و قوانین</a> دنتورا است.</p>
                 <div class="auth-btn-row">

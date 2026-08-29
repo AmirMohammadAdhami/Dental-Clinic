@@ -28,7 +28,7 @@ class UserAdmin(BaseUserAdmin):
 
 @admin.register(OTPCode)
 class OTPCodeAdmin(admin.ModelAdmin):
-    list_display = ('user', 'code', 'is_used', 'created_at', 'expires_at')
+    list_display = ('phone_number', 'code', 'is_used', 'created_at', 'expires_at')
     list_filter = ('is_used', 'created_at')
-    search_fields = ('user__phone', 'code')
+    search_fields = ('phone_number', 'code')
     readonly_fields = ('created_at',)
