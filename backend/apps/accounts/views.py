@@ -10,7 +10,7 @@ from django.contrib.auth import get_user_model, login
 User = get_user_model()
 
 
-def login(request):
+def login_user(request):
     if request.user.is_authenticated:
         messages.error(request, 'You are already logged in.')
         return redirect('core:home')
@@ -26,14 +26,14 @@ def login(request):
             messages.error(request, 'Invalid phone number')
             return redirect('accounts:login')
 
-        if phone_number.startswith('0'):
-            phone_number = phone_number[1:]
+        if not phone_number.startswith('0'):
+            phone_number = '0' + phone_number
 
-        if len(phone_number) != 10 or not phone_number.startswith('9'):
+        if len(phone_number) != 11 or not phone_number.startswith('09'):
             messages.error(request, 'Invalid phone number')
             return redirect('accounts:login')
 
-        unique_otp = otp_services.generate_otp(phone_number)
+        unique_otp = otp_services.generate_otp()
 
         send_otp.send_verification_code(
             unique_otp,
@@ -51,11 +51,7 @@ def login(request):
         request.session['phone_number'] = phone_number
         messages.success(request, 'Your OTP code has been sent.')
 
-        return render(
-            request,
-            'auth/otp.html',
-            context={'phone_number': phone_number}
-        )
+        return redirect('accounts:otp')
 
     return render(request, 'auth/login.html')
 
@@ -99,8 +95,8 @@ def otp(request):
         ])
 
         if otp_services.verify_otp(
-                unique_otp.code,
-                post_otp_code
+                post_otp_code,
+                unique_otp.code
         ):
             unique_otp.is_used = True
             unique_otp.save(update_fields=['is_used'])
@@ -125,7 +121,7 @@ def otp(request):
         messages.error(request, 'Invalid OTP')
         return redirect('accounts:otp')
 
-    return render(request, 'auth/otp.html')
+    return render(request, 'auth/otp.html', context={'phone_number': phone_number})
 
 
 def resend_otp(request):
@@ -170,7 +166,7 @@ def resend_otp(request):
     ).update(is_used=True)
 
 
-    unique_otp = otp_services.generate_otp(phone_number)
+    unique_otp = otp_services.generate_otp()
 
     send_otp.send_verification_code(
         unique_otp,
@@ -215,11 +211,11 @@ def login_info(request):
             messages.error(request, 'Please enter all fields')
             return redirect('accounts:login-info')
 
-        user = User.objects.create(
+        user = User.objects.create_user(
             phone=phone_number,
+            national_code=national_code,
             first_name=first_name,
             last_name=last_name,
-            national_code=national_code
         )
 
         login(request, user)
@@ -227,5 +223,6 @@ def login_info(request):
         request.session.pop('otp_verified', None)
         request.session.pop('phone_number', None)
         messages.success(request, 'You are now Signed up.')
+        return redirect('core:home')
 
     return render(request, 'auth/login-info.html')

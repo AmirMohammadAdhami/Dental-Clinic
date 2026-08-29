@@ -1,14 +1,6 @@
 {% extends 'bases/auth_base.html' %}
 {% load static %}
 
-
-{% block js %}
-    <script src="{% static 'js/auth/auth-otp.js' %}"></script>
-{% endblock %}
-
-
-
-
 {% block title %}تایید کد — دنتورا{% endblock %}
 
 {% block content %}
@@ -32,33 +24,34 @@
             <!-- OTP Form -->
             <div class="auth-slide is-active">
                 <h1 class="auth-title">کد تایید را وارد کنید</h1>
-                <p class="auth-subtitle">کد ۵ رقمی ارسال‌شده به شماره <strong id="otpPhone">۰۹۱۲***۵۶۷۸</strong> را وارد
+                <p class="auth-subtitle">کد ۵ رقمی ارسال‌شده به شماره <strong id="otpPhone" data-raw-phone="{{ phone_number|default:'' }}">{{ phone_number|default:"۰۹۱۲***۵۶۷۸" }}</strong> را وارد
                     کنید.</p>
                 <a href="{% url 'accounts:login' %}" class="auth-edit-phone">ویرایش شماره</a>
-                <form class="auth-form" id="otpForm" data-next-url="{% url 'accounts:login_info' %}" method="post">
-                    <div class="auth-otp-boxes" id="otpBoxes">
-                        <input type="tel" class="auth-otp-input" maxlength="1" inputmode="numeric" aria-label="رقم اول" name="number-1">
-                        <input type="tel" class="auth-otp-input" maxlength="1" inputmode="numeric" aria-label="رقم دوم" name="number-2">
-                        <input type="tel" class="auth-otp-input" maxlength="1" inputmode="numeric" aria-label="رقم سوم" name="number-3">
-                        <input type="tel" class="auth-otp-input" maxlength="1" inputmode="numeric"
-                               aria-label="رقم چهارم" name="number-4">
-                        <input type="tel" class="auth-otp-input" maxlength="1" inputmode="numeric"
-                               aria-label="رقم پنجم" name="number-5">
+                <div class="auth-otp-boxes" id="otpBoxes">
+                    <input type="tel" class="auth-otp-input" maxlength="1" inputmode="numeric" aria-label="رقم اول" name="number-1" form="otpForm">
+                    <input type="tel" class="auth-otp-input" maxlength="1" inputmode="numeric" aria-label="رقم دوم" name="number-2" form="otpForm">
+                    <input type="tel" class="auth-otp-input" maxlength="1" inputmode="numeric" aria-label="رقم سوم" name="number-3" form="otpForm">
+                    <input type="tel" class="auth-otp-input" maxlength="1" inputmode="numeric"
+                           aria-label="رقم چهارم" name="number-4" form="otpForm">
+                    <input type="tel" class="auth-otp-input" maxlength="1" inputmode="numeric"
+                           aria-label="رقم پنجم" name="number-5" form="otpForm">
+                </div>
+                <div class="auth-timer-wrap">
+                    <div class="auth-circular-timer" id="otpCircularTimer">
+                        <svg viewBox="0 0 36 36">
+                            <circle class="auth-timer-bg" cx="18" cy="18" r="16" fill="none" stroke-width="2"/>
+                            <circle class="auth-timer-progress" id="otpTimerCircle" cx="18" cy="18" r="16"
+                                    fill="none" stroke-width="2" stroke-dasharray="100.53" stroke-dashoffset="0"/>
+                        </svg>
+                        <span class="auth-timer-text" id="otpTimerText">۰۱:۵۹</span>
                     </div>
-                    <div class="auth-timer-wrap">
-                        <div class="auth-circular-timer" id="otpCircularTimer">
-                            <svg viewBox="0 0 36 36">
-                                <circle class="auth-timer-bg" cx="18" cy="18" r="16" fill="none" stroke-width="2"/>
-                                <circle class="auth-timer-progress" id="otpTimerCircle" cx="18" cy="18" r="16"
-                                        fill="none" stroke-width="2" stroke-dasharray="100.53" stroke-dashoffset="0"/>
-                            </svg>
-                            <span class="auth-timer-text" id="otpTimerText">۰۱:۵۹</span>
-                        </div>
-                        <form method="POST" action="{% url 'accounts:resend-otp' %}" style="display:inline">
-                            {% csrf_token %}
-                            <button type="submit" class="auth-resend-btn" id="otpResendBtn" disabled>ارسال مجدد کد</button>
-                        </form>
-                    </div>
+                    <form method="POST" action="{% url 'accounts:resend-otp' %}" style="display:inline">
+                        {% csrf_token %}
+                        <button type="submit" class="auth-resend-btn" id="otpResendBtn" disabled>ارسال مجدد کد</button>
+                    </form>
+                </div>
+                <form class="auth-form" id="otpForm" method="post">
+                    {% csrf_token %}
                     <div class="auth-btn-row">
                         <button type="submit" class="btn btn-primary auth-submit" id="otpSubmitBtn">
                             <span class="auth-btn-text">تایید و ادامه</span>
@@ -75,22 +68,10 @@
                     </div>
                 </form>
             </div>
-
-            <!-- Success State -->
-            <div class="auth-success" id="otpSuccess" style="display:none">
-                <div class="auth-success-check">
-                    <svg width="80" height="80" viewBox="0 0 80 80">
-                        <circle class="auth-success-circle" cx="40" cy="40" r="36" fill="none" stroke="#10b981"
-                                stroke-width="3"/>
-                        <polyline class="auth-success-tick" points="24,42 34,52 56,28" fill="none" stroke="#10b981"
-                                  stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </div>
-                <h2 class="auth-success-title">تایید شد!</h2>
-                <p class="auth-success-text">کد شما با موفقیت تایید شد</p>
-            </div>
         </div>
     </div>
-
 {% endblock %}
 
+{% block js %}
+    <script src="{% static 'js/auth/auth-otp.js' %}?v=2"></script>
+{% endblock %}

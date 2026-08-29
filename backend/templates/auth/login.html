@@ -3,9 +3,6 @@
 
 {% block title %}ورود — دنتورا{% endblock %}
 
-
-{% block js %}<script src="{% static 'js/auth/auth-login.js' %}"></script>{% endblock %}
-    
 {% block content %}
 <div class="auth-page">
     <!-- Backdrop -->
@@ -28,7 +25,7 @@
         <div class="auth-slide is-active">
             <h1 class="auth-title">ورود / ثبت‌نام در دنتورا</h1>
             <p class="auth-subtitle">برای ورود یا عضویت، شماره موبایل خود را وارد کنید.</p>
-            <form class="auth-form" id="loginForm" data-next-url="{% url 'accounts:otp' %}" method="post">
+            <form class="auth-form" id="loginForm" method="post">
                 {% csrf_token %}
                 <div class="auth-phone-field">
                     <span class="auth-phone-badge">🇮🇷 +۹۸</span>
@@ -46,19 +43,10 @@
                 </div>
             </form>
         </div>
-
-        <!-- Success State -->
-        <div class="auth-success" id="loginSuccess" style="display:none">
-            <div class="auth-success-check">
-                <svg width="80" height="80" viewBox="0 0 80 80">
-                    <circle class="auth-success-circle" cx="40" cy="40" r="36" fill="none" stroke="#10b981" stroke-width="3"/>
-                    <polyline class="auth-success-tick" points="24,42 34,52 56,28" fill="none" stroke="#10b981" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </div>
-            <h2 class="auth-success-title">کد تایید ارسال شد!</h2>
-            <p class="auth-success-text">کد ۵ رقمی به شماره شما ارسال شد</p>
-        </div>
     </div>
 </div>
 {% endblock %}
 
+{% block js %}
+    <script src="{% static 'js/auth/auth-login.js' %}?v=2"></script>
+{% endblock %}

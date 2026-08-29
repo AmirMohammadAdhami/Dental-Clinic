@@ -1,15 +1,13 @@
 /**
  * Dentura — Login Step (Phone Input)
- * Handles phone number formatting, validation, and submission
+ * Client-side validation + loading state, then natural form submit to Django
  */
-
-setTimeout(function () {
+(function () {
   var loginForm = document.getElementById('loginForm');
   if (!loginForm) return;
 
   var phoneInput = document.getElementById('loginPhone');
   var submitBtn = document.getElementById('loginSubmitBtn');
-  var successEl = document.getElementById('loginSuccess');
 
   // Farsi to English helper
   function toEnDigits(str) {
@@ -21,39 +19,24 @@ setTimeout(function () {
   // Phone formatting — Farsi digits to English, numbers only, max 10
   if (phoneInput) {
     phoneInput.addEventListener('input', function () {
-      phoneInput.value = toEnDigits(phoneInput.value).replace(/[^0-9]/g, '').slice(0, 10);
+      phoneInput.value = toEnDigits(phoneInput.value).replace(/[^0-9]/g, '').slice(0, 11);
     });
     setTimeout(function () { phoneInput.focus(); }, 200);
   }
 
-  // Form submit
+  // Form submit — validate, show loading, then submit to server
   loginForm.addEventListener('submit', function (e) {
-    e.preventDefault();
     var val = phoneInput ? phoneInput.value : '';
-    if (val.length < 10) return;
+    if (val.length < 11) {
+      e.preventDefault();
+      if (phoneInput) phoneInput.focus();
+      return;
+    }
 
-    // Show loading
+    // Show loading spinner (form will submit naturally)
     if (submitBtn) {
       submitBtn.classList.add('is-loading');
       submitBtn.disabled = true;
     }
-
-    // Simulate sending OTP
-    setTimeout(function () {
-      if (submitBtn) {
-        submitBtn.classList.remove('is-loading');
-        submitBtn.disabled = false;
-      }
-      // Show success then redirect to OTP page
-      var card = loginForm.closest('.auth-card');
-      if (card) loginForm.style.display = 'none';
-      if (successEl) successEl.style.display = '';
-
-      setTimeout(function () {
-        // Store phone for OTP page (optional)
-        try { sessionStorage.setItem('authPhone', val); } catch (e) {}
-        window.location.href = 'otp.html';
-      }, 1500);
-    }, 800);
   });
-}, 200);
+})();

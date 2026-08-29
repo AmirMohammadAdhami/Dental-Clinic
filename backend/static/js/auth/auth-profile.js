@@ -1,15 +1,13 @@
 /**
  * Profile Form (login-info.html)
- * National code validation, stagger animation, success state
+ * National code validation, stagger animation, natural form submit
  */
-
 (function () {
   var profileForm = document.getElementById('profileForm');
   if (!profileForm) return;
 
   var nationalInput = document.getElementById('profileNationalCode');
   var natTick = document.getElementById('profileNatTick');
-  var successEl = document.getElementById('profileSuccess');
 
   // Farsi to English helper
   function toEnDigits(str) {
@@ -43,48 +41,41 @@
   }
 
   // Trigger stagger animation on page load
-  function triggerStagger() {
-    document.querySelectorAll('.auth-stagger-item').forEach(function (el) {
-      el.style.animation = 'none';
-      void el.offsetWidth;
-      el.style.animation = '';
-    });
-  }
-  triggerStagger();
+  document.querySelectorAll('.auth-stagger-item').forEach(function (el) {
+    el.style.animation = 'none';
+    void el.offsetWidth;
+    el.style.animation = '';
+  });
 
-  // Form submit
+  // Form submit — validate, show loading, submit naturally
   profileForm.addEventListener('submit', function (e) {
-    e.preventDefault();
     var firstName = document.getElementById('profileFirstName');
     var lastName = document.getElementById('profileLastName');
 
-    if (!firstName || !firstName.value.trim()) { firstName && firstName.focus(); return; }
-    if (!lastName || !lastName.value.trim()) { lastName && lastName.focus(); return; }
+    if (!firstName || !firstName.value.trim()) {
+      e.preventDefault();
+      firstName && firstName.focus();
+      return;
+    }
+    if (!lastName || !lastName.value.trim()) {
+      e.preventDefault();
+      lastName && lastName.focus();
+      return;
+    }
     if (!nationalInput || nationalInput.value.length !== 10 || !validateNationalCode(nationalInput.value)) {
-      if (nationalInput) { nationalInput.style.borderColor = '#ef4444'; nationalInput.focus(); }
+      e.preventDefault();
+      if (nationalInput) {
+        nationalInput.style.borderColor = '#ef4444';
+        nationalInput.focus();
+      }
       return;
     }
 
-    // Show loading
+    // Show loading spinner (form will submit naturally)
     var btn = profileForm.querySelector('.auth-submit');
     if (btn) {
       btn.classList.add('is-loading');
       btn.disabled = true;
     }
-
-    setTimeout(function () {
-      if (btn) {
-        btn.classList.remove('is-loading');
-        btn.disabled = false;
-      }
-      // Hide form, show success
-      profileForm.style.display = 'none';
-      if (successEl) successEl.style.display = '';
-
-      // Redirect after delay
-      setTimeout(function () {
-        window.location.href = 'index.html';
-      }, 2000);
-    }, 800);
   });
 })();

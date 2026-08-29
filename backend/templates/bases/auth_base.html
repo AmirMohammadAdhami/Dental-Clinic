@@ -15,11 +15,18 @@
 
 </head>
 <body>
+<!-- Django Messages -->
+{% if messages %}
+<div class="django-messages" style="display:none">
+    {% for message in messages %}
+    <span class="toast-data" data-level="{% if message.tags %}{{ message.tags }}{% else %}info{% endif %}">{{ message }}</span>
+    {% endfor %}
+</div>
+{% endif %}
+
 {% block content %} {% endblock %}
 
-
-
-<script src="{% static 'js/shared.js' %}"></script>
+<script src="{% static 'js/shared.js' %}?v=3"></script>
 {% block js %}{% endblock %}
 </body>
 </html>

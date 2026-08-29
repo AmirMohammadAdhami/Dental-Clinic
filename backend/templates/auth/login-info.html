@@ -1,16 +1,9 @@
 {% extends 'bases/auth_base.html' %}
 {% load static %}
 
-
 {% block title %}تکمیل اطلاعات — دنتورا{% endblock %}
 
-
-
-{% block js %}<script src="{% static 'js/auth/auth-profile.js' %}"></script>{% endblock %}
-
 {% block content %}
-	
-
 <div class="auth-page">
     <!-- Backdrop -->
     <div class="auth-backdrop"></div>
@@ -32,7 +25,7 @@
         <div class="auth-slide is-active">
             <h1 class="auth-title">تکمیل اطلاعات کاربری</h1>
             <p class="auth-subtitle">برای درج در پرونده پزشکی و رزرو نوبت، اطلاعات زیر را وارد کنید.</p>
-            <form class="auth-form" id="profileForm" method="post" >
+            <form class="auth-form" id="profileForm" method="post" action="{% url 'accounts:login-info' %}">
                 {% csrf_token %}
                 <div class="auth-input-wrap auth-stagger-item" style="--i:0">
                     <svg class="auth-input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -82,20 +75,10 @@
                 </div>
             </form>
         </div>
-
-        <!-- Success State -->
-        <div class="auth-success" id="profileSuccess" style="display:none">
-            <div class="auth-success-check">
-                <svg width="80" height="80" viewBox="0 0 80 80">
-                    <circle class="auth-success-circle" cx="40" cy="40" r="36" fill="none" stroke="#10b981"
-                            stroke-width="3"/>
-                    <polyline class="auth-success-tick" points="24,42 34,52 56,28" fill="none" stroke="#10b981"
-                              stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </div>
-            <h2 class="auth-success-title">خوش آمدید!</h2>
-            <p class="auth-success-text">ورود شما با موفقیت انجام شد</p>
-        </div>
     </div>
 </div>
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'js/auth/auth-profile.js' %}?v=2"></script>
 {% endblock %}
