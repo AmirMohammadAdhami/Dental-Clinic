@@ -86,7 +86,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 class OTPCode(models.Model):
     MAX_ATTEMPTS = 5
 
-    phone_number = models.CharField(max_length=10, unique=True)
+    phone_number = models.CharField(max_length=10)
 
     code = models.CharField(
         max_length=5,
@@ -104,4 +104,4 @@ class OTPCode(models.Model):
         return self.expires_at <= timezone.now()
 
     def is_valid(self):
-        return not self.is_expired() and not self.is_used and not self.attempts < self.MAX_ATTEMPTS
+        return not self.is_expired() and not self.is_used and self.attempts < self.MAX_ATTEMPTS
