@@ -87,57 +87,6 @@
                 self.classList.remove('notif-mark-all--done');
             }, 2000);
         });
-    })();    /* ================= NAV PILL (real <span>, push via margin) ================= */
-    (function initNavPills() {
-        var icons = document.querySelectorAll('.dash-nav-icon[data-tooltip]');
-        if (!icons.length) return;
-        icons.forEach(function (icon) {
-            var pill = document.createElement('span');
-            pill.className = 'dash-nav-pill';
-            pill.textContent = icon.getAttribute('data-tooltip');
-            icon.appendChild(pill);
-        });
-        var pills = document.querySelectorAll('.dash-nav-pill');
-        function clearPush() {
-            icons.forEach(function (icon) { icon.style.marginLeft = ''; });
-            pills.forEach(function (p) { p.classList.remove('is-active'); });
-        }
-        icons.forEach(function (icon, index) {
-            icon.addEventListener('mouseenter', function () {
-                clearPush();
-                pills[index].classList.add('is-active');
-                if (index > 0) {
-                    var pillW = pills[index].scrollWidth || 100;
-                    icons[index - 1].style.marginLeft = (pillW + 10) + 'px';
-                }
-            });
-            icon.addEventListener('mouseleave', function () { clearPush(); });
-            icon.addEventListener('click', function (e) {
-                var wasActive = pills[index].classList.contains('is-active');
-                clearPush();
-                if (!wasActive && window.innerWidth <= 620) {
-                    e.preventDefault();
-                    pills[index].classList.add('is-active');
-                }
-            });
-        });
-        document.addEventListener('click', function (e) {
-            if (!e.target.closest('.dash-nav-icon')) clearPush();
-        });
-    })();
-
-    /* ================= BOTTOM NAV ACTIVE STATE ================= */
-    (function initBottomNav() {
-        var bottomNav = document.querySelector('.dash-bottomnav');
-        if (!bottomNav) return;
-        var items = bottomNav.querySelectorAll('.dash-bottomnav-item');
-        var currentPage = window.location.pathname.split('/').pop() || 'notifications.html';
-        items.forEach(function (item) {
-            var href = item.getAttribute('href') || '';
-            if (href === currentPage) {
-                item.classList.add('is-active');
-            }
-        });
     })();
 
 })();

@@ -8,16 +8,19 @@
     <link rel="stylesheet" href="{% static 'css/dashboard/subpages.css' %}">
 {% endblock %}
 
-{% block js %}
-<script src="{% static 'js/dashboard/dashboard.js' %}"></script>
+{% block greeting %}
+        <div class="dash-profile">
+            <div class="dash-greeting">
+                <h1 class="dash-greeting-text" id="dash-greeting-text">{% if full_name %}سلام، {{ full_name }} عزیز 👋{% else %}سلام 👋{% endif %}</h1>
+            </div>
+        </div>
 {% endblock %}
 
 {% block content %}
-    <!-- ================= MAIN CONTENT ================= -->
     <main class="dash-main" id="main-content" tabindex="-1">
 
-        <!-- ================= SECTION 1: ACTIVE APPOINTMENT CARD ================= -->
-        <section class="dash-appointment-banner">
+        <!-- ================= SECTION 1: NEXT APPOINTMENT ================= -->
+        <section class="dash-appointment-banner" id="next-appointment" style="display:none;">
             <div class="dash-appointment-inner">
                 <div class="dash-appointment-badge">
                     <span class="dash-badge-dot"></span>
@@ -32,8 +35,7 @@
                                 <circle cx="12" cy="7" r="4"/>
                             </svg>
                             <div>
-                                <strong>دکتر کاوه آذرخو</strong>
-                                <span>متخصص زیبایی و ترمیمی</span>
+                                <strong id="next-doc-name">—</strong>
                             </div>
                         </div>
 
@@ -41,7 +43,7 @@
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
                             </svg>
-                            <span>چکاپ و کامپوزیت زیبایی</span>
+                            <span id="next-service-name">—</span>
                         </div>
 
                         <div class="dash-appointment-datetime">
@@ -49,20 +51,35 @@
                                 <circle cx="12" cy="12" r="10"/>
                                 <polyline points="12 6 12 12 16 14"/>
                             </svg>
-                            <span>دوشنبه ۲۵ مرداد — ساعت ۱۶:۳۰</span>
+                            <span id="next-date">—</span>
                         </div>
                     </div>
 
-                    <a href="{% url 'dashboard:appointments' %}" class="btn dash-appointment-btn">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                            <polyline points="14 2 14 8 20 8"/>
-                            <line x1="16" y1="13" x2="8" y2="13"/>
-                            <line x1="16" y1="17" x2="8" y2="17"/>
-                            <polyline points="10 9 9 9 8 9"/>
-                        </svg>
-                        مشاهده رسید نوبت
-                    </a>
+                    <div class="dash-appt-banner-actions">
+                        <a id="next-receipt-link" href="{% url 'dashboard:appointments' %}" class="btn dash-appointment-btn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                                <line x1="16" y1="13" x2="8" y2="13"/>
+                                <line x1="16" y1="17" x2="8" y2="17"/>
+                                <polyline points="10 9 9 9 8 9"/>
+                            </svg>
+                            مشاهده رسید نوبت
+                        </a>
+                        <a href="tel:+982112345678" class="btn dash-appointment-btn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+                            </svg>
+                            تماس با کلینیک
+                        </a>
+                        <a href="#" class="btn dash-appointment-btn dash-appointment-btn--outline">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                <circle cx="12" cy="10" r="3"/>
+                            </svg>
+                            مسیریابی
+                        </a>
+                    </div>
                 </div>
             </div>
         </section>
@@ -76,174 +93,26 @@
                     <p class="dash-section-subtitle dash-services-subtitle">خدمات مورد نظر خود را انتخاب کنید</p>
                 </div>
 
-                <div class="dash-services-grid">
-                    <!-- کارت ۱: ایمپلنت -->
-                    <a href="{% url 'dashboard:select_doctors' service='implant' %}" class="dash-service-card">
-                        <span class="dash-service-badge dash-service-badge--special">ویژه ⭐</span>
-                        <div class="dash-service-icon">
-                            <img width="1795" height="576" src="{% static 'images/blog-icons/implant.jpg' %}" alt="ایمپلنت">
-                        </div>
-                        <h3 class="dash-service-title">ایمپلنت دندان</h3>
-                        <p class="dash-service-desc">جایگزینی دائمی دندان از دست رفته</p>
-                        <span class="dash-service-arrow">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="5" y1="12" x2="19" y2="12"/>
-                                <polyline points="12 5 19 12 12 19"/>
-                            </svg>
-                        </span>
-                    </a>
-
-                    <!-- کارت ۲: زیبایی -->
-                    <a href="{% url 'dashboard:select_doctors' service='beauty' %}" class="dash-service-card">
-                        <span class="dash-service-badge dash-service-badge--popular">پرطرفدار 🔥</span>
-                        <div class="dash-service-icon">
-                            <img width="1795" height="576" src="{% static 'images/blog-icons/composite.jpg' %}" alt="زیبایی">
-                        </div>
-                        <h3 class="dash-service-title">دندانپزشکی زیبایی</h3>
-                        <p class="dash-service-desc">کامپوزیت، ونیر و طراحی لبخند</p>
-                        <span class="dash-service-arrow">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="5" y1="12" x2="19" y2="12"/>
-                                <polyline points="12 5 19 12 12 19"/>
-                            </svg>
-                        </span>
-                    </a>
-
-                    <!-- کارت ۳: لمینت -->
-                    <a href="{% url 'dashboard:select_doctors' service='laminate' %}" class="dash-service-card">
-                        <div class="dash-service-icon">
-                            <img width="1795" height="576" src="{% static 'images/blog-icons/laminate.jpg' %}" alt="لمینت">
-                        </div>
-                        <h3 class="dash-service-title">لمینت سرامیکی</h3>
-                        <p class="dash-service-desc">روکش سرامیکی با ماندگاری بالا</p>
-                        <span class="dash-service-arrow">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="5" y1="12" x2="19" y2="12"/>
-                                <polyline points="12 5 19 12 12 19"/>
-                            </svg>
-                        </span>
-                    </a>
-
-                    <!-- کارت ۴: عصب‌کشی -->
-                    <a href="{% url 'dashboard:select_doctors' service='root-canal' %}" class="dash-service-card">
-                        <div class="dash-service-icon">
-                            <img width="1795" height="576" src="{% static 'images/blog-icons/root-canal.jpg' %}" alt="عصب کشی">
-                        </div>
-                        <h3 class="dash-service-title">عصب‌کشی</h3>
-                        <p class="dash-service-desc">درمان ریشه با تکنیک پیشرفته</p>
-                        <span class="dash-service-arrow">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="5" y1="12" x2="19" y2="12"/>
-                                <polyline points="12 5 19 12 12 19"/>
-                            </svg>
-                        </span>
-                    </a>
-
-                    <!-- کارت ۵: دندانپزشکی کودکان -->
-                    <a href="{% url 'dashboard:select_doctors' service='kids' %}" class="dash-service-card">
-                        <div class="dash-service-icon">
-                            <img width="1795" height="576" src="{% static 'images/blog-icons/kids-dentistry.jpg' %}" alt="دندانپزشکی کودکان">
-                        </div>
-                        <h3 class="dash-service-title">دندانپزشکی کودکان</h3>
-                        <p class="dash-service-desc">درمان تخصصی با فضایی دوستانه</p>
-                        <span class="dash-service-arrow">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="5" y1="12" x2="19" y2="12"/>
-                                <polyline points="12 5 19 12 12 19"/>
-                            </svg>
-                        </span>
-                    </a>
-
-                    <!-- کارت ۶: جرم‌گیری -->
-                    <a href="{% url 'dashboard:select_doctors' service='cleaning' %}" class="dash-service-card">
-                        <div class="dash-service-icon">
-                            <img width="1795" height="576" src="{% static 'images/blog-icons/germgiri.jpg' %}" alt="جرم‌گیری">
-                        </div>
-                        <h3 class="dash-service-title">جرم‌گیری و بلیچینگ</h3>
-                        <p class="dash-service-desc">سفید کردن و تمیز کردن حرفه‌ای</p>
-                        <span class="dash-service-arrow">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="5" y1="12" x2="19" y2="12"/>
-                                <polyline points="12 5 19 12 12 19"/>
-                            </svg>
-                        </span>
-                    </a>
+                <div class="dash-services-grid" id="services-grid">
+                    <!-- Populated by JS from API -->
                 </div>
             </div>
         </section>
 
         <!-- ================= SECTION 3: GALLERY PREVIEW ================= -->
-        <section class="dash-section dash-gallery">
+        <section class="dash-section dash-gallery" id="gallery-section" style="display:none;">
             <div class="dash-section-header">
                 <h2 class="dash-section-title">گالری تصاویر قبل و بعد شما</h2>
                 <p class="dash-section-subtitle">نتایج درمان‌های زیبایی شما در دنتورا</p>
             </div>
 
-            <div class="dash-gallery-grid">
-                <!-- کارت ۱: ایمپلنت -->
-                <div class="dash-img-card">
-                    <div class="dash-img-card-img" data-ba tabindex="0" role="slider" aria-label="مقایسه قبل و بعد ایمپلنت">
-                        <img class="ba-img ba-after" width="1408" height="768" src="{% static 'images/before-after/1-after.jpg' %}" alt="ایمپلنت - بعد">
-                        <img class="ba-img ba-before" width="1408" height="768" src="{% static 'images/before-after/1-before.jpg' %}" alt="ایمپلنت - قبل">
-                        <div class="ba-slider"><div class="ba-handle"></div></div>
-                        <span class="ba-label ba-label-before">قبل</span>
-                        <span class="ba-label ba-label-after">بعد</span>
-                        <span class="dash-img-badge">ایمپلنت</span>
-                        <button class="dash-img-action dash-img-download" data-width="1408" height="768" src="{% static 'images/before-after/1-after.jpg' %}" aria-label="دانلود تصویر">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                        </button>
-
-                    </div>
-                    <div class="dash-img-card-info">
-                        <span class="dash-img-card-doctor">دکتر کاوه آذرخو</span>
-                        <span class="dash-img-card-date">مرداد ۱۴۰۵</span>
-                    </div>
-                </div>
-
-                <!-- کارت ۲: ونیر -->
-                <div class="dash-img-card">
-                    <div class="dash-img-card-img" data-ba tabindex="0" role="slider" aria-label="مقایسه قبل و بعد ونیر">
-                        <img class="ba-img ba-after" width="1408" height="768" src="{% static 'images/before-after/2-after.jpg' %}" alt="ونیر - بعد">
-                        <img class="ba-img ba-before" width="1408" height="768" src="{% static 'images/before-after/2-before.jpg' %}" alt="ونیر - قبل">
-                        <div class="ba-slider"><div class="ba-handle"></div></div>
-                        <span class="ba-label ba-label-before">قبل</span>
-                        <span class="ba-label ba-label-after">بعد</span>
-                        <span class="dash-img-badge">ونیر</span>
-                        <button class="dash-img-action dash-img-download" data-width="1408" height="768" src="{% static 'images/before-after/2-after.jpg' %}" aria-label="دانلود تصویر">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                        </button>
-
-                    </div>
-                    <div class="dash-img-card-info">
-                        <span class="dash-img-card-doctor">دکتر امیرمحمد فرهمندنیا</span>
-                        <span class="dash-img-card-date">تیر ۱۴۰۵</span>
-                    </div>
-                </div>
-
-                <!-- کارت ۳: لمینت -->
-                <div class="dash-img-card">
-                    <div class="dash-img-card-img" data-ba tabindex="0" role="slider" aria-label="مقایسه قبل و بعد لمینت">
-                        <img class="ba-img ba-after" width="1408" height="768" src="{% static 'images/before-after/3-after.jpg' %}" alt="لمینت - بعد">
-                        <img class="ba-img ba-before" width="1408" height="768" src="{% static 'images/before-after/3-before.jpg' %}" alt="لمینت - قبل">
-                        <div class="ba-slider"><div class="ba-handle"></div></div>
-                        <span class="ba-label ba-label-before">قبل</span>
-                        <span class="ba-label ba-label-after">بعد</span>
-                        <span class="dash-img-badge">لمینت</span>
-                        <button class="dash-img-action dash-img-download" data-width="1408" height="768" src="{% static 'images/before-after/3-after.jpg' %}" aria-label="دانلود تصویر">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                        </button>
-
-                    </div>
-                    <div class="dash-img-card-info">
-                        <span class="dash-img-card-doctor">دکتر مهسا امیری راد</span>
-                        <span class="dash-img-card-date">خرداد ۱۴۰۵</span>
-                    </div>
-                </div>
+            <div class="dash-gallery-grid" id="gallery-grid">
+                <!-- Populated by JS from API -->
             </div>
 
             <div class="dash-gallery-cta">
                 <a href="{% url 'dashboard:gallery' %}" class="btn dash-gallery-all-btn">
-                    مشاهده همه تصاویر گالری (۸ تصویر)
+                    مشاهده همه تصاویر گالری
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="5" y1="12" x2="19" y2="12"/>
                         <polyline points="12 5 19 12 12 19"/>
@@ -253,172 +122,14 @@
         </section>
 
         <!-- ================= SECTION 4: PAST APPOINTMENTS ================= -->
-        <section class="dash-section dash-past">
+        <section class="dash-section dash-past" id="past-section" style="display:none;">
             <div class="dash-section-header">
                 <h2 class="dash-section-title">تاریخچه نوبت‌های گذشته</h2>
                 <p class="dash-section-subtitle">لیست مراجعات قبلی شما به دنتورا</p>
             </div>
 
-            <div class="dash-past-list">
-                <!-- نوبت گذشته ۱ -->
-                <div class="dash-past-card">
-                    <div class="dash-past-right">
-                        <div class="dash-past-icon dash-past-icon--implant">
-                            <img width="1795" height="576" src="{% static 'images/blog-icons/implant.jpg' %}" alt="ایمپلنت">
-                        </div>
-                        <div class="dash-past-details">
-                            <strong>ایمپلنت فک بالا</strong>
-                            <span>دکتر کاوه آذرخو</span>
-                        </div>
-                    </div>
-                    <div class="dash-past-center">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                            <line x1="16" y1="2" x2="16" y2="6"/>
-                            <line x1="8" y1="2" x2="8" y2="6"/>
-                            <line x1="3" y1="10" x2="21" y2="10"/>
-                        </svg>
-                        <span>۱۵ تیر ۱۴۰۵ — ساعت ۱۰:۰۰</span>
-                    </div>
-                    <div class="dash-past-left">
-                        <a href="#" class="dash-past-btn dash-past-btn--download">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                                <polyline points="14 2 14 8 20 8"/>
-                                <line x1="16" y1="13" x2="8" y2="13"/>
-                                <line x1="16" y1="17" x2="8" y2="17"/>
-                            </svg>
-                            دانلود نسخه
-                        </a>
-                        <a href="{% url 'dashboard:appointment' tracking_code='xxxx' %}" class="dash-past-btn dash-past-btn--view">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                                <circle cx="12" cy="12" r="3"/>
-                            </svg>
-                            مشاهده رسید
-                        </a>
-                    </div>
-                </div>
-
-                <!-- نوبت گذشته ۲ -->
-                <div class="dash-past-card">
-                    <div class="dash-past-right">
-                        <div class="dash-past-icon dash-past-icon--beauty">
-                            <img width="1795" height="576" src="{% static 'images/blog-icons/composite.jpg' %}" alt="کامپوزیت">
-                        </div>
-                        <div class="dash-past-details">
-                            <strong>کامپوزیت ونیر ۶ دندان</strong>
-                            <span>دکتر امیرمحمد فرهمندنیا</span>
-                        </div>
-                    </div>
-                    <div class="dash-past-center">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                            <line x1="16" y1="2" x2="16" y2="6"/>
-                            <line x1="8" y1="2" x2="8" y2="6"/>
-                            <line x1="3" y1="10" x2="21" y2="10"/>
-                        </svg>
-                        <span>۳ خرداد ۱۴۰۵ — ساعت ۱۴:۳۰</span>
-                    </div>
-                    <div class="dash-past-left">
-                        <a href="#" class="dash-past-btn dash-past-btn--download">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                                <polyline points="14 2 14 8 20 8"/>
-                                <line x1="16" y1="13" x2="8" y2="13"/>
-                                <line x1="16" y1="17" x2="8" y2="17"/>
-                            </svg>
-                            دانلود نسخه
-                        </a>
-                        <a href="{% url 'dashboard:appointment' tracking_code='xxxx' %}" class="dash-past-btn dash-past-btn--view">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                                <circle cx="12" cy="12" r="3"/>
-                            </svg>
-                            مشاهده رسید
-                        </a>
-                    </div>
-                </div>
-
-                <!-- نوبت گذشته ۳ -->
-                <div class="dash-past-card">
-                    <div class="dash-past-right">
-                        <div class="dash-past-icon dash-past-icon--clean">
-                            <img width="1795" height="576" src="{% static 'images/blog-icons/germgiri.jpg' %}" alt="جرم‌گیری">
-                        </div>
-                        <div class="dash-past-details">
-                            <strong>جرم‌گیری و بلیچینگ</strong>
-                            <span>دکتر مهسا امیری راد</span>
-                        </div>
-                    </div>
-                    <div class="dash-past-center">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                            <line x1="16" y1="2" x2="16" y2="6"/>
-                            <line x1="8" y1="2" x2="8" y2="6"/>
-                            <line x1="3" y1="10" x2="21" y2="10"/>
-                        </svg>
-                        <span>۱۸ اردیبهشت ۱۴۰۵ — ساعت ۰۹:۳۰</span>
-                    </div>
-                    <div class="dash-past-left">
-                        <a href="#" class="dash-past-btn dash-past-btn--download">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                                <polyline points="14 2 14 8 20 8"/>
-                                <line x1="16" y1="13" x2="8" y2="13"/>
-                                <line x1="16" y1="17" x2="8" y2="17"/>
-                            </svg>
-                            دانلود نسخه
-                        </a>
-                        <a href="{% url 'dashboard:appointment' tracking_code='xxxx' %}" class="dash-past-btn dash-past-btn--view">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                                <circle cx="12" cy="12" r="3"/>
-                            </svg>
-                            مشاهده رسید
-                        </a>
-                    </div>
-                </div>
-
-                <!-- نوبت گذشته ۴ -->
-                <div class="dash-past-card">
-                    <div class="dash-past-right">
-                        <div class="dash-past-icon dash-past-icon--checkup">
-                            <img width="1795" height="576" src="{% static 'images/blog-icons/checkup.jpg' %}" alt="چکاپ">
-                        </div>
-                        <div class="dash-past-details">
-                            <strong>چکاپ دوره‌ای</strong>
-                            <span>دکتر کاوه آذرخو</span>
-                        </div>
-                    </div>
-                    <div class="dash-past-center">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                            <line x1="16" y1="2" x2="16" y2="6"/>
-                            <line x1="8" y1="2" x2="8" y2="6"/>
-                            <line x1="3" y1="10" x2="21" y2="10"/>
-                        </svg>
-                        <span>۲ فروردین ۱۴۰۵ — ساعت ۱۱:۰۰</span>
-                    </div>
-                    <div class="dash-past-left">
-                        <a href="#" class="dash-past-btn dash-past-btn--download">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                                <polyline points="14 2 14 8 20 8"/>
-                                <line x1="16" y1="13" x2="8" y2="13"/>
-                                <line x1="16" y1="17" x2="8" y2="17"/>
-                            </svg>
-                            دانلود نسخه
-                        </a>
-                        <a href="{% url 'dashboard:appointment' tracking_code='xxxx' %}" class="dash-past-btn dash-past-btn--view">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                                <circle cx="12" cy="12" r="3"/>
-                            </svg>
-                            مشاهده رسید
-                        </a>
-                    </div>
-                </div>
+            <div class="dash-past-list" id="past-list">
+                <!-- Populated by JS from API -->
             </div>
 
             <div class="dash-past-cta">
@@ -433,4 +144,188 @@
         </section>
 
     </main>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/dashboard/dashboard.js' %}"></script>
+<script>
+(function() {
+    'use strict';
+
+    var API_DASHBOARD = '/api/dashboard/me/';
+    var API_SERVICES = '/api/services/';
+    var SERVICE_ICONS = {
+        'implant': '{% static "images/blog-icons/implant.jpg" %}',
+        'beauty': '{% static "images/blog-icons/composite.jpg" %}',
+        'laminate': '{% static "images/blog-icons/laminate.jpg" %}',
+        'root-canal': '{% static "images/blog-icons/root-canal.jpg" %}',
+        'kids': '{% static "images/blog-icons/kids-dentistry.jpg" %}',
+        'cleaning': '{% static "images/blog-icons/germgiri.jpg" %}',
+    };
+
+    function jalaliDate(dateStr) {
+        try {
+            var d = new Date(dateStr);
+            var day = d.getDate();
+            var months = ['ژانویه','فوریه','مارس','آوریل','مه','ژوئن','ژوئیه','اوت','سپتامبر','اکتبر','نوامبر','دسامبر'];
+            var faMonths = ['دی','بهمن','اسفند','فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر'];
+            var faDays = ['یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه','شنبه'];
+            var weekday = faDays[d.getDay()];
+            var month = faMonths[d.getMonth()];
+            var hour = String(d.getHours()).padStart(2, '0');
+            var min = String(d.getMinutes()).padStart(2, '0');
+            return weekday + ' ' + day + ' ' + month + ' — ساعت ' + hour + ':' + min;
+        } catch(e) { return dateStr; }
+    }
+
+    function escapeHTML(str) {
+        var div = document.createElement('div');
+        div.textContent = str || '';
+        return div.innerHTML;
+    }
+
+    function getServiceSlug(serviceName) {
+        var map = { 'ایمپلنت': 'implant', 'زیبایی': 'beauty', 'لمینت': 'laminate', 'عصب‌کشی': 'root-canal', 'کودکان': 'kids', 'جرم‌گیری': 'cleaning' };
+        for (var key in map) { if (serviceName.indexOf(key) !== -1) return map[key]; }
+        return 'beauty';
+    }
+
+    function renderNextAppointment(appointments) {
+        var reserved = appointments.filter(function(a) { return a.status === 'RESERVED'; });
+        if (!reserved.length) return;
+        var next = reserved[0];
+        var section = document.getElementById('next-appointment');
+        section.style.display = '';
+        document.getElementById('next-doc-name').textContent = 'دکتر ' + (next.doctor_name || '');
+        document.getElementById('next-service-name').textContent = next.service_name;
+        document.getElementById('next-date').textContent = jalaliDate(next.appointment_date || next.created_at);
+        if (next.tracking_code) {
+            document.getElementById('next-receipt-link').href = '/dashboard/appointment/' + next.tracking_code;
+        }
+    }
+
+    function renderServices(services) {
+        var grid = document.getElementById('services-grid');
+        if (!services.length) return;
+        var slugNames = { 'implant': 'implant', 'beauty': 'beauty', 'laminate': 'laminate', 'root-canal': 'root-canal', 'kids': 'kids', 'cleaning': 'cleaning' };
+        var html = '';
+        services.forEach(function(s) {
+            var slug = slugNames[s.name] || s.name || 'beauty';
+            var iconSrc = s.icon || SERVICE_ICONS[slug] || SERVICE_ICONS['beauty'];
+            var badgeHTML = s.badge ? '<span class="dash-service-badge dash-service-badge--special">' + escapeHTML(s.badge) + '</span>' : '';
+            html += '<a href="/dashboard/select-doctors/' + slug + '" class="dash-service-card">' + badgeHTML +
+                '<div class="dash-service-icon"><img width="1795" height="576" src="' + iconSrc + '" alt="' + escapeHTML(s.name) + '"></div>' +
+                '<h3 class="dash-service-title">' + escapeHTML(s.name) + '</h3>' +
+                '<p class="dash-service-desc">' + escapeHTML(s.description || '') + '</p>' +
+                '<span class="dash-service-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></a>';
+        });
+        grid.innerHTML = html;
+    }
+
+    function renderGallery(galleryItems) {
+        if (!galleryItems.length) return;
+        var section = document.getElementById('gallery-section');
+        section.style.display = '';
+        var grid = document.getElementById('gallery-grid');
+        var html = '';
+        galleryItems.forEach(function(item) {
+            html += '<div class="dash-img-card">' +
+                '<div class="dash-img-card-img" data-ba tabindex="0" role="slider" aria-label="مقایسه قبل و بعد ' + escapeHTML(item.service_name) + '">' +
+                '<img class="ba-img ba-after" width="1408" height="768" src="' + item.after_image + '" alt="' + escapeHTML(item.service_name) + ' - بعد">' +
+                '<img class="ba-img ba-before" width="1408" height="768" src="' + item.before_image + '" alt="' + escapeHTML(item.service_name) + ' - قبل">' +
+                '<div class="ba-slider"><div class="ba-handle"></div></div>' +
+                '<span class="ba-label ba-label-before">قبل</span>' +
+                '<span class="ba-label ba-label-after">بعد</span>' +
+                '<span class="dash-img-badge">' + escapeHTML(item.service_name) + '</span>' +
+                '<button class="dash-img-action dash-img-download" data-src="' + item.after_image + '" aria-label="دانلود تصویر">' +
+                '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>' +
+                '</button>' +
+                '</div>' +
+                '<div class="dash-img-card-info">' +
+                '<span class="dash-img-card-doctor">' + escapeHTML(item.doctor_name) + '</span>' +
+                '<span class="dash-img-card-date">' + jalaliDate(item.created_at) + '</span>' +
+                '</div></div>';
+        });
+        grid.innerHTML = html;
+    }
+
+    function renderPastAppointments(appointments) {
+        var past = appointments.filter(function(a) { return a.status === 'DONE' || a.status === 'CANCELLED'; });
+        if (!past.length) return;
+        var section = document.getElementById('past-section');
+        section.style.display = '';
+        var list = document.getElementById('past-list');
+        var html = '';
+        past.forEach(function(item) {
+            var slug = getServiceSlug(item.service_name);
+            var iconSrc = SERVICE_ICONS[slug] || SERVICE_ICONS['beauty'];
+            html += '<div class="dash-past-card">' +
+                '<div class="dash-past-right">' +
+                '<div class="dash-past-icon dash-past-icon--' + slug + '"><img width="1795" height="576" src="' + iconSrc + '" alt="' + escapeHTML(item.service_name) + '"></div>' +
+                '<div class="dash-past-details"><strong>' + escapeHTML(item.service_name) + '</strong><span>' + escapeHTML(item.doctor_name) + '</span></div>' +
+                '</div>' +
+                '<div class="dash-past-center">' +
+                '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>' +
+                '<span>' + jalaliDate(item.appointment_date || item.created_at) + '</span>' +
+                '</div>' +
+                '<div class="dash-past-left">' +
+                (item.prescription_file ? '<a href="' + item.prescription_file + '" class="dash-past-btn dash-past-btn--download" download><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>دانلود نسخه</a>' : '') +
+                '<a href="/dashboard/appointment/' + item.tracking_code + '" class="dash-past-btn dash-past-btn--view"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>مشاهده رسید</a>' +
+                '</div></div>';
+        });
+        list.innerHTML = html;
+    }
+
+    Promise.all([
+        fetch(API_DASHBOARD, { credentials: 'same-origin' }).then(function(r) { return r.ok ? r.json() : null; }),
+        fetch(API_SERVICES, { credentials: 'same-origin' }).then(function(r) { return r.ok ? r.json() : null; })
+    ]).then(function(results) {
+        var dashData = results[0];
+        var servicesData = results[1];
+        if (dashData) {
+            renderNextAppointment(dashData.appointments || []);
+            renderGallery(dashData.gallery || []);
+            renderPastAppointments(dashData.appointments || []);
+        }
+        var svcRaw = servicesData;
+        if (svcRaw && svcRaw.results) svcRaw = svcRaw.results;
+        var servicesList = (svcRaw && Array.isArray(svcRaw)) ? svcRaw : (dashData && dashData.services ? dashData.services : []);
+        renderServices(servicesList);
+    })
+        .then(function() {
+            document.querySelectorAll('[data-ba]').forEach(function(card) {
+                if (card._baInit) return;
+                card._baInit = true;
+                var beforeImg = card.querySelector('.ba-before');
+                var sliderLine = card.querySelector('.ba-slider');
+                var labelBefore = card.querySelector('.ba-label-before');
+                var labelAfter = card.querySelector('.ba-label-after');
+                if (!beforeImg) return;
+                var isDragging = false;
+                var currentPct = 50;
+                function setPosition(pct) {
+                    currentPct = Math.max(0, Math.min(100, pct));
+                    beforeImg.style.clipPath = 'inset(0 ' + (100 - currentPct) + '% 0 0)';
+                    if (sliderLine) sliderLine.style.left = currentPct + '%';
+                    if (labelBefore) labelBefore.style.opacity = currentPct > 20 ? '1' : '0';
+                    if (labelAfter) labelAfter.style.opacity = currentPct < 80 ? '1' : '0';
+                    card.setAttribute('aria-valuenow', Math.round(currentPct));
+                }
+                function updateFromPointer(x) {
+                    var rect = card.getBoundingClientRect();
+                    var pos = (x - rect.left) / rect.width;
+                    setPosition(pos * 100);
+                }
+                card.addEventListener('mousedown', function(e) { isDragging = true; updateFromPointer(e.clientX); });
+                card.addEventListener('touchstart', function(e) { isDragging = true; updateFromPointer(e.touches[0].clientX); }, { passive: true });
+                window.addEventListener('mousemove', function(e) { if (isDragging) updateFromPointer(e.clientX); });
+                window.addEventListener('touchmove', function(e) { if (isDragging) updateFromPointer(e.touches[0].clientX); }, { passive: true });
+                window.addEventListener('mouseup', function() { isDragging = false; });
+                window.addEventListener('touchend', function() { isDragging = false; });
+                setPosition(50);
+            });
+        })
+        .catch(function() {});
+})();
+</script>
 {% endblock %}

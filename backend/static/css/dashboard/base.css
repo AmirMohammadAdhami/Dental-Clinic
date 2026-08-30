@@ -25,19 +25,21 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: relative;
     background: var(--glass);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid rgba(15, 118, 110, 0.1);
     border-radius: 999px;
-    padding: 10px 18px 10px 24px;
+    padding: 20px 18px 24px 20px;
+    min-height: 59px;
     box-shadow: 0 8px 32px -12px rgba(15, 23, 42, 0.12);
     transition: box-shadow 0.35s var(--ease-smooth), padding 0.35s var(--ease-smooth), background 0.35s ease;
 }
 
 .dash-header.is-scrolled .dash-header-inner {
-    padding-top: 7px;
-    padding-bottom: 7px;
+    padding-top: 18px;
+    padding-bottom: 18px;
     background: var(--glass-strong);
     box-shadow: 0 10px 34px -12px rgba(15, 23, 42, 0.22);
 }
@@ -49,45 +51,16 @@
     gap: 14px;
 }
 
-.dash-avatar {
-    position: relative;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    flex-shrink: 0;
-}
-
-.dash-avatar img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.dash-avatar-ring {
-    position: absolute;
-    inset: -3px;
-    border-radius: 50%;
-    border: 2.5px solid #22c55e;
-    pointer-events: none;
-}
-
 .dash-greeting {
     display: flex;
     flex-direction: column;
 }
 
 .dash-greeting-text {
-    font-size: 1.05rem;
+    font-size: 0.95rem;
     font-weight: 700;
     color: var(--text);
-    line-height: 1.4;
-}
-
-.dash-greeting-sub {
-    font-size: 0.82rem;
-    color: var(--text-faint);
-    margin-top: 2px;
+    line-height: 1.2;
 }
 
 /* --- Navigation Icons --- */
@@ -95,6 +68,9 @@
     display: flex;
     align-items: center;
     gap: 6px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .dash-nav-icon {
@@ -102,11 +78,57 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
+    width: 48px;
+    height: 50px;
+    border-radius: 14px;
     color: var(--text-muted);
-    transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease, margin-left 0.28s ease;
+    transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+
+/* Arrow + label on hover */
+.dash-nav-icon::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 8px;
+    padding: 4px 12px;
+    background: var(--primary);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 600;
+    white-space: nowrap;
+    border-radius: 8px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s ease, visibility 0.2s ease, margin-top 0.2s ease;
+    z-index: 20;
+    box-shadow: 0 4px 14px -2px rgba(15, 23, 42, 0.18);
+}
+
+/* Arrow triangle */
+.dash-nav-icon::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 2px;
+    border: 5px solid transparent;
+    border-bottom-color: var(--primary);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    z-index: 21;
+}
+
+.dash-nav-icon:hover::before,
+.dash-nav-icon:hover::after {
+    opacity: 1;
+    visibility: visible;
 }
 
 .dash-nav-icon:hover {
@@ -126,40 +148,10 @@
     color: #dc2626;
 }
 
-/* Dashboard icon: active state */
-.dash-nav-icon--dash {
-    background: rgba(15, 118, 110, 0.08);
+/* Active nav icon */
+.dash-nav-icon.is-active {
+    background: rgba(15, 118, 110, 0.1);
     color: var(--primary);
-}
-
-/* --- Nav pill (real element, created by JS) --- */
-.dash-nav-pill {
-    position: absolute;
-    left: calc(100% + 6px);
-    top: 50%;
-    transform: translateY(-50%);
-    background: var(--text);
-    color: #fff;
-    font-size: 0.75rem;
-    font-weight: 600;
-    padding: 0 12px;
-    height: 28px;
-    line-height: 28px;
-    border-radius: 999px;
-    white-space: nowrap;
-    pointer-events: none;
-    opacity: 0;
-    max-width: 0;
-    overflow: hidden;
-    transition: opacity 0.22s ease, max-width 0.28s ease, padding 0.22s ease;
-    z-index: 20;
-    box-shadow: 0 4px 14px -2px rgba(15, 23, 42, 0.18);
-}
-
-.dash-nav-pill.is-active {
-    opacity: 1;
-    max-width: 200px;
-    padding: 0 12px;
 }
 
 /* --- Notification Badge --- */
@@ -393,23 +385,10 @@
         padding-bottom: 100px;
     }
 
-    /* Hide bottom nav on desktop */
-    .site-footer {
-        padding-bottom: 20px;
-    }
+
 }
 
 @media (max-width: 480px) {
-    .dash-avatar {
-        width: 40px;
-        height: 40px;
-    }
-
-    .dash-avatar-ring {
-        inset: -2px;
-        border-width: 2px;
-    }
-
     .dash-greeting-text {
         font-size: 0.85rem;
     }

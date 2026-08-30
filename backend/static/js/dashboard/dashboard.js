@@ -27,71 +27,12 @@
         onScroll();
     })();
 
-    /* ================= NAV PILL (real <span>, push via margin) ================= */
-    (function initNavPills() {
-        var icons = document.querySelectorAll('.dash-nav-icon[data-tooltip]');
-        if (!icons.length) return;
-
-        /* Create a <span> pill inside each icon */
-        icons.forEach(function (icon) {
-            var pill = document.createElement('span');
-            pill.className = 'dash-nav-pill';
-            pill.textContent = icon.getAttribute('data-tooltip');
-            icon.appendChild(pill);
-        });
-
-        var pills = document.querySelectorAll('.dash-nav-pill');
-
-        function clearPush() {
-            icons.forEach(function (icon) {
-                icon.style.marginLeft = '';
-            });
-            pills.forEach(function (p) { p.classList.remove('is-active'); });
-        }
-
-        icons.forEach(function (icon, index) {
-            icon.addEventListener('mouseenter', function () {
-                clearPush();
-                pills[index].classList.add('is-active');
-
-                /* Push the adjacent icon to the right (lower index in DOM = right in RTL)
-                   by adding margin-left. Only the immediate neighbour needs the margin;
-                   items further right ride along for free. */
-                if (index > 0) {
-                    var pillW = pills[index].scrollWidth || 100;
-                    icons[index - 1].style.marginLeft = (pillW + 10) + 'px';
-                }
-            });
-
-            icon.addEventListener('mouseleave', function () {
-                clearPush();
-            });
-
-            /* Mobile: toggle on tap */
-            icon.addEventListener('click', function (e) {
-                var wasActive = pills[index].classList.contains('is-active');
-                clearPush();
-                if (!wasActive && window.innerWidth <= 620) {
-                    e.preventDefault();
-                    pills[index].classList.add('is-active');
-                }
-            });
-        });
-
-        document.addEventListener('click', function (e) {
-            if (!e.target.closest('.dash-nav-icon')) clearPush();
-        });
-    })();
-
     /* ================= NOTIFICATION BADGE ANIMATION ================= */
     (function initNotifBadge() {
         var badge = document.querySelector('.dash-notif-badge');
         if (!badge) return;
 
-        /* Pulse animation is handled by CSS keyframes.
-           This adds a subtle scale bounce on page load. */
         badge.style.animation = 'none';
-        /* Force reflow */
         void badge.offsetWidth;
         badge.style.animation = '';
     })();
@@ -139,7 +80,6 @@
                 a.click();
                 document.body.removeChild(a);
 
-                /* Visual feedback */
                 this.classList.add('downloading');
                 var originalHTML = this.innerHTML;
 
@@ -260,19 +200,4 @@
         });
     })();
 
-    /* ================= BOTTOM NAV ACTIVE STATE ================= */
-    (function initBottomNav() {
-        var bottomNav = document.querySelector('.dash-bottomnav');
-        if (!bottomNav) return;
-
-        var items = bottomNav.querySelectorAll('.dash-bottomnav-item');
-        var currentPage = window.location.pathname.split('/').pop() || 'dashboard.html';
-
-        items.forEach(function (item) {
-            var href = item.getAttribute('href') || '';
-            if (href === currentPage) {
-                item.classList.add('is-active');
-            }
-        });
-    })();
 })();

@@ -207,3 +207,36 @@ document.addEventListener('DOMContentLoaded', function () {
     if (msgContainer) msgContainer.remove();
   });
 })();
+
+// ================= DASHBOARD NAV ACTIVE STATE =================
+(function () {
+  var pathname = window.location.pathname;
+  if (pathname.charAt(pathname.length - 1) === '/') {
+    pathname = pathname.slice(0, -1);
+  }
+
+  function isActive(href) {
+    if (!href || href === '/') return false;
+    var clean = href.charAt(href.length - 1) === '/' ? href.slice(0, -1) : href;
+    return pathname === clean;
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var headerNav = document.querySelector('.dash-nav');
+    if (headerNav) {
+      headerNav.querySelectorAll('.dash-nav-icon').forEach(function (icon) {
+        if (isActive(icon.getAttribute('href'))) {
+          icon.classList.add('is-active');
+        }
+      });
+    }
+    var bottomNav = document.querySelector('.dash-bottomnav');
+    if (bottomNav) {
+      bottomNav.querySelectorAll('.dash-bottomnav-item').forEach(function (item) {
+        if (isActive(item.getAttribute('href'))) {
+          item.classList.add('is-active');
+        }
+      });
+    }
+  });
+})();

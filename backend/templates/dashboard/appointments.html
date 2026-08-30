@@ -8,10 +8,6 @@
     <link rel="stylesheet" href="{% static 'css/dashboard/subpages.css' %}">
 {% endblock %}
 
-{% block js %}
-<script src="{% static 'js/dashboard/appointments.js' %}"></script>
-{% endblock %}
-
 {% block content %}
 <!-- ================= MAIN CONTENT ================= -->
 <main class="dash-main" id="main-content" tabindex="-1">
@@ -23,11 +19,11 @@
             بازگشت به داشبورد
         </a>
         <h1 class="dash-page-title">مدیریت نوبت‌ها</h1>
-        <p class="dash-page-meta">۸ نوبت</p>
+        <p class="dash-page-meta" id="aptCounter"></p>
     </div>
 
-    <!-- Active Appointment Banner (same as dashboard) -->
-    <section class="dash-appointment-banner">
+    <!-- Active Appointment Banner (dynamic — populated from API) -->
+    <section class="dash-appointment-banner" id="nextApptBanner" style="display:none;">
         <div class="dash-appointment-inner">
             <div class="dash-appointment-badge">
                 <span class="dash-badge-dot"></span>
@@ -38,20 +34,23 @@
                     <div class="dash-appointment-doctor">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                         <div>
-                            <strong>دکتر کاوه آذرخو</strong>
-                            <span>متخصص زیبایی و ترمیمی</span>
+                            <strong id="bannerDoctorName"></strong>
                         </div>
                     </div>
                     <div class="dash-appointment-treatment">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-                        <span>چکاپ و کامپوزیت زیبایی</span>
+                        <span id="bannerTreatment"></span>
                     </div>
                     <div class="dash-appointment-datetime">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                        <span>دوشنبه ۲۵ مرداد — ساعت ۱۶:۳۰</span>
+                        <span id="bannerDateTime"></span>
                     </div>
                 </div>
                 <div class="dash-appt-banner-actions">
+                    <a id="bannerReceiptLink" href="#" class="btn dash-appointment-btn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                        مشاهده رسید نوبت
+                    </a>
                     <a href="tel:+982112345678" class="btn dash-appointment-btn">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                         تماس با کلینیک
@@ -74,8 +73,8 @@
         <div class="dash-apt-toolbar-row">
             <div class="dash-apt-filters">
                 <button class="dash-filter-btn is-active" data-status="all">همه</button>
+                <button class="dash-filter-btn" data-status="reserved">رزرو شده</button>
                 <button class="dash-filter-btn" data-status="done">انجام‌شده</button>
-                <button class="dash-filter-btn" data-status="pending">معلق / پیش‌رو</button>
                 <button class="dash-filter-btn" data-status="cancelled">لغوشده</button>
             </div>
             <div class="dash-apt-sort">
@@ -88,265 +87,316 @@
         </div>
     </div>
 
-    <!-- Appointment List -->
-    <div class="dash-apt-list" id="aptList">
-
-        <!-- Appointment 1: Active -->
-        <div class="dash-apt-card" data-status="pending" data-doctor="کاوه آذرخو" data-service="کامپوزیت زیبایی">
-            <div class="dash-apt-card-status dash-apt-card-status--pending">
-                <span class="dash-apt-status-dot"></span>
-                پیش‌رو
-            </div>
-            <div class="dash-apt-card-right">
-                <div class="dash-apt-card-icon dash-apt-card-icon--beauty">
-                    <img width="1795" height="576" src="{% static 'images/blog-icons/composite.jpg' %}" alt="کامپوزیت">
-                </div>
-                <div class="dash-apt-card-details">
-                    <strong>کامپوزیت زیبایی</strong>
-                    <span>دکتر کاوه آذرخو</span>
-                </div>
-            </div>
-            <div class="dash-apt-card-center">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                <span>۲۵ مرداد ۱۴۰۵ — ساعت ۱۶:۳۰</span>
-            </div>
-            <div class="dash-apt-card-left">
-                <span class="dash-apt-tracking">
-                    <span class="dash-apt-tracking-label">کد پیگیری:</span>
-                    <span class="dash-apt-tracking-code">DNT-4821</span>
-                </span>
-                <a href="#" class="dash-apt-action-btn dash-apt-action-btn--rx">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    دانلود نسخه
-                </a>
-                <a href="{% url 'dashboard:appointment' tracking_code='DNT-4821' %}" class="dash-apt-action-btn dash-apt-action-btn--receipt">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                    مشاهده رسید
-                </a>
-            </div>
+    <!-- Loading skeleton -->
+    <div class="dash-apt-loading" id="aptLoading">
+        <div class="dash-apt-skeleton-card">
+            <div class="dash-skeleton-line dash-skeleton-line--badge"></div>
+            <div class="dash-skeleton-line dash-skeleton-line--title"></div>
+            <div class="dash-skeleton-line dash-skeleton-line--text"></div>
         </div>
-
-        <!-- Appointment 2: Done -->
-        <div class="dash-apt-card" data-status="done" data-doctor="امیرمحمد فرهمندنیا" data-service="ایمپلنت فک بالا">
-            <div class="dash-apt-card-status dash-apt-card-status--done">
-                <span class="dash-apt-status-dot"></span>
-                انجام‌شده
-            </div>
-            <div class="dash-apt-card-right">
-                <div class="dash-apt-card-icon dash-apt-card-icon--implant">
-                    <img width="1795" height="576" src="{% static 'images/blog-icons/implant.jpg' %}" alt="ایمپلنت">
-                </div>
-                <div class="dash-apt-card-details">
-                    <strong>ایمپلنت فک بالا</strong>
-                    <span>دکتر امیرمحمد فرهمندنیا</span>
-                </div>
-            </div>
-            <div class="dash-apt-card-center">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                <span>۱۵ تیر ۱۴۰۵ — ساعت ۱۰:۰۰</span>
-            </div>
-            <div class="dash-apt-card-left">
-                <span class="dash-apt-tracking">
-                    <span class="dash-apt-tracking-label">کد پیگیری:</span>
-                    <span class="dash-apt-tracking-code">DNT-4756</span>
-                </span>
-                <a href="#" class="dash-apt-action-btn dash-apt-action-btn--rx">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    دانلود نسخه
-                </a>
-                <a href="{% url 'dashboard:appointment' tracking_code='DNT-4756' %}" class="dash-apt-action-btn dash-apt-action-btn--receipt">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                    مشاهده رسید
-                </a>
-            </div>
+        <div class="dash-apt-skeleton-card">
+            <div class="dash-skeleton-line dash-skeleton-line--badge"></div>
+            <div class="dash-skeleton-line dash-skeleton-line--title"></div>
+            <div class="dash-skeleton-line dash-skeleton-line--text"></div>
         </div>
-
-        <!-- Appointment 3: Done -->
-        <div class="dash-apt-card" data-status="done" data-doctor="کاوه آذرخو" data-service="لمینت سرامیکی">
-            <div class="dash-apt-card-status dash-apt-card-status--done">
-                <span class="dash-apt-status-dot"></span>
-                انجام‌شده
-            </div>
-            <div class="dash-apt-card-right">
-                <div class="dash-apt-card-icon dash-apt-card-icon--laminate">
-                    <img width="1795" height="576" src="{% static 'images/blog-icons/laminate.jpg' %}" alt="لمینت">
-                </div>
-                <div class="dash-apt-card-details">
-                    <strong>لمینت سرامیکی</strong>
-                    <span>دکتر کاوه آذرخو</span>
-                </div>
-            </div>
-            <div class="dash-apt-card-center">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                <span>۳ خرداد ۱۴۰۵ — ساعت ۱۴:۳۰</span>
-            </div>
-            <div class="dash-apt-card-left">
-                <span class="dash-apt-tracking">
-                    <span class="dash-apt-tracking-label">کد پیگیری:</span>
-                    <span class="dash-apt-tracking-code">DNT-4690</span>
-                </span>
-                <a href="#" class="dash-apt-action-btn dash-apt-action-btn--rx">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    دانلود نسخه
-                </a>
-                <a href="{% url 'dashboard:appointment' tracking_code='DNT-4690' %}" class="dash-apt-action-btn dash-apt-action-btn--receipt">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                    مشاهده رسید
-                </a>
-            </div>
-        </div>
-
-        <!-- Appointment 4: Done -->
-        <div class="dash-apt-card" data-status="done" data-doctor="مهسا امیری راد" data-service="جرم‌گیری و بلیچینگ">
-            <div class="dash-apt-card-status dash-apt-card-status--done">
-                <span class="dash-apt-status-dot"></span>
-                انجام‌شده
-            </div>
-            <div class="dash-apt-card-right">
-                <div class="dash-apt-card-icon dash-apt-card-icon--clean">
-                    <img width="1795" height="576" src="{% static 'images/blog-icons/germgiri.jpg' %}" alt="جرم‌گیری">
-                </div>
-                <div class="dash-apt-card-details">
-                    <strong>جرم‌گیری و بلیچینگ</strong>
-                    <span>دکتر مهسا امیری راد</span>
-                </div>
-            </div>
-            <div class="dash-apt-card-center">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                <span>۱۸ اردیبهشت ۱۴۰۵ — ساعت ۰۹:۳۰</span>
-            </div>
-            <div class="dash-apt-card-left">
-                <span class="dash-apt-tracking">
-                    <span class="dash-apt-tracking-label">کد پیگیری:</span>
-                    <span class="dash-apt-tracking-code">DNT-4612</span>
-                </span>
-                <a href="#" class="dash-apt-action-btn dash-apt-action-btn--rx">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    دانلود نسخه
-                </a>
-                <a href="{% url 'dashboard:appointment' tracking_code='DNT-4612' %}" class="dash-apt-action-btn dash-apt-action-btn--receipt">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                    مشاهده رسید
-                </a>
-            </div>
-        </div>
-
-        <!-- Appointment 5: Cancelled -->
-        <div class="dash-apt-card dash-apt-card--cancelled" data-status="cancelled" data-doctor="امیرمحمد فرهمندنیا" data-service="ونیر سرامیکی">
-            <div class="dash-apt-card-status dash-apt-card-status--cancelled">
-                <span class="dash-apt-status-dot"></span>
-                لغوشده
-            </div>
-            <div class="dash-apt-card-right">
-                <div class="dash-apt-card-icon dash-apt-card-icon--veneer">
-                    <img width="1795" height="576" src="{% static 'images/blog-icons/veneer.jpg' %}" alt="ونیر">
-                </div>
-                <div class="dash-apt-card-details">
-                    <strong>ونیر سرامیکی</strong>
-                    <span>دکتر امیرمحمد فرهمندنیا</span>
-                </div>
-            </div>
-            <div class="dash-apt-card-center">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                <span>۲ فروردین ۱۴۰۵ — ساعت ۱۱:۰۰</span>
-            </div>
-            <div class="dash-apt-card-left">
-                <span class="dash-apt-tracking">
-                    <span class="dash-apt-tracking-label">کد پیگیری:</span>
-                    <span class="dash-apt-tracking-code">DNT-4580</span>
-                </span>
-            </div>
-        </div>
-
-        <!-- Appointment 6: Done -->
-        <div class="dash-apt-card" data-status="done" data-doctor="کاوه آذرخو" data-service="چکاپ دوره‌ای">
-            <div class="dash-apt-card-status dash-apt-card-status--done">
-                <span class="dash-apt-status-dot"></span>
-                انجام‌شده
-            </div>
-            <div class="dash-apt-card-right">
-                <div class="dash-apt-card-icon dash-apt-card-icon--checkup">
-                    <img width="1795" height="576" src="{% static 'images/blog-icons/checkup.jpg' %}" alt="چکاپ">
-                </div>
-                <div class="dash-apt-card-details">
-                    <strong>چکاپ دوره‌ای</strong>
-                    <span>دکتر کاوه آذرخو</span>
-                </div>
-            </div>
-            <div class="dash-apt-card-center">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                <span>۲ فروردین ۱۴۰۵ — ساعت ۱۱:۰۰</span>
-            </div>
-            <div class="dash-apt-card-left">
-                <span class="dash-apt-tracking">
-                    <span class="dash-apt-tracking-label">کد پیگیری:</span>
-                    <span class="dash-apt-tracking-code">DNT-4540</span>
-                </span>
-                <a href="#" class="dash-apt-action-btn dash-apt-action-btn--rx">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                    دانلود نسخه
-                </a>
-                <a href="{% url 'dashboard:appointment' tracking_code='DNT-4540' %}" class="dash-apt-action-btn dash-apt-action-btn--receipt">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                    مشاهده رسید
-                </a>
-            </div>
-        </div>
-
-        <!-- Appointment 7: Pending -->
-        <div class="dash-apt-card" data-status="pending" data-doctor="مهسا امیری راد" data-service="عصب‌کشی">
-            <div class="dash-apt-card-status dash-apt-card-status--pending">
-                <span class="dash-apt-status-dot"></span>
-                پیش‌رو
-            </div>
-            <div class="dash-apt-card-right">
-                <div class="dash-apt-card-icon dash-apt-card-icon--root">
-                    <img width="1795" height="576" src="{% static 'images/blog-icons/root-canal.jpg' %}" alt="عصب‌کشی">
-                </div>
-                <div class="dash-apt-card-details">
-                    <strong>عصب‌کشی</strong>
-                    <span>دکتر مهسا امیری راد</span>
-                </div>
-            </div>
-            <div class="dash-apt-card-center">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                <span>۱۰ شهریور ۱۴۰۵ — ساعت ۰۹:۰۰</span>
-            </div>
-            <div class="dash-apt-card-left">
-                <span class="dash-apt-tracking">
-                    <span class="dash-apt-tracking-label">کد پیگیری:</span>
-                    <span class="dash-apt-tracking-code">DNT-4903</span>
-                </span>
-            </div>
-        </div>
-
-        <!-- Appointment 8: Cancelled -->
-        <div class="dash-apt-card dash-apt-card--cancelled" data-status="cancelled" data-doctor="امیرمحمد فرهمندنیا" data-service="کامپوزیت ونیر">
-            <div class="dash-apt-card-status dash-apt-card-status--cancelled">
-                <span class="dash-apt-status-dot"></span>
-                لغوشده
-            </div>
-            <div class="dash-apt-card-right">
-                <div class="dash-apt-card-icon dash-apt-card-icon--beauty">
-                    <img width="1795" height="576" src="{% static 'images/blog-icons/composite.jpg' %}" alt="کامپوزیت">
-                </div>
-                <div class="dash-apt-card-details">
-                    <strong>کامپوزیت ونیر</strong>
-                    <span>دکتر امیرمحمد فرهمندنیا</span>
-                </div>
-            </div>
-            <div class="dash-apt-card-center">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                <span>۲۰ بهمن ۱۴۰۴ — ساعت ۱۵:۰۰</span>
-            </div>
-            <div class="dash-apt-card-left">
-                <span class="dash-apt-tracking">
-                    <span class="dash-apt-tracking-label">کد پیگیری:</span>
-                    <span class="dash-apt-tracking-code">DNT-4488</span>
-                </span>
-            </div>
-        </div>
-
     </div>
+
+    <!-- Empty state -->
+    <div class="dash-apt-empty" id="aptEmpty" style="display:none;">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <p>نوبتی یافت نشد</p>
+    </div>
+
+    <!-- Appointment List (dynamic — populated from API) -->
+    <div class="dash-apt-list" id="aptList"></div>
 </main>
+{% endblock %}
+
+{% block js %}
+<script>
+(function() {
+    'use strict';
+
+    var API_URL = '/api/dashboard/me/';
+    var SERVICE_ICONS = {
+        'implant': '{% static "images/blog-icons/implant.jpg" %}',
+        'beauty': '{% static "images/blog-icons/composite.jpg" %}',
+        'laminate': '{% static "images/blog-icons/laminate.jpg" %}',
+        'root-canal': '{% static "images/blog-icons/root-canal.jpg" %}',
+        'kids': '{% static "images/blog-icons/kids-dentistry.jpg" %}',
+        'cleaning': '{% static "images/blog-icons/germgiri.jpg" %}',
+        'veneer': '{% static "images/blog-icons/veneer.jpg" %}',
+        'checkup': '{% static "images/blog-icons/checkup.jpg" %}'
+    };
+
+    var STATUS_LABELS = {
+        'RESERVED': 'رزرو شده',
+        'DONE': 'انجام‌شده',
+        'CANCELLED': 'لغوشده',
+        'PENDING': 'پیش‌رو'
+    };
+
+    var STATUS_CSS = {
+        'RESERVED': 'reserved',
+        'DONE': 'done',
+        'CANCELLED': 'cancelled',
+        'PENDING': 'pending'
+    };
+
+    var SERVICE_SLUG = {
+        'implant': 'implant', 'beauty': 'beauty', 'laminate': 'laminate',
+        'root-canal': 'root-canal', 'kids': 'kids', 'cleaning': 'cleaning',
+        'veneer': 'veneer', 'checkup': 'checkup'
+    };
+
+    var allAppointments = [];
+    var activeStatus = 'all';
+    var searchQuery = '';
+    var sortNewest = true;
+
+    /* ---- helpers ---- */
+    function jalaliDate(dateStr) {
+        try {
+            var d = new Date(dateStr);
+            var day = d.getDate();
+            var faMonths = ['دی','بهمن','اسفند','فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر'];
+            var faDays = ['یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه','شنبه'];
+            var weekday = faDays[d.getDay()];
+            var month = faMonths[d.getMonth()];
+            var hour = String(d.getHours()).padStart(2, '0');
+            var min = String(d.getMinutes()).padStart(2, '0');
+            return weekday + ' ' + day + ' ' + month + ' — ساعت ' + hour + ':' + min;
+        } catch(e) { return dateStr || ''; }
+    }
+
+    function escapeHTML(str) {
+        var div = document.createElement('div');
+        div.textContent = str || '';
+        return div.innerHTML;
+    }
+
+    function getServiceSlug(name) {
+        if (!name) return 'checkup';
+        var map = { 'ایمپلنت': 'implant', 'کامپوزیت': 'beauty', 'ونیر': 'veneer', 'لمینت': 'laminate', 'جرم‌گیری': 'cleaning', 'بلیچینگ': 'cleaning', 'چکاپ': 'checkup', 'عصب‌کشی': 'root-canal', 'کودکان': 'kids' };
+        for (var k in map) { if (name.indexOf(k) !== -1) return map[k]; }
+        return 'beauty';
+    }
+
+    /* ---- banner ---- */
+    function renderBanner(apt) {
+        var section = document.getElementById('nextApptBanner');
+        if (!apt) { section.style.display = 'none'; return; }
+        section.style.display = '';
+        document.getElementById('bannerDoctorName').textContent = 'دکتر ' + (apt.doctor_name || '');
+        document.getElementById('bannerTreatment').textContent = apt.service_name || '';
+        document.getElementById('bannerDateTime').textContent = jalaliDate(apt.appointment_date || apt.created_at);
+        var receiptLink = document.getElementById('bannerReceiptLink');
+        if (receiptLink && apt.tracking_code) {
+            receiptLink.href = '/dashboard/appointment/' + apt.tracking_code;
+        }
+    }
+
+    /* ---- card html ---- */
+    function renderCard(apt) {
+        var slug = getServiceSlug(apt.service_name);
+        var iconSrc = SERVICE_ICONS[slug] || SERVICE_ICONS['beauty'];
+        var statusCss = STATUS_CSS[apt.status] || 'pending';
+        var statusLabel = STATUS_LABELS[apt.status] || apt.status;
+        var isCancelled = apt.status === 'CANCELLED';
+
+        var cls = 'dash-apt-card';
+        if (isCancelled) cls += ' dash-apt-card--cancelled';
+
+        var h = '<div class="' + cls + '" data-status="' + statusCss + '" data-doctor="' + escapeHTML(apt.doctor_name) + '" data-service="' + escapeHTML(apt.service_name) + '">';
+
+        h += '<div class="dash-apt-card-status dash-apt-card-status--' + statusCss + '">';
+        h += '<span class="dash-apt-status-dot"></span>' + statusLabel + '</div>';
+
+        h += '<div class="dash-apt-card-right">';
+        h += '<div class="dash-apt-card-icon dash-apt-card-icon--' + slug + '">';
+        h += '<img width="44" height="44" src="' + iconSrc + '" alt="' + escapeHTML(apt.service_name) + '"></div>';
+        h += '<div class="dash-apt-card-details">';
+        h += '<strong>' + escapeHTML(apt.service_name) + '</strong>';
+        h += '<span>دکتر ' + escapeHTML(apt.doctor_name) + '</span></div></div>';
+
+        h += '<div class="dash-apt-card-center">';
+        h += '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>';
+        h += '<span>' + jalaliDate(apt.appointment_date || apt.created_at) + '</span></div>';
+
+        h += '<div class="dash-apt-card-left">';
+        if (apt.tracking_code) {
+            h += '<span class="dash-apt-tracking"><span class="dash-apt-tracking-label">کد پیگیری:</span><span class="dash-apt-tracking-code">' + escapeHTML(apt.tracking_code) + '</span></span>';
+        }
+        if (apt.prescription_file) {
+            h += '<a href="' + apt.prescription_file + '" class="dash-apt-action-btn dash-apt-action-btn--rx" target="_blank">';
+            h += '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>';
+            h += 'دانلود نسخه</a>';
+        }
+        if (!isCancelled && apt.tracking_code) {
+            h += '<a href="{% url "dashboard:appointment" tracking_code="__TC__" %}".replace("__TC__", "' + escapeHTML(apt.tracking_code) + '") class="dash-apt-action-btn dash-apt-action-btn--receipt">';
+            h += '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+            h += 'مشاهده رسید</a>';
+        }
+        h += '</div></div>';
+        return h;
+    }
+
+    /* ---- list render ---- */
+    function renderList() {
+        var list = document.getElementById('aptList');
+        var loading = document.getElementById('aptLoading');
+        var empty = document.getElementById('aptEmpty');
+        var counter = document.getElementById('aptCounter');
+
+        list.innerHTML = '';
+        if (loading) loading.style.display = 'none';
+
+        var filtered = allAppointments.filter(function(a) {
+            var s = (a.status || '').toLowerCase();
+            var statusMatch = activeStatus === 'all' || s === activeStatus;
+            var searchMatch = true;
+            if (searchQuery) {
+                var doctor = (a.doctor_name || '').toLowerCase();
+                var service = (a.service_name || '').toLowerCase();
+                searchMatch = doctor.indexOf(searchQuery) !== -1 || service.indexOf(searchQuery) !== -1;
+            }
+            return statusMatch && searchMatch;
+        });
+
+        filtered.sort(function(a, b) {
+            var da = new Date(a.appointment_date || a.created_at || 0).getTime();
+            var db = new Date(b.appointment_date || b.created_at || 0).getTime();
+            return sortNewest ? (db - da) : (da - db);
+        });
+
+        if (filtered.length === 0) {
+            empty.style.display = '';
+        } else {
+            empty.style.display = 'none';
+            list.innerHTML = filtered.map(renderCard).join('');
+        }
+
+        if (counter) counter.textContent = filtered.length + ' نوبت';
+
+        /* re-init interactive bits */
+        initTrackingCopy();
+        initReceiptModal();
+    }
+
+    /* ---- fetch ---- */
+    function fetchDashboard() {
+        fetch(API_URL, { credentials: 'same-origin' })
+            .then(function(r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+            .then(function(data) {
+                allAppointments = data.appointments || [];
+
+                var reserved = allAppointments.filter(function(a) { return a.status === 'RESERVED'; });
+                var nextReserved = reserved[0] || null;
+
+                renderBanner(nextReserved);
+                renderList();
+            })
+            .catch(function(err) {
+                console.error('Dashboard fetch error:', err);
+                var loading = document.getElementById('aptLoading');
+                if (loading) loading.innerHTML = '<p class="dash-apt-error">خطا در بارگذاری اطلاعات. لطفاً دوباره تلاش کنید.</p>';
+            });
+    }
+
+    /* ---- filters ---- */
+    function initFilters() {
+        var filterBtns = document.querySelectorAll('.dash-apt-filters .dash-filter-btn');
+        if (!filterBtns.length) return;
+        filterBtns.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                filterBtns.forEach(function(b) { b.classList.remove('is-active'); });
+                btn.classList.add('is-active');
+                activeStatus = btn.dataset.status || 'all';
+                renderList();
+            });
+        });
+    }
+
+    /* ---- search ---- */
+    function initSearch() {
+        var input = document.getElementById('aptSearch');
+        if (!input) return;
+        var timer;
+        input.addEventListener('input', function() {
+            clearTimeout(timer);
+            timer = setTimeout(function() {
+                searchQuery = (input.value || '').trim().toLowerCase();
+                renderList();
+            }, 200);
+        });
+    }
+
+    /* ---- sort ---- */
+    function initSort() {
+        var sel = document.getElementById('aptSort');
+        if (!sel) return;
+        sel.addEventListener('change', function() {
+            sortNewest = sel.value === 'newest';
+            renderList();
+        });
+    }
+
+    /* ---- tracking copy ---- */
+    function initTrackingCopy() {
+        document.querySelectorAll('.dash-apt-tracking-code').forEach(function(code) {
+            code.style.cursor = 'pointer';
+            code.title = 'کلیک برای کپی';
+            code.addEventListener('click', function() {
+                var text = code.textContent.trim();
+                if (!text) return;
+                function fb() {
+                    var orig = text;
+                    code.textContent = '✓ کپی شد';
+                    code.style.color = 'var(--primary)';
+                    code.style.fontWeight = '700';
+                    setTimeout(function() { code.textContent = orig; code.style.color = ''; code.style.fontWeight = ''; }, 1500);
+                }
+                if (navigator.clipboard) { navigator.clipboard.writeText(text).then(fb); }
+                else { var ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); fb(); }
+            });
+        });
+    }
+
+    /* ---- receipt modal ---- */
+    function initReceiptModal() {
+        document.querySelectorAll('.dash-apt-action-btn--receipt').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                var card = btn.closest('.dash-apt-card');
+                if (!card) return;
+                var doctor = card.dataset.doctor || 'نامشخص';
+                var service = card.dataset.service || 'نامشخص';
+                var dateEl = card.querySelector('.dash-apt-card-center span');
+                var date = dateEl ? dateEl.textContent.trim() : 'نامشخص';
+                var trackEl = card.querySelector('.dash-apt-tracking-code');
+                var tracking = trackEl ? trackEl.textContent.trim() : '-';
+                var modal = document.createElement('div');
+                modal.className = 'dash-receipt-modal';
+                modal.innerHTML = '<div class="dash-receipt-overlay"></div><div class="dash-receipt-card"><button class="dash-receipt-close" aria-label="بستن"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><h3 class="dash-receipt-title">رسید نوبت</h3><div class="dash-receipt-row"><span>نوع خدمت:</span><strong>' + service + '</strong></div><div class="dash-receipt-row"><span>پزشک معالج:</span><strong>دکتر ' + doctor + '</strong></div><div class="dash-receipt-row"><span>تاریخ و ساعت:</span><strong>' + date + '</strong></div><div class="dash-receipt-row"><span>کد پیگیری:</span><strong class="dash-receipt-tracking">' + tracking + '</strong></div></div>';
+                document.body.appendChild(modal);
+                requestAnimationFrame(function() { modal.classList.add('is-active'); });
+                function close() { modal.classList.remove('is-active'); setTimeout(function() { modal.remove(); }, 300); }
+                modal.querySelector('.dash-receipt-close').addEventListener('click', close);
+                modal.querySelector('.dash-receipt-overlay').addEventListener('click', close);
+            });
+        });
+    }
+
+    /* ---- init ---- */
+    function init() {
+        initFilters();
+        initSearch();
+        initSort();
+        fetchDashboard();
+    }
+
+    if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); }
+    else { init(); }
+})();
+</script>
 {% endblock %}

@@ -1,5 +1,5 @@
 from django.urls import path
-
+from backend.api.dashboard.views import UserDashboardAPIView
 from backend.api.assistants.views import AssistantListAPIView
 from backend.api.doctors.views import DoctorListAPIView, DoctorDetailAPIView
 from backend.api.before_after.views import BeforeAfterListApiView
@@ -21,4 +21,5 @@ urlpatterns = [
     path('articles/<str:slug>/', ArticleListApiView.as_view({'get': 'retrieve'}), name='article-detail'),
     path('services/', ServiceListApiView.as_view(), name='service-list'),
     path('faqs/', FAQListApiView.as_view(), name='faq-list'),
+    path('dashboard/me/', UserDashboardAPIView.as_view(), name='user-dashboard'),
 ]

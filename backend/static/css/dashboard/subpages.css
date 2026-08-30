@@ -505,6 +505,100 @@
 .dash-apt-card-icon--veneer { background: rgba(244, 63, 94, 0.1); color: #e11d48; }
 .dash-apt-card-icon--root { background: rgba(234, 179, 8, 0.1); color: #ca8a04; }
 
+.dash-apt-card-icon img {
+    width: 44px;
+    height: 44px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+/* ================= RESERVED STATUS ================= */
+.dash-apt-card-status--reserved {
+    background: rgba(234, 179, 8, 0.1);
+    color: #ca8a04;
+}
+
+.dash-apt-card-status--reserved .dash-apt-status-dot {
+    background: #eab308;
+    animation: notifPulse 2s ease-in-out infinite;
+}
+
+/* ================= LOADING SKELETON ================= */
+.dash-apt-loading {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.dash-apt-skeleton-card {
+    background: var(--surface);
+    border: 1px solid rgba(15, 118, 110, 0.08);
+    border-radius: var(--radius-sm);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.dash-skeleton-line {
+    border-radius: 8px;
+    background: linear-gradient(90deg, var(--shimmer, rgba(15, 118, 110, 0.05)) 25%, rgba(15, 118, 110, 0.08) 50%, var(--shimmer, rgba(15, 118, 110, 0.05)) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+.dash-skeleton-line--badge {
+    width: 120px;
+    height: 28px;
+    border-radius: 999px;
+}
+
+.dash-skeleton-line--title {
+    width: 200px;
+    height: 20px;
+}
+
+.dash-skeleton-line--text {
+    width: 160px;
+    height: 16px;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* ================= EMPTY STATE ================= */
+.dash-apt-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 64px 24px;
+    color: var(--text-faint);
+    text-align: center;
+}
+
+.dash-apt-empty svg {
+    opacity: 0.3;
+}
+
+.dash-apt-empty p {
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+/* ================= ERROR STATE ================= */
+.dash-apt-error {
+    text-align: center;
+    padding: 48px 24px;
+    color: #dc2626;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
 .dash-apt-card-details {
     display: flex;
     flex-direction: column;

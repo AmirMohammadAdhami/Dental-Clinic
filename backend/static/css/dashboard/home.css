@@ -570,6 +570,10 @@
         grid-template-columns: 1fr;
         gap: 16px;
     }
+
+    .dash-appointment-inner {
+        padding: 24px 24px;
+    }
 }
 
 @media (max-width: 620px) {
@@ -581,6 +585,30 @@
     .dash-gallery-grid {
         grid-template-columns: 1fr;
         gap: 16px;
+    }
+
+    .dash-appointment-body {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 20px;
+    }
+
+    .dash-appt-banner-actions {
+        flex-direction: column;
+    }
+
+    .dash-appt-banner-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .dash-appointment-badge {
+        font-size: 0.8rem;
+        padding: 6px 14px;
+    }
+
+    .dash-appointment-doctor strong {
+        font-size: 1rem;
     }
 }
 
