@@ -100,10 +100,6 @@ class ReminderSetting(models.Model):
         default=True,
         help_text="Send SMS reminder 24 hours before appointment",
     )
-    whatsapp_reminder = models.BooleanField(
-        default=True,
-        help_text="Send invoice and receipt via WhatsApp",
-    )
     checkup_reminder = models.BooleanField(
         default=False,
         help_text="Send reminder for 6-month periodic checkup",

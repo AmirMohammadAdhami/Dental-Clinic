@@ -7,6 +7,12 @@ from backend.api.faq.views import FAQListApiView
 from backend.api.services.views import ServiceListApiView
 from backend.api.doctor_reviews.views import DoctorReviewListApiView
 from backend.api.articles.views import ArticleListApiView
+from backend.api.notifications.views import (
+    NotificationListAPIView,
+    NotificationMarkReadAPIView,
+    NotificationMarkAllReadAPIView,
+    ReminderSettingAPIView,
+)
 
 app_name = 'api'
 
@@ -22,4 +28,12 @@ urlpatterns = [
     path('services/', ServiceListApiView.as_view(), name='service-list'),
     path('faqs/', FAQListApiView.as_view(), name='faq-list'),
     path('dashboard/me/', UserDashboardAPIView.as_view(), name='user-dashboard'),
+
+    # Notifications
+    path('notifications/', NotificationListAPIView.as_view(), name='notification-list'),
+    path('notifications/<int:pk>/read/', NotificationMarkReadAPIView.as_view(), name='notification-mark-read'),
+    path('notifications/mark-all-read/', NotificationMarkAllReadAPIView.as_view(), name='notification-mark-all-read'),
+
+    # Reminder Settings
+    path('reminders/settings/', ReminderSettingAPIView.as_view(), name='reminder-settings'),
 ]
