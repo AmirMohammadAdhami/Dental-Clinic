@@ -113,7 +113,7 @@ def otp(request):
 
             messages.success(request, 'You are now logged in.')
 
-            return redirect('core:home')
+            return redirect('dashboard:dashboard')
 
         unique_otp.attempts += 1
         unique_otp.save(update_fields=['attempts'])
@@ -223,7 +223,7 @@ def login_info(request):
         request.session.pop('otp_verified', None)
         request.session.pop('phone_number', None)
         messages.success(request, 'You are now Signed up.')
-        return redirect('core:home')
+        return redirect('dashboard:dashboard')
 
     return render(request, 'auth/login-info.html')
 
