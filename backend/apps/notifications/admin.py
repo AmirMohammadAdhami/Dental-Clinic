@@ -21,9 +21,8 @@ class ReminderSettingAdmin(admin.ModelAdmin):
     list_display = (
         "user",
         "sms_reminder",
-        "whatsapp_reminder",
         "checkup_reminder",
         "updated_at",
     )
-    list_filter = ("sms_reminder", "whatsapp_reminder", "checkup_reminder")
+    list_filter = ("sms_reminder", "checkup_reminder")
     search_fields = ("user__phone", "user__first_name", "user__last_name")

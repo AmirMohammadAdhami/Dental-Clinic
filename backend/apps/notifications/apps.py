@@ -6,5 +6,4 @@ class NotificationsConfig(AppConfig):
     name = 'backend.apps.notifications'
 
     def ready(self):
-        from backend.apps.notifications import signals
-        signals._connect_medical_records_signal()
+        import backend.apps.notifications.signals  # noqa: F401
