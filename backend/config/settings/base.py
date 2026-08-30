@@ -46,7 +46,8 @@ local_apps = ['backend.apps.accounts.apps.AccountsConfig',
               'backend.apps.appointments.apps.AppointmentsConfig',
               'backend.apps.blog.apps.BlogConfig',
               'backend.apps.core.apps.CoreConfig',
-              'backend.apps.doctors.apps.DoctorsConfig',]
+              'backend.apps.doctors.apps.DoctorsConfig',
+              'backend.apps.notifications.apps.NotificationsConfig',]
 
 third_party_apps = ["rest_framework",
                     ]
