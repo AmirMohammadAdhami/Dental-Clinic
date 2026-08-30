@@ -6,7 +6,7 @@ from backend.api.before_after.views import BeforeAfterListApiView
 from backend.api.gallery.views import GalleryListApiView
 from backend.api.faq.views import FAQListApiView
 from backend.api.services.views import ServiceListApiView
-from backend.api.doctor_reviews.views import DoctorReviewListApiView
+from backend.api.doctor_reviews.views import DoctorReviewListApiView, DoctorReviewCreateApiView
 from backend.api.articles.views import ArticleListApiView
 from backend.api.notifications.views import (
     NotificationListAPIView,
@@ -26,6 +26,7 @@ urlpatterns = [
     # Dashboard Gallery
     path('gallery/', GalleryListApiView.as_view(), name='gallery-list'),
     path('doctor-reviews/', DoctorReviewListApiView.as_view(), name='doctor-review-list'),
+    path('doctor-reviews/create/', DoctorReviewCreateApiView.as_view(), name='doctor-review-create'),
     path('home-videos/', ArticleListApiView.as_view({'get': 'list'}), name='home-video-list'),
     path('home-videos/<str:slug>/', ArticleListApiView.as_view({'get': 'retrieve'}), name='home-video-detail'),
     path('articles/<str:slug>/', ArticleListApiView.as_view({'get': 'retrieve'}), name='article-detail'),
