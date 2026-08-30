@@ -3,35 +3,7 @@ from backend.apps.accounts.models import User
 from backend.apps.appointments.models import Appointment, Service
 from backend.apps.blog.models import BeforeAfter
 from ..services.serializers import ServiceSerializer
-
-
-class GallerySerializer(serializers.ModelSerializer):
-    doctor_name = serializers.SerializerMethodField()
-    patient_name = serializers.SerializerMethodField()
-    service_name = serializers.SerializerMethodField()
-
-    class Meta:
-        model = BeforeAfter
-        fields = ['id', 'before_image', 'after_image', 'service_name',
-                  'doctor_name', 'patient_name', 'created_at']
-
-    def get_doctor_name(self, obj):
-        return f'{obj.appointment.doctor.user.first_name} {obj.appointment.doctor.user.last_name}'.strip()
-
-    def get_patient_name(self, obj):
-        appt = obj.appointment
-        if appt.patient:
-            return {
-                'first_name': appt.patient.first_name,
-                'last_name': appt.patient.last_name,
-            }
-        return {
-            'first_name': appt.first_name,
-            'last_name': appt.last_name,
-        }
-
-    def get_service_name(self, obj):
-        return obj.appointment.service.name
+from ..gallery.serializers import GallerySerializer
 
 
 class AppointmentSerializer(serializers.ModelSerializer):

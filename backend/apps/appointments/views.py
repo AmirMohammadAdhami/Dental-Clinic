@@ -25,8 +25,11 @@ def gallery(request):
     return render(request, 'dashboard/gallery.html')
 
 
+@login_required
 def notifications(request):
-    return render(request, 'dashboard/notifications.html')
+    return render(request, 'dashboard/notifications.html', {
+        'full_name': request.user.full_name,
+    })
 
 
 def select_doctors(request, service):

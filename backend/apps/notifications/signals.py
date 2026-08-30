@@ -60,7 +60,7 @@ def appointment_post_save(sender, instance, created, **kwargs):
                 f"ثبت شد. کد پیگیری: {instance.tracking_code}"
             ),
             notification_type=Notification.NotificationType.APPOINTMENT,
-            link=f"/appointments/{instance.tracking_code}/",
+            link=f"/appointment/{instance.tracking_code}",
         )
         return
 
@@ -81,7 +81,7 @@ def appointment_post_save(sender, instance, created, **kwargs):
                 f"با موفقیت تکمیل شد."
             ),
             notification_type=Notification.NotificationType.APPOINTMENT,
-            link=f"/appointments/{instance.tracking_code}/",
+            link=f"/appointment/{instance.tracking_code}",
         )
 
     elif instance.status == "CANCELLED":
@@ -93,7 +93,7 @@ def appointment_post_save(sender, instance, created, **kwargs):
                 f"لغو شد."
             ),
             notification_type=Notification.NotificationType.APPOINTMENT,
-            link=f"/appointments/{instance.tracking_code}/",
+            link=f"/appointment/{instance.tracking_code}",
         )
 
         # Reset appointment back to PENDING and clear patient info
@@ -129,7 +129,7 @@ def prescription_uploaded(sender, instance, **kwargs):
                 f"برای شما ثبت شد."
             ),
             notification_type=Notification.NotificationType.PRESCRIPTION,
-            link=f"/appointments/{instance.tracking_code}/",
+            link=f"/appointment/{instance.tracking_code}",
         )
 
 

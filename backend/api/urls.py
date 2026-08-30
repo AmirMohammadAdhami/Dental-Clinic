@@ -3,6 +3,7 @@ from backend.api.dashboard.views import UserDashboardAPIView
 from backend.api.assistants.views import AssistantListAPIView
 from backend.api.doctors.views import DoctorListAPIView, DoctorDetailAPIView
 from backend.api.before_after.views import BeforeAfterListApiView
+from backend.api.gallery.views import GalleryListApiView
 from backend.api.faq.views import FAQListApiView
 from backend.api.services.views import ServiceListApiView
 from backend.api.doctor_reviews.views import DoctorReviewListApiView
@@ -21,6 +22,9 @@ urlpatterns = [
     path('doctors/<str:slug>/', DoctorDetailAPIView.as_view(), name='doctor-detail'),
     path('assistants/', AssistantListAPIView.as_view(), name='assistant-list'),
     path('before-afters/', BeforeAfterListApiView.as_view(), name='before-after-list'),
+
+    # Dashboard Gallery
+    path('gallery/', GalleryListApiView.as_view(), name='gallery-list'),
     path('doctor-reviews/', DoctorReviewListApiView.as_view(), name='doctor-review-list'),
     path('home-videos/', ArticleListApiView.as_view({'get': 'list'}), name='home-video-list'),
     path('home-videos/<str:slug>/', ArticleListApiView.as_view({'get': 'retrieve'}), name='home-video-detail'),

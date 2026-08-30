@@ -204,6 +204,16 @@
 /* Card Info */
 .dash-img-card-info {
     padding: 14px 16px;
+}
+
+.dash-img-card-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 10px;
+}
+
+.dash-img-card-meta {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -823,6 +833,34 @@
 
 .dash-appointment-btn--outline:hover {
     background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* ================= GALLERY EMPTY & ERROR STATE ================= */
+.dash-gallery-empty,
+.dash-gallery-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 64px 24px;
+    color: var(--text-faint);
+    text-align: center;
+}
+
+.dash-gallery-empty svg,
+.dash-gallery-error svg {
+    opacity: 0.3;
+}
+
+.dash-gallery-empty p,
+.dash-gallery-error p {
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+.dash-gallery-error {
+    color: #dc2626;
 }
 
 /* ================= RESPONSIVE: SHARED ================= */

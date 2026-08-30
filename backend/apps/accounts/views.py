@@ -5,7 +5,7 @@ from .services import otp_services, send_otp
 from .models import OTPCode
 from datetime import timedelta
 from django.utils import timezone
-from django.contrib.auth import get_user_model, login
+from django.contrib.auth import get_user_model, login, logout
 
 User = get_user_model()
 
@@ -226,3 +226,13 @@ def login_info(request):
         return redirect('core:home')
 
     return render(request, 'auth/login-info.html')
+
+
+def logout_user(request):
+    if request.user.is_authenticated:
+        messages.success(request, 'You are logged out.')
+        logout(request)
+        return redirect('core:home')
+
+    messages.error(request, 'You are not logged in.')
+    return redirect('accounts:login')

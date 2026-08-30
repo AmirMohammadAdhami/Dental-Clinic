@@ -9,4 +9,5 @@ urlpatterns = [
     path('otp/', views.otp, name='otp'),
     path('login-info/', views.login_info, name='login-info'),
     path('resend-otp/', views.resend_otp, name='resend-otp'),
+    path('logout/', views.logout_user, name='logout'),
 ]
