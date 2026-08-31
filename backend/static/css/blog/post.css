@@ -141,7 +141,7 @@ html, body.post-page, .post-page .bg-grid, .post-page .tooth-pattern,
 }
 .post-takeaways-title { font-size: 1rem; font-weight: 700; color: var(--takeaways-title); margin-bottom: 10px; }
 .post-takeaways p { font-size: 0.95rem; line-height: 1.85; color: var(--text-muted); }
-.post-body { font-size: 1.125rem; line-height: 2; color: var(--text); max-width: 70ch; }
+.post-body { font-size: 1.125rem; line-height: 2; color: var(--text); }
 .post-body h2 { font-size: clamp(1.3rem, 2.5vw, 1.65rem); font-weight: 800; color: var(--text); margin: 40px 0 16px; line-height: 1.5; scroll-margin-top: 100px; }
 .post-body h3 { font-size: 1.15rem; font-weight: 700; color: var(--text); margin: 28px 0 12px; line-height: 1.55; scroll-margin-top: 100px; }
 .post-body p { margin-bottom: 20px; color: var(--text-muted); }

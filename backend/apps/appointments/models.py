@@ -46,6 +46,8 @@ class Appointment(models.Model):
 
     prescription_file = models.FileField(upload_to='appointments/prescriptions/', null=True, blank=True)
 
+    prescription_text = models.TextField(blank=True, default='')
+
     medical_records = models.ManyToManyField(MedicalRecord, blank=True, related_name='appointments')
 
     status = models.CharField(

@@ -10,3 +10,4 @@ django-filter
 
 # Third Party
 Pillow
+gunicorn

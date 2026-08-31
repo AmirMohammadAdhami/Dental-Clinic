@@ -1,0 +1,28 @@
+{% extends 'doctor_dashboard/doctor_base.html' %}
+{% load static %}
+
+{% block title %}نظرات بیماران — دنتورا{% endblock %}
+
+{% block topbar_title %}⭐️ نظرات بیماران{% endblock %}
+{% block topbar_sub %}بازخوردهای ثبت‌شده پس از مراجعه حضوری بیماران{% endblock %}
+
+{% block content %}
+<!-- خلاصه امتیازات -->
+<section class="doc-card">
+    <div class="doc-rating-summary">
+        <div class="doc-rating-big">
+            <div class="doc-rating-value" id="ratingValue">—</div>
+            <div id="ratingStars"></div>
+            <p class="doc-card-sub" style="margin-top:8px" id="ratingCount"></p>
+        </div>
+        <div class="doc-rating-bars" id="ratingBars"></div>
+    </div>
+</section>
+
+<!-- فهرست نظرات -->
+<section class="doc-list" id="reviewsList" aria-label="فهرست نظرات بیماران"></section>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/doctor-dashboard/doctor-reviews.js' %}"></script>
+{% endblock %}

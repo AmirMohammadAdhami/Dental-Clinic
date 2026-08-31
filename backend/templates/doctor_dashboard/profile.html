@@ -1,0 +1,64 @@
+{% extends 'doctor_dashboard/doctor_base.html' %}
+{% load static %}
+
+{% block title %}ویرایش پروفایل پزشکی — دنتورا{% endblock %}
+
+{% block topbar_title %}👤 ویرایش پروفایل پزشکی{% endblock %}
+{% block topbar_sub %}این اطلاعات در صفحه عمومی پزشک شما نمایش داده می‌شود{% endblock %}
+
+{% block content %}
+<form id="profileForm" novalidate>
+    <div class="doc-tabs" id="profileTabs" role="tablist">
+        <button type="button" class="doc-tab is-active" data-tab="basic" role="tab">اطلاعات پایه و بیو</button>
+        <button type="button" class="doc-tab" data-tab="services" role="tab">خدمات</button>
+        <button type="button" class="doc-tab" data-tab="certs" role="tab">مدارک و افتخارات</button>
+    </div>
+
+    <!-- تب ۱: اطلاعات پایه -->
+    <section class="doc-tabpanel is-active" data-panel="basic">
+        <div class="doc-card" style="margin-top:18px">
+            <div class="doc-form-grid">
+                <div class="doc-field"><label class="doc-label" for="pfFirstName">نام</label><input type="text" id="pfFirstName" class="doc-input"></div>
+                <div class="doc-field"><label class="doc-label" for="pfLastName">نام خانوادگی</label><input type="text" id="pfLastName" class="doc-input"></div>
+                <div class="doc-field"><label class="doc-label" for="pfCouncil">شماره نظام پزشکی</label><input type="text" id="pfCouncil" class="doc-input" readonly></div>
+                <div class="doc-field"><label class="doc-label" for="pfExperience">سال‌های تجربه <small>(عدد)</small></label><input type="number" id="pfExperience" class="doc-input" min="0"></div>
+                <div class="doc-field"><label class="doc-label" for="pfUniversity">دانشگاه محل تحصیل</label><input type="text" id="pfUniversity" class="doc-input"></div>
+                <div class="doc-field"><label class="doc-label" for="pfSpeciality">تخصص</label><input type="text" id="pfSpeciality" class="doc-input"></div>
+                <div class="doc-field doc-field--full"><label class="doc-label" for="pfBio">بیوگرافی و فلسفه کاری</label><textarea id="pfBio" class="doc-textarea" rows="5" placeholder="متن معرفی خود و نگاه شما به درمان را بنویسید..."></textarea></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- تب ۲: خدمات -->
+    <section class="doc-tabpanel" data-panel="services">
+        <div class="doc-card">
+            <div class="doc-card-head">
+                <h2 class="doc-card-title">🦷 نوع درمان‌ها (خدمات ارائه‌شده)</h2>
+                <span class="doc-card-sub">خدمات انتخابی در صفحه پزشک شما نمایش داده می‌شود</span>
+            </div>
+            <div class="doc-chips" id="serviceChips"></div>
+        </div>
+    </section>
+
+    <!-- تب ۳: مدارک و افتخارات -->
+    <section class="doc-tabpanel" data-panel="certs">
+        <div class="doc-card">
+            <div class="doc-card-head">
+                <h2 class="doc-card-title">🏆 مدارک و افتخارات</h2>
+                <button type="button" id="addCert" class="doc-btn doc-btn--primary doc-btn--sm">＋ افزودن مدرک جدید</button>
+            </div>
+            <p class="doc-card-sub" style="margin-bottom:16px">عنوان، موسسه، تاریخ اخذ هر گواهینامه را وارد کنید.</p>
+            <div id="certsList" style="display:flex; flex-direction:column; gap:14px"></div>
+        </div>
+    </section>
+
+    <div class="doc-editor-actions">
+        <button type="submit" class="doc-btn doc-btn--primary">💾 ذخیره تغییرات</button>
+        <button type="reset" class="doc-btn doc-btn--ghost">بازنشانی فرم</button>
+    </div>
+</form>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/doctor-dashboard/doctor-profile.js' %}"></script>
+{% endblock %}

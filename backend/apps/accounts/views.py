@@ -113,6 +113,8 @@ def otp(request):
 
             messages.success(request, 'You are now logged in.')
 
+            if hasattr(user, 'doctor'):
+                return redirect('doctors:doctor_dashboard_analytics')
             return redirect('dashboard:dashboard')
 
         unique_otp.attempts += 1

@@ -8,6 +8,7 @@ from ..gallery.serializers import GallerySerializer
 
 class AppointmentSerializer(serializers.ModelSerializer):
     service_name = serializers.SerializerMethodField()
+    service_icon = serializers.SerializerMethodField()
     doctor_name = serializers.SerializerMethodField()
     review_status = serializers.SerializerMethodField()
     review_id = serializers.SerializerMethodField()
@@ -15,12 +16,18 @@ class AppointmentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Appointment
-        fields = ['id', 'service_name', 'doctor_name', 'status',
+        fields = ['id', 'service_name', 'service_icon', 'doctor_name', 'status',
                   'prescription_file', 'tracking_code', 'appointment_date',
                   'created_at', 'updated_at', 'review_status', 'review_id', 'review_data']
 
     def get_service_name(self, obj):
         return obj.service.name
+
+    def get_service_icon(self, obj):
+        icon = getattr(obj.service, 'icon', None)
+        if icon:
+            return icon.url
+        return ''
 
     def get_doctor_name(self, obj):
         return obj.doctor.user.full_name

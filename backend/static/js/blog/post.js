@@ -241,13 +241,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 var tag = bd.level==='3' ? 'h3' : 'h2';
                 html += '<'+tag+' id="section-'+hc+'">'+esc(bd.text)+'</'+tag+'>';
             } else if (b.type==='paragraph') {
-                html += '<p>'+esc(bd.text).replace(/\n/g,'<br>')+'</p>';
+                html += '<p>'+esc(bd.text)+'</p>';
             } else if (b.type==='tip') {
-                html += '<div class="post-callout post-callout-tip"><span class="post-callout-icon">💡</span><div><strong>'+esc(bd.title||'نکته مهم')+':</strong> '+esc(bd.body).replace(/\n/g,'<br>')+'</div></div>';
+                html += '<div class="post-callout post-callout-tip"><span class="post-callout-icon">💡</span><div><strong>'+esc(bd.title||'نکته مهم')+':</strong> '+esc(bd.body)+'</div></div>';
             } else if (b.type==='warning') {
-                html += '<div class="post-callout post-callout-warning"><span class="post-callout-icon">⚠️</span><div><strong>'+esc(bd.title||'هشدار پزشکی')+':</strong> '+esc(bd.body).replace(/\n/g,'<br>')+'</div></div>';
+                html += '<div class="post-callout post-callout-warning"><span class="post-callout-icon">⚠️</span><div><strong>'+esc(bd.title||'هشدار پزشکی')+':</strong> '+esc(bd.body)+'</div></div>';
             } else if (b.type==='info') {
-                html += '<div class="post-callout post-callout-info"><span class="post-callout-icon">ℹ️</span><div><strong>'+esc(bd.title||'اطلاعات تکمیلی')+':</strong> '+esc(bd.body).replace(/\n/g,'<br>')+'</div></div>';
+                html += '<div class="post-callout post-callout-info"><span class="post-callout-icon">ℹ️</span><div><strong>'+esc(bd.title||'اطلاعات تکمیلی')+':</strong> '+esc(bd.body)+'</div></div>';
             } else if (b.type==='list') {
                 var lt = bd.style==='numbered' ? 'ol' : 'ul';
                 var lc = bd.style==='numbered' ? 'post-list post-list-ordered' : 'post-list';

@@ -14,6 +14,17 @@ from backend.api.notifications.views import (
     NotificationMarkAllReadAPIView,
     ReminderSettingAPIView,
 )
+from backend.api.doctor_dashboard.views import (
+    DoctorDashboardOverviewView,
+    DoctorAppointmentsListView,
+    DoctorAppointmentPrescriptionView,
+    DoctorArticleListCreateView,
+    DoctorArticleDetailView,
+    DoctorCommentListView,
+    DoctorCommentReplyView,
+    DoctorReviewListView,
+    DoctorProfileView,
+)
 
 app_name = 'api'
 
@@ -41,4 +52,15 @@ urlpatterns = [
 
     # Reminder Settings
     path('reminders/settings/', ReminderSettingAPIView.as_view(), name='reminder-settings'),
+
+    # ── Doctor Dashboard API ──
+    path('doctor-dashboard/overview/', DoctorDashboardOverviewView.as_view(), name='doctor-dashboard-overview'),
+    path('doctor-dashboard/appointments/', DoctorAppointmentsListView.as_view(), name='doctor-dashboard-appointments'),
+    path('doctor-dashboard/appointments/<int:pk>/prescription/', DoctorAppointmentPrescriptionView.as_view(), name='doctor-dashboard-prescription'),
+    path('doctor-dashboard/articles/', DoctorArticleListCreateView.as_view(), name='doctor-dashboard-articles'),
+    path('doctor-dashboard/articles/<int:pk>/', DoctorArticleDetailView.as_view(), name='doctor-dashboard-article-detail'),
+    path('doctor-dashboard/comments/', DoctorCommentListView.as_view(), name='doctor-dashboard-comments'),
+    path('doctor-dashboard/comments/<int:pk>/reply/', DoctorCommentReplyView.as_view(), name='doctor-dashboard-comment-reply'),
+    path('doctor-dashboard/reviews/', DoctorReviewListView.as_view(), name='doctor-dashboard-reviews'),
+    path('doctor-dashboard/profile/', DoctorProfileView.as_view(), name='doctor-dashboard-profile'),
 ]
