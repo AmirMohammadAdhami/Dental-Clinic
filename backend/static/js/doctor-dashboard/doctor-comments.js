@@ -30,8 +30,6 @@
     var items = allComments;
     if (currentFilter === 'pending') {
       items = items.filter(function (c) { return c.status === 'PENDING'; });
-    } else if (currentFilter === 'answered') {
-      items = items.filter(function (c) { return c.status === 'APPROVED' || (c.replies && c.replies.length > 0); });
     }
 
     var pendingCount = allComments.filter(function (c) { return c.status === 'PENDING'; }).length;
@@ -45,39 +43,60 @@
 
     list.innerHTML = items.map(function (c) {
       var hasReply = c.replies && c.replies.length > 0;
+
+      // Badge: green for answered, orange for pending
       var badgeHtml = hasReply
         ? '<span class="doc-badge doc-badge--answered"><span class="doc-badge-dot"></span>پاسخ داده‌شده</span>'
         : '<span class="doc-badge doc-badge--pending"><span class="doc-badge-dot"></span>در انتظار پاسخ</span>';
 
+      // Doctor reply block with special styling
       var replyBlock = '';
       if (hasReply) {
         var reply = c.replies[0];
-        replyBlock = '<div class="doc-comment-reply">' +
-          '  <div class="doc-comment-reply-head">' +
+        var doctorName = reply.user_name || 'دندانپزشک';
+        var replyDate = formatDate(reply.created_at);
+        replyBlock =
+          '<div class="doc-comment-reply-block">' +
+          '  <div class="doc-comment-reply-header">' +
+          '    <div class="doc-comment-reply-avatar">🦷</div>' +
+          '    <div class="doc-comment-reply-info">' +
+          '      <span class="doc-comment-reply-name">' + esc(doctorName) + '</span>' +
+          '      <span class="doc-comment-reply-date">' + replyDate + '</span>' +
+          '    </div>' +
           '    <span class="doc-badge doc-badge--doctor">پاسخ دندانپزشک</span>' +
-          '  </div>' + esc(reply.content) + '</div>';
+          '  </div>' +
+          '  <p class="doc-comment-reply-text">' + esc(reply.content) + '</p>' +
+          '</div>';
       }
 
-      return '<article class="doc-card doc-comment-card" data-id="' + c.id + '">' +
+      // Reply form is only shown when comment has no reply yet
+      var replyForm = hasReply ? '' :
+        '<div class="doc-replybox" id="reply-' + c.id + '">' +
+        '  <textarea class="doc-textarea doc-reply-input" rows="3" placeholder="پاسخ خود را بنویسید..."></textarea>' +
+        '  <div class="doc-editor-actions">' +
+        '    <button type="button" class="doc-btn doc-btn--primary doc-btn--sm" data-action="send">ارسال پاسخ</button>' +
+        '    <button type="button" class="doc-btn doc-btn--ghost doc-btn--sm" data-action="cancel">انصراف</button>' +
+        '  </div>' +
+        '</div>';
+
+      // Reply button only shown when no reply yet
+      var replyBtn = hasReply ? '' :
+        '<div><button type="button" class="doc-btn doc-btn--ghost doc-btn--sm" data-action="reply">پاسخ</button></div>';
+
+      return '<article class="doc-card doc-comment-card doc-comment-card--' + (hasReply ? 'replied' : 'pending') + '" data-id="' + c.id + '">' +
         '  <div class="doc-comment-head">' +
         '    <span class="doc-comment-avatar">' + esc(initial(c.user_name)) + '</span>' +
         '    <div>' +
         '      <div class="doc-comment-name">' + esc(c.user_name) + '</div>' +
         '      <div class="doc-comment-meta">' + formatDate(c.created_at) + '</div>' +
         '    </div>' +
-        '    <a class="doc-comment-article" href="/doctor-dashboard/articles/" title="زیر این مقاله ثبت شده">📄 ' + esc(c.article_title) + '</a>' +
+        '    <a class="doc-comment-article" href="/doctors/dashboard/articles/" title="زیر این مقاله ثبت شده">📄 ' + esc(c.article_title) + '</a>' +
         '    ' + badgeHtml +
         '  </div>' +
         '  <p class="doc-comment-text">' + esc(c.content) + '</p>' +
         replyBlock +
-        '  <div class="doc-replybox" id="reply-' + c.id + '">' +
-        '    <textarea class="doc-textarea doc-reply-input" rows="3" placeholder="پاسخ خود را بنویسید..."></textarea>' +
-        '    <div class="doc-editor-actions">' +
-        '      <button type="button" class="doc-btn doc-btn--primary doc-btn--sm" data-action="send">ارسال پاسخ</button>' +
-        '      <button type="button" class="doc-btn doc-btn--ghost doc-btn--sm" data-action="cancel">انصراف</button>' +
-        '    </div>' +
-        '  </div>' +
-        (hasReply ? '' : '  <div><button type="button" class="doc-btn doc-btn--ghost doc-btn--sm" data-action="reply">پاسخ</button></div>') +
+        replyForm +
+        replyBtn +
         '</article>';
     }).join('');
   }
@@ -114,7 +133,6 @@
         apiFetch('POST', '/doctor-dashboard/comments/' + id + '/reply/', {
           content: text
         }).then(function () {
-          // Reload comments to reflect the reply
           return apiFetch('GET', '/doctor-dashboard/comments/');
         }).then(function (data) {
           allComments = data || [];

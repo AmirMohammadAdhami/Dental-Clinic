@@ -4,7 +4,7 @@
 {% block title %}نگارش مقاله — دنتورا{% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="{% static 'css/blog/admin-block-editor.css' %}">
+<link rel="stylesheet" href="{% static 'css/blog/admin-block-editor.css' %}?v=2">
 <style>
 /* ── doctor dashboard article-editor overrides ──────────────────── */
 .doc-article-editor .block-editor-wrapper {
@@ -75,6 +75,41 @@
     </div>
 </section>
 
+<!-- مدیا: تصاویر و ویدیوها -->
+<section class="doc-card" id="mediaSection" style="display:none;">
+    <div class="doc-card-head">
+        <h2 class="doc-card-title">📷 تصاویر و ویدیوها</h2>
+        <p class="doc-card-sub">تصاویر و ویدیوهای مقاله را بارگذاری کنید. تصویر اول به عنوان کاور مقاله استفاده می‌شود.</p>
+    </div>
+
+    <!-- Image Upload -->
+    <div class="media-upload-group">
+        <label class="doc-label">📸 تصاویر مقاله</label>
+        <p class="media-upload-hint">تصویر اول به عنوان کاور مقاله نمایش داده می‌شود</p>
+        <div class="media-upload-zone" id="imageUploadZone" data-type="IMAGE">
+            <input type="file" id="imageUploadInput" accept="image/*" multiple hidden>
+            <div class="media-upload-placeholder" id="imagePlaceholder">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                <span>کلیک کنید یا فایل‌ها را اینجا بکشید</span>
+            </div>
+        </div>
+        <div class="media-preview-grid" id="imagePreviewGrid"></div>
+    </div>
+
+    <!-- Video Upload -->
+    <div class="media-upload-group" style="margin-top: 24px;">
+        <label class="doc-label">🎬 ویدیوهای مقاله</label>
+        <div class="media-upload-zone" id="videoUploadZone" data-type="VIDEO">
+            <input type="file" id="videoUploadInput" accept="video/*" multiple hidden>
+            <div class="media-upload-placeholder" id="videoPlaceholder">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                <span>کلیک کنید یا فایل‌ها را اینجا بکشید</span>
+            </div>
+        </div>
+        <div class="media-preview-grid" id="videoPreviewGrid"></div>
+    </div>
+</section>
+
 <div class="doc-editor-actions">
     <button type="button" id="btnDraft" class="doc-btn doc-btn--ghost">💾 ذخیره پیش‌نویس</button>
     <button type="button" id="btnPublish" class="doc-btn doc-btn--primary">🚀 انتشار مقاله</button>
@@ -86,6 +121,6 @@
 window.DOCTOR_ARTICLE_ID = {{ article_id|default:"null" }};
 window.BLOCK_SCHEMA = {{ block_schema|safe }};
 </script>
-<script src="{% static 'js/blog/admin-block-editor.js' %}"></script>
-<script src="{% static 'js/doctor-dashboard/doctor-editor.js' %}"></script>
+<script src="{% static 'js/blog/admin-block-editor.js' %}?v=2"></script>
+<script src="{% static 'js/doctor-dashboard/doctor-editor.js' %}?v=2"></script>
 {% endblock %}

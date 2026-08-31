@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from backend.apps.appointments.models import Service
 
 
 @login_required
@@ -33,4 +34,8 @@ def notifications(request):
 
 
 def select_doctors(request, service):
-    return render(request, 'dashboard/select-doctors.html', {'service': service})
+    service_obj = Service.objects.filter(name=service).first()
+    return render(request, 'dashboard/select-doctors.html', {
+        'service': service,
+        'service_object': service_obj,
+    })

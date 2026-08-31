@@ -70,7 +70,7 @@
         '    <span>' + (a.is_published ? toPersianNum(a.view_count || 0) + ' بازدید' : 'پیش‌نویس') + '</span></div>' +
         '  </div>' +
         '  <div class="doc-article-actions">' +
-        '    <a class="doc-btn doc-btn--ghost doc-btn--sm" href="/doctor-dashboard/article-editor/?id=' + a.id + '">ویرایش</a>' +
+        '    <a class="doc-btn doc-btn--ghost doc-btn--sm" href="/doctors/dashboard/article-editor/?id=' + a.id + '">ویرایش</a>' +
         '    <button type="button" class="doc-btn doc-btn--ghost doc-btn--sm" data-action="preview">پیش‌نمایش</button>' +
         '    <button type="button" class="doc-btn doc-btn--danger doc-btn--sm" data-action="delete">حذف</button>' +
         '  </div>' +

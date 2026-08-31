@@ -563,6 +563,30 @@ document.addEventListener('DOMContentLoaded', function () {
             html += '    </div>';
             html += '  </div>';
             html += '  <p class="post-comment-text">' + esc(c.content) + '</p>';
+            // Render replies
+            if (c.replies && c.replies.length) {
+                c.replies.forEach(function(r) {
+                    var rInitial = r.avatar_initial || (r.commenter_name ? r.commenter_name.charAt(0) : 'د');
+                    var rPhoto = r.avatar_photo || '';
+                    html += '<div class="post-comment-reply">';
+                    html += '  <div class="post-comment-header">';
+                    html += '    <div class="post-comment-user">';
+                    if (rPhoto) {
+                        html += '      <img src="' + murl(rPhoto) + '" alt="' + esc(r.commenter_name || '') + '" class="post-comment-reply-avatar">';
+                    } else {
+                        html += '      <div class="post-comment-avatar">' + esc(rInitial) + '</div>';
+                    }
+                    html += '      <div>';
+                    html += '        <span class="post-comment-name">' + esc(r.commenter_name || 'دندانپزشک') + '</span>';
+                    html += '        <span class="post-comment-badge">پاسخ دندانپزشک</span>';
+                    html += '        <span class="post-comment-date">' + toRelativeTime(r.created_at) + '</span>';
+                    html += '      </div>';
+                    html += '    </div>';
+                    html += '  </div>';
+                    html += '  <p class="post-comment-text">' + esc(r.content) + '</p>';
+                    html += '</div>';
+                });
+            }
             html += '</div>';
         });
         listEl.innerHTML = html;

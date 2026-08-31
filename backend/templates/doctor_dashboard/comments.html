@@ -15,13 +15,12 @@
     <div class="doc-toolbar">
         <div>
             <h2 class="doc-card-title">صندوق دیدگاه‌ها</h2>
-            <p class="doc-card-sub" id="pendingCountLabel">۰ دیدگاه در انتظار پاسخ شماست</p>
+            <p class="doc-card-sub" id="pendingCountLabel"></p>
         </div>
     </div>
     <div class="doc-filters" id="commentFilters" aria-label="فیلتر وضعیت دیدگاه‌ها">
         <button type="button" class="doc-pill is-active" data-filter="all">همه</button>
-        <button type="button" class="doc-pill" data-filter="pending">در انتظار پاسخ</button>
-        <button type="button" class="doc-pill" data-filter="answered">پاسخ داده‌شده</button>
+        <button type="button" class="doc-pill" data-filter="pending">پاسخ‌نداده</button>
     </div>
 </section>
 
@@ -29,5 +28,5 @@
 {% endblock %}
 
 {% block js %}
-<script src="{% static 'js/doctor-dashboard/doctor-comments.js' %}"></script>
+<script src="{% static 'js/doctor-dashboard/doctor-comments.js' %}?v=5"></script>
 {% endblock %}

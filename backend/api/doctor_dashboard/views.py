@@ -17,6 +17,7 @@ from backend.api.doctor_dashboard.serializers import (
     PrescriptionUpdateSerializer,
     DoctorArticleListSerializer,
     DoctorArticleCreateSerializer,
+    ArticleMediaUploadSerializer,
     DoctorArticleDetailSerializer,
     DoctorCommentListSerializer,
     CommentReplySerializer,
@@ -25,7 +26,7 @@ from backend.api.doctor_dashboard.serializers import (
     DoctorProfileSerializer,
 )
 from backend.apps.appointments.models import Appointment, DoctorReview, Service
-from backend.apps.blog.models import Article, Comment
+from backend.apps.blog.models import Article, ArticleMedia, Comment
 
 
 # ── Helper ────────────────────────────────────────────────────────
@@ -209,6 +210,49 @@ class DoctorArticleDetailView(generics.RetrieveUpdateDestroyAPIView):
             .select_related('category')
             .prefetch_related('media')
         )
+
+
+# ── Article Media Upload ─────────────────────────────────────────
+
+class DoctorArticleMediaUploadView(APIView):
+    permission_classes = DOCTOR_PERMISSIONS
+
+    def post(self, request, article_id):
+        try:
+            article = Article.objects.get(pk=article_id, author=request.user.doctor)
+        except Article.DoesNotExist:
+            return Response(
+                {'detail': 'مقاله یافت نشد.'},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        serializer = ArticleMediaUploadSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(article=article)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def delete(self, request, article_id, media_id):
+        try:
+            article = Article.objects.get(pk=article_id, author=request.user.doctor)
+        except Article.DoesNotExist:
+            return Response(
+                {'detail': 'مقاله یافت نشد.'},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        try:
+            media = ArticleMedia.objects.get(pk=media_id, article=article)
+        except ArticleMedia.DoesNotExist:
+            return Response(
+                {'detail': 'فایل یافت نشد.'},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        # Delete the file from storage
+        if media.file:
+            media.file.delete(save=False)
+        media.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 # ── Comments ──────────────────────────────────────────────────────

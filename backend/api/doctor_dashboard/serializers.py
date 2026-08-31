@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from backend.api.base_serializers import ArticleMediaSerializer
 from backend.apps.appointments.models import Appointment, Service, DoctorReview, MedicalRecord
-from backend.apps.blog.models import Article, Comment
+from backend.apps.blog.models import Article, ArticleMedia, Comment
 from backend.apps.doctors.models import Doctor, DoctorPhotos, Certificate
 
 
@@ -151,6 +151,9 @@ class DoctorArticleListSerializer(serializers.ModelSerializer):
 
 
 class DoctorArticleCreateSerializer(serializers.ModelSerializer):
+    content = serializers.CharField(allow_blank=True, required=False, default='')
+    abstract = serializers.CharField(allow_blank=True, required=False, default='')
+
     class Meta:
         model = Article
         fields = [
@@ -167,14 +170,25 @@ class DoctorArticleCreateSerializer(serializers.ModelSerializer):
 class DoctorArticleDetailSerializer(serializers.ModelSerializer):
     service_name = serializers.CharField(source='category.name', read_only=True)
     files = ArticleMediaSerializer(source='media', many=True, read_only=True)
+    content = serializers.CharField(allow_blank=True, required=False, default='')
+    abstract = serializers.CharField(allow_blank=True, required=False, default='')
 
     class Meta:
         model = Article
         fields = [
-            'id', 'title', 'slug', 'service_name', 'abstract', 'content',
+            'id', 'title', 'slug', 'category', 'service_name', 'abstract', 'content',
             'content_blocks', 'is_published', 'view_count', 'files',
             'created_at', 'updated_at',
         ]
+
+
+# ── Media Upload ──────────────────────────────────────────────────
+
+class ArticleMediaUploadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ArticleMedia
+        fields = ['id', 'media_type', 'file', 'video_url']
+        read_only_fields = ['id']
 
 
 # ── Comments ──────────────────────────────────────────────────────
