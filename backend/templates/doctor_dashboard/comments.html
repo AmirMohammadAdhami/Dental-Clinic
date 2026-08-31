@@ -1,0 +1,33 @@
+{% extends 'doctor_dashboard/doctor_base.html' %}
+{% load static %}
+
+{% block title %}مدیریت دیدگاه‌ها — دنتورا{% endblock %}
+
+{% block topbar_title %}💬 مدیریت دیدگاه‌ها{% endblock %}
+{% block topbar_sub %}دیدگاه‌های کاربران زیر مقالات آموزشی شما{% endblock %}
+
+{% block topbar_actions %}
+<a href="{% url 'doctors:doctor_dashboard_articles' %}" class="doc-btn doc-btn--ghost doc-btn--sm">مشاهده مقالات</a>
+{% endblock %}
+
+{% block content %}
+<section class="doc-card">
+    <div class="doc-toolbar">
+        <div>
+            <h2 class="doc-card-title">صندوق دیدگاه‌ها</h2>
+            <p class="doc-card-sub" id="pendingCountLabel">۰ دیدگاه در انتظار پاسخ شماست</p>
+        </div>
+    </div>
+    <div class="doc-filters" id="commentFilters" aria-label="فیلتر وضعیت دیدگاه‌ها">
+        <button type="button" class="doc-pill is-active" data-filter="all">همه</button>
+        <button type="button" class="doc-pill" data-filter="pending">در انتظار پاسخ</button>
+        <button type="button" class="doc-pill" data-filter="answered">پاسخ داده‌شده</button>
+    </div>
+</section>
+
+<section class="doc-list" id="commentsList" aria-label="لیست دیدگاه‌ها"></section>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/doctor-dashboard/doctor-comments.js' %}"></script>
+{% endblock %}

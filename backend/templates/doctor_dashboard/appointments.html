@@ -1,0 +1,65 @@
+{% extends 'doctor_dashboard/doctor_base.html' %}
+{% load static %}
+
+{% block title %}نوبت‌ها — دنتورا{% endblock %}
+
+{% block topbar_title %}📋 نوبت‌ها{% endblock %}
+{% block topbar_sub %}مدیریت نوبت‌های بیماران و مشاهده پرونده پزشکی{% endblock %}
+
+{% block content %}
+<!-- فیلتر وضعیت -->
+<section class="doc-card">
+    <div class="doc-toolbar">
+        <div>
+            <h2 class="doc-card-title">فهرست نوبت‌ها</h2>
+            <p class="doc-card-sub" id="appointmentsCount">۰ نوبت ثبت شده است</p>
+        </div>
+    </div>
+    <div class="doc-filters" id="appointmentFilters" aria-label="فیلتر وضعیت نوبت‌ها">
+        <button type="button" class="doc-pill is-active" data-filter="all">همه</button>
+        <button type="button" class="doc-pill" data-filter="upcoming">🔵 پیش‌رو</button>
+        <button type="button" class="doc-pill" data-filter="pending">🟡 معلق</button>
+        <button type="button" class="doc-pill" data-filter="completed">🟢 انجام‌شده</button>
+        <button type="button" class="doc-pill" data-filter="cancelled">🔴 لغوشده</button>
+    </div>
+</section>
+
+<!-- لیست نوبت‌ها -->
+<section class="doc-appointments-list" id="appointmentsList" aria-label="لیست نوبت‌ها"></section>
+{% endblock %}
+
+{% block content_extra %}
+<!-- مودال اطلاعات کامل نوبت -->
+<div class="doc-modal" id="appointmentModal">
+    <div class="doc-modal-panel doc-modal-panel--wide" role="dialog" aria-modal="true">
+        <div class="doc-modal-head">
+            <h2 class="doc-modal-title" id="modalPatientName">اطلاعات نوبت</h2>
+            <button type="button" class="doc-iconbtn" id="modalClose" aria-label="بستن">✕</button>
+        </div>
+        <div class="doc-modal-body">
+            <div class="doc-appt-detail-grid" id="modalDetailGrid"></div>
+            <div class="doc-card" style="margin-top:16px">
+                <div class="doc-card-head">
+                    <h2 class="doc-card-title">🩺 پرونده پزشکی</h2>
+                    <span class="doc-card-sub">شرایط و سابقه پزشکی بیمار</span>
+                </div>
+                <div class="doc-medical-tags" id="modalMedicalTags"></div>
+            </div>
+            <div class="doc-card" style="margin-top:16px">
+                <div class="doc-card-head">
+                    <h2 class="doc-card-title">💊 نسخه درمانی</h2>
+                    <span class="doc-card-sub">نوشتن و مشاهده نسخه</span>
+                </div>
+                <textarea class="doc-textarea" id="modalPrescription" rows="4" placeholder="نسخه درمانی را اینجا بنویسید..."></textarea>
+                <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap">
+                    <button type="button" class="doc-btn doc-btn--primary doc-btn--sm" id="modalSaveRx">💾 ذخیره نسخه</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/doctor-dashboard/doctor-appointments.js' %}"></script>
+{% endblock %}

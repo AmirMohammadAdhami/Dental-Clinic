@@ -1,0 +1,33 @@
+{% extends 'doctor_dashboard/doctor_base.html' %}
+{% load static %}
+
+{% block title %}مدیریت مقالات — دنتورا{% endblock %}
+
+{% block topbar_title %}📝 مدیریت مقالات{% endblock %}
+{% block topbar_sub %}مقالات آموزشی نوشته‌شده توسط شما در بلاگ دنتورا{% endblock %}
+
+{% block topbar_actions %}
+<a href="{% url 'doctors:doctor_dashboard_article_editor' %}" class="doc-btn doc-btn--primary">＋ نگارش مقاله جدید</a>
+{% endblock %}
+
+{% block content %}
+<section class="doc-card">
+    <div class="doc-toolbar">
+        <div>
+            <h2 class="doc-card-title">فهرست مقالات</h2>
+            <p class="doc-card-sub" id="articlesCount">۰ مقاله ثبت شده است</p>
+        </div>
+    </div>
+    <div class="doc-filters" id="articleFilters" role="tablist" aria-label="فیلتر وضعیت مقالات">
+        <button type="button" class="doc-pill is-active" data-filter="all">همه</button>
+        <button type="button" class="doc-pill" data-filter="published">🟢 منتشرشده</button>
+        <button type="button" class="doc-pill" data-filter="draft">🟡 پیش‌نویس</button>
+    </div>
+</section>
+
+<section class="doc-articles-grid" id="articlesGrid" aria-label="لیست مقالات"></section>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/doctor-dashboard/doctor-articles.js' %}"></script>
+{% endblock %}
