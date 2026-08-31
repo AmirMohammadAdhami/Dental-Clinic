@@ -191,20 +191,15 @@ class CommentReplySerializer(serializers.ModelSerializer):
 
 
 class CommentChildSerializer(serializers.ModelSerializer):
-    user_name = serializers.SerializerMethodField()
+    user_name = serializers.CharField(source='commenter_name', read_only=True)
 
     class Meta:
         model = Comment
         fields = ['id', 'content', 'user_name', 'created_at']
 
-    def get_user_name(self, obj):
-        if obj.user:
-            return obj.user.full_name or f"{obj.user.first_name} {obj.user.last_name}"
-        return ''
-
 
 class DoctorCommentListSerializer(serializers.ModelSerializer):
-    user_name = serializers.SerializerMethodField()
+    user_name = serializers.CharField(source='commenter_name', read_only=True)
     article_title = serializers.CharField(source='article.title', read_only=True)
     article_slug = serializers.CharField(source='article.slug', read_only=True)
     replies = CommentChildSerializer(many=True, read_only=True)
@@ -215,11 +210,6 @@ class DoctorCommentListSerializer(serializers.ModelSerializer):
             'id', 'content', 'user_name', 'status',
             'article_title', 'article_slug', 'replies', 'created_at',
         ]
-
-    def get_user_name(self, obj):
-        if obj.user:
-            return obj.user.full_name or f"{obj.user.first_name} {obj.user.last_name}"
-        return ''
 
 
 # ── Reviews ───────────────────────────────────────────────────────

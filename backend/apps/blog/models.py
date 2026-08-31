@@ -118,7 +118,9 @@ class Comment(models.Model):
         APPROVED = 'APPROVED', 'Approved'
         REJECTED = 'REJECTED', 'Rejected'
 
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='comments')
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='comments', null=True, blank=True)
+    guest_first_name = models.CharField(max_length=150, blank=True, default='')
+    guest_last_name = models.CharField(max_length=150, blank=True, default='')
     article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='comments')
     content = models.TextField()
 
@@ -134,6 +136,13 @@ class Comment(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    @property
+    def commenter_name(self):
+        if self.user:
+            return self.user.full_name or (self.user.first_name + ' ' + self.user.last_name)
+        name = (self.guest_first_name + ' ' + self.guest_last_name).strip()
+        return name or "ناشناس"
 
 
 class FAQ(models.Model):

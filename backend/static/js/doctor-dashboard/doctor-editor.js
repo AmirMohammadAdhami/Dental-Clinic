@@ -1,6 +1,6 @@
 /**
  * Dentura — Doctor Panel: Article Editor (نگارش و ویرایش مقاله)
- * عنوان، دسته‌بندی، Rich Text Editor و ذخیره پیش‌نویس/انتشار — all via API
+ * عنوان، دسته‌بندی، Block Editor و ذخیره پیش‌نویس/انتشار — all via API
  */
 (function () {
   'use strict';
@@ -8,9 +8,8 @@
   var titleEl = document.getElementById('artTitle');
   var catEl = document.getElementById('artCategory');
   var abstractEl = document.getElementById('artAbstract');
-  var editor = document.getElementById('editorArea');
-  var wordEl = document.getElementById('wordCount');
-  var charEl = document.getElementById('charCount');
+  var blocksSource = document.getElementById('contentBlocksSource');
+  var blockCountEl = document.getElementById('blockCount');
   var btnDraft = document.getElementById('btnDraft');
   var btnPublish = document.getElementById('btnPublish');
 
@@ -21,7 +20,26 @@
     apiFetch('GET', '/doctor-dashboard/articles/' + currentId + '/').then(function (data) {
       if (titleEl) titleEl.value = data.title || '';
       if (abstractEl) abstractEl.value = data.abstract || '';
-      if (editor) editor.innerHTML = data.content || '';
+      if (data.category) {
+        // Select the matching category option
+        var opts = catEl ? catEl.options : [];
+        for (var i = 0; i < opts.length; i++) {
+          if (String(opts[i].value) === String(data.category)) {
+            catEl.selectedIndex = i;
+            break;
+          }
+        }
+      }
+      // Load content_blocks into the textarea, then trigger block editor re-render
+      if (blocksSource && data.content_blocks) {
+        blocksSource.value = JSON.stringify(data.content_blocks, null, 2);
+        // Re-init block editor with new data
+        var wrapper = blocksSource.closest('.block-editor-wrapper');
+        if (wrapper) {
+          // Dispatch a custom event so the block editor can re-render
+          wrapper.dispatchEvent(new CustomEvent('blocks:reload'));
+        }
+      }
       if (data.slug) document.title = 'ویرایش مقاله — دنتورا';
       updateCounts();
     }).catch(function () {
@@ -29,62 +47,30 @@
     });
   }
 
-  // ── WYSIWYG Toolbar ──
-  if (editor) {
-    try { document.execCommand('styleWithCSS', false, false); } catch (e) { /* noop */ }
-    editor.focus();
-
-    document.querySelectorAll('#editorToolbar .doc-tool').forEach(function (btn) {
-      btn.addEventListener('click', function (e) {
-        e.preventDefault();
-        var cmd = btn.getAttribute('data-cmd');
-        var val = btn.getAttribute('data-val') || null;
-        editor.focus();
-        if (cmd === 'createLink') {
-          var url = window.prompt('آدرس لینک را وارد کنید (مثلاً https://...):', 'https://');
-          if (url) document.execCommand('createLink', false, url);
-        } else if (cmd === 'insertImage') {
-          var fileInput = document.getElementById('inlineImageInput');
-          if (fileInput) fileInput.click();
-        } else {
-          document.execCommand(cmd, false, val);
-        }
-        updateCounts();
-      });
-    });
-
-    var inlineImg = document.getElementById('inlineImageInput');
-    if (inlineImg) {
-      inlineImg.addEventListener('change', function () {
-        var file = this.files && this.files[0];
-        if (!file) return;
-        var reader = new FileReader();
-        reader.onload = function () {
-          editor.focus();
-          document.execCommand('insertImage', false, reader.result);
-          updateCounts();
-        };
-        reader.readAsDataURL(file);
-        this.value = '';
-      });
+  // ── Update block / word / character counts ──
+  function updateCounts() {
+    var blocks = [];
+    try {
+      blocks = JSON.parse(blocksSource ? blocksSource.value || '[]' : '[]');
+      if (!Array.isArray(blocks)) blocks = [];
+    } catch (_) {
+      blocks = [];
     }
 
-    editor.addEventListener('input', updateCounts);
-    editor.addEventListener('keydown', function (e) {
-      if (e.key === 'Tab') {
-        e.preventDefault();
-        document.execCommand('insertHTML', false, '&nbsp;&nbsp;&nbsp;&nbsp;');
-      }
+    if (blockCountEl) {
+      blockCountEl.textContent = toPersianNum(blocks.length) + ' بلاک';
+    }
+  }
+
+  // Listen for changes on the blocks textarea (debounced)
+  var countTimer = null;
+  if (blocksSource) {
+    blocksSource.addEventListener('input', function () {
+      clearTimeout(countTimer);
+      countTimer = setTimeout(updateCounts, 400);
     });
   }
 
-  function updateCounts() {
-    if (!editor) return;
-    var text = (editor.innerText || '').replace(/\s+/g, ' ').trim();
-    var words = text ? text.split(' ').length : 0;
-    if (wordEl) wordEl.textContent = toPersianNum(words) + ' کلمه';
-    if (charEl) charEl.textContent = toPersianNum(text.length) + ' کاراکتر';
-  }
   updateCounts();
 
   // ── Save Article ──
@@ -96,11 +82,20 @@
       return;
     }
 
+    // Parse content_blocks from textarea
+    var contentBlocks = [];
+    try {
+      contentBlocks = JSON.parse(blocksSource ? blocksSource.value || '[]' : '[]');
+      if (!Array.isArray(contentBlocks)) contentBlocks = [];
+    } catch (_) {
+      contentBlocks = [];
+    }
+
     var payload = {
       title: title,
       category: catEl ? catEl.value : null,
       abstract: abstractEl ? abstractEl.value.trim() : '',
-      content: editor ? editor.innerHTML : '',
+      content_blocks: contentBlocks,
       is_published: !!publish,
     };
 

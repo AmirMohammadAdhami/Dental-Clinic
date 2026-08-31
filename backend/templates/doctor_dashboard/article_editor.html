@@ -3,6 +3,22 @@
 
 {% block title %}نگارش مقاله — دنتورا{% endblock %}
 
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/blog/admin-block-editor.css' %}">
+<style>
+/* ── doctor dashboard article-editor overrides ──────────────────── */
+.doc-article-editor .block-editor-wrapper {
+    border: none;
+    background: transparent;
+    padding: 0;
+    margin-top: 0;
+}
+.doc-article-editor .block-editor-source-wrapper {
+    margin-top: 12px;
+}
+</style>
+{% endblock %}
+
 {% block topbar_title %}✍️ نگارش و ویرایش مقاله{% endblock %}
 {% block topbar_sub %}مقاله پس از انتشار در بلاگ دنتورا نمایش داده می‌شود{% endblock %}
 
@@ -33,30 +49,29 @@
     </div>
 </section>
 
-<!-- ادیتور -->
-<section class="doc-card">
+<!-- ادیتور بلاکی -->
+<section class="doc-card doc-article-editor">
     <div class="doc-card-head">
         <h2 class="doc-card-title">متن مقاله</h2>
+        <p class="doc-card-sub">محتوای مقاله را با استفاده از بلاک‌های ساختاریافته بسازید</p>
     </div>
-    <div class="doc-editor-toolbar" id="editorToolbar" role="toolbar" aria-label="نوار ابزار ویرایش متن">
-        <button type="button" class="doc-tool" data-cmd="bold" title="پررنگ (Ctrl+B)"><b>B</b></button>
-        <button type="button" class="doc-tool" data-cmd="italic" title="مورب (Ctrl+I)"><i>I</i></button>
-        <button type="button" class="doc-tool" data-cmd="underline" title="زیرخط (Ctrl+U)"><u>U</u></button>
-        <button type="button" class="doc-tool" data-cmd="formatBlock" data-val="h2" title="تیتر بزرگ">H2</button>
-        <button type="button" class="doc-tool" data-cmd="formatBlock" data-val="h3" title="تیتر کوچک">H3</button>
-        <button type="button" class="doc-tool" data-cmd="formatBlock" data-val="p" title="پاراگراف">¶</button>
-        <button type="button" class="doc-tool" data-cmd="formatBlock" data-val="blockquote" title="نقل قول">❝</button>
-        <button type="button" class="doc-tool" data-cmd="insertUnorderedList" title="لیست نقطه‌ای">• لیست</button>
-        <button type="button" class="doc-tool" data-cmd="insertOrderedList" title="لیست شماره‌دار">۱. لیست</button>
-        <button type="button" class="doc-tool" data-cmd="createLink" title="افزودن لینک">🔗 لینک</button>
-        <button type="button" class="doc-tool" data-cmd="insertImage" title="درج عکس در متن">🖼 عکس</button>
-        <button type="button" class="doc-tool" data-cmd="removeFormat" title="حذف قالب‌بندی">✕ قالب</button>
-        <input type="file" id="inlineImageInput" accept="image/*" hidden>
+    <div class="block-editor-wrapper"
+         data-schema="{{ block_schema|escape }}">
+        <div class="block-editor-toolbar">
+            <span class="block-editor-toolbar-title">📐 افزودن بلاک جدید:</span>
+            <div class="block-editor-add-btns" id="blockAddBtns"></div>
+        </div>
+        <div class="block-editor-blocks"></div>
+        <div class="block-editor-source-wrapper">
+            <details>
+                <summary style="cursor:pointer;font-size:12px;color:#6b7280;margin:8px 0 4px;">
+                نمایش JSON خام</summary>
+                <textarea class="block-editor-source" id="contentBlocksSource" rows="3"></textarea>
+            </details>
+        </div>
     </div>
-    <div id="editorArea" class="doc-editor" contenteditable="true" data-placeholder="متن مقاله را اینجا بنویسید..." aria-label="متن مقاله"></div>
     <div class="doc-editor-foot">
-        <span id="wordCount">۰ کلمه</span>
-        <span id="charCount">۰ کاراکتر</span>
+        <span id="blockCount">۰ بلاک</span>
     </div>
 </section>
 
@@ -69,6 +84,8 @@
 {% block js %}
 <script>
 window.DOCTOR_ARTICLE_ID = {{ article_id|default:"null" }};
+window.BLOCK_SCHEMA = {{ block_schema|safe }};
 </script>
+<script src="{% static 'js/blog/admin-block-editor.js' %}"></script>
 <script src="{% static 'js/doctor-dashboard/doctor-editor.js' %}"></script>
 {% endblock %}

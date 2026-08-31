@@ -303,12 +303,34 @@
             });
         }
 
+        // generate add-block buttons if the container is empty
+        var addBtnsContainer = wrapper.querySelector('.block-editor-add-btns');
+        if (addBtnsContainer && !addBtnsContainer.querySelector('.block-editor-add-btn')) {
+            var btnsHtml = '';
+            for (var btype in schema) {
+                var info = schema[btype];
+                btnsHtml += '<button type="button" class="block-editor-add-btn" data-block-type="' + btype + '" title="' + info.label + '">' + info.icon + ' ' + info.label + '</button>';
+            }
+            addBtnsContainer.innerHTML = btnsHtml;
+        }
+
         // add-block buttons
         wrapper.querySelectorAll('.block-editor-add-btn').forEach(btn => {
             btn.addEventListener('click', function () {
                 console.log('[BlockEditor] clicked:', this.dataset.blockType);
                 addBlock(this.dataset.blockType);
             });
+        });
+
+        // support external reload (e.g. when loading an existing article)
+        wrapper.addEventListener('blocks:reload', function () {
+            try {
+                blocks = JSON.parse(textarea.value || '[]');
+                if (!Array.isArray(blocks)) blocks = [];
+            } catch (_) {
+                blocks = [];
+            }
+            renderAll();
         });
 
         // initial render

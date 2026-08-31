@@ -472,4 +472,193 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // ================= COMMENTS =================
+    function toRelativeTime(iso) {
+        if (!iso) return '';
+        var now = new Date();
+        var then = new Date(iso);
+        var diff = Math.floor((now - then) / 1000);
+        if (diff < 60) return 'لحظاتی پیش';
+        if (diff < 3600) return toPersianNum(Math.floor(diff / 60)) + ' دقیقه پیش';
+        if (diff < 86400) return toPersianNum(Math.floor(diff / 3600)) + ' ساعت پیش';
+        if (diff < 2592000) return toPersianNum(Math.floor(diff / 86400)) + ' روز پیش';
+        if (diff < 31536000) return toPersianNum(Math.floor(diff / 2592000)) + ' ماه پیش';
+        return toPersianNum(Math.floor(diff / 31536000)) + ' سال پیش';
+    }
+
+    function initComments() {
+        var isAuth = window.__IS_AUTHENTICATED__ === true || window.__IS_AUTHENTICATED__ === 'true';
+        var nameFields = document.getElementById('commentNameFields');
+        var hint = document.getElementById('commentFormHint');
+        var submitBtn = document.getElementById('commentSubmitBtn');
+        var contentInput = document.getElementById('commentContent');
+        var firstNameInput = document.getElementById('commentFirstName');
+        var lastNameInput = document.getElementById('commentLastName');
+
+        // Show/hide name fields based on auth status
+        if (!isAuth && nameFields) {
+            nameFields.style.display = '';
+        }
+        if (hint) {
+            hint.textContent = isAuth ? '' : 'نام و نام خانوادگی شما در دیدگاه نمایش داده خواهد شد.';
+        }
+
+        // Load existing comments
+        loadComments();
+
+        // Submit handler
+        if (submitBtn) {
+            submitBtn.addEventListener('click', function() {
+                submitComment(isAuth);
+            });
+        }
+
+        // Enter key on name fields
+        if (firstNameInput) {
+            firstNameInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') { e.preventDefault(); lastNameInput.focus(); }
+            });
+        }
+        if (lastNameInput) {
+            lastNameInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') { e.preventDefault(); contentInput.focus(); }
+            });
+        }
+    }
+
+    function loadComments() {
+        var listEl = document.getElementById('commentList');
+        var emptyEl = document.getElementById('commentEmpty');
+        if (!listEl) return;
+
+        fetch('/api/articles/' + encodeURIComponent(slug) + '/comments/')
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                var results = data.results || data;
+                if (!results || !results.length) {
+                    listEl.innerHTML = '';
+                    if (emptyEl) emptyEl.style.display = '';
+                    return;
+                }
+                if (emptyEl) emptyEl.style.display = 'none';
+                renderComments(results);
+            })
+            .catch(function(err) { console.error('Comments load error:', err); });
+    }
+
+    function renderComments(comments) {
+        var listEl = document.getElementById('commentList');
+        if (!listEl) return;
+        var html = '';
+        comments.forEach(function(c) {
+            var initial = c.avatar_initial || (c.commenter_name ? c.commenter_name.charAt(0) : 'ن');
+            html += '<div class="post-comment">';
+            html += '  <div class="post-comment-header">';
+            html += '    <div class="post-comment-user">';
+            html += '      <div class="post-comment-avatar">' + esc(initial) + '</div>';
+            html += '      <div>';
+            html += '        <span class="post-comment-name">' + esc(c.commenter_name || 'ناشناس') + '</span>';
+            html += '        <span class="post-comment-date">' + toRelativeTime(c.created_at) + '</span>';
+            html += '      </div>';
+            html += '    </div>';
+            html += '  </div>';
+            html += '  <p class="post-comment-text">' + esc(c.content) + '</p>';
+            html += '</div>';
+        });
+        listEl.innerHTML = html;
+    }
+
+    function submitComment(isAuth) {
+        var submitBtn = document.getElementById('commentSubmitBtn');
+        var contentInput = document.getElementById('commentContent');
+        var firstNameInput = document.getElementById('commentFirstName');
+        var lastNameInput = document.getElementById('commentLastName');
+        var content = contentInput ? contentInput.value.trim() : '';
+
+        if (!content) {
+            if (window.showToast) window.showToast('لطفاً متن دیدگاه را بنویسید.', 'error');
+            return;
+        }
+
+        var payload = { content: content };
+
+        if (!isAuth) {
+            var fn = firstNameInput ? firstNameInput.value.trim() : '';
+            var ln = lastNameInput ? lastNameInput.value.trim() : '';
+            if (!fn) {
+                if (window.showToast) window.showToast('لطفاً نام خود را وارد کنید.', 'error');
+                if (firstNameInput) firstNameInput.focus();
+                return;
+            }
+            if (!ln) {
+                if (window.showToast) window.showToast('لطفاً نام خانوادگی خود را وارد کنید.', 'error');
+                if (lastNameInput) lastNameInput.focus();
+                return;
+            }
+            payload.first_name = fn;
+            payload.last_name = ln;
+        }
+
+        // Disable button
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'در حال ارسال...';
+        }
+
+        fetch('/api/articles/' + encodeURIComponent(slug) + '/comments/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCSRFToken()
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(function(r) {
+            if (!r.ok) return r.json().then(function(err) { throw err; });
+            return r.json();
+        })
+        .then(function(data) {
+            // Clear form
+            if (contentInput) contentInput.value = '';
+            if (firstNameInput) firstNameInput.value = '';
+            if (lastNameInput) lastNameInput.value = '';
+
+            if (window.showToast) window.showToast('دیدگاه شما با موفقیت ثبت شد و پس از بررسی نمایش داده خواهد شد.', 'success');
+
+            // Reload comments
+            loadComments();
+        })
+        .catch(function(err) {
+            var msg = 'خطا در ارسال دیدگاه.';
+            if (err.detail) msg = err.detail;
+            else if (err.first_name) msg = Array.isArray(err.first_name) ? err.first_name[0] : err.first_name;
+            else if (err.last_name) msg = Array.isArray(err.last_name) ? err.last_name[0] : err.last_name;
+            else if (err.content) msg = Array.isArray(err.content) ? err.content[0] : err.content;
+            if (window.showToast) window.showToast(msg, 'error');
+        })
+        .finally(function() {
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'ارسال دیدگاه';
+            }
+        });
+    }
+
+    function getCSRFToken() {
+        var name = 'csrftoken';
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var c = cookies[i].trim();
+            if (c.indexOf(name + '=') === 0) {
+                return c.substring(name.length + 1);
+            }
+        }
+        return '';
+    }
+
+    // Initialize comments
+    setTimeout(function() {
+        initComments();
+    }, 300);
+
 });

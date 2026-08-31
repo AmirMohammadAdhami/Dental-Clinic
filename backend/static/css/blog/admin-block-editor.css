@@ -233,6 +233,171 @@
     box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.12);
 }
 
+/* ── dark mode ─────────────────────────────────────────────────── */
+:root[data-theme="dark"] .block-editor-wrapper,
+:root[data-theme="dark"] .be-block,
+:root[data-theme="dark"] .block-editor-add-btn,
+:root[data-theme="dark"] .be-btn,
+:root[data-theme="dark"] .be-input,
+:root[data-theme="dark"] .block-editor-source,
+:root[data-theme="dark"] .block-editor-blocks:empty::before {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+:root[data-theme="dark"] .block-editor-wrapper {
+    background: transparent;
+}
+:root[data-theme="dark"] .be-block,
+:root[data-theme="dark"] .block-editor-add-btn,
+:root[data-theme="dark"] .be-btn {
+    background: var(--surface);
+}
+:root[data-theme="dark"] .be-block-header {
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+:root[data-theme="dark"] .block-editor-toolbar {
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+:root[data-theme="dark"] .block-editor-toolbar-title,
+:root[data-theme="dark"] .block-editor-add-btn,
+:root[data-theme="dark"] .be-btn:hover,
+:root[data-theme="dark"] .block-editor-source-wrapper details summary:hover,
+:root[data-theme="dark"] .be-block-header .be-block-type-badge {
+    color: var(--text);
+}
+:root[data-theme="dark"] .block-editor-add-btn {
+    color: var(--text-muted);
+}
+:root[data-theme="dark"] .block-editor-add-btn:hover {
+    background: rgba(15, 118, 110, 0.15);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+:root[data-theme="dark"] .block-editor-toolbar-title {
+    color: var(--text-muted);
+}
+:root[data-theme="dark"] .be-label,
+:root[data-theme="dark"] .be-block-grip,
+:root[data-theme="dark"] .be-block-index,
+:root[data-theme="dark"] .be-btn,
+:root[data-theme="dark"] .block-editor-source-wrapper details summary {
+    color: var(--text-faint);
+}
+:root[data-theme="dark"] .be-block-grip:hover,
+:root[data-theme="dark"] .block-editor-source-wrapper details summary:hover {
+    color: var(--text-muted);
+}
+:root[data-theme="dark"] .be-input,
+:root[data-theme="dark"] .block-editor-source {
+    background: var(--bg-alt);
+    color: var(--text);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+:root[data-theme="dark"] .be-input:focus,
+:root[data-theme="dark"] .block-editor-source:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.2);
+}
+:root[data-theme="dark"] .be-btn:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+:root[data-theme="dark"] .be-btn-delete:hover {
+    background: rgba(220, 38, 38, 0.15);
+    border-color: rgba(220, 38, 38, 0.3);
+    color: #f87171;
+}
+:root[data-theme="dark"] .block-editor-blocks:empty::before {
+    background: var(--bg-alt);
+    color: var(--text-faint);
+}
+:root[data-theme="dark"] .be-block:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* ── dark mode (prefers-color-scheme fallback) ────────────────── */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .block-editor-wrapper,
+    :root:not([data-theme="light"]) .be-block,
+    :root:not([data-theme="light"]) .block-editor-add-btn,
+    :root:not([data-theme="light"]) .be-btn,
+    :root:not([data-theme="light"]) .be-input,
+    :root:not([data-theme="light"]) .block-editor-source,
+    :root:not([data-theme="light"]) .block-editor-blocks:empty::before {
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+    :root:not([data-theme="light"]) .block-editor-wrapper {
+        background: transparent;
+    }
+    :root:not([data-theme="light"]) .be-block,
+    :root:not([data-theme="light"]) .block-editor-add-btn,
+    :root:not([data-theme="light"]) .be-btn {
+        background: var(--surface);
+    }
+    :root:not([data-theme="light"]) .be-block-header {
+        background: rgba(255, 255, 255, 0.03);
+        border-bottom-color: rgba(255, 255, 255, 0.06);
+    }
+    :root:not([data-theme="light"]) .block-editor-toolbar {
+        border-bottom-color: rgba(255, 255, 255, 0.08);
+    }
+    :root:not([data-theme="light"]) .block-editor-toolbar-title,
+    :root:not([data-theme="light"]) .block-editor-add-btn,
+    :root:not([data-theme="light"]) .be-btn:hover,
+    :root:not([data-theme="light"]) .block-editor-source-wrapper details summary:hover,
+    :root:not([data-theme="light"]) .be-block-header .be-block-type-badge {
+        color: var(--text);
+    }
+    :root:not([data-theme="light"]) .block-editor-add-btn {
+        color: var(--text-muted);
+    }
+    :root:not([data-theme="light"]) .block-editor-add-btn:hover {
+        background: rgba(15, 118, 110, 0.15);
+        border-color: var(--primary);
+        color: var(--primary);
+    }
+    :root:not([data-theme="light"]) .block-editor-toolbar-title {
+        color: var(--text-muted);
+    }
+    :root:not([data-theme="light"]) .be-label,
+    :root:not([data-theme="light"]) .be-block-grip,
+    :root:not([data-theme="light"]) .be-block-index,
+    :root:not([data-theme="light"]) .be-btn,
+    :root:not([data-theme="light"]) .block-editor-source-wrapper details summary {
+        color: var(--text-faint);
+    }
+    :root:not([data-theme="light"]) .be-block-grip:hover,
+    :root:not([data-theme="light"]) .block-editor-source-wrapper details summary:hover {
+        color: var(--text-muted);
+    }
+    :root:not([data-theme="light"]) .be-input,
+    :root:not([data-theme="light"]) .block-editor-source {
+        background: var(--bg-alt);
+        color: var(--text);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+    :root:not([data-theme="light"]) .be-input:focus,
+    :root:not([data-theme="light"]) .block-editor-source:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.2);
+    }
+    :root:not([data-theme="light"]) .be-btn:hover {
+        background: rgba(255, 255, 255, 0.06);
+    }
+    :root:not([data-theme="light"]) .be-btn-delete:hover {
+        background: rgba(220, 38, 38, 0.15);
+        border-color: rgba(220, 38, 38, 0.3);
+        color: #f87171;
+    }
+    :root:not([data-theme="light"]) .block-editor-blocks:empty::before {
+        background: var(--bg-alt);
+        color: var(--text-faint);
+    }
+    :root:not([data-theme="light"]) .be-block:hover {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+}
+
 /* ── responsive ──────────────────────────────────────────────────── */
 @media (max-width: 768px) {
     .block-editor-add-btns {

@@ -358,6 +358,14 @@ html, body.post-page, .post-page .bg-grid, .post-page .tooth-pattern,
 .post-cta-mobile p { font-size: 0.88rem; line-height: 1.75; color: rgba(255,255,255,0.78); margin-bottom: 18px; }
 .post-cta-mobile .btn { background: #ffffff; color: var(--primary-dark); font-weight: 700; border: none; width: 100%; justify-content: center; padding: 16px 24px; font-size: 1.05rem; }
 
+/* ================= COMMENT FORM (dynamic) ================= */
+.post-comment-name-fields { margin-bottom: 0; }
+.post-comment-name-row { display: flex; gap: 12px; }
+.post-comment-name-input { flex: 1; }
+.post-comment-form-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.post-comment-form-hint { font-size: 0.8rem; color: var(--text-faint); flex: 1; }
+.post-comment-empty { text-align: center; padding: 32px 20px; color: var(--text-faint); font-size: 0.95rem; }
+
 /* ================= POST RESPONSIVE ================= */
 @media (max-width: 1080px) {
     .post-layout-inner { grid-template-columns: 1fr; }
@@ -378,6 +386,7 @@ html, body.post-page, .post-page .bg-grid, .post-page .tooth-pattern,
     .post-related-grid { grid-template-columns: 1fr; }
     .post-callout { padding: 16px 18px; }
     .post-comment { padding: 16px; }
+    .post-comment-name-row { flex-direction: column; gap: 8px; }
     .post-gallery-thumb { width: 60px; height: 44px; }
     .post-gallery-arrow { width: 34px; height: 34px; }
     .post-gallery-arrow svg { width: 16px; height: 16px; }

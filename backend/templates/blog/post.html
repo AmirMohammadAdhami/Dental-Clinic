@@ -161,45 +161,25 @@
                 <!-- Comments Section -->
                 <section class="post-comments">
                     <h2 class="post-comments-title">دیدگاه‌ها و سوالات</h2>
-                    <div class="post-comment-form">
-                        <textarea class="post-comment-input" placeholder="دیدگاه یا سوال خود را بنویسید..." rows="4"></textarea>
-                        <button class="btn btn-primary btn-sm">ارسال دیدگاه</button>
-                    </div>
-                    <div class="post-comment">
-                        <div class="post-comment-header">
-                            <div class="post-comment-user">
-                                <div class="post-comment-avatar">س</div>
-                                <div>
-                                    <span class="post-comment-name">سارا احمدی</span>
-                                    <span class="post-comment-date">۳ روز پیش</span>
-                                </div>
+                    <!-- Comment Form -->
+                    <div class="post-comment-form" id="commentForm">
+                        <div class="post-comment-name-fields" id="commentNameFields" style="display:none;">
+                            <div class="post-comment-name-row">
+                                <input type="text" class="post-comment-input post-comment-name-input" id="commentFirstName" placeholder="نام" maxlength="150">
+                                <input type="text" class="post-comment-input post-comment-name-input" id="commentLastName" placeholder="نام خانوادگی" maxlength="150">
                             </div>
                         </div>
-                        <p class="post-comment-text">ممنون از مقاله خوبتون. سوالم اینه که اگه فقط دندان‌های جلو کمی کج باشن، بازم نیاز به بریس کامل هست؟</p>
-                        <div class="post-comment-reply">
-                            <div class="post-comment-header">
-                                <div class="post-comment-user">
-                                    <img width="513" height="768" src="{% static 'images/doctors/doctor-1.jpg' %}" alt="دکتر احمدی" class="post-comment-reply-avatar">
-                                    <div>
-                                        <span class="post-comment-name">دکتر علیرضا احمدی</span>
-                                        <span class="post-comment-badge">پاسخ دندانپزشک</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <p class="post-comment-text">سلام سارا خانم. در موارد خفیف ممکنه با ارتودنسی مخفی یا حتی کامپوزیت ونیر قابل حل باشه. حتماً مراجعه کنید تا معاینه دقیق انجام بشه.</p>
+                        <textarea class="post-comment-input" id="commentContent" placeholder="دیدگاه یا سوال خود را بنویسید..." rows="4" maxlength="2000"></textarea>
+                        <div class="post-comment-form-footer">
+                            <span class="post-comment-form-hint" id="commentFormHint"></span>
+                            <button class="btn btn-primary btn-sm" id="commentSubmitBtn">ارسال دیدگاه</button>
                         </div>
                     </div>
-                    <div class="post-comment">
-                        <div class="post-comment-header">
-                            <div class="post-comment-user">
-                                <div class="post-comment-avatar">م</div>
-                                <div>
-                                    <span class="post-comment-name">محمد رضایی</span>
-                                    <span class="post-comment-date">۱ هفته پیش</span>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="post-comment-text">هزینه ارتودنسی اینویزیلاین خیلی بالاست. آیا اقساطی هم دارید؟</p>
+                    <!-- Comment List (dynamic) -->
+                    <div id="commentList"></div>
+                    <!-- Empty state -->
+                    <div class="post-comment-empty" id="commentEmpty" style="display:none;">
+                        <p>هنوز دیدگاهی ثبت نشده است. اولین نفری باشید که نظر می‌دهد!</p>
                     </div>
                 </section>
 

@@ -194,6 +194,7 @@
 </nav>
 
 <script src="{% static "js/shared.js" %}?v=2"></script>
+<script>window.__IS_AUTHENTICATED__ = {{ user.is_authenticated|yesno:"true,false" }};</script>
 {% block js %}
 {% endblock %}
 </body>

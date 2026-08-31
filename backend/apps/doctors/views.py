@@ -1,6 +1,8 @@
+import json
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from backend.apps.appointments.models import Service
+from backend.apps.blog.widgets import BLOCK_TYPES
 
 
 # ── Public pages ──
@@ -61,6 +63,7 @@ def doctor_dashboard_article_editor(request):
         'active_page': 'articles',
         'article_id': int(article_id) if article_id and article_id.isdigit() else None,
         'services': services,
+        'block_schema': json.dumps(BLOCK_TYPES, ensure_ascii=False),
     })
 
 

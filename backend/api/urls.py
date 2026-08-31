@@ -7,7 +7,7 @@ from backend.api.gallery.views import GalleryListApiView
 from backend.api.faq.views import FAQListApiView
 from backend.api.services.views import ServiceListApiView
 from backend.api.doctor_reviews.views import DoctorReviewListApiView, DoctorReviewCreateApiView
-from backend.api.articles.views import ArticleListApiView
+from backend.api.articles.views import ArticleListApiView, ArticleCommentListCreateView
 from backend.api.notifications.views import (
     NotificationListAPIView,
     NotificationMarkReadAPIView,
@@ -41,6 +41,7 @@ urlpatterns = [
     path('home-videos/', ArticleListApiView.as_view({'get': 'list'}), name='home-video-list'),
     path('home-videos/<str:slug>/', ArticleListApiView.as_view({'get': 'retrieve'}), name='home-video-detail'),
     path('articles/<str:slug>/', ArticleListApiView.as_view({'get': 'retrieve'}), name='article-detail'),
+    path('articles/<str:slug>/comments/', ArticleCommentListCreateView.as_view(), name='article-comments'),
     path('services/', ServiceListApiView.as_view(), name='service-list'),
     path('faqs/', FAQListApiView.as_view(), name='faq-list'),
     path('dashboard/me/', UserDashboardAPIView.as_view(), name='user-dashboard'),
