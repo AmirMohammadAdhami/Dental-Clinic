@@ -216,7 +216,7 @@ class DoctorCommentListSerializer(serializers.ModelSerializer):
     user_name = serializers.CharField(source='commenter_name', read_only=True)
     article_title = serializers.CharField(source='article.title', read_only=True)
     article_slug = serializers.CharField(source='article.slug', read_only=True)
-    replies = CommentChildSerializer(many=True, read_only=True)
+    replies = CommentChildSerializer(source='children', many=True, read_only=True)
 
     class Meta:
         model = Comment

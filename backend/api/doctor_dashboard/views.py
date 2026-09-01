@@ -288,6 +288,10 @@ class DoctorCommentReplyView(generics.CreateAPIView):
             article=parent_comment.article,
             parent=parent_comment,
         )
+        # Auto-approve the parent comment when doctor replies
+        if parent_comment.status != Comment.Status.APPROVED:
+            parent_comment.status = Comment.Status.APPROVED
+            parent_comment.save(update_fields=['status', 'updated_at'])
 
 
 # ── Reviews ───────────────────────────────────────────────────────

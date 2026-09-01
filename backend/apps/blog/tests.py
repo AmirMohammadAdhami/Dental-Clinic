@@ -235,7 +235,8 @@ class CommentTest(TestCase):
             article=self.article,
             content='Great article!'
         )
-        self.assertEqual(comment.status, Comment.Status.PENDING)
+        # Doctor users get auto-approved via pre_save signal
+        self.assertEqual(comment.status, Comment.Status.APPROVED)
 
     def test_comment_status_choices(self):
         self.assertEqual(Comment.Status.PENDING, 'PENDING')
@@ -283,6 +284,98 @@ class FAQTest(TestCase):
         )
         faq.categories.add(service1, service2)
         self.assertEqual(faq.categories.count(), 2)
+
+
+class DoctorCommentSerializerTest(TestCase):
+    """Tests for doctor comment reply + status change flow."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(
+            phone='09121234567',
+            national_code='1234567890',
+            first_name='Ali',
+            last_name='Rezaei'
+        )
+        self.doctor = Doctor.objects.create(
+            user=self.user,
+            speciality='Dentist',
+            university='Tehran University',
+            years_of_experience=10,
+            bio='Experienced dentist',
+            medical_license_number='ML12345'
+        )
+        self.service = Service.objects.create(
+            name='Dental Cleaning',
+            description='Professional dental cleaning'
+        )
+        self.article = Article.objects.create(
+            author=self.doctor,
+            title='Test Article',
+            category=self.service,
+            abstract='Test abstract',
+            content='Test content'
+        )
+        self.patient = User.objects.create_user(
+            phone='09129876543',
+            national_code='0987654321',
+            first_name='Sara',
+            last_name='Ahmadi'
+        )
+
+    def test_reply_includes_replies_in_serializer(self):
+        """DoctorCommentListSerializer must return children in 'replies' field."""
+        from backend.api.doctor_dashboard.serializers import DoctorCommentListSerializer
+
+        parent = Comment.objects.create(
+            user=self.patient, article=self.article,
+            content='Great article!'
+        )
+        reply = Comment.objects.create(
+            user=self.user, article=self.article,
+            content='Thank you!', parent=parent
+        )
+
+        serializer = DoctorCommentListSerializer(parent)
+        data = serializer.data
+
+        self.assertEqual(len(data['replies']), 1)
+        self.assertEqual(data['replies'][0]['content'], 'Thank you!')
+
+    def test_reply_changes_parent_status_to_approved(self):
+        """After doctor replies, parent status must be APPROVED."""
+        from backend.api.doctor_dashboard.serializers import DoctorCommentListSerializer
+
+        parent = Comment.objects.create(
+            user=self.patient, article=self.article,
+            content='Great article!', status=Comment.Status.PENDING
+        )
+        Comment.objects.create(
+            user=self.user, article=self.article,
+            content='Thank you!', parent=parent
+        )
+        parent.status = Comment.Status.APPROVED
+        parent.save(update_fields=['status', 'updated_at'])
+
+        serializer = DoctorCommentListSerializer(parent)
+        data = serializer.data
+
+        self.assertEqual(data['status'], 'APPROVED')
+        self.assertEqual(len(data['replies']), 1)
+
+    def test_unreplied_comment_shows_empty_replies(self):
+        """Comment with no replies should have empty replies list."""
+        from backend.api.doctor_dashboard.serializers import DoctorCommentListSerializer
+
+        parent = Comment.objects.create(
+            user=self.patient, article=self.article,
+            content='Great article!'
+        )
+
+        serializer = DoctorCommentListSerializer(parent)
+        data = serializer.data
+
+        self.assertEqual(data['status'], 'PENDING')
+        self.assertEqual(data['replies'], [])
 
 
 class BeforeAfterTest(TestCase):

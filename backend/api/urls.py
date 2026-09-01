@@ -1,8 +1,7 @@
 from django.urls import path
 from backend.api.dashboard.views import UserDashboardAPIView
-from backend.api.dashboard.appointment_create import CreateAppointmentView
 from backend.api.assistants.views import AssistantListAPIView
-from backend.api.doctors.views import DoctorListAPIView, DoctorDetailAPIView, DoctorAvailabilityAPIView
+from backend.api.doctors.views import DoctorListAPIView, DoctorDetailAPIView
 from backend.api.before_after.views import BeforeAfterListApiView
 from backend.api.gallery.views import GalleryListApiView
 from backend.api.faq.views import FAQListApiView
@@ -33,7 +32,7 @@ app_name = 'api'
 urlpatterns = [
     path('doctors/', DoctorListAPIView.as_view(), name='doctor-list'),
     path('doctors/<str:slug>/', DoctorDetailAPIView.as_view(), name='doctor-detail'),
-    path('doctors/<str:slug>/availability/', DoctorAvailabilityAPIView.as_view(), name='doctor-availability'),
+
     path('assistants/', AssistantListAPIView.as_view(), name='assistant-list'),
     path('before-afters/', BeforeAfterListApiView.as_view(), name='before-after-list'),
 
@@ -48,7 +47,7 @@ urlpatterns = [
     path('services/', ServiceListApiView.as_view(), name='service-list'),
     path('faqs/', FAQListApiView.as_view(), name='faq-list'),
     path('dashboard/me/', UserDashboardAPIView.as_view(), name='user-dashboard'),
-    path('dashboard/appointments/create/', CreateAppointmentView.as_view(), name='appointment-create'),
+
 
     # Notifications
     path('notifications/', NotificationListAPIView.as_view(), name='notification-list'),

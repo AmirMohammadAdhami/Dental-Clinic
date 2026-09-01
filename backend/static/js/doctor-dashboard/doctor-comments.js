@@ -58,7 +58,6 @@
         replyBlock =
           '<div class="doc-comment-reply-block">' +
           '  <div class="doc-comment-reply-header">' +
-          '    <div class="doc-comment-reply-avatar">🦷</div>' +
           '    <div class="doc-comment-reply-info">' +
           '      <span class="doc-comment-reply-name">' + esc(doctorName) + '</span>' +
           '      <span class="doc-comment-reply-date">' + replyDate + '</span>' +
