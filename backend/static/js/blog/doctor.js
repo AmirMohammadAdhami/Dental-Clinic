@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /* ─── Get slug from URL ─── */
   var pathParts = window.location.pathname.replace(/\/+$/, '').split('/');
-  var slug = pathParts[pathParts.length - 1];
+  var slug = decodeURIComponent(pathParts[pathParts.length - 1]);
   if (!slug) return;
 
   /* ═══════════════════════════════════════════

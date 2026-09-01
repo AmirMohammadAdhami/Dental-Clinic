@@ -11,3 +11,8 @@ django-filter
 # Third Party
 Pillow
 gunicorn
+# Celery
+celery[redis]
+
+# Fake Data Generation
+faker
