@@ -430,7 +430,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const res = await fetch('/api/before-afters/');
       if (!res.ok) throw new Error('API response not OK');
-      const items = toArray(await res.json());
+      const items = toArray(await res.json()).slice(-6);
 
       grid.innerHTML = '';
 
@@ -476,7 +476,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const res = await fetch('/api/doctor-reviews/');
       if (!res.ok) throw new Error('API response not OK');
-      const testimonials = toArray(await res.json());
+      const testimonials = toArray(await res.json()).slice(-12);
 
       deck.innerHTML = '';
 
@@ -533,7 +533,11 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const res = await fetch('/api/home-videos/');
       if (!res.ok) throw new Error('API response not OK');
-      const articles = toArray(await res.json());
+      const allArticles = toArray(await res.json());
+      const articles = allArticles.filter(a => {
+        const files = a.files || [];
+        return files.some(f => f.media_type === 'VIDEO' && (f.video_url || f.file));
+      }).slice(-6);
 
       grid.innerHTML = '';
 

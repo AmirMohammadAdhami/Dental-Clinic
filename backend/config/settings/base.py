@@ -34,6 +34,12 @@ DEBUG = env.bool("DEBUG", default=False)
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 
+# Trust proxy headers from nginx in Docker
+TRUSTED_ORIGINS = env.list("TRUSTED_ORIGINS", default=["http://localhost", "http://127.0.0.1"])
+
+# If behind a reverse proxy, let Django see the real protocol/host
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
 # Application definition
 django_apps = ['django.contrib.admin',
                'django.contrib.auth',

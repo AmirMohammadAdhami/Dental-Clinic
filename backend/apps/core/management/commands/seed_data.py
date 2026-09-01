@@ -187,17 +187,20 @@ class Command(BaseCommand):
 
     def _create_doctors(self, doctor_users, services):
         specs = [
-            'implantologist', 'orthodontist',
-            'restorative Dentist', 'pediatric Dentist',
-            'oral Surgeon', 'cosmetic Dentist',
+            'ایمپلنتولوژیست',
+            'ارتودونتیست',
+            'دندانپزشک ترمیمی',
+            'دندانپزشک کودکان',
+            'جراح فک و صورت',
+            'دندانپزشک زیبائی',
         ]
         unis = [
-            'Tehran University of Medical Sciences',
-            'Shiraz University of Medical Sciences',
-            'Isfahan University of Medical Sciences',
-            'Mashhad University of Medical Sciences',
-            'Tabriz University of Medical Sciences',
-            'Shahid Beheshti University of Medical Sciences',
+            'دانشگاه علوم پزشکی تهران',
+            'دانشگاه علوم پزشکی شیراز',
+            'دانشگاه علوم پزشکی اصفهان',
+            'دانشگاه علوم پزشکی مشهد',
+            'دانشگاه علوم پزشکی تبریز',
+            'دانشگاه علوم پزشکی شهید بهشتی',
         ]
         doctors = []
         for i, user in enumerate(doctor_users):
@@ -221,9 +224,12 @@ class Command(BaseCommand):
 
     def _create_assistants(self, assistant_users):
         specs = [
-            'dental assistant', 'oral hygienist',
-            'surgery assistant', 'receptionist',
-            'lab assistant', 'office nurse',
+            'دستیار دندانپزشکی',
+            'بهداشتکار دهان و دندان',
+            'دستیار جراحی',
+            'منشی مطب',
+            'دستیار لابراتواری',
+            'پرستار مطب',
         ]
         assistants = []
         for i, user in enumerate(assistant_users):
@@ -234,23 +240,23 @@ class Command(BaseCommand):
 
     def _create_certificates(self, doctors):
         titles = [
-            'Board Certified Implantologist',
-            'Advanced Orthodontics Certificate',
-            'Restorative Aesthetics Certificate',
-            'Oral and Maxillofacial Surgery',
-            'Endodontics Certificate',
-            'Veneer and Laminate Course',
-            'Pediatric Dentistry Certificate',
-            'Laser Therapy Certificate',
-            'Immediate Implant Course',
-            'Practice Management Certificate',
+            'بورد تخصصی ایمپلنتولوژیست',
+            'گواهینمه پیشرفته ارتودونس',
+            'گواهینمه ترمیم زیبائی',
+            'جراح فک و صورت',
+            'گواهینمه درمان ریشه',
+            'دوره ونیر و لمینت',
+            'گواهینمه دندانپزشکی کودکان',
+            'گواهینمه لازر درمانی',
+            'دوره ایمپلنت فوری',
+            'گواهینمه مدیریت مطب',
         ]
         places = [
-            'Ministry of Health',
-            'Iranian Dental Association',
-            'University of Tehran',
-            'International Implant Academy',
-            'Continuing Medical Education Center',
+            'وزارت بهداشت',
+            'انجمن دندانپزشکان ایران',
+            'دانشگاه تهران',
+            'آکادمی بین‌المللی ایمپلنت',
+            'مرکز آموزش مداوم پزشکی',
         ]
         certs = []
         for doc in doctors:
@@ -266,13 +272,21 @@ class Command(BaseCommand):
 
     def _create_medical_records(self):
         descs = [
-            'diabetes', 'high Blood Pressure', 'heart Disease',
-            'penicillin Allergy', 'jaw Surgery History',
-            'osteoporosis', 'thyroid Problem',
-            'chemotherapy History', 'gum Disease',
-            'tooth Sensitivity', 'orthodontics History',
-            'jaw Fracture', 'dental Cyst',
-            'severe Decay', 'missing Teeth',
+            'دیابت',
+            'فشار خون بالا',
+            'بیماری قلبی',
+            'الرژی به پنی‌سیلین',
+            'سابقه جراحی فک',
+            'پوکی ستخون',
+            'مشکل تیروئید',
+            'سابقه شیمی‌درمانی',
+            'بیماری لثه',
+            'حساسیت دندان',
+            'سابقه ارتودونس',
+            'شکستگی فک',
+            'کیست دندانی',
+            'پوسیدگی شدید',
+            'از دست دندان',
         ]
         records = []
         for d in descs:
@@ -345,21 +359,21 @@ class Command(BaseCommand):
         rev_weights = [0.20, 0.70, 0.10]
 
         comments = [
-            'Great experience, highly recommend!',
-            'Very professional and clean work.',
-            'Excellent treatment, no pain at all.',
-            'Friendly staff and modern clinic.',
-            'Very satisfied with the results.',
-            'The doctor was very patient and skilled.',
-            'Prices are fair for the quality.',
-            'Quick and efficient treatment.',
-            'Best dental clinic I have visited.',
-            'The doctor explained everything clearly.',
-            'I was nervous but the procedure was painless.',
-            'Very happy with my new smile.',
-            'Highly professional team.',
-            'Will definitely come back again.',
-            'The clinic is very well equipped.',
+            'خیلی عالی بود، پیشنهاد می‌کنم!',
+            'خیلی حرفه‌ای و تمیز کار کردن.',
+            'درمان عالی بود، اصلاً درد نداشت.',
+            'پرسنل مهربون و مطب مدرنی دارن.',
+            'خیلی راضیم از نتیجه کار.',
+            'دکتر خیلی صبور و ماهر بودن.',
+            'قیمت‌ها مناسب کیفیت هست.',
+            'سریع و کارآمد درمانم کردن.',
+            'بهترین کلینیک دندانپزشکی که رفتم.',
+            'دکتر همه چیز رو واضح توضیح دادن.',
+            'استرس داشتم ولی روش بدون درد بود.',
+            'خیلی خوشحالم از لبخند جدیدم.',
+            'تیم کاملاً حرفه‌ای هستن.',
+            'حتماً دوباره میام.',
+            'مطب خیلی مجهز هست.',
         ]
 
         reviews = []
@@ -395,44 +409,44 @@ class Command(BaseCommand):
     def _create_articles(self, doctors, services):
         data = [
             {
-                'title': 'Everything About Dental Implants',
-                'abstract': 'Dental implants are one of the best ways to replace missing teeth.',
-                'content': 'Dental implants are an advanced treatment that uses titanium screws placed in the jaw to permanently support artificial teeth.',
+                'title': 'ایمپلنت دندان: همه چیزی که باید بدانید',
+                'abstract': 'ایمپلنت دندان یکی از بهترین راه‌ها برای جایگزینی دندان‌های از دست رفته است.',
+                'content': 'ایمپلنت دندان یک روش درمانی پیشرفته است که با کاشت پیچ‌های تیتانیومی در فک، دندان مصنوعی را به طور دائمی نصب می‌کند.',
             },
             {
-                'title': 'Orthodontics: Straightening Teeth Painlessly',
-                'abstract': 'Modern orthodontic methods allow teeth straightening without pain.',
-                'content': 'Modern orthodontics includes clear braces and removable aligners suitable for all ages.',
+                'title': 'ارتودنسی: صاف کردن دندان‌ها بدون درد',
+                'abstract': 'روش‌های مدرن ارتودنسی امکان صاف کردن دندان‌ها را بدون درد فراهم می‌کنند.',
+                'content': 'ارتودنسی مدرن شامل بریس‌های شفاف و الاینرهای متحرک است که برای هر سنی مناسب هستند.',
             },
             {
-                'title': 'Dental Veneers: A Beautiful Smile in No Time',
-                'abstract': 'Veneers dramatically improve the appearance of teeth.',
-                'content': 'Ceramic veneers are thin shells bonded to the tooth surface creating a beautiful natural smile.',
+                'title': 'لمینت دندان: لبخند زیبا در کمترین زمان',
+                'abstract': 'لمینت دندان ظاهر دندان‌ها را به طور چشمگیری بهبود می‌بخشد.',
+                'content': 'لمینت‌های سرامیکی پوسته‌های نازکی هستند که روی سطح دندان‌ها چسبانده می‌شوند و لبخندی زیبا و طبیعی ایجاد می‌کنند.',
             },
             {
-                'title': 'Teeth Whitening: Methods and Benefits',
-                'abstract': 'Whitening is a simple and quick way to brighten your teeth.',
-                'content': 'Teeth whitening uses special chemicals to lighten tooth color. It can be done in-clinic or at home.',
+                'title': 'بلیچینگ دندان: روش‌ها و مزایا',
+                'abstract': 'بلیچینگ یک روش ساده و سریع برای سفید کردن دندان‌ها است.',
+                'content': 'بلیچینگ دندان با استفاده از مواد شیمیایی مخصوص، رنگ دندان‌ها را روشن‌تر می‌کند. این روش در مطب یا در خانه قابل انجام است.',
             },
             {
-                'title': 'Root Canal Treatment: What You Should Know',
-                'abstract': 'Root canal is a treatment that saves damaged teeth.',
-                'content': 'Root canal involves removing infected nerve tissue from inside the tooth and then filling it.',
+                'title': 'عصب کشی دندان: آنچه باید بدانید',
+                'abstract': 'عصب کشی یک درمان ریشه‌ای است که دندان آسیب‌دیده را نجات می‌دهد.',
+                'content': 'عصب کشی شامل حذف بافت عصبی آلوده از داخل دندان و سپس پر کردن آن است.',
             },
             {
-                'title': 'Composite Veneers: A Modern Alternative',
-                'abstract': 'Composite veneers are an economical option for beautifying teeth.',
-                'content': 'Composite veneers use tooth-colored materials applied to the tooth surface for a natural result.',
+                'title': 'کامپوزیت دندان: جایگزینی مدرن برای لمینت',
+                'abstract': 'کامپوزیت ونیر یک روش اقتصادی‌تر برای زیباسازی دندان‌ها است.',
+                'content': 'کامپوزیت ونیر با استفاده از مواد همرنگ دندان روی سطح دندان‌ها اعمال می‌شود و نتیجه‌ای طبیعی ایجاد می‌کند.',
             },
             {
-                'title': 'Dental Cleaning: Importance and Methods',
-                'abstract': 'Regular cleaning is essential for gum and tooth health.',
-                'content': 'Scaling removes deposits and calculus from teeth and below the gum line preventing gum disease.',
+                'title': 'جرمگیری دندان: اهمیت و روش‌ها',
+                'abstract': 'جرمگیری منظم برای حفظ سلامت لثه و دندان ضروری است.',
+                'content': 'جرمگیری فرآیندی است که رسوبات و جرم‌های روی دندان‌ها و زیر لثه را حذف می‌کند و از بیماری‌های لثه جلوگیری می‌کند.',
             },
             {
-                'title': 'Pediatric Dentistry: Important Tips for Parents',
-                'abstract': 'Understanding children dental growth stages and oral hygiene is very important.',
-                'content': 'Pediatric dentistry includes special care for primary and permanent teeth. Regular dental visits from an early age are recommended.',
+                'title': 'دندانپزشکی کودکان: نکات مهم برای والدین',
+                'abstract': 'آشنایی با مراحل رشد دندان‌های کودکان و بهداشت دهان و دندان آنها بسیار مهم است.',
+                'content': 'دندانپزشکی کودکان شامل مراقبت‌های ویژه برای دندان‌های شیری و دایمی کودکان است. مراجعه منظم به دندانپزشک از سنین پایین توصیه می‌شود.',
             },
         ]
 
@@ -507,21 +521,21 @@ class Command(BaseCommand):
 
     def _create_comments(self, users, articles):
         texts = [
-            'Very useful article, thank you!',
-            'Thanks for the great explanations.',
-            'It helped me a lot, appreciate it.',
-            'Is this method suitable for everyone?',
-            'Please also mention the prices.',
-            'Excellent, looking forward to more articles.',
-            'Very well explained.',
-            'Does it require hospitalization?',
-            'A comprehensive and complete article.',
-            'Thanks for your efforts.',
-            'Can you explain more?',
-            'Really excellent.',
-            'Very good, shared with friends.',
-            'Thanks for the response.',
-            'You wrote a very good article.',
+            'مقاله خیلی مفیدی بود، ممنونم.',
+            'ممنون از توضیحات عالیتون.',
+            'خیلی کمکم کرد، متشکرم.',
+            'آیا این روش برای همه مناسبه؟',
+            'قیمت‌ها رو هم بگید لطفاً.',
+            'عالی بود، منتظر مقالات بعدی هستم.',
+            'خیلی خوب توضیح دادید.',
+            'آیا نیاز به بستری شدن داره؟',
+            'مقاله جامع و کاملی بود.',
+            'خیلی ممنون از زحماتتون.',
+            'میشه بیشتر توضیح بدید؟',
+            'عالی بود واقعاً.',
+            'خیلی خوب بود، به اشتراک گذاشتم.',
+            'ممنون از پاسخ‌گویی.',
+            'مقاله خیلی خوبی نوشتید.',
         ]
 
         comments = []
@@ -542,16 +556,16 @@ class Command(BaseCommand):
 
     def _create_faqs(self, services):
         faq_data = [
-            ('How long does a dental implant take?', 'The implant process usually takes 3 to 6 months including surgery and healing.'),
-            ('Are dental veneers reversible?', 'No, veneers are a permanent treatment and are not reversible.'),
-            ('How long does teeth whitening last?', 'Whitening lasts 6 months to 2 years depending on diet and oral hygiene.'),
-            ('Does root canal treatment hurt?', 'No, with local anesthesia you will not feel any pain.'),
-            ('Is orthodontics suitable for adults?', 'Yes, orthodontics is possible at any age.'),
-            ('What is the difference between composite and veneer?', 'Veneers are made of ceramic and composite uses tooth-colored materials. Veneers last longer.'),
-            ('How often should I visit the dentist?', 'Every 6 months for a checkup and cleaning is recommended.'),
-            ('Is pediatric dentistry different?', 'Yes, pediatric dentistry focuses on desensitization and special care.'),
-            ('How much does a dental implant cost?', 'Implant cost varies by brand and number of teeth. Please contact the clinic.'),
-            ('Does scaling damage tooth enamel?', 'No, professional scaling does not damage tooth enamel at all.'),
+            ('ایمپلنت دندان چقدر طول می‌کشد؟', 'فرآیند ایمپلنت معمولاً ۳ تا ۶ ماه طول می‌کشد که شامل جراحی کاشت و دوره بهبود است.'),
+            ('آیا لمینت دندان برگشت‌پذیر است؟', 'خیر، لمینت دندان یک درمان دائمی است و برگشت‌پذیر نیست.'),
+            ('بلیچینگ دندان چقدر ماندگاری دارد؟', 'ماندگاری بلیچینگ بسته به رژیم غذایی و بهداشت دهان، ۶ ماه تا ۲ سال است.'),
+            ('آیا عصب کشی درد دارد؟', 'خیر، با بی‌حسی موضعی، دردی حس نخواهید کرد.'),
+            ('ارتودنسی برای بزرگسالان مناسب است؟', 'بله، ارتودنسی در هر سنی امکان‌پذیر است.'),
+            ('کامپوزیت و لمینت چه فرقی دارند؟', 'لمینت از سرامیک ساخته می‌شود و کامپوزیت از مواد همرنگ دندان. لمینت ماندگاری بیشتری دارد.'),
+            ('چند بار باید به دندانپزشک مراجعه کنیم؟', 'هر ۶ ماه یکبار مراجعه و جرمگیری توصیه می‌شود.'),
+            ('آیا دندانپزشکی کودکان متفاوت است؟', 'بله، دندانپزشکی کودکان با تمرکز بر ترس‌زدایی و مراقبت‌های ویژه انجام می‌شود.'),
+            ('قیمت ایمپلنت دندان چقدر است؟', 'قیمت ایمپلنت بسته به برند و تعداد دندان متفاوت است. لطفاً با مطب تماس بگیرید.'),
+            ('آیا جرمگیری به مینای دندان آسیب می‌زند؟', 'خیر، جرمگیری حرفه‌ای هیچ آسیبی به مینای دندان وارد نمی‌کند.'),
         ]
 
         faqs = []
@@ -563,16 +577,16 @@ class Command(BaseCommand):
 
     def _create_notifications(self, users):
         notif_data = [
-            ('Your appointment is confirmed', 'Your appointment with tracking code DNT-XXXX is confirmed.', 'APPOINTMENT'),
-            ('Appointment Reminder', 'You have an appointment tomorrow at 10 AM.', 'APPOINTMENT'),
-            ('New photos uploaded', 'Your treatment photos are now in the gallery.', 'GALLERY'),
-            ('Your prescription is ready', 'Your treatment prescription has been issued.', 'PRESCRIPTION'),
-            ('Checkup Reminder', 'Your checkup appointment is due.', 'CHECKUP_REMINDER'),
-            ('New Invoice', 'Your treatment invoice has been issued.', 'INVOICE'),
-            ('Welcome to the Clinic', 'Your registration has been confirmed.', 'GENERAL'),
-            ('System Update', 'The system has been updated.', 'GENERAL'),
-            ('Special Discount', '20% discount on whitening is now active.', 'GENERAL'),
-            ('Survey', 'Please register your feedback about the treatment.', 'GENERAL'),
+            ('نوبت شما تأیید شد', 'نوبت شما با کد پیگیری DNT-XXXX تأیید شد.', 'APPOINTMENT'),
+            ('یادآوری نوبت', 'شما فردا ساعت ۱۰ صبح نوبت دارید.', 'APPOINTMENT'),
+            ('تصاویر جدید آپلود شد', 'تصاویر درمان شما در گالری قرار گرفت.', 'GALLERY'),
+            ('نسخه شما آماده است', 'نسخه درمانی شما صادر شد.', 'PRESCRIPTION'),
+            ('یادآوری چکاپ', 'وقت چکاپ شما فرا رسیده است.', 'CHECKUP_REMINDER'),
+            ('فاکتور جدید', 'فاکتور درمان شما صادر شد.', 'INVOICE'),
+            ('به کلینیک خوش آمدید', 'عضویت شما در سامانه تأیید شد.', 'GENERAL'),
+            ('آپدیت سیستم', 'سیستم به‌روزرسانی شد.', 'GENERAL'),
+            ('تخفیف ویژه', 'تخفیف ۲۰ درصدی برای بلیچینگ فعال شد.', 'GENERAL'),
+            ('نظرسنجی', 'لطفاً نظر خود را درباره درمان ثبت کنید.', 'GENERAL'),
         ]
 
         notifs = []
