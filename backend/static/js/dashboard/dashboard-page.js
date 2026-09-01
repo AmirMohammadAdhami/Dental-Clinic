@@ -37,7 +37,7 @@
         var slugNames = { 'implant': 'implant', 'beauty': 'beauty', 'laminate': 'laminate', 'root-canal': 'root-canal', 'kids': 'kids', 'cleaning': 'cleaning' };
         var html = '';
         services.forEach(function (s) {
-            var slug = slugNames[s.name] || s.name || 'beauty';
+            var slug = s.slug || slugNames[s.name] || s.name || 'beauty';
             var iconSrc = s.icon || '';
             var badgeHTML = s.badge ? '<span class="dash-service-badge dash-service-badge--special">' + R.escapeHTML(s.badge) + '</span>' : '';
             html += '<a href="/dashboard/select-doctors/' + slug + '" class="dash-service-card">' + badgeHTML +

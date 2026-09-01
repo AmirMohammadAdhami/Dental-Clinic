@@ -151,39 +151,158 @@
   };
 
   // --- KPI ---
-  var total = apt.length;
-  var completed = apt.filter(function (a) { return a.status === 'completed'; }).length;
-  var pending = apt.filter(function (a) { return a.status === 'pending' || a.status === 'confirmed'; }).length;
-  var cancelled = apt.filter(function (a) { return a.status === 'cancelled'; }).length;
+  function updateKPI() {
+    var total = apt.length;
+    var completed = apt.filter(function (a) { return a.status === 'completed'; }).length;
+    var pending = apt.filter(function (a) { return a.status === 'pending' || a.status === 'confirmed'; }).length;
+    var cancelled = apt.filter(function (a) { return a.status === 'cancelled'; }).length;
 
-  document.getElementById('kpiGrid').innerHTML =
-    '<article class="rc-kpi"><div class="rc-kpi-icon rc-kpi-icon--blue"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><div><div class="rc-kpi-value">' + total + '</div><div class="rc-kpi-label">نوبت‌های امروز</div></div></article>' +
-    '<article class="rc-kpi"><div class="rc-kpi-icon rc-kpi-icon--green"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div><div><div class="rc-kpi-value">' + completed + '</div><div class="rc-kpi-label">انجام شده</div></div></article>' +
-    '<article class="rc-kpi"><div class="rc-kpi-icon rc-kpi-icon--orange"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><div class="rc-kpi-value">' + pending + '</div><div class="rc-kpi-label">در انتظار پذیرش</div></div></article>' +
-    '<article class="rc-kpi"><div class="rc-kpi-icon rc-kpi-icon--red"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div><div><div class="rc-kpi-value">' + cancelled + '</div><div class="rc-kpi-label">لغو شده</div></div></article>';
+    document.getElementById('kpiGrid').innerHTML =
+      '<article class="rc-kpi"><div class="rc-kpi-icon rc-kpi-icon--blue"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><div><div class="rc-kpi-value">' + total + '</div><div class="rc-kpi-label">نوبت‌های امروز</div></div></article>' +
+      '<article class="rc-kpi"><div class="rc-kpi-icon rc-kpi-icon--green"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div><div><div class="rc-kpi-value">' + completed + '</div><div class="rc-kpi-label">انجام شده</div></div></article>' +
+      '<article class="rc-kpi"><div class="rc-kpi-icon rc-kpi-icon--orange"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div><div class="rc-kpi-value">' + pending + '</div><div class="rc-kpi-label">در انتظار پذیرش</div></div></article>' +
+      '<article class="rc-kpi"><div class="rc-kpi-icon rc-kpi-icon--red"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div><div><div class="rc-kpi-value">' + cancelled + '</div><div class="rc-kpi-label">لغو شده</div></div></article>';
 
-  document.getElementById('todayCount').textContent = total + ' نوبت برای امروز ثبت شده است';
+    document.getElementById('todayCount').textContent = total + ' نوبت برای امروز ثبت شده است';
+  }
+
+  updateKPI();
+
+  // ================= WAITING QUEUE =================
+  var queue = []; // { id, aptId, patient, doctor, service, time, status: 'waiting'|'called' }
+
+  window.addToQueue = function (id) {
+    var a = apt.find(function (x) { return x.id === id; });
+    if (!a || a.status === 'arrived' || a.status === 'completed' || a.status === 'cancelled') return;
+    // Check if already in queue
+    if (queue.some(function (q) { return q.aptId === id; })) return;
+    queue.push({
+      id: Date.now(),
+      aptId: id,
+      patient: a.patient,
+      doctor: a.doctor,
+      service: a.service,
+      time: a.time,
+      status: 'waiting'
+    });
+    a.status = 'arrived';
+    renderQueue();
+    renderTable();
+    updateKPI();
+  };
+
+  window.callPatient = function (qid) {
+    var item = queue.find(function (q) { return q.id === qid; });
+    if (!item) return;
+    item.status = 'called';
+    renderQueue();
+    // Update table badge
+    var btn = document.querySelector('.rc-btn--arrive[data-apt="' + item.aptId + '"]');
+    if (btn) {
+      btn.className = 'rc-btn--arrive rc-btn--called';
+      btn.innerHTML = '📢 صدا زده شد';
+    }
+  };
+
+  window.removeFromQueue = function (qid) {
+    queue = queue.filter(function (q) { return q.id !== qid; });
+    renderQueue();
+  };
+
+  function renderQueue() {
+    var grid = document.getElementById('queueGrid');
+    var empty = document.getElementById('queueEmpty');
+    var countEl = document.getElementById('queueCount');
+    if (!grid) return;
+
+    if (queue.length === 0) {
+      grid.innerHTML = '';
+      empty.classList.add('is-visible');
+      countEl.textContent = 'هنوز بیماری در صف نیست';
+      return;
+    }
+
+    empty.classList.remove('is-visible');
+    countEl.textContent = queue.length + ' بیمار در انتظار';
+
+    // Group by doctor
+    var groups = {};
+    queue.forEach(function (q) {
+      if (!groups[q.doctor]) groups[q.doctor] = [];
+      groups[q.doctor].push(q);
+    });
+
+    var html = '';
+    Object.keys(groups).forEach(function (doc, gi) {
+      var patients = groups[doc];
+      html += '<div class="rc-queue-doctor" style="animation-delay:' + (gi * 0.08) + 's">';
+      html += '<div class="rc-queue-doctor-head">';
+      html += '<div class="rc-queue-doctor-dot"></div>';
+      html += '<div class="rc-queue-doctor-name">' + doc + '</div>';
+      html += '<div class="rc-queue-doctor-count">' + patients.length + '</div>';
+      html += '</div>';
+      html += '<div class="rc-queue-patients">';
+      patients.forEach(function (p, i) {
+        var isNext = i === 0 && p.status === 'waiting';
+        var cls = 'rc-queue-card' + (isNext ? ' is-next' : '');
+        html += '<div class="' + cls + '" style="animation-delay:' + (i * 0.06) + 's">';
+        html += '<div class="rc-queue-num">' + (i + 1) + '</div>';
+        html += '<div class="rc-queue-info">';
+        html += '<div class="rc-queue-name">' + p.patient + '</div>';
+        html += '<div class="rc-queue-service">' + p.service + ' — ' + p.time + '</div>';
+        html += '</div>';
+        if (p.status === 'waiting') {
+          html += '<button class="rc-queue-call-btn" onclick="callPatient(' + p.id + ')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>صدا زدن</button>';
+        } else {
+          html += '<button class="rc-queue-call-btn rc-btn--called" disabled><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>صدا زده شد</button>';
+        }
+        html += '</div>';
+      });
+      html += '</div></div>';
+    });
+
+    grid.innerHTML = html;
+  }
 
   // --- TABLE ---
-  var tbody = document.getElementById('todayBody');
-  tbody.innerHTML = apt.map(function (a) {
-    var priceFormatted = a.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    return '<tr data-id="' + a.id + '">' +
-      '<td><strong>#' + a.id + '</strong></td>' +
-      '<td>' + (a.date || 'امروز') + '</td>' +
-      '<td>' + a.time + '</td>' +
-      '<td>' + a.patient + '</td>' +
-      '<td>' + a.doctor + '</td>' +
-      '<td>' + a.service + '</td>' +
-      '<td>' + priceFormatted + ' تومان</td>' +
-      '<td><select class="rc-st-select" data-id="' + a.id + '">' +
-        Object.keys(statuses).map(function (k) {
-          return '<option value="' + k + '"' + (k === a.status ? ' selected' : '') + '>' + statuses[k] + '</option>';
-        }).join('') +
-      '</select></td>' +
-      '<td><button class="rc-btn rc-btn--ghost rc-btn--sm" onclick="showAptDetail(' + a.id + ')">مشاهده</button></td>' +
-    '</tr>';
-  }).join('');
+  function renderTable() {
+    var tbody = document.getElementById('todayBody');
+    tbody.innerHTML = apt.map(function (a) {
+      var priceFormatted = a.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      var canArrive = (a.status === 'pending' || a.status === 'confirmed');
+      var isQueued = queue.some(function (q) { return q.aptId === a.id; });
+      var queuedItem = queue.find(function (q) { return q.aptId === a.id; });
+
+      var actionHtml = '';
+      if (canArrive && !isQueued) {
+        actionHtml = '<button class="rc-btn--arrive" data-apt="' + a.id + '" onclick="addToQueue(' + a.id + ')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>حاضر شد</button>';
+      } else if (isQueued && queuedItem && queuedItem.status === 'waiting') {
+        actionHtml = '<span class="rc-queue-badge rc-queue-badge--waiting">🔔 در صف</span>';
+      } else if (isQueued && queuedItem && queuedItem.status === 'called') {
+        actionHtml = '<span class="rc-queue-badge rc-queue-badge--called">📢 صدا زده شد</span>';
+      } else {
+        actionHtml = '<button class="rc-btn rc-btn--ghost rc-btn--sm" onclick="showAptDetail(' + a.id + ')">مشاهده</button>';
+      }
+
+      return '<tr data-id="' + a.id + '">' +
+        '<td><strong>#' + a.id + '</strong></td>' +
+        '<td>' + (a.date || 'امروز') + '</td>' +
+        '<td>' + a.time + '</td>' +
+        '<td>' + a.patient + '</td>' +
+        '<td>' + a.doctor + '</td>' +
+        '<td>' + a.service + '</td>' +
+        '<td>' + priceFormatted + ' تومان</td>' +
+        '<td><select class="rc-st-select" data-id="' + a.id + '">' +
+          Object.keys(statuses).map(function (k) {
+            return '<option value="' + k + '"' + (k === a.status ? ' selected' : '') + '>' + statuses[k] + '</option>';
+          }).join('') +
+        '</select></td>' +
+        '<td>' + actionHtml + '</td>' +
+      '</tr>';
+    }).join('');
+  }
+
+  renderTable();
 
   // Status change
   tbody.addEventListener('change', function (e) {
@@ -191,6 +310,8 @@
       var id = parseInt(e.target.dataset.id);
       var aptItem = apt.find(function (a) { return a.id === id; });
       if (aptItem) aptItem.status = e.target.value;
+      renderTable();
+      updateKPI();
     }
   });
 
@@ -222,5 +343,61 @@
       '</div>';
     document.getElementById('aptDetailOverlay').classList.add('is-open');
   };
+
+  // ================= WIDGETS =================
+
+  /* ── Activity Feed ── */
+  var activityLog = ReceptionData.activityLog || [];
+  var actList = document.getElementById('activityList');
+  var actCount = document.getElementById('activityCount');
+  if (actList) {
+    actCount.textContent = activityLog.length;
+    actList.innerHTML = activityLog.map(function (item, i) {
+      return '<li class="rc-activity-item" style="animation-delay:' + (i * 0.06) + 's">' +
+        '<div class="rc-activity-icon rc-activity-icon--' + item.color + '">' + item.icon + '</div>' +
+        '<div class="rc-activity-text">' + item.text + '</div>' +
+        '<div class="rc-activity-time">' + item.time + '</div>' +
+      '</li>';
+    }).join('');
+  }
+
+  /* ── Upcoming Appointments ── */
+  var upcoming = ReceptionData.upcomingAppointments || [];
+  var upList = document.getElementById('upcomingList');
+  var upCount = document.getElementById('upcomingCount');
+  if (upList) {
+    upCount.textContent = upcoming.length;
+    upList.innerHTML = upcoming.map(function (item, i) {
+      return '<li class="rc-upcoming-item" style="animation-delay:' + (i * 0.06) + 's">' +
+        '<div class="rc-upcoming-time">' + item.time + '</div>' +
+        '<div class="rc-upcoming-info">' +
+          '<div class="rc-upcoming-patient">' + item.patient + '</div>' +
+          '<div class="rc-upcoming-detail">' + item.doctor + '</div>' +
+        '</div>' +
+        '<div class="rc-upcoming-service">' + item.service + '</div>' +
+      '</li>';
+    }).join('');
+  }
+
+  /* ── Doctor Availability + Waiting ── */
+  var docStatus = ReceptionData.doctorAvailability || [];
+  var docList = document.getElementById('doctorStatusList');
+  var waitEl = document.getElementById('waitingCounter');
+  if (docList) {
+    var statusLabels = { busy: 'در حال ویزیت', present: 'حاضرر', absent: 'غایب' };
+    docList.innerHTML = docStatus.map(function (ds, i) {
+      var doc = ReceptionData.doctors.find(function (d) { return d.id === ds.doctorId; });
+      var name = doc ? doc.name : 'نامشخص';
+      return '<li class="rc-doctor-status-item" style="animation-delay:' + (i * 0.06) + 's">' +
+        '<div class="rc-doctor-status-dot rc-doctor-status-dot--' + ds.status + '"></div>' +
+        '<div class="rc-doctor-status-name">' + name + '</div>' +
+        '<div class="rc-doctor-status-label rc-doctor-status-label--' + ds.status + '">' + statusLabels[ds.status] + '</div>' +
+      '</li>';
+    }).join('');
+  }
+  if (waitEl) {
+    var wc = ReceptionData.waitingCount || 0;
+    waitEl.innerHTML = '<div class="rc-waiting-label">🟢 بیمار در انتظار</div><div class="rc-waiting-num">' + wc + ' نفر</div>';
+  }
 
 })();

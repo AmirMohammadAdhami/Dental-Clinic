@@ -104,6 +104,52 @@
         <!-- KPI CARDS -->
         <section class="rc-kpi-grid" id="kpiGrid" aria-label="شاخص‌های امروز"></section>
 
+        <!-- ── WIDGETS ROW ── -->
+        <section class="rc-widgets">
+            <!-- Activity Feed -->
+            <div class="rc-widget rc-widget--activity">
+                <div class="rc-widget-head">
+                    <h3>⚡ فعالیت اخیر</h3>
+                    <span class="rc-widget-badge" id="activityCount"></span>
+                </div>
+                <ul class="rc-activity-list" id="activityList"></ul>
+            </div>
+
+            <!-- Upcoming Appointments -->
+            <div class="rc-widget rc-widget--upcoming">
+                <div class="rc-widget-head">
+                    <h3>⏰ نوبت‌های آینده</h3>
+                    <span class="rc-widget-badge rc-widget-badge--blue" id="upcomingCount"></span>
+                </div>
+                <ul class="rc-upcoming-list" id="upcomingList"></ul>
+            </div>
+
+            <!-- Doctor Availability + Waiting -->
+            <div class="rc-widget rc-widget--doctors">
+                <div class="rc-widget-head">
+                    <h3>👨‍⚕️ پزشکان امروز</h3>
+                </div>
+                <ul class="rc-doctor-status-list" id="doctorStatusList"></ul>
+                <div class="rc-waiting-counter" id="waitingCounter"></div>
+            </div>
+        </section>
+
+        <!-- ── WAITING QUEUE ── -->
+        <section class="rc-queue-section" id="queueSection">
+            <div class="rc-card-head">
+                <div>
+                    <h2 class="rc-card-title">🔔 صف بیماران در انتظار</h2>
+                    <p class="rc-card-sub" id="queueCount">هنوز بیماری در صف نیست</p>
+                </div>
+            </div>
+            <div class="rc-queue-grid" id="queueGrid"></div>
+            <div class="rc-queue-empty" id="queueEmpty">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.3"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <p>بیماری در انتظار نیست</p>
+                <span>از جدول زیر دکمه «حاضر شد» را بزنید</span>
+            </div>
+        </section>
+
         <!-- TODAY'S APPOINTMENTS TABLE -->
         <section class="rc-card">
             <div class="rc-card-head">

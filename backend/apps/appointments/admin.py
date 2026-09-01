@@ -1,11 +1,21 @@
 from django.contrib import admin
-from .models import Service, MedicalRecord, Appointment, DoctorReview
+from .models import Service, MedicalRecord, Appointment, AppointmentSlot, DoctorReview
 
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
-    list_display = ('name', 'badge')
-    search_fields = ('name',)
+    list_display = ('name', 'slug', 'badge')
+    search_fields = ('name', 'slug')
+
+
+@admin.register(AppointmentSlot)
+class AppointmentSlotAdmin(admin.ModelAdmin):
+    list_display = ('doctor', 'start_time', 'duration_minutes', 'is_active', 'created_at')
+    list_filter = ('is_active', 'doctor', 'start_time')
+    search_fields = ('doctor__user__first_name', 'doctor__user__last_name')
+    raw_id_fields = ('doctor',)
+    readonly_fields = ('created_at', 'updated_at')
+    list_per_page = 50
 
 
 @admin.register(MedicalRecord)

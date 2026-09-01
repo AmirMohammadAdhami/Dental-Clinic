@@ -1,4 +1,4 @@
-{% extends 'bases/dashboard_base.html' %}
+﻿{% extends 'bases/dashboard_base.html' %}
 {% load static %}
 
 {% block title %}انتخاب دندانپزشک — دنتورا{% endblock %}
@@ -25,7 +25,7 @@
             بازگشت به خدمات
         </a>
         <h1 class="sel-hero-title">انتخاب دندانپزشک معالج</h1>
-        <p class="sel-hero-subtitle">خدمت: <strong>لمینت سرامیکی</strong> — بهترین متخصصان این حوزه را مقایسه کنید</p>
+        <p class="sel-hero-subtitle">خدمت: <strong>{{ service.name }}</strong> — بهترین متخصصان این حوزه را مقایسه کنید</p>
     </section>
 
     <!-- ================= FILTER BAR ================= -->
@@ -44,180 +44,55 @@
         </div>
     </div>
 
-    <!-- ================= DOCTOR CARDS GRID ================= -->
-    <div class="sel-doctors-grid">
+    <!-- ================= DOCTOR CARDS GRID (rendered by JS) ================= -->
+    <div class="sel-doctors-grid" id="doctorsGrid" aria-live="polite">
 
-        <!-- Doctor 1 -->
-        <div class="sel-doctor-card" data-rating="4.9" data-availability="1" data-experience="12">
-            <div class="sel-doctor-img-wrap">
-                <img width="513" height="768" src="{% static 'images/doctors/doctor-1.jpg' %}" alt="دکتر کاوه آذرخو" class="sel-doctor-img" loading="lazy">
-                <span class="sel-doctor-availability">
-                    <span class="sel-avail-dot"></span>
-                    اولین نوبت خالی: فردا
-                </span>
-            </div>
+        <!-- Skeleton cards (shown while fetching) -->
+        <div class="sel-doctor-card sel-skeleton-card">
+            <div class="sel-doctor-img-wrap"><div class="sel-skeleton sel-skeleton--img"></div></div>
             <div class="sel-doctor-info">
-                <h3 class="sel-doctor-name">دکتر کاوه آذرخو</h3>
-                <p class="sel-doctor-specialty">متخصص زیبایی و ترمیمی</p>
-                <div class="sel-doctor-rating">
-                    <span class="sel-stars">⭐⭐⭐⭐⭐</span>
-                    <span class="sel-rating-num">۴.۹</span>
-                    <span class="sel-review-count">از ۶۴ نظر</span>
-                </div>
-                <div class="sel-doctor-exp">
-                    <span>🎓</span> ۱۲+ سال سابقه — ۲۰۰۰+ درمان موفق
-                </div>
+                <div class="sel-skeleton sel-skeleton--line" style="width:70%"></div>
+                <div class="sel-skeleton sel-skeleton--line" style="width:45%"></div>
+                <div class="sel-skeleton sel-skeleton--line" style="width:60%"></div>
             </div>
-            <div class="sel-doctor-actions">
-                <a href="{% url 'doctors:doctor_detail' slug='amir-mohammad-adhami' %}" class="btn btn-outline btn-sm sel-btn-profile">مشاهده پروفایل</a>
-                <button class="btn btn-primary btn-sm sel-btn-book" data-doctor="آذرخو">انتخاب و مشاهده زمان‌ها ←</button>
+        </div>
+        <div class="sel-doctor-card sel-skeleton-card">
+            <div class="sel-doctor-img-wrap"><div class="sel-skeleton sel-skeleton--img"></div></div>
+            <div class="sel-doctor-info">
+                <div class="sel-skeleton sel-skeleton--line" style="width:70%"></div>
+                <div class="sel-skeleton sel-skeleton--line" style="width:45%"></div>
+                <div class="sel-skeleton sel-skeleton--line" style="width:60%"></div>
+            </div>
+        </div>
+        <div class="sel-doctor-card sel-skeleton-card">
+            <div class="sel-doctor-img-wrap"><div class="sel-skeleton sel-skeleton--img"></div></div>
+            <div class="sel-doctor-info">
+                <div class="sel-skeleton sel-skeleton--line" style="width:70%"></div>
+                <div class="sel-skeleton sel-skeleton--line" style="width:45%"></div>
+                <div class="sel-skeleton sel-skeleton--line" style="width:60%"></div>
             </div>
         </div>
 
-        <!-- Doctor 2 -->
-        <div class="sel-doctor-card" data-rating="4.8" data-availability="2" data-experience="10">
-            <div class="sel-doctor-img-wrap">
-                <img width="768" height="1376" src="{% static 'images/doctors/doctor-2.jpg' %}" alt="دکتر امیرمحمد فرهمندنیا" class="sel-doctor-img" loading="lazy">
-                <span class="sel-doctor-availability">
-                    <span class="sel-avail-dot"></span>
-                    اولین نوبت خالی: ۳ روز دیگر
-                </span>
-            </div>
-            <div class="sel-doctor-info">
-                <h3 class="sel-doctor-name">دکتر امیرمحمد فرهمندنیا</h3>
-                <p class="sel-doctor-specialty">متخصص ارتودنسی و زیبایی</p>
-                <div class="sel-doctor-rating">
-                    <span class="sel-stars">⭐⭐⭐⭐⭐</span>
-                    <span class="sel-rating-num">۴.۸</span>
-                    <span class="sel-review-count">از ۵۱ نظر</span>
-                </div>
-                <div class="sel-doctor-exp">
-                    <span>🎓</span> ۱۰+ سال سابقه — ۱۸۰۰+ درمان موفق
-                </div>
-            </div>
-            <div class="sel-doctor-actions">
-                <a href="{% url 'doctors:doctor_detail' slug='amir-mohammad-adhami' %}" class="btn btn-outline btn-sm sel-btn-profile">مشاهده پروفایل</a>
-                <button class="btn btn-primary btn-sm sel-btn-book" data-doctor="فرهمندنیا">انتخاب و مشاهده زمان‌ها ←</button>
-            </div>
+        <!-- Empty / error states (hidden by default) -->
+        <div class="sel-empty-state" id="doctorsEmpty" style="display:none;">
+            <p>هیچ دندانپزشکی برای این خدمت یافت نشد.</p>
+            <a href="{% url 'dashboard:dashboard' %}" class="btn btn-outline btn-sm">بازگشت به خدمات</a>
         </div>
-
-        <!-- Doctor 3 -->
-        <div class="sel-doctor-card" data-rating="4.7" data-availability="3" data-experience="8">
-            <div class="sel-doctor-img-wrap">
-                <img width="510" height="768" src="{% static 'images/doctors/doctor-3.jpg' %}" alt="دکتر مهسا امیری راد" class="sel-doctor-img" loading="lazy">
-                <span class="sel-doctor-availability">
-                    <span class="sel-avail-dot"></span>
-                    اولین نوبت خالی: ۵ روز دیگر
-                </span>
-            </div>
-            <div class="sel-doctor-info">
-                <h3 class="sel-doctor-name">دکتر مهسا امیری راد</h3>
-                <p class="sel-doctor-specialty">متخصص پروتز و لمینت</p>
-                <div class="sel-doctor-rating">
-                    <span class="sel-stars">⭐⭐⭐⭐⭐</span>
-                    <span class="sel-rating-num">۴.۷</span>
-                    <span class="sel-review-count">از ۳۸ نظر</span>
-                </div>
-                <div class="sel-doctor-exp">
-                    <span>🎓</span> ۸+ سال سابقه — ۱۲۰۰+ درمان موفق
-                </div>
-            </div>
-            <div class="sel-doctor-actions">
-                <a href="{% url 'doctors:doctor_detail' slug='amir-mohammad-adhami' %}" class="btn btn-outline btn-sm sel-btn-profile">مشاهده پروفایل</a>
-                <button class="btn btn-primary btn-sm sel-btn-book" data-doctor="امیری‌راد">انتخاب و مشاهده زمان‌ها ←</button>
-            </div>
-        </div>
-
-        <!-- Doctor 4 -->
-        <div class="sel-doctor-card" data-rating="4.9" data-availability="1" data-experience="15">
-            <div class="sel-doctor-img-wrap">
-                <img width="768" height="1376" src="{% static 'images/doctors/doctor-4.jpg' %}" alt="دکتر علیرضا احمدی" class="sel-doctor-img" loading="lazy">
-                <span class="sel-doctor-availability">
-                    <span class="sel-avail-dot"></span>
-                    اولین نوبت خالی: فردا
-                </span>
-            </div>
-            <div class="sel-doctor-info">
-                <h3 class="sel-doctor-name">دکتر علیرضا احمدی</h3>
-                <p class="sel-doctor-specialty">متخصص ارتودنسی | بورد تخصصی</p>
-                <div class="sel-doctor-rating">
-                    <span class="sel-stars">⭐⭐⭐⭐⭐</span>
-                    <span class="sel-rating-num">۴.۹</span>
-                    <span class="sel-review-count">از ۷۲ نظر</span>
-                </div>
-                <div class="sel-doctor-exp">
-                    <span>🎓</span> ۱۵+ سال سابقه — ۳۰۰۰+ درمان موفق
-                </div>
-            </div>
-            <div class="sel-doctor-actions">
-                <a href="{% url 'doctors:doctor_detail' slug='amir-mohammad-adhami' %}" class="btn btn-outline btn-sm sel-btn-profile">مشاهده پروفایل</a>
-                <button class="btn btn-primary btn-sm sel-btn-book" data-doctor="احمدی">انتخاب و مشاهده زمان‌ها ←</button>
-            </div>
-        </div>
-
-        <!-- Doctor 5 -->
-        <div class="sel-doctor-card" data-rating="4.6" data-availability="4" data-experience="7">
-            <div class="sel-doctor-img-wrap">
-                <img width="515" height="768" src="{% static 'images/doctors/doctor-5.jpg' %}" alt="دکتر سارا بهرامی" class="sel-doctor-img" loading="lazy">
-                <span class="sel-doctor-availability">
-                    <span class="sel-avail-dot"></span>
-                    اولین نوبت خالی: ۱ هفته دیگر
-                </span>
-            </div>
-            <div class="sel-doctor-info">
-                <h3 class="sel-doctor-name">دکتر سارا بهرامی</h3>
-                <p class="sel-doctor-specialty">متخصص زیبایی و لمینت</p>
-                <div class="sel-doctor-rating">
-                    <span class="sel-stars">⭐⭐⭐⭐</span>
-                    <span class="sel-rating-num">۴.۶</span>
-                    <span class="sel-review-count">از ۲۹ نظر</span>
-                </div>
-                <div class="sel-doctor-exp">
-                    <span>🎓</span> ۷+ سال سابقه — ۹۰۰+ درمان موفق
-                </div>
-            </div>
-            <div class="sel-doctor-actions">
-                <a href="{% url 'doctors:doctor_detail' slug='amir-mohammad-adhami' %}" class="btn btn-outline btn-sm sel-btn-profile">مشاهده پروفایل</a>
-                <button class="btn btn-primary btn-sm sel-btn-book" data-doctor="بهرامی">انتخاب و مشاهده زمان‌ها ←</button>
-            </div>
-        </div>
-
-        <!-- Doctor 6 -->
-        <div class="sel-doctor-card" data-rating="4.8" data-availability="2" data-experience="11">
-            <div class="sel-doctor-img-wrap">
-                <img width="512" height="768" src="{% static 'images/doctors/doctor-6.jpg' %}" alt="دکتر رضا محمدی" class="sel-doctor-img" loading="lazy">
-                <span class="sel-doctor-availability">
-                    <span class="sel-avail-dot"></span>
-                    اولین نوبت خالی: ۲ روز دیگر
-                </span>
-            </div>
-            <div class="sel-doctor-info">
-                <h3 class="sel-doctor-name">دکتر رضا محمدی</h3>
-                <p class="sel-doctor-specialty">متخصص ترمیمی و زیبایی</p>
-                <div class="sel-doctor-rating">
-                    <span class="sel-stars">⭐⭐⭐⭐⭐</span>
-                    <span class="sel-rating-num">۴.۸</span>
-                    <span class="sel-review-count">از ۴۵ نظر</span>
-                </div>
-                <div class="sel-doctor-exp">
-                    <span>🎓</span> ۱۱+ سال سابقه — ۱۵۰۰+ درمان موفق
-                </div>
-            </div>
-            <div class="sel-doctor-actions">
-                <a href="{% url 'doctors:doctor_detail' slug='amir-mohammad-adhami' %}" class="btn btn-outline btn-sm sel-btn-profile">مشاهده پروفایل</a>
-                <button class="btn btn-primary btn-sm sel-btn-book" data-doctor="محمدی">انتخاب و مشاهده زمان‌ها ←</button>
-            </div>
+        <div class="sel-empty-state" id="doctorsError" style="display:none;">
+            <p>خطا در دریافت اطلاعات. لطفاً دوباره تلاش کنید.</p>
+            <button class="btn btn-outline btn-sm" id="doctorsRetry">تلاش مجدد</button>
         </div>
 
     </div>
 </main>
+
 
 <!-- ================= CALENDAR SLIDE-OVER MODAL ================= -->
 <div class="sel-modal-overlay" id="calendarModal">
     <div class="sel-modal-backdrop" id="modalBackdrop"></div>
     <div class="sel-modal-panel" id="modalPanel">
         <div class="sel-modal-header">
-            <h2 class="sel-modal-title">انتخاب زمان نوبت — <span id="modalDoctorName">دکتر آذرخو</span></h2>
+            <h2 class="sel-modal-title">انتخاب زمان نوبت — <span id="modalDoctorName">—</span></h2>
             <button class="sel-modal-close" id="modalClose" aria-label="بستن">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="18" y1="6" x2="6" y2="18"/>
@@ -237,19 +112,23 @@
 
             <!-- Time Slots -->
             <div class="sel-slots-section" id="slotsSection" style="display:none;">
-                <div class="sel-slots-group">
+                <div class="sel-slots-group" id="morningGroup">
                     <h4 class="sel-slots-group-title">☀️ نوبت‌های صبح</h4>
                     <div class="sel-slots-grid" id="morningSlots">
                         <!-- JS populates this -->
                     </div>
                 </div>
-                <div class="sel-slots-group">
+                <div class="sel-slots-group" id="afternoonGroup">
                     <h4 class="sel-slots-group-title">🌙 نوبت‌های عصر</h4>
                     <div class="sel-slots-grid" id="afternoonSlots">
                         <!-- JS populates this -->
                     </div>
                 </div>
+                <p class="sel-slots-empty" id="slotsEmpty" style="display:none;">نوبتی برای این روز ثبت نشده است.</p>
             </div>
+
+            <!-- Availability loading / error -->
+            <p class="sel-slots-empty" id="availabilityError" style="display:none;">خطا در دریافت زمان‌های خالی. دوباره تلاش کنید.</p>
         </div>
 
         <!-- Confirm Button (hidden until a slot is selected) -->
@@ -258,9 +137,9 @@
                 <span id="selectedDayText"></span>
                 <span id="selectedTimeText"></span>
             </div>
-            <a href="{% url 'dashboard:finalize_information' tracking_code='maaadar' %}" class="btn btn-primary btn-lg sel-modal-confirm-btn">
+            <button type="button" class="btn btn-primary btn-lg sel-modal-confirm-btn" id="confirmSlotBtn">
                 تایید زمان و ادامه ثبت نام ←
-            </a>
+            </button>
         </div>
     </div>
 </div>

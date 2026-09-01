@@ -1,7 +1,10 @@
 from django.urls import path
+
 from backend.api.dashboard.views import UserDashboardAPIView
 from backend.api.assistants.views import AssistantListAPIView
 from backend.api.doctors.views import DoctorListAPIView, DoctorDetailAPIView
+from backend.api.doctor_availability.views import DoctorAvailabilityAPIView
+from backend.api.appointments.views import AppointmentCreateAPIView
 from backend.api.before_after.views import BeforeAfterListApiView
 from backend.api.gallery.views import GalleryListApiView
 from backend.api.faq.views import FAQListApiView
@@ -31,7 +34,10 @@ app_name = 'api'
 
 urlpatterns = [
     path('doctors/', DoctorListAPIView.as_view(), name='doctor-list'),
+    path('doctors/<str:slug>/availability/', DoctorAvailabilityAPIView.as_view(), name='doctor-availability'),
     path('doctors/<str:slug>/', DoctorDetailAPIView.as_view(), name='doctor-detail'),
+
+    path('appointments/', AppointmentCreateAPIView.as_view(), name='appointment-create'),
 
     path('assistants/', AssistantListAPIView.as_view(), name='assistant-list'),
     path('before-afters/', BeforeAfterListApiView.as_view(), name='before-after-list'),

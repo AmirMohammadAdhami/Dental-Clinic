@@ -1,5 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+
+from .models import Service
 
 
 @login_required
@@ -33,4 +35,8 @@ def notifications(request):
 
 
 def select_doctors(request, service):
-    return render(request, 'dashboard/select-doctors.html', {'service': service})
+    service_obj = Service.objects.filter(slug=service).first()
+    if service_obj is None:
+        # Unknown service slug -> back to the dashboard services grid.
+        return redirect('dashboard:dashboard')
+    return render(request, 'dashboard/select-doctors.html', {'service': service_obj})

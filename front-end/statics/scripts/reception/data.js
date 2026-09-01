@@ -108,12 +108,51 @@ var ReceptionData = (function () {
     monthlyAppointments: 178
   };
 
+  /* ── وضعیت لایو پزشکان ── */
+  var doctorAvailability = [
+    { doctorId: 1, status: 'busy',    currentPatient: 'امیرمحمد کاظمی', since: '۰۸:۳۰' },
+    { doctorId: 2, status: 'present', currentPatient: null,             since: '۰۸:۰۰' },
+    { doctorId: 3, status: 'busy',    currentPatient: 'زهرا رضایی',     since: '۰۹:۰۰' },
+    { doctorId: 4, status: 'absent',  currentPatient: null,             since: null },
+    { doctorId: 5, status: 'present', currentPatient: null,             since: '۰۸:۱۵' }
+  ];
+
+  /* ── شمارنده بیماران در انتظار ── */
+  var waitingCount = 5;
+
+  /* ── لاگ فعالیت اخیر ── */
+  var activityLog = [
+    { time: '۱۴:۳۲', icon: '👤', color: 'green',  text: 'سارا احمدی ثبت‌نام شد' },
+    { time: '۱۴:۲۸', icon: '❌', color: 'red',    text: 'نوبت #108 لغو شد' },
+    { time: '۱۴:۱۵', icon: '✅', color: 'blue',   text: 'دکتر آذرخو ۳ ویزیت انجام داد' },
+    { time: '۱۳:۵۰', icon: '📅', color: 'orange', text: 'نوبت #113 ثبت شد — علی محمدی' },
+    { time: '۱۳:۳۰', icon: '💰', color: 'green',  text: 'بیعانه ۲,۰۰۰,۰۰۰ تومان دریافت شد' },
+    { time: '۱۳:۱۰', icon: '🔄', color: 'orange', text: 'وضعیت نوبت #109 تغییر کرد → تایید شده' },
+    { time: '۱۲:۴۵', icon: '👤', color: 'green',  text: 'امیر توکلی ویزیت شد' },
+    { time: '۱۲:۲۰', icon: '📅', color: 'blue',   text: 'نوبت #114 ثبت شد — مریم احمدی' },
+    { time: '۱۱:۵۵', icon: '❌', color: 'red',    text: 'نوبت #112 لغو شد' },
+    { time: '۱۱:۳۰', icon: '✅', color: 'green',  text: 'دکتر حیدری ۲ ویزیت انجام داد' }
+  ];
+
+  /* ── نوبت‌های آینده (بعدی) ── */
+  var upcomingAppointments = [
+    { id: 125, time: '۱۴:۳۰', patient: 'علی محمدی',     doctor: 'دکتر فرهمندنیا', service: 'ایمپلنت دندان' },
+    { id: 126, time: '۱۵:۰۰', patient: 'مریم احمدی',    doctor: 'دکتر امیری‌راد', service: 'درمان لثه' },
+    { id: 127, time: '۱۵:۳۰', patient: 'حسین کریمی',    doctor: 'دکتر آذرخو',    service: 'لمینت سرامیکی' },
+    { id: 128, time: '۱۶:۰۰', patient: 'نگار حسینی',    doctor: 'دکتر حیدری',    service: 'عصب‌کشی' },
+    { id: 129, time: '۱۶:۳۰', patient: 'امیر توکلی',    doctor: 'دکتر فرهمندنیا', service: 'بلیچینگ' }
+  ];
+
   return {
     doctors: doctors,
     services: services,
     patients: patients,
     todayAppointments: todayAppointments,
     comments: comments,
-    analytics: analyticsData
+    analytics: analyticsData,
+    doctorAvailability: doctorAvailability,
+    waitingCount: waitingCount,
+    activityLog: activityLog,
+    upcomingAppointments: upcomingAppointments
   };
 })();
