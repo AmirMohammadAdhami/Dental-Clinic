@@ -112,6 +112,15 @@ class Appointment(models.Model):
 
     prescription_text = models.TextField(blank=True, default='')
 
+    # Patient's own notes from the finalize-information page
+    # ("توضیحات تکمیلی") — distinct from prescription_text (doctor's field).
+    additional_notes = models.TextField(blank=True, default='')
+
+    # While the appointment is PENDING (not yet confirmed on the
+    # finalize-information page), the held slot is released after this
+    # deadline. Null once the reservation is confirmed (RESERVED).
+    expires_at = models.DateTimeField(null=True, blank=True)
+
     medical_records = models.ManyToManyField(MedicalRecord, blank=True, related_name='appointments')
 
     status = models.CharField(

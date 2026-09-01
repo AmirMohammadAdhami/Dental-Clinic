@@ -1,4 +1,4 @@
-{% extends 'bases/dashboard_base.html' %}
+﻿{% extends 'bases/dashboard_base.html' %}
 {% load static %}
 
 {% block title %}تکمیل اطلاعات — دنتورا{% endblock %}
@@ -17,7 +17,7 @@
 
     <!-- Hero -->
     <section class="fi-hero">
-        <a href="{% url 'dashboard:select_doctors' service='implant' %}" class="fi-back-link">
+        <a href="{% url 'dashboard:dashboard' %}" class="fi-back-link" id="fiBackLink">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
             </svg>
@@ -26,6 +26,16 @@
         <h1 class="fi-hero-title">تکمیل اطلاعات و سوابق پزشکی</h1>
         <p class="fi-hero-subtitle">لطفاً اطلاعات بیمار و سوابق پزشکی مرتبط را وارد کنید</p>
     </section>
+
+    <!-- ================= RESERVATION TIMER / ERROR STATES ================= -->
+    <div class="fi-timer-bar" id="fiTimerBar" style="display:none;">
+        <span class="fi-timer-label">⏳ زمان باقی‌مانده برای تکمیل رزرو:</span>
+        <span class="fi-timer-count" id="fiTimerCount">۳۰:۰۰</span>
+    </div>
+    <div class="fi-error-bar" id="fiErrorBar" style="display:none;">
+        <span id="fiErrorText">خطا در دریافت اطلاعات نوبت.</span>
+        <a href="{% url 'dashboard:dashboard' %}" class="btn btn-outline btn-sm">بازگشت به داشبورد</a>
+    </div>
 
     <!-- ================= STEP INDICATOR ================= -->
     <div class="fi-steps">
@@ -113,50 +123,9 @@
                 </div>
 
                 <div class="fi-card-body">
-                    <!-- Medical Chips -->
-                    <div class="fi-chips" role="group" aria-label="سوابق پزشکی">
-                        <button class="fi-chip" type="button" data-medical="allergy-drug">
-                            <span class="fi-chip-check">
-                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                            </span>
-                            حساسیت دارویی (پنسلین/بی‌حسی)
-                        </button>
-                        <button class="fi-chip" type="button" data-medical="heart">
-                            <span class="fi-chip-check">
-                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                            </span>
-                            بیماری قلبی / فشار خون
-                        </button>
-                        <button class="fi-chip" type="button" data-medical="pregnant">
-                            <span class="fi-chip-check">
-                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                            </span>
-                            بارداری / شیردهی
-                        </button>
-                        <button class="fi-chip" type="button" data-medical="medication">
-                            <span class="fi-chip-check">
-                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                            </span>
-                            مصرف داروی خاص
-                        </button>
-                        <button class="fi-chip" type="button" data-medical="diabetes">
-                            <span class="fi-chip-check">
-                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                            </span>
-                            دیابت
-                        </button>
-                        <button class="fi-chip" type="button" data-medical="bleeding">
-                            <span class="fi-chip-check">
-                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                            </span>
-                            اختلال انعقاد خون
-                        </button>
-                        <button class="fi-chip" type="button" data-medical="anxiety">
-                            <span class="fi-chip-check">
-                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                            </span>
-                            اضطراب شدید از دندانپزشکی
-                        </button>
+                    <!-- Medical Chips (rendered from API) -->
+                    <div class="fi-chips" role="group" aria-label="سوابق پزشکی" id="fiChips">
+                        <!-- JS populates this -->
                     </div>
 
                     <!-- Textarea -->
@@ -165,7 +134,6 @@
                         <textarea id="fiNotes" class="fi-textarea" placeholder="مثلاً: درد مزمن در فک پایین، ترس شدید از تزریق بی‌حسی، یا هر نکته‌ای که پزشک باید بداند..." maxlength="500"></textarea>
                         <span class="fi-textarea-counter"><span id="fiNotesCount">۰</span> / ۵۰۰</span>
                     </div>
-
                     <!-- Mobile CTA (visible only on mobile, inside card body) -->
                     <div class="fi-mobile-cta">
                         <a href="#" class="fi-confirm-btn fi-confirm-btn--mobile" id="fiConfirmBtnMobile">
@@ -186,14 +154,14 @@
 
                 <!-- Doctor Image -->
                 <div class="fi-summary-img">
-                    <img width="513" height="768" src="{% static 'images/doctors/doctor-1.jpg' %}" alt="دکتر کاوه آذرخو">
+                    <img width="513" height="768" id="fiSummaryPhoto" src="" alt="دندانپزشک انتخاب‌شده">
                     <span class="fi-summary-badge">✓ انتخاب شده</span>
                 </div>
 
                 <!-- Doctor Info -->
                 <div class="fi-summary-doctor">
-                    <h3 class="fi-summary-doctor-name">دکتر کاوه آذرخو</h3>
-                    <p class="fi-summary-doctor-specialty">متخصص زیبایی و ترمیمی</p>
+                    <h3 class="fi-summary-doctor-name" id="fiSummaryDoctor">—</h3>
+                    <p class="fi-summary-doctor-specialty" id="fiSummarySpeciality">—</p>
                 </div>
 
                 <div class="fi-summary-divider"></div>
@@ -208,7 +176,7 @@
                         </div>
                         <div class="fi-summary-row-content">
                             <span class="fi-summary-row-label">تاریخ و ساعت</span>
-                            <span class="fi-summary-row-value">دوشنبه ۲۵ مرداد — ساعت ۱۶:۳۰</span>
+                            <span class="fi-summary-row-value" id="fiSummaryDate">—</span>
                         </div>
                     </div>
 
@@ -220,7 +188,7 @@
                         </div>
                         <div class="fi-summary-row-content">
                             <span class="fi-summary-row-label">نوع خدمت</span>
-                            <span class="fi-summary-row-value">لمینت سرامیکی</span>
+                            <span class="fi-summary-row-value" id="fiSummaryService">—</span>
                         </div>
                     </div>
 
@@ -232,25 +200,35 @@
                         </div>
                         <div class="fi-summary-row-content">
                             <span class="fi-summary-row-label">روز نوبت</span>
-                            <span class="fi-summary-row-value">۲ روز دیگر</span>
+                            <span class="fi-summary-row-value" id="fiSummaryDay">—</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Price -->
                 <div class="fi-summary-price">
-                    <span class="fi-summary-price-label">هزینه تقریبی</span>
-                    <span class="fi-summary-price-value">۸,۵۰۰,۰۰۰ تومان</span>
+                    <span class="fi-summary-price-label">بیعانه نوبت</span>
+                    <span class="fi-summary-price-value" id="fiSummaryPrice">—</span>
                 </div>
 
                 <!-- CTA -->
-                <div class="fi-summary-cta">
+                <div class="fi-summary-cta" id="fiCtaWrap">
                     <a href="#" class="fi-confirm-btn" id="fiConfirmBtn">
                         تایید و ورود به مرحله پرداخت
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 5 5 12 12 19"/>
                         </svg>
                     </a>
+                </div>
+
+                <!-- Success state (shown after reservation is confirmed) -->
+                <div class="fi-success-panel" id="fiSuccessPanel" style="display:none;">
+                    <div class="fi-success-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <h3 class="fi-success-title">نوبت شما با موفقیت رزرو شد</h3>
+                    <p class="fi-success-subtitle">کد پیگیری: <strong id="fiSuccessTracking">—</strong></p>
+                    <a href="{% url 'dashboard:appointments' %}" class="btn btn-outline btn-sm">مشاهده نوبت‌های من</a>
                 </div>
 
             </div>

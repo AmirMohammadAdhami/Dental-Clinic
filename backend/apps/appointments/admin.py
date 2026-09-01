@@ -26,7 +26,7 @@ class MedicalRecordAdmin(admin.ModelAdmin):
 
 @admin.register(Appointment)
 class AppointmentAdmin(admin.ModelAdmin):
-    list_display = ('tracking_code', 'doctor', 'patient', 'first_name', 'last_name', 'status', 'appointment_date', 'price')
+    list_display = ('tracking_code', 'doctor', 'patient', 'first_name', 'last_name', 'status', 'appointment_date', 'price', 'expires_at')
     list_filter = ('status', 'appointment_date')
     search_fields = ('tracking_code', 'first_name', 'last_name', 'national_code')
     readonly_fields = ('tracking_code', 'created_at', 'updated_at')

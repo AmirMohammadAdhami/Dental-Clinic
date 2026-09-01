@@ -19,6 +19,7 @@ def appointment(request, tracking_code):
     return render(request, 'dashboard/appointment.html', {'tracking_code': tracking_code})
 
 
+@login_required
 def finalize_information(request, tracking_code):
     return render(request, 'dashboard/finalize-information.html', {'tracking_code': tracking_code})
 

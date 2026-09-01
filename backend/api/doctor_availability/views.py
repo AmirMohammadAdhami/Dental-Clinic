@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from backend.api.constants import DEPOSIT_PRICE
+from backend.apps.appointments.services import release_expired_reservations
 from backend.apps.doctors.models import Doctor
 from backend.apps.appointments.models import Appointment, AppointmentSlot
 from .serializers import AvailabilitySlotSerializer
@@ -38,6 +39,7 @@ class DoctorAvailabilityAPIView(APIView):
     DEFAULT_DAYS = 30
 
     def get(self, request, slug):
+        release_expired_reservations()
         doctor = get_object_or_404(Doctor.objects.select_related('user'), slug=slug)
 
         try:

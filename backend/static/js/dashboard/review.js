@@ -35,18 +35,88 @@ var DenturaReview = (function () {
         return '';
     }
 
+    /* ---- Gregorian → Jalali conversion ---- */
+    var _div = function (a, b) { return ~~(a / b); };
+    var _mod = function (a, b) { return a - ~~(a / b) * b; };
+
+    function _jalCal(jy) {
+        var breaks = [-61, 9, 38, 199, 426, 686, 756, 818, 1111, 1181, 1210,
+            1635, 2060, 2097, 2192, 2262, 2324, 2394, 2456, 3178];
+        var bl = breaks.length, gy = jy + 621, leapJ = -14, jp = breaks[0], jm, jump = 0, leap, n, i;
+        for (i = 1; i < bl; i += 1) {
+            jm = breaks[i];
+            jump = jm - jp;
+            if (jy < jm) break;
+            leapJ = leapJ + _div(jump, 33) * 8 + _div(_mod(jump, 33), 4);
+            jp = jm;
+        }
+        n = jy - jp;
+        leapJ = leapJ + _div(n, 33) * 8 + _div(_mod(n, 33) + 3, 4);
+        if (_mod(jump, 33) === 4 && jump - n === 4) leapJ += 1;
+        var leapG = _div(gy, 4) - _div((_div(gy, 100) + 1) * 3, 4) - 150;
+        var march = 20 + leapJ - leapG;
+        if (jump - n < 6) n = n - jump + _div(jump + 4, 33) * 33;
+        leap = _mod(_mod(n + 1, 33) - 1, 4);
+        if (leap === -1) leap = 4;
+        return { leap: leap, gy: gy, march: march };
+    }
+
+    function _g2d(gy, gm, gd) {
+        var d = _div((gy + _div(gm - 8, 6) + 100100) * 1461, 4)
+            + _div(153 * _mod(gm + 9, 12) + 2, 5)
+            + gd - 34840408;
+        d = d - _div(_div(gy + 100100 + _div(gm - 8, 6), 100) * 3, 4) + 752;
+        return d;
+    }
+
+    function _toJalali(date) {
+        var gy = date.getFullYear(), gm = date.getMonth() + 1, gd = date.getDate();
+        var jdn = _g2d(gy, gm, gd);
+        var gy2 = _d2g(jdn).gy;
+        var jy = gy2 - 621;
+        var r = _jalCal(jy);
+        var jdn1f = _g2d(gy2, 3, r.march);
+        var k = jdn - jdn1f, jm, jd;
+        if (k >= 0) {
+            if (k <= 185) {
+                jm = 1 + _div(k, 31);
+                jd = _mod(k, 31) + 1;
+                return { year: jy, month: jm, day: jd };
+            }
+            k -= 186;
+        } else {
+            jy -= 1;
+            k += 179;
+            if (r.leap === 1) k += 1;
+        }
+        jm = 7 + _div(k, 30);
+        jd = _mod(k, 30) + 1;
+        return { year: jy, month: jm, day: jd };
+    }
+
+    function _d2g(jdn) {
+        var j, i, gd, gm, gy;
+        j = 4 * jdn + 139361631;
+        j = j + _div(_div(4 * jdn + 183187720, 146097) * 3, 4) * 4 - 3908;
+        i = _div(_mod(j, 1461), 4) * 5 + 308;
+        gd = _div(_mod(i, 153), 5) + 1;
+        gm = _mod(_div(i, 153), 12) + 1;
+        gy = _div(j, 1461) - 100100 + _div(8 - gm, 6);
+        return { gy: gy, gm: gm, gd: gd };
+    }
+
     /* ---- helpers available to pages ---- */
     function jalaliDate(dateStr) {
         try {
             var d = new Date(dateStr);
-            var day = d.getDate();
-            var faMonths = ['\u062f\u06cc','\u0628\u0647\u0645\u0646','\u0627\u0633\u0641\u0646\u062f','\u0641\u0631\u0648\u0631\u062f\u06cc\u0646','\u0627\u0631\u062f\u06cc\u0628\u0647\u0634\u062a','\u062e\u0631\u062f\u0627\u062f','\u062a\u06cc\u0631','\u0645\u0631\u062f\u0627\u062f','\u0634\u0647\u0631\u06cc\u0648\u0631','\u0645\u0647\u0631','\u0622\u0628\u0627\u0646','\u0622\u0630\u0631'];
+            var pe = _toJalali(d);
+            var JALALI_MONTHS = ['\u0641\u0631\u0648\u0631\u062f\u06cc\u0646','\u0627\u0631\u062f\u06cc\u0628\u0647\u0634\u062a','\u062e\u0631\u062f\u0627\u062f','\u062a\u06cc\u0631','\u0645\u0631\u062f\u0627\u062f','\u0634\u0647\u0631\u06cc\u0648\u0631','\u0645\u0647\u0631','\u0622\u0628\u0627\u0646','\u0622\u0630\u0631','\u062f\u06cc','\u0628\u0647\u0645\u0646','\u0627\u0633\u0641\u0646\u062f'];
             var faDays = ['\u06cc\u06a9\u0634\u0646\u0628\u0647','\u062f\u0648\u0634\u0646\u0628\u0647','\u0633\u0647\u200c\u0634\u0646\u0628\u0647','\u0686\u0647\u0627\u0631\u0634\u0646\u0628\u0647','\u067e\u0646\u062c\u0634\u0646\u0628\u0647','\u062c\u0645\u0639\u0647','\u0634\u0646\u0628\u0647'];
             var weekday = faDays[d.getDay()];
-            var month = faMonths[d.getMonth()];
+            var month = JALALI_MONTHS[pe.month - 1];
             var hour = String(d.getHours()).padStart(2, '0');
             var min = String(d.getMinutes()).padStart(2, '0');
-            return weekday + ' ' + day + ' ' + month + ' \u2014 \u0633\u0627\u0639\u062a ' + hour + ':' + min;
+            return weekday + ' ' + pe.day + ' ' + month + ' \u2014 \u0633\u0627\u0639\u062a ' + hour + ':' + min;
         } catch (e) { return dateStr || ''; }
     }
 

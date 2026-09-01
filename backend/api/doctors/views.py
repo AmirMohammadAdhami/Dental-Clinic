@@ -7,6 +7,7 @@ from django.db.models import (
 from django.db.models import Prefetch
 
 from .serializers import DoctorListSerializer, DoctorDetailSerializer
+from backend.apps.appointments.services import release_expired_reservations
 from backend.apps.doctors.models import Doctor
 from backend.apps.appointments.models import Appointment, AppointmentSlot, DoctorReview
 from backend.apps.blog.models import BeforeAfter
@@ -90,6 +91,9 @@ class DoctorListAPIView(ListAPIView):
     serializer_class = DoctorListSerializer
 
     def get_queryset(self):
+        # Release expired 30-minute reservation holds so availability
+        # annotations (first_available_at) are always accurate.
+        release_expired_reservations()
         queryset = _doctor_list_queryset()
 
         # Optional: filter doctors by a service slug

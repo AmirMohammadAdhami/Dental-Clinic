@@ -6,3 +6,10 @@ DEPOSIT_PRICE = 200000  # Toman
 
 # Appointment statuses that hold/occupy an AppointmentSlot.
 BLOCKING_APPOINTMENT_STATUSES = ['PENDING', 'RESERVED']
+
+# A PENDING reservation is held for this long. The timer starts when the
+# patient opens the finalize-information page (each page load refreshes it);
+# if the reservation is never confirmed within the window, the slot is
+# released automatically.
+RESERVATION_TTL_MINUTES = 1
+
