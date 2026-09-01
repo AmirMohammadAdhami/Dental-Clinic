@@ -429,6 +429,40 @@
     transform: translateY(0) scale(0.97);
 }
 
+/* ================= PRESCRIPTION SECTION ================= */
+.receipt-prescription {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.receipt-prescription-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.receipt-prescription-title svg {
+    color: var(--primary);
+    flex-shrink: 0;
+}
+
+.receipt-prescription-text {
+    font-size: 0.92rem;
+    color: var(--text);
+    line-height: 1.8;
+    background: var(--bg);
+    border: 1px solid rgba(15, 118, 110, 0.08);
+    border-radius: var(--radius-md);
+    padding: 16px 20px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
 /* ================= TOAST NOTIFICATION ================= */
 .receipt-toast {
     position: fixed;

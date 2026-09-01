@@ -190,6 +190,8 @@ class AppointmentDetailResponseSerializer(serializers.Serializer):
                 'speciality': instance.doctor.speciality,
                 'photo': photo.url if photo else '',
             },
+            'prescription_text': instance.prescription_text or '',
+            'prescription_file': instance.prescription_file.url if instance.prescription_file else '',
             'booking_for': 'other' if other else 'self',
             'patient': {
                 'first_name': user.first_name if user else '',
