@@ -78,9 +78,28 @@ document.addEventListener('DOMContentLoaded', function () {
     document.title = 'دکتر ' + doc.full_name + ' — دنتورا';
     // Update meta description for SEO
     var metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-        var bioText = doc.bio ? doc.bio.substring(0, 120) : '';
-        metaDesc.setAttribute('content', 'دکتر ' + doc.full_name + ' — ' + (doc.speciality || '') + (bioText ? '. ' + bioText : '') + ' — مشاهده پروفایل و رزرو نوبت در دنتورا.');
+    var bioText = doc.bio ? doc.bio.substring(0, 120) : '';
+    var descText = 'دکتر ' + doc.full_name + ' — ' + (doc.speciality || '') + (bioText ? '. ' + bioText : '') + ' — مشاهده پروفایل و رزرو نوبت در دنتورا.';
+    if (metaDesc) metaDesc.setAttribute('content', descText);
+    // Update Open Graph tags for SEO
+    var ogTitle = document.querySelector('meta[property="og:title"]');
+    var ogDesc = document.querySelector('meta[property="og:description"]');
+    var ogType = document.querySelector('meta[property="og:type"]');
+    var ogImage = document.querySelector('meta[property="og:image"]');
+    if (ogTitle) ogTitle.setAttribute('content', 'دکتر ' + doc.full_name + ' — ' + (doc.speciality || '') + ' | دنتورا');
+    if (ogDesc) ogDesc.setAttribute('content', descText);
+    if (ogType) ogType.setAttribute('content', 'profile');
+    if (ogImage && doc.doctor_photos && doc.doctor_photos.blog_photo) {
+        ogImage.setAttribute('content', window.location.origin + doc.doctor_photos.blog_photo);
+    }
+    // Update Twitter Card tags
+    var twTitle = document.querySelector('meta[name="twitter:title"]');
+    var twDesc = document.querySelector('meta[name="twitter:description"]');
+    var twImage = document.querySelector('meta[name="twitter:image"]');
+    if (twTitle) twTitle.setAttribute('content', 'دکتر ' + doc.full_name + ' — ' + (doc.speciality || '') + ' | دنتورا');
+    if (twDesc) twDesc.setAttribute('content', descText);
+    if (twImage && doc.doctor_photos && doc.doctor_photos.blog_photo) {
+        twImage.setAttribute('content', window.location.origin + doc.doctor_photos.blog_photo);
     }
   }
 

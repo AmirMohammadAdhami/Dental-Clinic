@@ -59,6 +59,28 @@ document.addEventListener('DOMContentLoaded', function () {
             if (metaDesc) {
                 metaDesc.setAttribute('content', (d.abstract || d.title || '') + ' — مقاله تخصصی دندانپزشکی دنتورا');
             }
+            // Update Open Graph tags for SEO
+            var ogTitle = document.querySelector('meta[property="og:title"]');
+            var ogDesc = document.querySelector('meta[property="og:description"]');
+            var ogType = document.querySelector('meta[property="og:type"]');
+            var ogImage = document.querySelector('meta[property="og:image"]');
+            if (ogTitle) ogTitle.setAttribute('content', d.title + ' — دنتورا');
+            if (ogDesc) ogDesc.setAttribute('content', (d.abstract || d.title || '') + ' — مقاله تخصصی دندانپزشکی دنتورا');
+            if (ogType) ogType.setAttribute('content', 'article');
+            if (ogImage && d.files && d.files.length) {
+                var firstImg = d.files.find(function(f) { return f.media_type === 'IMAGE' && f.file; });
+                if (firstImg) ogImage.setAttribute('content', window.location.origin + firstImg.file);
+            }
+            // Update Twitter Card tags
+            var twTitle = document.querySelector('meta[name="twitter:title"]');
+            var twDesc = document.querySelector('meta[name="twitter:description"]');
+            var twImage = document.querySelector('meta[name="twitter:image"]');
+            if (twTitle) twTitle.setAttribute('content', d.title + ' — دنتورا');
+            if (twDesc) twDesc.setAttribute('content', (d.abstract || d.title || ''));
+            if (twImage && d.files && d.files.length) {
+                var twFirstImg = d.files.find(function(f) { return f.media_type === 'IMAGE' && f.file; });
+                if (twFirstImg) twImage.setAttribute('content', window.location.origin + twFirstImg.file);
+            }
             loadingEl.style.display = 'none';
             mainEl.style.display = '';
             populate(d);
