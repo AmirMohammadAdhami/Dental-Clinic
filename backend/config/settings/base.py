@@ -44,7 +44,8 @@ django_apps = ['django.contrib.admin',
                'django.contrib.contenttypes',
                'django.contrib.sessions',
                'django.contrib.messages',
-               'django.contrib.staticfiles', ]
+               'django.contrib.staticfiles',
+               'django.contrib.sitemaps', ]
 
 local_apps = ['backend.apps.accounts.apps.AccountsConfig',
               'backend.apps.appointments.apps.AppointmentsConfig',

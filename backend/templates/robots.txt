@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /doctors/dashboard/
+Disallow: /accounts/
+Disallow: /api/
+Disallow: /api-auth/
+Disallow: /api/schema/
+
+Sitemap: {{ site_url }}/sitemap.xml
