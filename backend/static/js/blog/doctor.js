@@ -76,6 +76,12 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('docHeroBadges').innerHTML = badgesHtml;
 
     document.title = 'دکتر ' + doc.full_name + ' — دنتورا';
+    // Update meta description for SEO
+    var metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+        var bioText = doc.bio ? doc.bio.substring(0, 120) : '';
+        metaDesc.setAttribute('content', 'دکتر ' + doc.full_name + ' — ' + (doc.speciality || '') + (bioText ? '. ' + bioText : '') + ' — مشاهده پروفایل و رزرو نوبت در دنتورا.');
+    }
   }
 
   /* ═══════════════════════════════════════════

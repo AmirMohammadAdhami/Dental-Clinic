@@ -28,7 +28,7 @@ def _random_phone() -> str:
 class PublicPagesUser(HttpUser):
     """Simulates anonymous visitors hitting the public pages."""
 
-    weight = 5  # more weight — most traffic is anonymous
+    weight = 8  # more weight — most traffic is anonymous
     wait_time = between(1, 3)
 
     @tag("home")
@@ -59,7 +59,7 @@ class ApiUser(HttpUser):
     """Hits the JSON API endpoints directly — useful for measuring
     cache performance and backend throughput under load."""
 
-    weight = 3
+    weight = 6
     wait_time = between(1, 2)
 
     @tag("api", "doctors")
@@ -106,7 +106,7 @@ class OtpFlowUser(HttpUser):
     Each virtual user gets a unique random 09xxxxxxxxx phone number
     stored in the session via the login POST."""
 
-    weight = 2
+    weight = 1
     wait_time = between(2, 5)
 
     def on_start(self):

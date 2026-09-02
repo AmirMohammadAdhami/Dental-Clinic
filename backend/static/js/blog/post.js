@@ -54,6 +54,11 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(function(r) { if (!r.ok) throw 0; return r.json(); })
         .then(function(d) {
             document.title = d.title + ' — دنتورا';
+            // Update meta description for SEO
+            var metaDesc = document.querySelector('meta[name="description"]');
+            if (metaDesc) {
+                metaDesc.setAttribute('content', (d.abstract || d.title || '') + ' — مقاله تخصصی دندانپزشکی دنتورا');
+            }
             loadingEl.style.display = 'none';
             mainEl.style.display = '';
             populate(d);
