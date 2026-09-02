@@ -39,13 +39,11 @@ class BeforeAfterSerializer(serializers.ModelSerializer):
             return {
                 'first_name': patient.first_name,
                 'last_name': patient.last_name,
-                'national_code': patient.national_code,
             }
         else:
             return {
                 'first_name': appointment.first_name,
                 'last_name': appointment.last_name,
-                'national_code': appointment.national_code,
             }
 
     def get_service_name(self, obj):

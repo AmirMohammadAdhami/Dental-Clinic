@@ -14,7 +14,6 @@ from pathlib import Path
 
 import environ
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -22,9 +21,8 @@ env = environ.Env()
 
 environ.Env.read_env(BASE_DIR / ".env")
 
-#User Model
+# User Model
 AUTH_USER_MODEL = 'accounts.User'
-
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")
@@ -53,11 +51,10 @@ local_apps = ['backend.apps.accounts.apps.AccountsConfig',
               'backend.apps.blog.apps.BlogConfig',
               'backend.apps.core.apps.CoreConfig',
               'backend.apps.doctors.apps.DoctorsConfig',
-              'backend.apps.notifications.apps.NotificationsConfig',]
+              'backend.apps.notifications.apps.NotificationsConfig', ]
 
 third_party_apps = ["rest_framework",
                     ]
-
 
 INSTALLED_APPS = django_apps + third_party_apps + local_apps
 
@@ -129,7 +126,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
 
@@ -141,7 +137,7 @@ MAILERS = {
     },
 }
 
-#SET STATIC URLs
+# SET STATIC URLs
 STATIC_URL = "static/"
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
@@ -150,14 +146,29 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
-#SET MEDIA URLs
+# SET MEDIA URLs
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 # Django REST Framework
 REST_FRAMEWORK = {
+    "DEFAULT_THROTTLE_CLASSES": [
+        "rest_framework.throttling.AnonRateThrottle",
+        "rest_framework.throttling.UserRateThrottle",
+    ],
+    "DEFAULT_THROTTLE_RATES": {
+        "anon": "60/min",
+        "user": "120/min",
+        "login": "10/hour",
+        "otp": "5/hour",
+        "resend_otp": "3/hour",
+        "appointments": "15/hour",
+        'comment_anon': '10/hour',
+        'comment_user': '30/hour',
+    },
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20,
+
 }
 
 # Celery Configuration

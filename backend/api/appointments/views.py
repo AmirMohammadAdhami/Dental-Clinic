@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from backend.api.constants import RESERVATION_TTL_MINUTES
 from backend.apps.appointments.models import Appointment
 from backend.apps.appointments.services import release_expired_reservations
+from backend.security.throttle import AppointmentThrottle
 from .serializers import (
     AppointmentCreateSerializer,
     AppointmentDetailSerializer,
@@ -29,6 +30,7 @@ class AppointmentCreateAPIView(CreateAPIView):
 
     serializer_class = AppointmentCreateSerializer
     permission_classes = [IsAuthenticated]
+    throttle_classes = [AppointmentThrottle]
 
     def create(self, request, *args, **kwargs):
         release_expired_reservations()

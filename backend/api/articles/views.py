@@ -4,9 +4,9 @@ from rest_framework.response import Response
 from rest_framework.mixins import (ListModelMixin, RetrieveModelMixin)
 from rest_framework.viewsets import GenericViewSet
 from backend.apps.blog.models import Article, ArticleMedia, Comment
-from backend.apps.appointments.models import DoctorReview
 from django.db.models import Prefetch
 from .serializers import ArticleListSerializer, ArticleDetailSerializer, ArticleCommentListSerializer, ArticleCommentCreateSerializer
+from ...security.throttle import CommentAnonThrottle,CommentUserThrottle
 
 
 class ArticleListApiView(ListModelMixin, RetrieveModelMixin,GenericViewSet):
@@ -49,6 +49,7 @@ class ArticleListApiView(ListModelMixin, RetrieveModelMixin,GenericViewSet):
 
 
 class ArticleCommentListCreateView(generics.ListCreateAPIView):
+    throttle_classes = [CommentAnonThrottle, CommentUserThrottle]
     permission_classes = [AllowAny]
 
     def get_serializer_class(self):

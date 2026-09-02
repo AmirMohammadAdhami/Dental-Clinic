@@ -11,5 +11,5 @@ BLOCKING_APPOINTMENT_STATUSES = ['PENDING', 'RESERVED']
 # patient opens the finalize-information page (each page load refreshes it);
 # if the reservation is never confirmed within the window, the slot is
 # released automatically.
-RESERVATION_TTL_MINUTES = 1
+RESERVATION_TTL_MINUTES = 8
 

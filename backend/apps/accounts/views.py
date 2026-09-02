@@ -6,6 +6,9 @@ from .models import OTPCode
 from datetime import timedelta
 from django.utils import timezone
 from django.contrib.auth import get_user_model, login, logout
+from ...security.throttle import (
+    check_throttle, LoginThrottle, OtpThrottle, ResendOtpThrottle,
+)
 
 User = get_user_model()
 
@@ -16,6 +19,9 @@ def login_user(request):
         return redirect('core:home')
 
     if request.method == 'POST':
+        # Throttle: limit login attempts per IP to prevent SMS abuse
+        check_throttle(request, LoginThrottle())
+
         phone_number = request.POST.get('phone_number')
 
         if not phone_number:
@@ -55,7 +61,6 @@ def login_user(request):
 
     return render(request, 'auth/login.html')
 
-
 def otp(request):
     if request.user.is_authenticated:
         messages.error(request, 'You are already logged in.')
@@ -71,6 +76,8 @@ def otp(request):
         return redirect('accounts:login')
 
     if request.method == 'POST':
+        # Throttle: limit OTP verification attempts per phone/IP
+        check_throttle(request, OtpThrottle())
         unique_otp = OTPCode.objects.filter(
             phone_number=phone_number
         ).order_by('-created_at').first()
@@ -143,6 +150,8 @@ def resend_otp(request):
         )
         return redirect('accounts:login')
 
+    # Throttle: limit OTP resend requests per phone/IP
+    check_throttle(request, ResendOtpThrottle())
 
     last_otp = OTPCode.objects.filter(
         phone_number=phone_number

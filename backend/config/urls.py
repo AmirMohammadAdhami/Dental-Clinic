@@ -8,6 +8,10 @@ from backend.apps.accounts import urls as accounts_urls
 from backend.apps.appointments import urls as appointments_urls
 from backend.apps.doctors import urls as doctors_urls
 from backend.api import urls as api_urls
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularSwaggerView,
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -17,9 +21,21 @@ urlpatterns = [
     path('dashboard/', include(appointments_urls)),
     path('doctors/', include(doctors_urls)),
     path('api/', include(api_urls)),
-    path('api-auth/', include("rest_framework.urls"))
-]
+    path('api-auth/', include("rest_framework.urls")),
 
+    #DRF SPECTECULAR
+    path('api/', include('apps.app_name.urls')),
+
+    # OpenAPI schema
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+
+    # Swagger UI
+    path(
+        'api/docs/',
+        SpectacularSwaggerView.as_view(url_name='schema'),
+        name='swagger-ui',
+    ),
+]
 
 if settings.DEBUG:
     urlpatterns += static(

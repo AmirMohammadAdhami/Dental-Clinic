@@ -31,10 +31,8 @@ class DoctorReviewListApiView(ListAPIView):
                 'appointment__doctor__user__last_name',
                 'appointment__first_name',
                 'appointment__last_name',
-                'appointment__national_code',
                 'appointment__patient__first_name',
                 'appointment__patient__last_name',
-                'appointment__patient__national_code',
                 'appointment__service__id',
                 'appointment__service__name',
             )
