@@ -101,6 +101,12 @@ document.addEventListener('DOMContentLoaded', function () {
     if (twImage && doc.doctor_photos && doc.doctor_photos.blog_photo) {
         twImage.setAttribute('content', window.location.origin + doc.doctor_photos.blog_photo);
     }
+    // Update canonical URL
+    var canonicalLink = document.querySelector('link[rel="canonical"]');
+    if (canonicalLink) canonicalLink.setAttribute('href', window.location.href);
+    // Update og:url
+    var ogUrl = document.querySelector('meta[property="og:url"]');
+    if (ogUrl) ogUrl.setAttribute('content', window.location.href);
   }
 
   /* ═══════════════════════════════════════════

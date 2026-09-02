@@ -81,6 +81,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 var twFirstImg = d.files.find(function(f) { return f.media_type === 'IMAGE' && f.file; });
                 if (twFirstImg) twImage.setAttribute('content', window.location.origin + twFirstImg.file);
             }
+            // Update canonical URL
+            var canonicalLink = document.querySelector('link[rel="canonical"]');
+            if (canonicalLink) canonicalLink.setAttribute('href', window.location.href);
+            // Update og:url
+            var ogUrl = document.querySelector('meta[property="og:url"]');
+            if (ogUrl) ogUrl.setAttribute('content', window.location.href);
             loadingEl.style.display = 'none';
             mainEl.style.display = '';
             populate(d);

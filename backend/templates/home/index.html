@@ -20,6 +20,7 @@
 {% block twitter_title %}دنتورا — جایی که اعتماد به نفس شما با لبخندتان آغاز می‌شود{% endblock %}
 {% block twitter_description %}کلینیک تخصصی دندانپزشکی دنتورا در تهران — ایمپلنت، لمینیت، ارتودنسی و زیبایی لبخند.{% endblock %}
 {% block twitter_image %}{% static 'images/hero/clinic-detail.jpg' %}{% endblock %}
+{% block og_url %}{{ request.scheme }}://{{ request.get_host }}{% endblock %}
 
 {% block content %}
     <main class="hero" id="main-content" tabindex="-1">

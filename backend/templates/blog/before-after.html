@@ -20,6 +20,7 @@
 {% block og_type %}website{% endblock %}
 {% block twitter_title %}نمونه کارهای قبل و بعد — دنتورا{% endblock %}
 {% block twitter_description %}نتایج واقعی درمان‌های زیبایی و ترمیمی دنتورا — مشاهده نمونه کارها{% endblock %}
+{% block og_url %}{{ request.scheme }}://{{ request.get_host }}{{ request.path }}{% endblock %}
 
 {% block content %}
 <main class="ba-page" id="main-content" tabindex="-1">

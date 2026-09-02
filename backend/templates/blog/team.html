@@ -19,6 +19,7 @@
 {% block og_type %}website{% endblock %}
 {% block twitter_title %}تیم تخصصی دندانپزشکان — دنتورا{% endblock %}
 {% block twitter_description %}آشنایی با متخصصان مجرب دنتورا — رزرو نوبت با بهترین دندانپزشکان تهران{% endblock %}
+{% block og_url %}{{ request.scheme }}://{{ request.get_host }}{{ request.path }}{% endblock %}
 
 {% block content %}
 <!-- ================= HERO & SEARCH ================= -->

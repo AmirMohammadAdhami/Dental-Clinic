@@ -20,6 +20,7 @@
 {% block og_type %}website{% endblock %}
 {% block twitter_title %}بلاگ تخصصی دنتورا{% endblock %}
 {% block twitter_description %}پاسخ سوالات دندانپزشکی و راهنمای درمان‌ها — بلاگ دنتورا{% endblock %}
+{% block og_url %}{{ request.scheme }}://{{ request.get_host }}{{ request.path }}{% endblock %}
 
 {% block content %}
 <main class="blog-page" id="main-content" tabindex="-1">
