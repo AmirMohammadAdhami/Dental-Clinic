@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.contrib import messages
 from django.shortcuts import redirect
@@ -8,7 +9,7 @@ from datetime import timedelta
 from django.utils import timezone
 from django.contrib.auth import get_user_model, login, logout
 from ...security.throttle import (
-    check_throttle, LoginThrottle, OtpThrottle, ResendOtpThrottle,
+    check_throttle, LoginThrottle, OtpThrottle, ResendOtpThrottle,ThrottledError
 )
 
 User = get_user_model()
@@ -21,7 +22,10 @@ def login_user(request):
 
     if request.method == 'POST':
         # Throttle: limit login attempts per IP to prevent SMS abuse
-        check_throttle(request, LoginThrottle())
+        try:
+            check_throttle(request, LoginThrottle())
+        except ThrottledError as e:
+            return JsonResponse({'detail': e.detail}, status=429)
 
         phone_number = request.POST.get('phone_number')
 
@@ -76,7 +80,10 @@ def otp(request):
 
     if request.method == 'POST':
         # Throttle: limit OTP verification attempts per phone/IP
-        check_throttle(request, OtpThrottle())
+        try:
+            check_throttle(request, OtpThrottle())
+        except ThrottledError as e:
+            return JsonResponse({'detail': e.detail}, status=429)
         unique_otp = OTPCode.objects.filter(
             phone_number=phone_number
         ).order_by('-created_at').first()
@@ -150,7 +157,10 @@ def resend_otp(request):
         return redirect('accounts:login')
 
     # Throttle: limit OTP resend requests per phone/IP
-    check_throttle(request, ResendOtpThrottle())
+    try:
+        check_throttle(request, ResendOtpThrottle())
+    except ThrottledError as e:
+        return JsonResponse({'detail': e.detail}, status=429)
 
     last_otp = OTPCode.objects.filter(
         phone_number=phone_number

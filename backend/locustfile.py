@@ -117,24 +117,27 @@ class OtpFlowUser(HttpUser):
         self._setup_session()
 
     def _setup_session(self):
-        """POST to login to store the phone number in the Django session."""
-        # GET the login page first to grab the CSRF token
         resp = self.client.get("/accounts/login/", name="/accounts/login/ [GET]")
         if resp.status_code != 200:
             return
 
         csrf_token = self._extract_csrf(resp.text)
 
-        self.client.post(
-            "/accounts/login/",
-            data={
-                "phone_number": self._phone,
-                "csrfmiddlewaretoken": csrf_token,
-            },
-            headers={"Referer": "/accounts/login/"},
-            name="/accounts/login/ [POST]",
-            allow_redirects=False,  # don't follow redirect to /otp/
-        )
+        with self.client.post(
+                "/accounts/login/",
+                data={
+                    "phone_number": self._phone,
+                    "csrfmiddlewaretoken": csrf_token,
+                },
+                headers={"Referer": "/accounts/login/"},
+                name="/accounts/login/ [POST]",
+                allow_redirects=False,
+                catch_response=True,
+        ) as resp:
+            if resp.status_code in (200, 302, 429):
+                resp.success()
+            else:
+                resp.failure(f"Unexpected status {resp.status_code}")
 
     @staticmethod
     def _extract_csrf(html: str) -> str:

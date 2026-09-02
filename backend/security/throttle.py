@@ -1,6 +1,11 @@
-from django.core.exceptions import PermissionDenied
-from rest_framework import status as http_status
 from rest_framework.throttling import SimpleRateThrottle, ScopedRateThrottle, AnonRateThrottle
+
+
+class ThrottledError(Exception):
+    """Raised when a manual DRF throttle check fails inside a plain Django view."""
+    def __init__(self, detail='Too many requests. Please try again later.'):
+        self.detail = detail
+        super().__init__(detail)
 
 
 def check_throttle(request, throttle):
@@ -9,10 +14,7 @@ def check_throttle(request, throttle):
     Raises PermissionDenied (403) if the rate limit is exceeded.
     """
     if not throttle.allow_request(request, None):
-        raise PermissionDenied(
-            detail='Too many requests. Please try again later.',
-            code=http_status.HTTP_429_TOO_MANY_REQUESTS,
-        )
+        raise ThrottledError()
 
 
 def _session_or_ip(request, prefix):
