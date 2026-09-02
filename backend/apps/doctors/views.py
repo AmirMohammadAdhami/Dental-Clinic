@@ -1,12 +1,15 @@
 import json
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import cache_page
 from backend.apps.appointments.models import Service
 from backend.apps.blog.widgets import BLOCK_TYPES
+from backend.security.cache import CACHE_TTL
 
 
 # ── Public pages ──
 
+@cache_page(CACHE_TTL['static_pages'])
 def team(request):
     """Render the team/doctors listing page."""
     return render(request, 'blog/team.html')

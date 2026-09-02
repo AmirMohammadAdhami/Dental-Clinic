@@ -17,3 +17,6 @@ celery[redis]
 
 # Fake Data Generation
 faker
+
+#stress test
+locust

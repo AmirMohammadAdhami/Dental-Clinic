@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.contrib import messages
 from django.shortcuts import redirect
-from .services import otp_services, send_otp
+from .services import otp_services
+from .tasks import send_otp_task
 from .models import OTPCode
 from datetime import timedelta
 from django.utils import timezone
@@ -41,10 +42,8 @@ def login_user(request):
 
         unique_otp = otp_services.generate_otp()
 
-        send_otp.send_verification_code(
-            unique_otp,
-            phone_number
-        )
+        # Dispatch SMS sending to Celery — the view returns immediately.
+        send_otp_task.delay(unique_otp, phone_number)
 
         hashed_otp = otp_services.hash_otp(unique_otp)
 
@@ -179,11 +178,8 @@ def resend_otp(request):
 
     unique_otp = otp_services.generate_otp()
 
-    send_otp.send_verification_code(
-        unique_otp,
-        phone_number
-    )
-
+    # Dispatch SMS sending to Celery — the view returns immediately.
+    send_otp_task.delay(unique_otp, phone_number)
 
     hashed_otp = otp_services.hash_otp(unique_otp)
 

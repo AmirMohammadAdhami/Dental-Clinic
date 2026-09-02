@@ -26,6 +26,7 @@ CACHE_TTL = {
     'assistants':        30 * 60,        # 30 min
     'before_afters':     30 * 60,        # 30 min
     'home_videos':       30 * 60,        # 30 min
+    'static_pages':      15 * 60,        # 15 min (public HTML pages)
 
     # Semi-dynamic (user-generated content)
     'doctors_list':      2 * 60,         # 2 min  (heavy annotations)
@@ -111,6 +112,16 @@ def invalidate_article(slug):
     """Call after an article is edited or a new comment is approved."""
     cache.delete(article_detail_key(slug))
     cache.delete(article_comments_key(slug))
+
+
+def invalidate_blog_listing():
+    """Call after an article is published, unpublished, or edited."""
+    # Invalidate the paginated blog listing endpoint
+    cache.delete(_key('articles', 'list', 'all'))
+    # Invalidate the /blog/ static page (keyed by Django's cache_page)
+    from django.core.cache import cache as _cache
+    _cache.delete('views.decorators.cache.cache_page./blog/.GET.dentura')
+    _cache.delete('views.decorators.cache.cache_page./blog/before_after/.GET.dentura')
 
 
 def invalidate_all():

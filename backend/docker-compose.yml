@@ -65,5 +65,19 @@ services:
     depends_on:
       - backend
 
+  locust:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: locust
+    entrypoint: ["locust"]
+    command: ["-f", "/app/backend/locustfile.py", "--host", "http://nginx"]
+    ports:
+      - "8089:8089"
+    volumes:
+      - ./locustfile.py:/app/backend/locustfile.py
+    depends_on:
+      - nginx
+
 volumes:
   static_data:
