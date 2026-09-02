@@ -555,7 +555,7 @@ document.addEventListener('DOMContentLoaded', () => {
         card.className = 'video-card';
         card.innerHTML = `
           <div class="video-card-thumb">
-            <img src="${coverSrc}" alt="${article.full_name}" loading="lazy">
+            <img src="${coverSrc}" alt="${article.title || 'ویدیوی آموزشی دنتورا'}" loading="lazy">
             <div class="video-play-btn" data-video="${videoSrc}">
               <svg width="40" height="40" viewBox="0 0 24 24" fill="white">
                 <path d="M8 5v14l11-7z"/>

@@ -251,7 +251,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 html += '<video class="post-gallery-thumb-vid" muted preload="metadata"><source src="'+esc(t.src)+'" type="video/mp4"></video>';
                 html += play;
             } else {
-                html += '<img src="'+esc(t.src)+'" alt="">';
+                html += '<img src="'+esc(t.src)+'" alt="تصویر '+(i+1)+' گالری مقاله">';
             }
             html += '</button>';
         }
