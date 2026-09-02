@@ -15,8 +15,8 @@ RUN apt-get update && \
         curl && \
     rm -rf /var/lib/apt/lists/*
 
-COPY requirements/base.txt requirements/base.txt
-RUN pip install -r requirements/base.txt
+COPY requirements/develope.txt requirements/develope.txt
+RUN pip install -r requirements/develope.txt
 
 COPY . .
 

@@ -29,6 +29,8 @@ from backend.api.doctor_dashboard.views import (
     DoctorReviewListView,
     DoctorProfileView,
 )
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+
 
 app_name = 'api'
 
@@ -76,4 +78,10 @@ urlpatterns = [
     path('doctor-dashboard/comments/<int:pk>/reply/', DoctorCommentReplyView.as_view(), name='doctor-dashboard-comment-reply'),
     path('doctor-dashboard/reviews/', DoctorReviewListView.as_view(), name='doctor-dashboard-reviews'),
     path('doctor-dashboard/profile/', DoctorProfileView.as_view(), name='doctor-dashboard-profile'),
+
+    #DRF SPECTECULAR
+    path('schema/', SpectacularAPIView.as_view(), name='schema'),
+    # Optional UI:
+    path('schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 ]

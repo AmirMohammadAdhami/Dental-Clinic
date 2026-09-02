@@ -76,6 +76,18 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
+        from django.conf import settings
+
+        settings_module = os.environ.get("DJANGO_SETTINGS_MODULE", "")
+        if not settings_module.endswith(".development") and not settings.DEBUG:
+            self.stderr.write(
+                self.style.ERROR(
+                    "ERROR: seed_data can only be run in a development environment.\n"
+                    "Set DJANGO_SETTINGS_MODULE=config.settings.development or DEBUG=true."
+                )
+            )
+            return
+
         if options["clear"]:
             self.stdout.write("Clearing existing data...")
             Notification.objects.all().delete()

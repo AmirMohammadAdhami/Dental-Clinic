@@ -1,12 +1,11 @@
-﻿/**
+/**
  * Dentura — Doctor Panel: Profile (ویرایش پروفایل پزشکی)
- * ۴ تب: اطلاعات پایه / خدمات و ویدیو / مدارک / برنامه کاری
+ * ۳ تب: اطلاعات پایه / خدمات / مدارک — all via API
  */
 (function () {
   'use strict';
 
-  var db = DocDB.load();
-  var profile = db.profile;
+  var profileData = null;
 
   // ================= TABS =================
   var tabs = document.querySelectorAll('#profileTabs .doc-tab');
@@ -21,112 +20,36 @@
     });
   });
 
-  function readFile(input, cb) {
-    var file = input.files && input.files[0];
-    if (!file) return;
-    var reader = new FileReader();
-    reader.onload = function () { cb(reader.result); };
-    reader.readAsDataURL(file);
-  }
-
   function setVal(id, v) {
     var el = document.getElementById(id);
-    if (el) el.value = v;
+    if (el) el.value = v || '';
   }
 
-  // ================= TAB 1: BASIC =================
-  var avatarPreview = document.getElementById('avatarPreview');
-  var avatarInput = document.getElementById('avatarInput');
-  if (avatarPreview) avatarPreview.src = profile.avatar;
-  if (avatarInput) {
-    avatarInput.addEventListener('change', function () {
-      readFile(this, function (dataUrl) {
-        if (avatarPreview) avatarPreview.src = dataUrl;
-        profile._avatarData = dataUrl;
+  // ================= SERVICES CHIPS =================
+  var allServices = [];
+
+  function renderServiceChips(selectedIds) {
+    var chipsWrap = document.getElementById('serviceChips');
+    if (!chipsWrap) return;
+    chipsWrap.innerHTML = '';
+    apiFetch('GET', '/services/').then(function (services) {
+      allServices = services || [];
+      allServices.forEach(function (s) {
+        var chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'doc-chip';
+        chip.dataset.id = s.id;
+        chip.textContent = s.name;
+        if (selectedIds && selectedIds.indexOf(s.id) !== -1) {
+          chip.classList.add('is-active');
+        }
+        chip.addEventListener('click', function () { chip.classList.toggle('is-active'); });
+        chipsWrap.appendChild(chip);
       });
-    });
-  }
-  setVal('pfFirstName', profile.firstName);
-  setVal('pfLastName', profile.lastName);
-  setVal('pfCouncil', profile.councilNo);
-  setVal('pfExperience', profile.experience);
-  setVal('pfUniversity', profile.university);
-  setVal('pfDegree', profile.degree);
-  setVal('pfBio', profile.bio);
-
-  // ================= TAB 2: SERVICES + VIDEO =================
-  var SERVICES = ['ایمپلنت', 'کامپوزیت زیبایی', 'لمینت', 'ارتودنسی', 'عصب‌کشی', 'ترمیم و پرکردن', 'بلیچینگ', 'درمان لثه', 'دندانپزشکی کودکان', 'جراحی فک و صورت'];
-  var chipsWrap = document.getElementById('serviceChips');
-  if (chipsWrap) {
-    SERVICES.forEach(function (s) {
-      var chip = document.createElement('button');
-      chip.type = 'button';
-      chip.className = 'doc-chip' + (profile.services.indexOf(s) !== -1 ? ' is-active' : '');
-      chip.textContent = s;
-      chip.addEventListener('click', function () { chip.classList.toggle('is-active'); });
-      chipsWrap.appendChild(chip);
-    });
+    }).catch(function () { /* silently fail */ });
   }
 
-  var videoUrl = document.getElementById('videoUrl');
-  var videoPreview = document.getElementById('videoPreview');
-  var videoCoverInput = document.getElementById('videoCoverInput');
-
-  function embedUrl(url) {
-    if (!url) return '';
-    var yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{6,})/);
-    if (yt) return 'https://www.youtube.com/embed/' + yt[1];
-    var ap = url.match(/aparat\.com\/v\/([\w]+)/);
-    if (ap) return 'https://www.aparat.com/video/video/embed/videohash/' + ap[1] + '/vt/frame';
-    return '';
-  }
-
-  function showVideo() {
-    var src = embedUrl(videoUrl ? videoUrl.value.trim() : '');
-    if (!videoPreview) return;
-    if (src) {
-      videoPreview.innerHTML = '<iframe src="' + src + '" allowfullscreen loading="lazy" title="ویدیوی معرفی"></iframe>';
-      videoPreview.classList.add('is-visible');
-    } else {
-      videoPreview.classList.remove('is-visible');
-      videoPreview.innerHTML = '';
-    }
-  }
-
-  if (videoUrl) {
-    setVal('videoUrl', profile.videoUrl || '');
-    showVideo();
-    videoUrl.addEventListener('change', showVideo);
-  }
-
-  var videoFileInput = document.getElementById('videoFileInput');
-  if (videoFileInput) {
-    videoFileInput.addEventListener('change', function () {
-      var f = this.files && this.files[0];
-      if (!f) return;
-      var label = document.getElementById('videoFileLabel');
-      if (label) label.textContent = f.name;
-      if (videoPreview) {
-        videoPreview.innerHTML = '';
-        var v = document.createElement('video');
-        v.controls = true;
-        v.src = URL.createObjectURL(f);
-        videoPreview.appendChild(v);
-        videoPreview.classList.add('is-visible');
-      }
-    });
-  }
-
-  if (videoCoverInput) {
-    videoCoverInput.addEventListener('change', function () {
-      var f = this.files && this.files[0];
-      if (!f) return;
-      var label = document.getElementById('videoCoverLabel');
-      if (label) label.textContent = f.name;
-    });
-  }
-
-  // ================= TAB 3: CERTIFICATES =================
+  // ================= CERTIFICATES =================
   var certsList = document.getElementById('certsList');
 
   function addCertRow(cert) {
@@ -136,28 +59,13 @@
       '  <div class="doc-field"><label class="doc-label">عنوان گواهینامه</label><input type="text" class="doc-input cert-title" placeholder="مثلاً: دوره ایمپلنت پیشرفته"></div>' +
       '  <div class="doc-field"><label class="doc-label">موسسه / دانشگاه</label><input type="text" class="doc-input cert-org" placeholder="کجا اخذ شده؟"></div>' +
       '  <div class="doc-field"><label class="doc-label">تاریخ اخذ</label><input type="text" class="doc-input cert-date" placeholder="۱۴۰۱"></div>' +
-      '  <div class="doc-field"><label class="doc-label">تصویر مدرک</label>' +
-      '    <label class="doc-file"><input type="file" accept="image/*" class="cert-img"><span class="doc-file-title cert-img-label">انتخاب تصویر</span></label>' +
-      '    <img class="doc-cert-thumb" alt="پیش‌نمایش مدرک"></div>' +
       '  <button type="button" class="doc-iconbtn doc-iconbtn--danger cert-remove" title="حذف مدرک" aria-label="حذف مدرک">' +
       '    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>' +
       '  </button>';
 
-    row.querySelector('.cert-title').value = cert.title || '';
-    row.querySelector('.cert-org').value = cert.org || '';
+    row.querySelector('.cert-title').value = cert.what || '';
+    row.querySelector('.cert-org').value = cert.where || '';
     row.querySelector('.cert-date').value = cert.date || '';
-
-    var imgInput = row.querySelector('.cert-img');
-    var thumb = row.querySelector('.doc-cert-thumb');
-    var imgLabel = row.querySelector('.cert-img-label');
-    if (cert.img) { thumb.src = cert.img; thumb.classList.add('is-visible'); if (imgLabel) imgLabel.textContent = 'تغییر تصویر'; }
-    imgInput.addEventListener('change', function () {
-      readFile(this, function (dataUrl) {
-        thumb.src = dataUrl;
-        thumb.classList.add('is-visible');
-        if (imgLabel) imgLabel.textContent = 'تغییر تصویر';
-      });
-    });
 
     row.querySelector('.cert-remove').addEventListener('click', function () {
       row.remove();
@@ -167,8 +75,32 @@
     certsList.appendChild(row);
   }
 
+  // ================= LOAD PROFILE =================
+  apiFetch('GET', '/doctor-dashboard/profile/').then(function (data) {
+    profileData = data;
+
+    setVal('pfFirstName', data.first_name);
+    setVal('pfLastName', data.last_name);
+    setVal('pfCouncil', data.medical_license_number);
+    setVal('pfExperience', data.years_of_experience);
+    setVal('pfUniversity', data.university);
+    setVal('pfSpeciality', data.speciality);
+    setVal('pfBio', data.bio);
+
+    // Service chips
+    var selectedServiceIds = (data.services_offered || []).map(function (s) { return s.id; });
+    renderServiceChips(selectedServiceIds);
+
+    // Certificates
+    if (certsList) {
+      (data.certificates || []).forEach(function (c) { addCertRow(c); });
+    }
+  }).catch(function () {
+    docToast('خطا در بارگذاری پروفایل', 'error');
+  });
+
+  // ================= ADD CERT =================
   if (certsList) {
-    profile.certificates.forEach(function (c) { addCertRow(c); });
     var addBtn = document.getElementById('addCert');
     if (addBtn) addBtn.addEventListener('click', function () {
       addCertRow({});
@@ -176,7 +108,7 @@
     });
   }
 
-  // ================= SAVE ALL =================
+  // ================= SAVE =================
   var form = document.getElementById('profileForm');
   if (form) {
     form.addEventListener('submit', function (e) {
@@ -186,38 +118,37 @@
         return el ? el.value.trim() : '';
       };
 
-      profile.firstName = g('pfFirstName');
-      profile.lastName = g('pfLastName');
-      profile.councilNo = g('pfCouncil');
-      profile.experience = parseInt(g('pfExperience'), 10) || 0;
-      profile.university = g('pfUniversity');
-      profile.degree = g('pfDegree');
-      profile.bio = g('pfBio');
-      if (profile._avatarData) { profile.avatar = profile._avatarData; delete profile._avatarData; }
-
-      var services = [];
+      var selectedServices = [];
       document.querySelectorAll('#serviceChips .doc-chip.is-active').forEach(function (c) {
-        services.push(c.textContent);
+        selectedServices.push(parseInt(c.dataset.id, 10));
       });
-      profile.services = services;
-      profile.videoUrl = g('videoUrl');
 
-      profile.certificates = [];
-      document.querySelectorAll('#certsList .doc-cert-row').forEach(function (row) {
-        var title = row.querySelector('.cert-title').value.trim();
-        var thumb = row.querySelector('.doc-cert-thumb');
-        if (!title) return;
-        profile.certificates.push({
-          title: title,
-          org: row.querySelector('.cert-org').value.trim(),
-          date: row.querySelector('.cert-date').value.trim(),
-          img: thumb.classList.contains('is-visible') ? thumb.src : ''
+      var payload = {
+        first_name: g('pfFirstName'),
+        last_name: g('pfLastName'),
+        years_of_experience: parseInt(g('pfExperience'), 10) || 0,
+        university: g('pfUniversity'),
+        speciality: g('pfSpeciality'),
+        bio: g('pfBio'),
+        services_offered: selectedServices,
+      };
+
+      apiFetch('PUT', '/doctor-dashboard/profile/', payload).then(function () {
+        docToast('پروفایل پزشکی با موفقیت ذخیره شد ✅');
+        // Reload sidebar info
+        apiFetch('GET', '/doctor-dashboard/profile/').then(function (data) {
+          var sideName = document.getElementById('docSideName');
+          var sideRole = document.getElementById('docSideRole');
+          if (sideName) sideName.textContent = data.full_name || '—';
+          if (sideRole) sideRole.textContent = data.speciality || '—';
         });
+      }).catch(function (err) {
+        var msg = 'خطا در ذخیره پروفایل';
+        if (err && err.data) {
+          msg = err.data.detail || msg;
+        }
+        docToast(msg, 'error');
       });
-
-      db.profile = profile;
-      DocDB.save(db);
-      docToast('پروفایل پزشکی با موفقیت ذخیره شد ✅');
     });
   }
 })();

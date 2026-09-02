@@ -1,177 +1,447 @@
-﻿/**
+/**
  * Dentura — Doctor Panel: Article Editor (نگارش و ویرایش مقاله)
- * عنوان، تصویر شاخص، دسته‌بندی، Rich Text Editor و ذخیره پیش‌نویس/انتشار
+ * عنوان، دسته‌بندی، Block Editor، آپلود مدیا و ذخیره پیش‌نویس/انتشار — all via API
  */
 (function () {
   'use strict';
 
   var titleEl = document.getElementById('artTitle');
   var catEl = document.getElementById('artCategory');
-  var coverInput = document.getElementById('coverInput');
-  var coverPreviewWrap = document.getElementById('coverPreviewWrap');
-  var coverPreview = document.getElementById('coverPreview');
-  var removeCoverBtn = document.getElementById('removeCover');
-  var editor = document.getElementById('editorArea');
-  var wordEl = document.getElementById('wordCount');
-  var charEl = document.getElementById('charCount');
+  var abstractEl = document.getElementById('artAbstract');
+  var blocksSource = document.getElementById('contentBlocksSource');
+  var blockCountEl = document.getElementById('blockCount');
   var btnDraft = document.getElementById('btnDraft');
   var btnPublish = document.getElementById('btnPublish');
 
-  var currentId = null;
-  var coverData = '';
-  var db = DocDB.load();
+  // Media elements
+  var mediaSection = document.getElementById('mediaSection');
+  var imageUploadZone = document.getElementById('imageUploadZone');
+  var imageUploadInput = document.getElementById('imageUploadInput');
+  var imagePreviewGrid = document.getElementById('imagePreviewGrid');
+  var videoUploadZone = document.getElementById('videoUploadZone');
+  var videoUploadInput = document.getElementById('videoUploadInput');
+  var videoPreviewGrid = document.getElementById('videoPreviewGrid');
 
-  // بارگذاری مقاله موجود (?id=)
-  var params = new URLSearchParams(window.location.search);
-  if (params.get('id')) {
-    currentId = parseInt(params.get('id'), 10);
-    var found = db.articles.find(function (a) { return a.id === currentId; });
-    if (found) {
-      if (titleEl) titleEl.value = found.title;
-      if (catEl) catEl.value = found.category || catEl.value;
-      if (editor) editor.innerHTML = found.content || '';
-      coverData = found.cover || '';
-      if (coverData && coverPreview && coverPreviewWrap) {
-        coverPreview.src = coverData;
-        coverPreviewWrap.hidden = false;
-      }
-      document.title = 'ویرایش مقاله — دنتورا';
-    }
+  var currentId = window.DOCTOR_ARTICLE_ID || null;
+
+  // ── Utility ──
+  function getCookie(name) {
+    var value = '; ' + document.cookie;
+    var parts = value.split('; ' + name + '=');
+    if (parts.length === 2) return decodeURIComponent(parts.pop().split(';').shift());
+    return '';
   }
 
-  // ================= COVER IMAGE =================
-  function readFile(input, cb) {
-    var file = input.files && input.files[0];
-    if (!file) return;
-    var reader = new FileReader();
-    reader.onload = function () { cb(reader.result); };
-    reader.readAsDataURL(file);
-  }
-
-  if (coverInput) {
-    coverInput.addEventListener('change', function () {
-      var name = this.files && this.files[0] ? this.files[0].name : null;
-      var label = document.getElementById('coverLabel');
-      if (label && name) label.textContent = name;
-      readFile(this, function (dataUrl) {
-        coverData = dataUrl;
-        if (coverPreview && coverPreviewWrap) {
-          coverPreview.src = dataUrl;
-          coverPreviewWrap.hidden = false;
+  // ── Load existing article if editing ──
+  if (currentId) {
+    apiFetch('GET', '/doctor-dashboard/articles/' + currentId + '/').then(function (data) {
+      if (titleEl) titleEl.value = data.title || '';
+      if (abstractEl) abstractEl.value = data.abstract || '';
+      if (data.category) {
+        var opts = catEl ? catEl.options : [];
+        for (var i = 0; i < opts.length; i++) {
+          if (String(opts[i].value) === String(data.category)) {
+            catEl.selectedIndex = i;
+            break;
+          }
         }
-      });
-    });
-  }
-
-  if (removeCoverBtn) {
-    removeCoverBtn.addEventListener('click', function () {
-      coverData = '';
-      if (coverPreviewWrap) coverPreviewWrap.hidden = true;
-      if (coverInput) coverInput.value = '';
-      var label = document.getElementById('coverLabel');
-      if (label) label.textContent = 'انتخاب تصویر شاخص';
-    });
-  }
-
-  // ================= WYSIWYG TOOLBAR =================
-  if (editor) {
-    try { document.execCommand('styleWithCSS', false, false); } catch (e) { /* noop */ }
-    editor.focus();
-
-    document.querySelectorAll('#editorToolbar .doc-tool').forEach(function (btn) {
-      btn.addEventListener('click', function (e) {
-        e.preventDefault();
-        var cmd = btn.getAttribute('data-cmd');
-        var val = btn.getAttribute('data-val') || null;
-        editor.focus();
-        if (cmd === 'createLink') {
-          var url = window.prompt('آدرس لینک را وارد کنید (مثلاً https://...):', 'https://');
-          if (url) document.execCommand('createLink', false, url);
-        } else if (cmd === 'insertImage') {
-          var fileInput = document.getElementById('inlineImageInput');
-          if (fileInput) fileInput.click();
-        } else {
-          document.execCommand(cmd, false, val);
-        }
-        updateCounts();
-      });
-    });
-
-    var inlineImg = document.getElementById('inlineImageInput');
-    if (inlineImg) {
-      inlineImg.addEventListener('change', function () {
-        readFile(this, function (dataUrl) {
-          editor.focus();
-          document.execCommand('insertImage', false, dataUrl);
-          updateCounts();
-        });
-        this.value = '';
-      });
-    }
-
-    editor.addEventListener('input', updateCounts);
-    editor.addEventListener('keydown', function (e) {
-      if (e.key === 'Tab') {
-        e.preventDefault();
-        document.execCommand('insertHTML', false, '&nbsp;&nbsp;&nbsp;&nbsp;');
       }
+      if (blocksSource && data.content_blocks) {
+        blocksSource.value = JSON.stringify(data.content_blocks, null, 2);
+        var wrapper = blocksSource.closest('.block-editor-wrapper');
+        if (wrapper) {
+          wrapper.dispatchEvent(new CustomEvent('blocks:reload'));
+        }
+      }
+      if (data.slug) document.title = 'ویرایش مقاله — دنتورا';
+      updateCounts();
+
+      // Show media section and load existing media
+      showMediaSection();
+      if (data.files && data.files.length) {
+        renderExistingMedia(data.files);
+      }
+    }).catch(function () {
+      docToast('خطا در بارگذاری مقاله', 'error');
     });
+  } else {
+    // New article: show media section after first save
+    showMediaSection();
   }
 
+  // ── Update block counts ──
   function updateCounts() {
-    if (!editor) return;
-    var text = (editor.innerText || '').replace(/\s+/g, ' ').trim();
-    var words = text ? text.split(' ').length : 0;
-    if (wordEl) wordEl.textContent = toPersianNum(words) + ' کلمه';
-    if (charEl) charEl.textContent = toPersianNum(text.length) + ' کاراکتر';
+    var blocks = [];
+    try {
+      blocks = JSON.parse(blocksSource ? blocksSource.value || '[]' : '[]');
+      if (!Array.isArray(blocks)) blocks = [];
+    } catch (_) {
+      blocks = [];
+    }
+    if (blockCountEl) {
+      blockCountEl.textContent = toPersianNum(blocks.length) + ' بلاک';
+    }
+  }
+
+  var countTimer = null;
+  if (blocksSource) {
+    blocksSource.addEventListener('input', function () {
+      clearTimeout(countTimer);
+      countTimer = setTimeout(updateCounts, 400);
+    });
   }
   updateCounts();
 
-  // ================= SAVE =================
-  function saveArticle(status) {
+  // ── Show Media Section ──
+  function showMediaSection() {
+    if (mediaSection) mediaSection.style.display = '';
+  }
+
+  // ── Render existing media ──
+  function renderExistingMedia(files) {
+    files.forEach(function (f) {
+      if (f.media_type === 'IMAGE' && f.file) {
+        addImagePreview(f.file, f.id);
+      } else if (f.media_type === 'VIDEO' && (f.file || f.video_url)) {
+        addVideoPreview(f.file || f.video_url, f.id);
+      }
+    });
+  }
+
+  // ── Image Upload ──
+  if (imageUploadZone) {
+    imageUploadZone.addEventListener('click', function (e) {
+      if (e.target === imageUploadInput) return;
+      imageUploadInput.click();
+    });
+
+    imageUploadInput.addEventListener('change', function () {
+      handleFiles(this.files, 'IMAGE');
+      this.value = '';
+    });
+
+    // Drag & drop
+    imageUploadZone.addEventListener('dragover', function (e) {
+      e.preventDefault();
+      this.classList.add('is-dragover');
+    });
+    imageUploadZone.addEventListener('dragleave', function () {
+      this.classList.remove('is-dragover');
+    });
+    imageUploadZone.addEventListener('drop', function (e) {
+      e.preventDefault();
+      this.classList.remove('is-dragover');
+      handleFiles(e.dataTransfer.files, 'IMAGE');
+    });
+  }
+
+  // ── Video Upload ──
+  if (videoUploadZone) {
+    videoUploadZone.addEventListener('click', function (e) {
+      if (e.target === videoUploadInput) return;
+      videoUploadInput.click();
+    });
+
+    videoUploadInput.addEventListener('change', function () {
+      handleFiles(this.files, 'VIDEO');
+      this.value = '';
+    });
+
+    videoUploadZone.addEventListener('dragover', function (e) {
+      e.preventDefault();
+      this.classList.add('is-dragover');
+    });
+    videoUploadZone.addEventListener('dragleave', function () {
+      this.classList.remove('is-dragover');
+    });
+    videoUploadZone.addEventListener('drop', function (e) {
+      e.preventDefault();
+      this.classList.remove('is-dragover');
+      handleFiles(e.dataTransfer.files, 'VIDEO');
+    });
+  }
+
+  // ── Handle file selection ──
+  function handleFiles(fileList, mediaType) {
+    if (!fileList || !fileList.length) return;
+
+    // Ensure article exists first
+    ensureArticleSaved().then(function () {
+      var files = Array.prototype.slice.call(fileList);
+      files.forEach(function (file) {
+        uploadFile(file, mediaType);
+      });
+    });
+  }
+
+  // ── Ensure article is saved before uploading media ──
+  function ensureArticleSaved() {
+    if (currentId) return Promise.resolve();
+
+    // Save as draft first
+    var title = titleEl ? titleEl.value.trim() : '';
+    if (!title) {
+      titleEl.value = 'مقاله بدون عنوان';
+      title = 'مقاله بدون عنوان';
+    }
+
+    var contentBlocks = [];
+    try {
+      contentBlocks = JSON.parse(blocksSource ? blocksSource.value || '[]' : '[]');
+      if (!Array.isArray(contentBlocks)) contentBlocks = [];
+    } catch (_) { contentBlocks = []; }
+
+    var payload = {
+      title: title,
+      category: catEl ? catEl.value : null,
+      abstract: abstractEl ? abstractEl.value.trim() : '',
+      content: '',
+      content_blocks: contentBlocks,
+      is_published: false,
+    };
+
+    return apiFetch('POST', '/doctor-dashboard/articles/', payload).then(function (data) {
+      if (data && data.id) currentId = data.id;
+      docToast('مقاله ذخیره شد — حالا می‌توانید فایل اضافه کنید');
+    });
+  }
+
+  // ── Upload single file ──
+  function uploadFile(file, mediaType) {
+    var formData = new FormData();
+    formData.append('media_type', mediaType);
+
+    if (mediaType === 'IMAGE') {
+      if (!file.type.startsWith('image/')) {
+        docToast('فایل انتخابی باید تصویر باشد', 'error');
+        return;
+      }
+      formData.append('file', file);
+    } else {
+      if (!file.type.startsWith('video/')) {
+        docToast('فایل انتخابی باید ویدیو باشد', 'error');
+        return;
+      }
+      formData.append('file', file);
+    }
+
+    // Show uploading state
+    var previewId = 'uploading-' + Date.now() + Math.random();
+    if (mediaType === 'IMAGE') {
+      addImagePreview(null, previewId, URL.createObjectURL(file), true);
+    } else {
+      addVideoPreview(null, previewId, URL.createObjectURL(file), true);
+    }
+
+    fetch('/api/doctor-dashboard/articles/' + currentId + '/media/', {
+      method: 'POST',
+      headers: { 'X-CSRFToken': getCookie('csrftoken') },
+      credentials: 'same-origin',
+      body: formData,
+    })
+    .then(function (res) {
+      if (!res.ok) return res.json().then(function (d) { throw d; });
+      return res.json();
+    })
+    .then(function (data) {
+      // Replace uploading placeholder with real preview
+      removePreview(previewId);
+      if (mediaType === 'IMAGE') {
+        addImagePreview(data.file, data.id);
+      } else {
+        addVideoPreview(data.file || data.video_url, data.id);
+      }
+      docToast('فایل با موفقیت آپلود شد');
+    })
+    .catch(function (err) {
+      removePreview(previewId);
+      var msg = 'خطا در آپلود فایل';
+      if (err && err.detail) msg = err.detail;
+      docToast(msg, 'error');
+    });
+  }
+
+  // ── Image Preview ──
+  function addImagePreview(fileUrl, mediaId, tempUrl, isUploading) {
+    if (!imagePreviewGrid) return;
+    var src = tempUrl || (fileUrl ? fileUrl : '');
+    var idx = imagePreviewGrid.children.length;
+    var isFirst = idx === 0;
+    var div = document.createElement('div');
+    div.className = 'media-preview-item' + (isUploading ? ' is-uploading' : '');
+    div.setAttribute('data-media-id', mediaId || '');
+    div.innerHTML =
+      '<img src="' + esc(src) + '" alt="تصویر ' + (idx + 1) + '">' +
+      '<div class="media-preview-order">' + toPersianNum(idx + 1) + '</div>' +
+      (isFirst ? '<span class="media-cover-badge">封面</span>' : '') +
+      (isUploading ? '<div class="media-uploading-overlay"><div class="media-spinner"></div></div>' : '') +
+      '<button type="button" class="media-remove-btn" data-media-id="' + (mediaId || '') + '" aria-label="حذف">&times;</button>' +
+      '<div class="media-reorder-btns">' +
+        '<button type="button" class="media-reorder-up" aria-label="جلو">&#9650;</button>' +
+        '<button type="button" class="media-reorder-down" aria-label="عقب">&#9660;</button>' +
+      '</div>';
+    imagePreviewGrid.appendChild(div);
+
+    // Remove button
+    div.querySelector('.media-remove-btn').addEventListener('click', function () {
+      var id = this.getAttribute('data-media-id');
+      if (id && !isUploading) {
+        deleteMedia(id, function () {
+          div.remove();
+          updateImageLabels();
+        });
+      } else {
+        div.remove();
+        updateImageLabels();
+      }
+    });
+
+    // Reorder buttons
+    var upBtn = div.querySelector('.media-reorder-up');
+    var downBtn = div.querySelector('.media-reorder-down');
+    if (upBtn) upBtn.addEventListener('click', function () {
+      var prev = div.previousElementSibling;
+      if (prev) {
+        imagePreviewGrid.insertBefore(div, prev);
+        updateImageLabels();
+      }
+    });
+    if (downBtn) downBtn.addEventListener('click', function () {
+      var next = div.nextElementSibling;
+      if (next) {
+        imagePreviewGrid.insertBefore(next, div);
+        updateImageLabels();
+      }
+    });
+  }
+
+  function updateImageLabels() {
+    if (!imagePreviewGrid) return;
+    var items = imagePreviewGrid.querySelectorAll('.media-preview-item');
+    items.forEach(function (item, i) {
+      // Update order number
+      var orderEl = item.querySelector('.media-preview-order');
+      if (orderEl) orderEl.textContent = toPersianNum(i + 1);
+      // Update cover badge
+      var badge = item.querySelector('.media-cover-badge');
+      if (i === 0 && !badge) {
+        var span = document.createElement('span');
+        span.className = 'media-cover-badge';
+        span.textContent = '封面';
+        item.appendChild(span);
+      } else if (i > 0 && badge) {
+        badge.remove();
+      }
+    });
+  }
+
+  // ── Video Preview ──
+  function addVideoPreview(fileUrl, mediaId, tempUrl, isUploading) {
+    if (!videoPreviewGrid) return;
+    var src = tempUrl || (fileUrl ? fileUrl : '');
+    var idx = videoPreviewGrid.children.length;
+    var div = document.createElement('div');
+    div.className = 'media-preview-item media-preview-video' + (isUploading ? ' is-uploading' : '');
+    div.setAttribute('data-media-id', mediaId || '');
+    div.innerHTML =
+      '<video src="' + esc(src) + '" preload="metadata" muted></video>' +
+      '<div class="media-preview-order">' + toPersianNum(idx + 1) + '</div>' +
+      (isUploading ? '<div class="media-uploading-overlay"><div class="media-spinner"></div></div>' : '') +
+      '<button type="button" class="media-remove-btn" data-media-id="' + (mediaId || '') + '" aria-label="حذف">&times;</button>';
+    videoPreviewGrid.appendChild(div);
+
+    div.querySelector('.media-remove-btn').addEventListener('click', function () {
+      var id = this.getAttribute('data-media-id');
+      if (id && !isUploading) {
+        deleteMedia(id, function () {
+          div.remove();
+        });
+      } else {
+        div.remove();
+      }
+    });
+  }
+
+  // ── Delete Media ──
+  function deleteMedia(mediaId, onSuccess) {
+    apiFetch('DELETE', '/doctor-dashboard/articles/' + currentId + '/media/' + mediaId + '/').then(function () {
+      docToast('فایل حذف شد');
+      if (onSuccess) onSuccess();
+      updateVideoLabels();
+    }).catch(function () {
+      docToast('خطا در حذف فایل', 'error');
+    });
+  }
+
+  function updateVideoLabels() {
+    if (!videoPreviewGrid) return;
+    var items = videoPreviewGrid.querySelectorAll('.media-preview-item');
+    items.forEach(function (item, i) {
+      var orderEl = item.querySelector('.media-preview-order');
+      if (orderEl) orderEl.textContent = toPersianNum(i + 1);
+    });
+  }
+
+  // ── Save Article ──
+  function saveArticle(publish) {
     var title = titleEl ? titleEl.value.trim() : '';
     if (!title) {
       docToast('عنوان مقاله را وارد کنید', 'error');
       if (titleEl) titleEl.focus();
       return;
     }
-    var fresh = DocDB.load();
-    var content = editor ? editor.innerHTML : '';
-    var today = '۱۴۰۴/۰۵/۲۴';
 
-    if (currentId) {
-      var a = fresh.articles.find(function (x) { return x.id === currentId; });
-      if (a) {
-        a.title = title;
-        a.category = catEl ? catEl.value : a.category;
-        a.content = content;
-        a.status = status;
-        if (coverData && coverData.indexOf('data:') !== 0) a.cover = coverData;
-        if (coverData.indexOf('data:') === 0) a.cover = coverData;
-        if (!coverData) a.cover = '';
-        if (status === 'published' && !a.date) a.date = today;
-      }
-    } else {
-      currentId = Date.now();
-      fresh.articles.unshift({
-        id: currentId,
-        title: title,
-        category: catEl ? catEl.value : 'بهداشت و پیشگیری',
-        status: status,
-        cover: coverData || '../../assets/hero/smile-detail.jpg',
-        date: today,
-        views: 0,
-        content: content
-      });
+    var contentBlocks = [];
+    try {
+      contentBlocks = JSON.parse(blocksSource ? blocksSource.value || '[]' : '[]');
+      if (!Array.isArray(contentBlocks)) contentBlocks = [];
+    } catch (_) {
+      contentBlocks = [];
     }
 
-    DocDB.save(fresh);
-    docToast(status === 'published' ? 'مقاله جهت انتشار ارسال شد ✅' : 'پیش‌نویس ذخیره شد ✅');
-    setTimeout(function () {
-      window.location.href = 'articles.html';
-    }, 1100);
+    var payload = {
+      title: title,
+      category: catEl ? catEl.value : null,
+      abstract: abstractEl ? abstractEl.value.trim() : '',
+      content: '',
+      content_blocks: contentBlocks,
+      is_published: !!publish,
+    };
+
+    var method = currentId ? 'PATCH' : 'POST';
+    var url = currentId ? '/doctor-dashboard/articles/' + currentId + '/' : '/doctor-dashboard/articles/';
+
+    apiFetch(method, url, payload).then(function (data) {
+      if (!currentId && data && data.id) currentId = data.id;
+      docToast(publish ? 'مقاله با موفقیت منتشر شد ✅' : 'پیش‌نویس ذخیره شد ✅');
+      setTimeout(function () {
+        window.location.href = '/doctors/dashboard/articles/';
+      }, 1100);
+    }).catch(function (err) {
+      var msg = 'خطا در ذخیره مقاله';
+      if (err && err.data) {
+        var d = err.data;
+        msg = d.title ? 'عنوان: ' + d.title[0] :
+              d.detail ? d.detail : msg;
+      }
+      docToast(msg, 'error');
+    });
   }
 
-  if (btnDraft) btnDraft.addEventListener('click', function () { saveArticle('draft'); });
-  if (btnPublish) btnPublish.addEventListener('click', function () { saveArticle('published'); });
+  // ── Helpers ──
+  function esc(s) {
+    if (!s) return '';
+    var d = document.createElement('div');
+    d.appendChild(document.createTextNode(s));
+    return d.innerHTML;
+  }
+
+  function removePreview(id) {
+    var el = imagePreviewGrid ? imagePreviewGrid.querySelector('[data-media-id="' + id + '"]') : null;
+    if (!el && videoPreviewGrid) el = videoPreviewGrid.querySelector('[data-media-id="' + id + '"]');
+    if (el) el.remove();
+  }
+
+  if (btnDraft) btnDraft.addEventListener('click', function () { saveArticle(false); });
+  if (btnPublish) btnPublish.addEventListener('click', function () { saveArticle(true); });
 })();

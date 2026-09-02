@@ -7,10 +7,13 @@ django-environ
 djangorestframework
 markdown
 django-filter
+drf_spectacular
 
 # Third Party
 Pillow
 gunicorn
-
 # Celery
 celery[redis]
+
+# Fake Data Generation
+faker

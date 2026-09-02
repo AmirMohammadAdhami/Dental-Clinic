@@ -1,12 +1,13 @@
-﻿/**
+/**
  * Dentura — Doctor Panel: Comments (مدیریت دیدگاه‌ها)
- * لیست دیدگاه‌ها با بج وضعیت، فیلتر و باکس پاسخ inline با بج «پاسخ دندانپزشک»
+ * لیست دیدگاه‌ها با فیلتر و پاسخ inline — all via API
  */
 (function () {
   'use strict';
 
   var list = document.getElementById('commentsList');
   var currentFilter = 'all';
+  var allComments = [];
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
@@ -18,17 +19,22 @@
     return name ? name.trim().charAt(0) : '؟';
   }
 
+  function formatDate(isoStr) {
+    if (!isoStr) return '';
+    var d = new Date(isoStr);
+    return toPersianNum(d.getFullYear()) + '/' + toPersianNum(String(d.getMonth() + 1).padStart(2, '0')) + '/' + toPersianNum(String(d.getDate()).padStart(2, '0'));
+  }
+
   function render() {
     if (!list) return;
-    var db = DocDB.load();
-    var items = db.comments;
-    if (currentFilter !== 'all') {
-      items = items.filter(function (c) { return c.status === currentFilter; });
+    var items = allComments;
+    if (currentFilter === 'pending') {
+      items = items.filter(function (c) { return c.status === 'PENDING'; });
     }
 
-    var pending = db.comments.filter(function (c) { return c.status === 'pending'; }).length;
+    var pendingCount = allComments.filter(function (c) { return c.status === 'PENDING'; }).length;
     var pendingLabel = document.getElementById('pendingCountLabel');
-    if (pendingLabel) pendingLabel.textContent = toPersianNum(pending) + ' دیدگاه در انتظار پاسخ شماست';
+    if (pendingLabel) pendingLabel.textContent = toPersianNum(pendingCount) + ' دیدگاه در انتظار پاسخ شماست';
 
     if (!items.length) {
       list.innerHTML = '<div class="doc-empty">دیدگاهی در این وضعیت وجود ندارد. 💬</div>';
@@ -36,42 +42,65 @@
     }
 
     list.innerHTML = items.map(function (c) {
-      var badge = c.status === 'answered'
+      var hasReply = c.replies && c.replies.length > 0;
+
+      // Badge: green for answered, orange for pending
+      var badgeHtml = hasReply
         ? '<span class="doc-badge doc-badge--answered"><span class="doc-badge-dot"></span>پاسخ داده‌شده</span>'
         : '<span class="doc-badge doc-badge--pending"><span class="doc-badge-dot"></span>در انتظار پاسخ</span>';
 
+      // Doctor reply block with special styling
       var replyBlock = '';
-      if (c.reply) {
-        replyBlock = '<div class="doc-comment-reply">' +
-          '  <div class="doc-comment-reply-head">' +
+      if (hasReply) {
+        var reply = c.replies[0];
+        var doctorName = reply.user_name || 'دندانپزشک';
+        var replyDate = formatDate(reply.created_at);
+        replyBlock =
+          '<div class="doc-comment-reply-block">' +
+          '  <div class="doc-comment-reply-header">' +
+          '    <div class="doc-comment-reply-info">' +
+          '      <span class="doc-comment-reply-name">' + esc(doctorName) + '</span>' +
+          '      <span class="doc-comment-reply-date">' + replyDate + '</span>' +
+          '    </div>' +
           '    <span class="doc-badge doc-badge--doctor">پاسخ دندانپزشک</span>' +
-          '  </div>' + esc(c.reply) + '</div>';
+          '  </div>' +
+          '  <p class="doc-comment-reply-text">' + esc(reply.content) + '</p>' +
+          '</div>';
       }
 
-      return '<article class="doc-card doc-comment-card" data-id="' + c.id + '">' +
+      // Reply form is only shown when comment has no reply yet
+      var replyForm = hasReply ? '' :
+        '<div class="doc-replybox" id="reply-' + c.id + '">' +
+        '  <textarea class="doc-textarea doc-reply-input" rows="3" placeholder="پاسخ خود را بنویسید..."></textarea>' +
+        '  <div class="doc-editor-actions">' +
+        '    <button type="button" class="doc-btn doc-btn--primary doc-btn--sm" data-action="send">ارسال پاسخ</button>' +
+        '    <button type="button" class="doc-btn doc-btn--ghost doc-btn--sm" data-action="cancel">انصراف</button>' +
+        '  </div>' +
+        '</div>';
+
+      // Reply button only shown when no reply yet
+      var replyBtn = hasReply ? '' :
+        '<div><button type="button" class="doc-btn doc-btn--ghost doc-btn--sm" data-action="reply">پاسخ</button></div>';
+
+      return '<article class="doc-card doc-comment-card doc-comment-card--' + (hasReply ? 'replied' : 'pending') + '" data-id="' + c.id + '">' +
         '  <div class="doc-comment-head">' +
-        '    <span class="doc-comment-avatar">' + esc(initial(c.name)) + '</span>' +
+        '    <span class="doc-comment-avatar">' + esc(initial(c.user_name)) + '</span>' +
         '    <div>' +
-        '      <div class="doc-comment-name">' + esc(c.name) + '</div>' +
-        '      <div class="doc-comment-meta">' + esc(c.date) + '</div>' +
+        '      <div class="doc-comment-name">' + esc(c.user_name) + '</div>' +
+        '      <div class="doc-comment-meta">' + formatDate(c.created_at) + '</div>' +
         '    </div>' +
-        '    <a class="doc-comment-article" href="articles.html" title="زیر این مقاله ثبت شده">📄 ' + esc(c.article) + '</a>' +
-        '    ' + badge +
+        '    <a class="doc-comment-article" href="/doctors/dashboard/articles/" title="زیر این مقاله ثبت شده">📄 ' + esc(c.article_title) + '</a>' +
+        '    ' + badgeHtml +
         '  </div>' +
-        '  <p class="doc-comment-text">' + esc(c.text) + '</p>' +
+        '  <p class="doc-comment-text">' + esc(c.content) + '</p>' +
         replyBlock +
-        '  <div class="doc-replybox" id="reply-' + c.id + '">' +
-        '    <textarea class="doc-textarea doc-reply-input" rows="3" placeholder="پاسخ خود را بنویسید... (پاسخ شما با بج «پاسخ دندانپزشک» در سایت نمایش داده می‌شود)"></textarea>' +
-        '    <div class="doc-editor-actions">' +
-        '      <button type="button" class="doc-btn doc-btn--primary doc-btn--sm" data-action="send">ارسال پاسخ</button>' +
-        '      <button type="button" class="doc-btn doc-btn--ghost doc-btn--sm" data-action="cancel">انصراف</button>' +
-        '    </div>' +
-        '  </div>' +
-        (c.reply ? '' : '  <div><button type="button" class="doc-btn doc-btn--ghost doc-btn--sm" data-action="reply">پاسخ</button></div>') +
+        replyForm +
+        replyBtn +
         '</article>';
     }).join('');
   }
 
+  // ── Events ──
   if (list) {
     list.addEventListener('click', function (e) {
       var btn = e.target.closest('[data-action]');
@@ -100,15 +129,17 @@
           if (input) input.focus();
           return;
         }
-        var db = DocDB.load();
-        var c = db.comments.find(function (x) { return x.id === id; });
-        if (c) {
-          c.reply = text;
-          c.status = 'answered';
-          DocDB.save(db);
+        apiFetch('POST', '/doctor-dashboard/comments/' + id + '/reply/', {
+          content: text
+        }).then(function () {
+          return apiFetch('GET', '/doctor-dashboard/comments/');
+        }).then(function (data) {
+          allComments = data || [];
           render();
-          docToast('پاسخ شما ثبت شد و با بج «پاسخ دندانپزشک» نمایش داده می‌شود ✅');
-        }
+          docToast('پاسخ شما ثبت شد ✅');
+        }).catch(function () {
+          docToast('خطا در ارسال پاسخ', 'error');
+        });
       }
     });
   }
@@ -122,5 +153,11 @@
     });
   });
 
-  render();
+  // ── Load Data ──
+  apiFetch('GET', '/doctor-dashboard/comments/').then(function (data) {
+    allComments = data || [];
+    render();
+  }).catch(function () {
+    list.innerHTML = '<div class="doc-empty">خطا در بارگذاری دیدگاه‌ها</div>';
+  });
 })();
