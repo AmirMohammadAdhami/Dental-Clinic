@@ -1,4 +1,6 @@
 from django.utils import timezone
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from django.db.models.functions import Coalesce
 from django.db.models import (
@@ -12,6 +14,7 @@ from backend.apps.doctors.models import Doctor
 from backend.apps.appointments.models import Appointment, AppointmentSlot, DoctorReview
 from backend.apps.blog.models import BeforeAfter
 from backend.apps.doctors.models import Certificate
+from backend.security.cache import CACHE_TTL
 
 # Sort keys accepted by the ?sort= query param (used by the
 # /dashboard/select-doctors/<service>/ page). Absent or unknown values keep
@@ -81,6 +84,7 @@ def _doctor_list_queryset():
     )
 
 
+@method_decorator(cache_page(CACHE_TTL['doctors_list']), name='dispatch')
 class DoctorListAPIView(ListAPIView):
     serializer_class = DoctorListSerializer
 
@@ -108,6 +112,7 @@ class DoctorListAPIView(ListAPIView):
         return queryset
 
 
+@method_decorator(cache_page(CACHE_TTL['doctor_detail']), name='dispatch')
 class DoctorDetailAPIView(RetrieveAPIView):
     lookup_field = 'slug'
     serializer_class = DoctorDetailSerializer

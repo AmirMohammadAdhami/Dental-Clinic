@@ -1,7 +1,12 @@
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from rest_framework.generics import ListAPIView
 from backend.apps.blog.models import BeforeAfter
+from backend.security.cache import CACHE_TTL
 from .serializers import BeforeAfterSerializer
 
+
+@method_decorator(cache_page(CACHE_TTL['before_afters']), name='dispatch')
 class BeforeAfterListApiView(ListAPIView):
     queryset = BeforeAfter.objects.select_related(
         'appointment__doctor__user',

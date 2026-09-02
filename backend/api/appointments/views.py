@@ -11,6 +11,10 @@ from backend.api.constants import RESERVATION_TTL_MINUTES
 from backend.apps.appointments.models import Appointment
 from backend.apps.appointments.services import release_expired_reservations
 from backend.security.throttle import AppointmentThrottle
+from backend.security.cache import (
+    cache, invalidate_doctor_list, invalidate_doctor_detail,
+    availability_key, doctor_list_key,
+)
 from .serializers import (
     AppointmentCreateSerializer,
     AppointmentDetailSerializer,
@@ -37,6 +41,13 @@ class AppointmentCreateAPIView(CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         appointment = serializer.save()
+
+        # Invalidate cached doctor list (rating annotation changed)
+        # and the specific doctor's availability cache.
+        invalidate_doctor_list()
+        invalidate_doctor_detail(appointment.doctor.slug)
+        cache.delete(availability_key(appointment.doctor.slug))
+
         return Response(
             serializer.to_representation(appointment),
             status=http_status.HTTP_201_CREATED,
@@ -116,6 +127,13 @@ class AppointmentDetailAPIView(RetrieveUpdateAPIView):
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         appointment = serializer.save()
+
+        # Appointment confirmed → slot is now occupied.
+        # Invalidate doctor list and availability caches.
+        invalidate_doctor_list()
+        invalidate_doctor_detail(appointment.doctor.slug)
+        cache.delete(availability_key(appointment.doctor.slug))
+
         return Response(
             AppointmentDetailResponseSerializer(appointment).data,
             status=http_status.HTTP_200_OK,

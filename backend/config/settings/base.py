@@ -171,7 +171,21 @@ REST_FRAMEWORK = {
 
 }
 
-# Celery Configuration
+# ── Cache (Redis) ──────────────────────────────────────────────
+# Uses a separate Redis DB (1) from Celery (0).
+# Default timeout is 5 minutes; per-view overrides use short/long TTLs.
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': env('REDIS_CACHE_URL', default='redis://localhost:6379/1'),
+        'TIMEOUT': 300,  # 5 minutes default
+    }
+}
+
+# Sentinel-friendly key prefixes so cache.clear() only touches Django data
+CACHE_KEY_PREFIX = 'dentura'
+
+# ── Celery Configuration ───────────────────────────────────────
 CELERY_BROKER_URL = env("CELERY_BROKER_URL", default="redis://localhost:6379/0")
 CELERY_RESULT_BACKEND = env("CELERY_RESULT_BACKEND", default="redis://localhost:6379/0")
 CELERY_ACCEPT_CONTENT = ['json']

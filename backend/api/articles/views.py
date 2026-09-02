@@ -1,3 +1,5 @@
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -5,10 +7,12 @@ from rest_framework.mixins import (ListModelMixin, RetrieveModelMixin)
 from rest_framework.viewsets import GenericViewSet
 from backend.apps.blog.models import Article, ArticleMedia, Comment
 from django.db.models import Prefetch
+from backend.security.cache import CACHE_TTL, cache, invalidate_article, article_comments_key
 from .serializers import ArticleListSerializer, ArticleDetailSerializer, ArticleCommentListSerializer, ArticleCommentCreateSerializer
 from ...security.throttle import CommentAnonThrottle,CommentUserThrottle
 
 
+@method_decorator(cache_page(CACHE_TTL['article_detail']), name='dispatch')
 class ArticleListApiView(ListModelMixin, RetrieveModelMixin,GenericViewSet):
     lookup_field = 'slug'
     def get_serializer_class(self):
@@ -76,7 +80,18 @@ class ArticleCommentListCreateView(generics.ListCreateAPIView):
         article = self.get_article()
         if not article:
             return Response({'detail': 'مقاله یافت نشد.'}, status=status.HTTP_404_NOT_FOUND)
-        return super().list(request, *args, **kwargs)
+        slug = self.kwargs.get('slug')
+
+        # Check cache first
+        cache_key = article_comments_key(slug)
+        cached = cache.get(cache_key)
+        if cached is not None:
+            return Response(cached)
+
+        response = super().list(request, *args, **kwargs)
+        if response.status_code == 200:
+            cache.set(cache_key, response.data, CACHE_TTL['article_comments'])
+        return response
 
     def create(self, request, *args, **kwargs):
         article = self.get_article()
@@ -85,6 +100,10 @@ class ArticleCommentListCreateView(generics.ListCreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         comment = serializer.save()
+
+        # New comment → invalidate this article's comments cache.
+        invalidate_article(article.slug)
+
         return Response(
             ArticleCommentListSerializer(comment).data,
             status=status.HTTP_201_CREATED

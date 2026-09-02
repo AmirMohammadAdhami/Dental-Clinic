@@ -10,7 +10,7 @@ from backend.apps.doctors import urls as doctors_urls
 from backend.api import urls as api_urls
 from drf_spectacular.views import (
     SpectacularAPIView,
-    SpectacularSwaggerView,
+    SpectacularSwaggerView, SpectacularRedocView,
 )
 
 urlpatterns = [
@@ -23,18 +23,12 @@ urlpatterns = [
     path('api/', include(api_urls)),
     path('api-auth/', include("rest_framework.urls")),
 
-    #DRF SPECTECULAR
-    path('api/', include('apps.app_name.urls')),
 
-    # OpenAPI schema
+    # YOUR PATTERNS
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-
-    # Swagger UI
-    path(
-        'api/docs/',
-        SpectacularSwaggerView.as_view(url_name='schema'),
-        name='swagger-ui',
-    ),
+    # Optional UI:
+    path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 ]
 
 if settings.DEBUG:

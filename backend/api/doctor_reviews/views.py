@@ -1,3 +1,5 @@
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from rest_framework import status as http_status
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
@@ -9,8 +11,10 @@ from backend.api.doctor_reviews.serializers import (
     DoctorReviewCreateSerializer,
 )
 from backend.apps.appointments.models import DoctorReview
+from backend.security.cache import CACHE_TTL, cache, invalidate_reviews, invalidate_doctor_detail
 
 
+@method_decorator(cache_page(CACHE_TTL['doctor_reviews']), name='dispatch')
 class DoctorReviewListApiView(ListAPIView):
     serializer_class = DoctorReviewListSerializer
 
@@ -49,6 +53,11 @@ class DoctorReviewCreateApiView(APIView):
         )
         serializer.is_valid(raise_exception=True)
         review = serializer.save()
+
+        # New review → invalidate reviews list and affected doctor's caches.
+        invalidate_reviews()
+        invalidate_doctor_detail(review.appointment.doctor.slug)
+
         return Response(
             {
                 'id': review.id,
