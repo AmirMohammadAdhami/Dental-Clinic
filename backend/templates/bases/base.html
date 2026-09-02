@@ -27,6 +27,48 @@
     <!-- Canonical URL -->
     <link rel="canonical" href="{% block canonical_url %}{{ request.scheme }}://{{ request.get_host }}{{ request.path }}{% endblock %}">
 
+    <!-- Language -->
+    <link rel="alternate" hreflang="fa" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
+
+    <!-- Structured Data (JSON-LD) -->
+    {% block json_ld %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "MedicalBusiness",
+      "name": "دنتورا",
+      "alternateName": "Dentura Dental Clinic",
+      "description": "کلینیک تخصصی دندانپزشکی دنتورا — ایمپلنت، لمینیت، ارتودنسی و زیبایی لبخند با بهترین متخصصان در تهران",
+      "url": "{{ request.scheme }}://{{ request.get_host }}",
+      "logo": "{{ request.scheme }}://{{ request.get_host }}{% static 'images/hero/clinic-detail.jpg' %}",
+      "image": "{{ request.scheme }}://{{ request.get_host }}{% static 'images/hero/clinic-detail.jpg' %}",
+      "telephone": "+982122334455",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "خیابان ولیعصر، نبش کوچه ساعی، پلاک ۱۲",
+        "addressLocality": "تهران",
+        "addressCountry": "IR"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "35.7128",
+        "longitude": "51.4168"
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"],
+          "opens": "09:00",
+          "closes": "20:00"
+        }
+      ],
+      "medicalSpecialty": ["Dentistry", "Orthodontics", "Prosthodontics"],
+      "hasMap": "https://maps.google.com",
+      "sameAs": ["https://t.me/dentura", "https://instagram.com/dentura"]
+    }
+    </script>
+    {% endblock %}
+
     <link rel="stylesheet" href="{% static "css/base.css" %}">
     <link rel="stylesheet" href="{% static "css/shared.css" %}">
 
@@ -162,15 +204,15 @@
                     <p class="footer-nav-box-title">مسیریابی سریع تا کلینیک</p>
                     <div class="footer-nav-actions">
                         <a href="https://maps.google.com" target="_blank" rel="noopener" class="footer-nav-action">
-                            <img src="{% static 'images/appointment-icons/google-maps.png' %}" alt="Google Maps" width="18" height="18" class="footer-nav-icon">
+                            <img src="{% static 'images/appointment-icons/google-maps.png' %}" alt="Google Maps" width="18" height="18" class="footer-nav-icon" loading="lazy">
                             Google Maps
                         </a>
                         <a href="https://neshan.org" target="_blank" rel="noopener" class="footer-nav-action">
-                            <img src="{% static 'images/appointment-icons/neshan.webp' %}" alt="نشان" width="18" height="18" class="footer-nav-icon">
+                            <img src="{% static 'images/appointment-icons/neshan.webp' %}" alt="نشان" width="18" height="18" class="footer-nav-icon" loading="lazy">
                             نشان
                         </a>
                         <a href="https://balad.ir" target="_blank" rel="noopener" class="footer-nav-action">
-                            <img src="{% static 'images/appointment-icons/balad.png' %}" alt="بلد" width="18" height="18" class="footer-nav-icon">
+                            <img src="{% static 'images/appointment-icons/balad.png' %}" alt="بلد" width="18" height="18" class="footer-nav-icon" loading="lazy">
                             بلد
                         </a>
                     </div>

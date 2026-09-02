@@ -86,8 +86,8 @@
           '<div class="doctor-img ba-container" tabindex="0" role="slider"' +
             ' aria-label="مقایسه قبل و بعد ' + desc + '"' +
             ' aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">' +
-            '<img class="ba-img ba-after" src="' + afterImg + '" alt="نتیجه بعد از ' + desc + '">' +
-            '<img class="ba-img ba-before" src="' + beforeImg + '" alt="وضعیت قبل از ' + desc + '">' +
+            '<img class="ba-img ba-after" src="' + afterImg + '" alt="نتیجه بعد از ' + desc + '" loading="lazy">' +
+            '<img class="ba-img ba-before" src="' + beforeImg + '" alt="وضعیت قبل از ' + desc + '" loading="lazy">' +
             '<div class="ba-slider"><div class="ba-handle"></div></div>' +
             '<span class="ba-label ba-label-before">قبل</span>' +
             '<span class="ba-label ba-label-after">بعد</span>' +

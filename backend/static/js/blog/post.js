@@ -38,6 +38,56 @@ document.addEventListener('DOMContentLoaded', function () {
     function esc(s) { if (!s) return ''; var d=document.createElement('div'); d.appendChild(document.createTextNode(s)); return d.innerHTML; }
     function murl(p) { if (!p) return ''; return p.indexOf('http')===0 ? p : MEDIA_BASE + p; }
 
+    // ================= JSON-LD STRUCTURED DATA =================
+    function addArticleJsonLd(d) {
+        var existing = document.getElementById('article-jsonld');
+        if (existing) existing.remove();
+
+        var imageUrl = '';
+        if (d.files && d.files.length) {
+            var firstImg = d.files.find(function(f) { return f.media_type === 'IMAGE' && f.file; });
+            if (firstImg) imageUrl = window.location.origin + firstImg.file;
+        }
+
+        var jsonLd = {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": d.title || '',
+            "description": (d.abstract || '').substring(0, 300),
+            "image": imageUrl || window.location.origin + '/static/images/hero/clinic-detail.jpg',
+            "url": window.location.href,
+            "datePublished": d.created_at || new Date().toISOString(),
+            "dateModified": d.updated_at || new Date().toISOString(),
+            "author": {
+                "@type": "Person",
+                "name": d.full_name || '',
+                "jobTitle": d.author_specialty || ''
+            },
+            "publisher": {
+                "@type": "Organization",
+                "name": "دنتورا",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": window.location.origin + '/static/images/hero/clinic-detail.jpg'
+                }
+            },
+            "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": window.location.href
+            }
+        };
+
+        if (d.category_name) {
+            jsonLd.keywords = d.category_name;
+        }
+
+        var script = document.createElement('script');
+        script.type = 'application/ld+json';
+        script.id = 'article-jsonld';
+        script.textContent = JSON.stringify(jsonLd);
+        document.head.appendChild(script);
+    }
+
     // ================= SLUG FROM URL =================
     var slug = '';
     var m = window.location.pathname.match(/\/article\/([^/]+)\/?$/);
@@ -87,6 +137,8 @@ document.addEventListener('DOMContentLoaded', function () {
             // Update og:url
             var ogUrl = document.querySelector('meta[property="og:url"]');
             if (ogUrl) ogUrl.setAttribute('content', window.location.href);
+            // Add Article JSON-LD structured data
+            addArticleJsonLd(d);
             loadingEl.style.display = 'none';
             mainEl.style.display = '';
             populate(d);

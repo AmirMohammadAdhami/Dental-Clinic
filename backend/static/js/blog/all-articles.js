@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
         featuredSection.style.display = '';
         featuredCard.innerHTML =
           '<a href="/blog/article/' + featured.slug + '/" class="featured-card-img">' +
-            '<img src="' + featImg + '" alt="' + featured.title + '">' +
+            '<img src="' + featImg + '" alt="' + featured.title + '" loading="lazy">' +
             '<span class="featured-badge">مقاله ویژه</span>' +
           '</a>' +
           '<div class="featured-card-body">' +
@@ -140,12 +140,12 @@ document.addEventListener('DOMContentLoaded', function () {
         card.innerHTML =
           '<a href="/blog/article/' + article.slug + '/" class="article-card-link">' +
             '<div class="article-card-thumb">' +
-              '<img src="' + coverImg + '" alt="' + article.title + '">' +
+              '<img src="' + coverImg + '" alt="' + article.title + '" loading="lazy">' +
             '</div>' +
             '<div class="article-card-body">' +
               '<div class="article-card-meta">' +
                 '<div class="article-card-author">' +
-                  '<img src="' + (article.profile_photo || '/static/images/doctors/default.jpg') + '" alt="' + article.full_name + '" class="article-card-avatar">' +
+                  '<img src="' + (article.profile_photo || '/static/images/doctors/default.jpg') + '" alt="' + article.full_name + '" class="article-card-avatar" loading="lazy">' +
                   '<span>' + article.full_name + '</span>' +
                 '</div>' +
                 '<span class="article-card-date">' + formatDate(article.created_at) + '</span>' +

@@ -22,6 +22,29 @@
 {% block twitter_description %}نتایج واقعی درمان‌های زیبایی و ترمیمی دنتورا — مشاهده نمونه کارها{% endblock %}
 {% block og_url %}{{ request.scheme }}://{{ request.get_host }}{{ request.path }}{% endblock %}
 
+{% block json_ld %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "صفحه اصلی",
+      "item": "{{ request.scheme }}://{{ request.get_host }}"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "نمونه کارها",
+      "item": "{{ request.scheme }}://{{ request.get_host }}{{ request.path }}"
+    }
+  ]
+}
+</script>
+{% endblock %}
+
 {% block content %}
 <main class="ba-page" id="main-content" tabindex="-1">
     <div class="ba-page-inner">

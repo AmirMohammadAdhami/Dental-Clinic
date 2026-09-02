@@ -53,9 +53,41 @@ document.addEventListener('DOMContentLoaded', function () {
       // Bind accordion events after rendering
       bindFAQAccordion();
 
+      // Add FAQPage JSON-LD structured data
+      addFaqJsonLd(faqs);
+
     } catch (err) {
       console.error('خطا در دریافت سوالات متداول:', err);
     }
+  }
+
+  function addFaqJsonLd(faqs) {
+    var existing = document.getElementById('faq-jsonld');
+    if (existing) existing.remove();
+    if (!faqs || !faqs.length) return;
+
+    var mainEntity = faqs.map(function(faq) {
+        return {
+            "@type": "Question",
+            "name": faq.question || '',
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": faq.answer_text || ''
+            }
+        };
+    });
+
+    var jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": mainEntity
+    };
+
+    var script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.id = 'faq-jsonld';
+    script.textContent = JSON.stringify(jsonLd);
+    document.head.appendChild(script);
   }
 
   function bindFAQAccordion() {
@@ -98,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function () {
         card.href = '/blog/articles/?cat=' + encodeURIComponent(svc.name);
         card.className = 'treatment-card';
         card.innerHTML =
-          '<div class="treatment-icon"><img src="' + iconUrl + '" alt="' + svc.name + '"></div>' +
+          '<div class="treatment-icon"><img src="' + iconUrl + '" alt="' + svc.name + '" loading="lazy"></div>' +
           '<span class="treatment-name">' + svc.name + '</span>';
 
         grid.appendChild(card);

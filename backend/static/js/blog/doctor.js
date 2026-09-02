@@ -107,6 +107,58 @@ document.addEventListener('DOMContentLoaded', function () {
     // Update og:url
     var ogUrl = document.querySelector('meta[property="og:url"]');
     if (ogUrl) ogUrl.setAttribute('content', window.location.href);
+    // Add Physician JSON-LD structured data
+    addPhysicianJsonLd(doc);
+  }
+
+  function addPhysicianJsonLd(doc) {
+    var existing = document.getElementById('physician-jsonld');
+    if (existing) existing.remove();
+
+    var photoUrl = '';
+    if (doc.doctor_photos && doc.doctor_photos.blog_photo) {
+        photoUrl = window.location.origin + doc.doctor_photos.blog_photo;
+    }
+
+    var jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "Physician",
+        "name": "دکتر " + (doc.full_name || ''),
+        "description": doc.bio || '',
+        "image": photoUrl || window.location.origin + '/static/images/hero/clinic-detail.jpg',
+        "url": window.location.href,
+        "medicalSpecialty": doc.speciality || '',
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "خیابان ولیعصر، نبش کوچه ساعی، پلاک ۱۲",
+            "addressLocality": "تهران",
+            "addressCountry": "IR"
+        },
+        "telephone": "+982122334455",
+        "worksFor": {
+            "@type": "MedicalBusiness",
+            "name": "دنتورا",
+            "url": window.location.origin
+        },
+        "alumniOf": doc.university || '',
+        "knowsAbout": doc.speciality || '',
+        "sameAs": []
+    };
+
+    if (doc.rating) {
+        jsonLd.aggregateRating = {
+            "@type": "AggregateRating",
+            "ratingValue": Math.round(doc.rating * 10) / 10,
+            "bestRating": 5,
+            "ratingCount": (doc.reviews || []).length
+        };
+    }
+
+    var script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.id = 'physician-jsonld';
+    script.textContent = JSON.stringify(jsonLd);
+    document.head.appendChild(script);
   }
 
   /* ═══════════════════════════════════════════
@@ -181,8 +233,8 @@ document.addEventListener('DOMContentLoaded', function () {
             '<div class="doctor-img ba-container" tabindex="0" role="slider"' +
               ' aria-label="مقایسه قبل و بعد ' + desc + '"' +
               ' aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">' +
-              '<img class="ba-img ba-after" src="' + item.after_image + '" alt="نتیجه بعد از ' + desc + '">' +
-              '<img class="ba-img ba-before" src="' + item.before_image + '" alt="وضعیت قبل از ' + desc + '">' +
+              '<img class="ba-img ba-after" src="' + item.after_image + '" alt="نتیجه بعد از ' + desc + '" loading="lazy">' +
+              '<img class="ba-img ba-before" src="' + item.before_image + '" alt="وضعیت قبل از ' + desc + '" loading="lazy">' +
               '<div class="ba-slider"><div class="ba-handle"></div></div>' +
               '<span class="ba-label ba-label-before">قبل</span>' +
               '<span class="ba-label ba-label-after">بعد</span>' +

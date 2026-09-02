@@ -358,7 +358,7 @@ document.addEventListener('DOMContentLoaded', () => {
         a.setAttribute('aria-label', 'سوابق دکتر ' + doc.full_name);
         a.innerHTML = `
           <div class="doctor-img">
-            <img src="${photoUrl}" alt="دکتر ${doc.full_name}">
+            <img src="${photoUrl}" alt="دکتر ${doc.full_name}" loading="lazy">
             <div class="doctor-overlay">
               <span class="doctor-overlay-text">سوابق دکتر</span>
             </div>
@@ -401,7 +401,7 @@ document.addEventListener('DOMContentLoaded', () => {
         div.className = 'doctor-card';
         div.innerHTML = `
           <div class="doctor-img">
-            <img src="${photoUrl}" alt="${ast.full_name}">
+            <img src="${photoUrl}" alt="${ast.full_name}" loading="lazy">
           </div>
           <h3 class="doctor-name">${ast.full_name}</h3>
           <p class="doctor-specialty">${ast.speciality}</p>
@@ -445,8 +445,8 @@ document.addEventListener('DOMContentLoaded', () => {
                aria-label="مقایسه قبل و بعد ${desc}، با کشیدن یا کلیدهای جهت‌نما"
                aria-valuemin="0"
                aria-valuemax="100" aria-valuenow="50">
-            <img class="ba-img ba-after" src="${item.after_image}" alt="نتیجه بعد از ${desc}">
-            <img class="ba-img ba-before" src="${item.before_image}" alt="وضعیت قبل از ${desc}">
+            <img class="ba-img ba-after" src="${item.after_image}" alt="نتیجه بعد از ${desc}" loading="lazy">
+            <img class="ba-img ba-before" src="${item.before_image}" alt="وضعیت قبل از ${desc}" loading="lazy">
             <div class="ba-slider">
               <div class="ba-handle"></div>
             </div>
@@ -555,7 +555,7 @@ document.addEventListener('DOMContentLoaded', () => {
         card.className = 'video-card';
         card.innerHTML = `
           <div class="video-card-thumb">
-            <img src="${coverSrc}" alt="${article.full_name}">
+            <img src="${coverSrc}" alt="${article.full_name}" loading="lazy">
             <div class="video-play-btn" data-video="${videoSrc}">
               <svg width="40" height="40" viewBox="0 0 24 24" fill="white">
                 <path d="M8 5v14l11-7z"/>
