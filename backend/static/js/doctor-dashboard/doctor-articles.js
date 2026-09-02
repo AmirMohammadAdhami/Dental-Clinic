@@ -71,62 +71,32 @@
         '  </div>' +
         '  <div class="doc-article-actions">' +
         '    <a class="doc-btn doc-btn--ghost doc-btn--sm" href="/doctors/dashboard/article-editor/?id=' + a.id + '">ویرایش</a>' +
-        '    <button type="button" class="doc-btn doc-btn--ghost doc-btn--sm" data-action="preview">پیش‌نمایش</button>' +
+        '    <a class="doc-btn doc-btn--ghost doc-btn--sm" href="/blog/article/' + esc(a.slug) + '/" target="_blank">پیش‌نمایش</a>' +
         '    <button type="button" class="doc-btn doc-btn--danger doc-btn--sm" data-action="delete">حذف</button>' +
         '  </div>' +
         '</article>';
     }).join('');
   }
 
-  // ── Preview Modal ──
-  function openPreview(article) {
-    var modal = document.createElement('div');
-    modal.className = 'doc-modal';
-    modal.innerHTML =
-      '<div class="doc-modal-panel" role="dialog" aria-modal="true">' +
-      '  <span class="doc-article-cat">' + esc(article.service_name || '') + '</span>' +
-      '  <h2 class="doc-modal-title" style="margin-top:4px"></h2>' +
-      '  <div class="doc-modal-text" style="line-height:2.1">' + (article.content || '<p>بدون محتوا</p>') + '</div>' +
-      '  <div class="doc-modal-actions"><button type="button" class="doc-btn doc-btn--ghost" data-close>بستن</button></div>' +
-      '</div>';
-    modal.querySelector('.doc-modal-title').textContent = article.title;
-    function close() {
-      modal.classList.remove('is-open');
-      setTimeout(function () { modal.remove(); }, 300);
-    }
-    modal.addEventListener('click', function (e) {
-      if (e.target === modal || e.target.hasAttribute('data-close')) close();
-    });
-    document.addEventListener('keydown', function escKey(e) {
-      if (e.key === 'Escape') { close(); document.removeEventListener('keydown', escKey); }
-    });
-    document.body.appendChild(modal);
-    requestAnimationFrame(function () { modal.classList.add('is-open'); });
-  }
-
   // ── Events ──
   if (grid) {
     grid.addEventListener('click', function (e) {
-      var btn = e.target.closest('[data-action]');
+      var btn = e.target.closest('[data-action="delete"]');
       if (!btn) return;
       var card = e.target.closest('.doc-article-card');
       var id = parseInt(card.getAttribute('data-id'), 10);
       var article = allArticles.find(function (a) { return a.id === id; });
       if (!article) return;
 
-      if (btn.getAttribute('data-action') === 'preview') {
-        openPreview(article);
-      } else if (btn.getAttribute('data-action') === 'delete') {
-        docConfirm('حذف مقاله', 'مقاله «' + article.title + '» برای همیشه حذف می‌شود. مطمئن هستید؟', 'بله، حذف کن', 'doc-btn--danger', function () {
-          apiFetch('DELETE', '/doctor-dashboard/articles/' + id + '/').then(function () {
-            allArticles = allArticles.filter(function (a) { return a.id !== id; });
-            render();
-            docToast('مقاله با موفقیت حذف شد');
-          }).catch(function () {
-            docToast('خطا در حذف مقاله', 'error');
-          });
+      docConfirm('حذف مقاله', 'مقاله «' + article.title + '» برای همیشه حذف می‌شود. مطمئن هستید؟', 'بله، حذف کن', 'doc-btn--danger', function () {
+        apiFetch('DELETE', '/doctor-dashboard/articles/' + id + '/').then(function () {
+          allArticles = allArticles.filter(function (a) { return a.id !== id; });
+          render();
+          docToast('مقاله با موفقیت حذف شد');
+        }).catch(function () {
+          docToast('خطا در حذف مقاله', 'error');
         });
-      }
+      });
     });
   }
 

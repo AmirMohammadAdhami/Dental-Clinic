@@ -72,18 +72,12 @@ def _doctor_list_queryset():
                 distinct=True,
             ),
             first_available_at=Subquery(_free_slots_subquery()),
+        )        .only(
+            'id', 'slug', 'speciality', 'university', 'working_days',
+            'years_of_experience', 'bio',
+            'user__first_name', 'user__last_name',
         )
-        .only(
-            'id',
-            'slug',
-            'speciality',
-            'university',
-            'working_days',
-            'years_of_experience',
-            'bio',
-            'user__first_name',
-            'user__last_name',
-        )
+        .order_by('-created_at')
     )
 
 

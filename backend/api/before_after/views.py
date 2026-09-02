@@ -19,5 +19,5 @@ class BeforeAfterListApiView(ListAPIView):
         'appointment__patient__last_name',
         'appointment__patient__national_code',
         'appointment__service__name'
-    )
+    ).order_by('-created_at')
     serializer_class = BeforeAfterSerializer

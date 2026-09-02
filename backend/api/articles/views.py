@@ -34,6 +34,7 @@ class ArticleListApiView(ListModelMixin, RetrieveModelMixin,GenericViewSet):
                     'author__user__full_name',
                     'category__name', 'created_at',
                 )
+                .order_by('-created_at')
                 .distinct()
             )
         elif self.action == 'retrieve':

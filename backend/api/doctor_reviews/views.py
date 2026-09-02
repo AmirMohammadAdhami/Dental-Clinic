@@ -23,6 +23,7 @@ class DoctorReviewListApiView(ListAPIView):
                 'appointment__service',
             )
             .filter(status=DoctorReview.Status.APPROVED)
+            .order_by('-created_at')
             .only(
                 'id', 'content', 'status', 'created_at',
                 'professionalism_rating', 'treatment_quality_rating', 'communication_rating',
