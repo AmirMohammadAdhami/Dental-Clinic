@@ -13,7 +13,9 @@ services:
     container_name: backend
     restart: unless-stopped
     env_file: .env
+    command: python manage.py runserver 0.0.0.0:8000
     volumes:
+      - .:/app/backend
       - static_data:/app/backend/staticfiles
       - ./media:/app/backend/media
       - ./db.sqlite3:/app/backend/db.sqlite3
@@ -26,9 +28,10 @@ services:
       dockerfile: Dockerfile
     container_name: celery_worker
     restart: unless-stopped
-    command: celery -A config worker --loglevel=info
+    command: celery -A config worker --loglevel=info --autoreload
     env_file: .env
     volumes:
+      - .:/app/backend
       - static_data:/app/backend/staticfiles
       - ./media:/app/backend/media
       - ./db.sqlite3:/app/backend/db.sqlite3
@@ -45,6 +48,7 @@ services:
     command: celery -A config beat --loglevel=info
     env_file: .env
     volumes:
+      - .:/app/backend
       - static_data:/app/backend/staticfiles
       - ./media:/app/backend/media
       - ./db.sqlite3:/app/backend/db.sqlite3

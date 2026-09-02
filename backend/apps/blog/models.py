@@ -62,7 +62,7 @@ class Article(models.Model):
     slug = models.SlugField(unique=True)
 
     title = models.CharField(max_length=150)
-    category = models.ForeignKey('appointments.Service', on_delete=models.DO_NOTHING)
+    category = models.ForeignKey('appointments.Service', on_delete=models.DO_NOTHING, related_name='articles')
     abstract = models.TextField()
     content = models.TextField()
 
