@@ -36,8 +36,15 @@ def process_article_video(self, media_id):
             update_fields=[
                 'processing_status',
                 'processing_error',
+                'processed_file',
             ]
         )
+
+        # Remove original file after successful processing
+        if media.file:
+            media.file.delete(save=False)
+            media.file = None
+            media.save(update_fields=['file'])
 
     except Exception as exc:
         media.processing_status = (

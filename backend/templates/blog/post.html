@@ -125,7 +125,7 @@
                     <img src="{% if first_file.media_type == 'IMAGE' %}{{ first_file.file.url }}{% endif %}" alt="" class="post-gallery-img" id="galleryMainImg" {% if first_file.media_type == 'VIDEO' %}style="display:none;"{% endif %}>
                     <div class="post-gallery-video" id="galleryVideo" {% if first_file.media_type != 'VIDEO' %}style="display:none;"{% else %}style="display:block;"{% endif %}>
                         <video class="post-gallery-video-player" controls preload="metadata">
-                            <source src="{% if first_file.media_type == 'VIDEO' %}{{ first_file.video_url|default:first_file.file.url }}{% endif %}" type="video/mp4">
+                            <source src="{% if first_file.media_type == 'VIDEO' %}{{ first_file.video_source }}{% endif %}" type="video/mp4">
                         </video>
                     </div>
                     {% endwith %}
@@ -139,7 +139,7 @@
                 <div class="post-gallery-thumbs" id="galleryThumbs">
                     {% for f in files %}
                     {% if f.media_type == 'VIDEO' %}
-                    {% with src=f.video_url|default:f.processed_file.url %}
+                    {% with src=f.video_source %}
                     <button class="post-gallery-thumb{% if forloop.first %} is-active{% endif %}" data-index="{{ forloop.counter0 }}" data-type="video" data-src="{{ src }}">
                         <video class="post-gallery-thumb-vid" muted preload="metadata"><source src="{{ src }}" type="video/mp4"></video>
                         <span class="post-gallery-thumb-play"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></span>

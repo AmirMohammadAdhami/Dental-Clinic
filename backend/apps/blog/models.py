@@ -62,6 +62,22 @@ class ArticleMedia(models.Model):
         blank=True
     )
 
+    @property
+    def video_source(self):
+        """Return the best available video source URL.
+
+        Prefers an external ``video_url``, then the Celery-processed
+        ``processed_file``, and finally the original uploaded ``file``.
+        Returns an empty string when no video is available.
+        """
+        if self.video_url:
+            return self.video_url
+        if self.processed_file:
+            return self.processed_file.url
+        if self.file:
+            return self.file.url
+        return ''
+
 
 class ArticleView(models.Model):
     article = models.ForeignKey(
