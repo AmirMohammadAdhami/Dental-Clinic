@@ -11,14 +11,16 @@ users / spawn rate and start the test.
 
 What this tests
 ---------------
-• Public SSR pages  — home, team list, doctor detail, blog, articles, before/after
+• Public SSR pages  — home, doctors list, doctor detail, blog, articles, before/after
 • OTP / Login flow  — login page, OTP entry, resend, logout
 • Mixed realistic   — a combination of page browsing + auth flow
 
-Doctor detail pages use real slugs fetched from /api/doctors/ at startup.
+Doctor detail pages use real slugs scraped from the /doctors/ HTML page
+at startup (the API requires auth, so we parse the public page instead).
 """
 
 import itertools
+import re
 import random
 import string
 
@@ -44,38 +46,59 @@ def _extract_csrf(html: str) -> str:
     return html[start:end]
 
 
-def _fetch_doctor_slugs(client, host: str) -> list[str]:
-    """Hit /api/doctors/ once and return a list of real doctor slugs.
+# Regex to find doctor slugs from the team page HTML.
+# Matches href="/doctors/<slug>/" patterns in the rendered template.
+_DOCTOR_SLUG_RE = re.compile(r'href="/doctors/([^"/]+)/"')
 
-    Falls back to an empty list if the endpoint is unreachable.
+
+def _fetch_doctor_slugs(client) -> list[str]:
+    """Scrape real doctor slugs from the public /doctors/ page.
+
+    The API requires authentication, so we parse the rendered HTML instead.
+    Falls back to an empty list if the page is unreachable.
     """
     try:
-        resp = client.get("/api/doctors/", name="/api/doctors/ [seed]")
+        resp = client.get("/doctors/", name="/doctors/ [seed]")
         if resp.status_code == 200:
-            data = resp.json()
-            # DRF paginated or plain list — handle both
-            results = data if isinstance(data, list) else data.get("results", [])
-            slugs = [d["slug"] for d in results if d.get("slug")]
-            if slugs:
-                return slugs
+            slugs = _DOCTOR_SLUG_RE.findall(resp.text)
+            # Deduplicate while preserving order
+            seen = set()
+            unique = []
+            for s in slugs:
+                if s not in seen:
+                    seen.add(s)
+                    unique.append(s)
+            if unique:
+                return unique
     except Exception:
         pass
     return []
 
 
-# Shared slug iterator — populated once per worker via on_start.
-# We store it on the module level so all user classes share it
-# after the first fetch.
+# Shared slug state — populated once per worker via on_start.
 _doctor_slugs: list[str] = []
 _slug_cycle = None
 
 
 def _get_slug_cycle():
-    """Return a cycling iterator over real doctor slugs."""
+    """Return a cycling iterator over real doctor slugs.
+
+    Returns None if no slugs are available.
+    """
     global _slug_cycle
-    if _slug_cycle is None or not _doctor_slugs:
+    if not _doctor_slugs:
+        return None
+    if _slug_cycle is None:
         _slug_cycle = itertools.cycle(_doctor_slugs)
     return _slug_cycle
+
+
+def _seed_slugs(client):
+    """Fetch doctor slugs once per worker (shared across user classes)."""
+    global _doctor_slugs, _slug_cycle
+    if not _doctor_slugs:
+        _doctor_slugs = _fetch_doctor_slugs(client)
+        _slug_cycle = itertools.cycle(_doctor_slugs) if _doctor_slugs else None
 
 
 # ──────────────────────────────────────────────────────────────
@@ -88,12 +111,7 @@ class PublicPagesUser(HttpUser):
     wait_time = between(1, 3)
 
     def on_start(self):
-        global _doctor_slugs
-        if not _doctor_slugs:
-            _doctor_slugs = _fetch_doctor_slugs(self.client, self.host)
-            # Reset the cycle with fresh data
-            global _slug_cycle
-            _slug_cycle = itertools.cycle(_doctor_slugs) if _doctor_slugs else None
+        _seed_slugs(self.client)
 
     @tag("home")
     @task(3)
@@ -102,8 +120,8 @@ class PublicPagesUser(HttpUser):
 
     @tag("doctors")
     @task(3)
-    def team(self):
-        self.client.get("/team/", name="/team/")
+    def doctors_list(self):
+        self.client.get("/doctors/", name="/doctors/")
 
     @tag("doctors")
     @task(2)
@@ -112,10 +130,7 @@ class PublicPagesUser(HttpUser):
         cycle = _get_slug_cycle()
         if cycle:
             slug = next(cycle)
-            self.client.get(f"/team/{slug}/", name="/team/<slug>/")
-        else:
-            # No slugs available — still hit the page to measure the 404 / fallback
-            self.client.get("/team/unknown-doctor/", name="/team/<slug>/ [fallback]")
+            self.client.get(f"/doctors/{slug}/", name="/doctors/<slug>/")
 
     @tag("blog")
     @task(2)
@@ -212,11 +227,7 @@ class MixedUser(HttpUser):
 
     def on_start(self):
         self._phone = _random_phone()
-        global _doctor_slugs
-        if not _doctor_slugs:
-            _doctor_slugs = _fetch_doctor_slugs(self.client, self.host)
-            global _slug_cycle
-            _slug_cycle = itertools.cycle(_doctor_slugs) if _doctor_slugs else None
+        _seed_slugs(self.client)
 
     @tag("mixed")
     @task(5)
@@ -230,8 +241,8 @@ class MixedUser(HttpUser):
 
     @tag("mixed")
     @task(4)
-    def browse_team(self):
-        self.client.get("/team/", name="/team/")
+    def browse_doctors(self):
+        self.client.get("/doctors/", name="/doctors/")
 
     @tag("mixed")
     @task(3)
@@ -239,7 +250,7 @@ class MixedUser(HttpUser):
         cycle = _get_slug_cycle()
         if cycle:
             slug = next(cycle)
-            self.client.get(f"/team/{slug}/", name="/team/<slug>/")
+            self.client.get(f"/doctors/{slug}/", name="/doctors/<slug>/")
 
     @tag("mixed")
     @task(3)
