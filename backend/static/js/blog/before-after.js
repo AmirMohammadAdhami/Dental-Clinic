@@ -255,6 +255,22 @@
 
   // ── Fetch from API ──
   async function init() {
+    // SSR: first page + filters server-rendered; the full dataset comes from
+    // the #baData JSON island (no initial renderCards — avoids double render).
+    var ssrDataEl = document.getElementById('baData');
+    var grid = document.getElementById('baGrid');
+    if (ssrDataEl && grid && grid.dataset.ssr === '1') {
+      try { allData = JSON.parse(ssrDataEl.textContent); }
+      catch (e) { allData = []; console.error('خطا در خواندن داده‌های نمونه کارها:', e); }
+
+      currentPage = 1;
+      renderPagination(Math.max(1, Math.ceil(allData.length / ITEMS_PER_PAGE)));
+      bindFilters();
+      bindTagClicks();
+      initSliders();
+      return;
+    }
+
     try {
       var res = await fetch(API_URL);
       if (!res.ok) throw new Error('API ' + res.status);

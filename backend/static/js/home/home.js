@@ -343,6 +343,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const track = document.getElementById('doctorsTrack');
     if (!track) return;
 
+    // SSR: content already rendered server-side — just init the slider
+    if (track.dataset.ssr === '1') {
+      const doctorsWrapper = track.closest('.doctors-slider-wrapper');
+      if (doctorsWrapper) initSlider(doctorsWrapper);
+      return;
+    }
+
     try {
       const res = await fetch('/api/doctors/');
       if (!res.ok) throw new Error('API response not OK');
@@ -388,6 +395,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const track = document.getElementById('assistantsTrack');
     if (!track) return;
 
+    // SSR: content already rendered server-side — just init the slider
+    if (track.dataset.ssr === '1') {
+      const assistantsWrapper = track.closest('.doctors-slider-wrapper');
+      if (assistantsWrapper) initSlider(assistantsWrapper);
+      return;
+    }
+
     try {
       const res = await fetch('/api/assistants/');
       if (!res.ok) throw new Error('API response not OK');
@@ -426,6 +440,8 @@ document.addEventListener('DOMContentLoaded', () => {
   async function fetchAndRenderBeforeAfter() {
     const grid = document.getElementById('beforeAfterGrid');
     if (!grid) return;
+    // SSR: cards already rendered server-side — initBA() runs at the end
+    if (grid.dataset.ssr === '1') return;
 
     try {
       const res = await fetch('/api/before-afters/');
@@ -472,6 +488,12 @@ document.addEventListener('DOMContentLoaded', () => {
   async function fetchAndRenderTestimonials() {
     const deck = document.getElementById('testimonialsDeck');
     if (!deck) return;
+
+    // SSR: cards already rendered server-side — init the stacked deck
+    if (deck.dataset.ssr === '1') {
+      initTestimonialsSlider();
+      return;
+    }
 
     try {
       const res = await fetch('/api/doctor-reviews/');
@@ -529,6 +551,9 @@ document.addEventListener('DOMContentLoaded', () => {
   async function fetchAndRenderVideos() {
     const grid = document.getElementById('videoBlogGrid');
     if (!grid) return;
+
+    // SSR: cards already rendered server-side — initVideoModal() runs at the end
+    if (grid.dataset.ssr === '1') return;
 
     try {
       const res = await fetch('/api/home-videos/');

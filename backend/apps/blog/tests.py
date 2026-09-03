@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from datetime import timedelta
@@ -427,3 +427,141 @@ class BeforeAfterTest(TestCase):
             description='Great improvement'
         )
         self.assertEqual(self.appointment.before_after, before_after)
+
+
+# In-memory cache so the SSR page-cache tests run without Redis
+TEST_CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'test-dentura-blog-cache',
+        'TIMEOUT': 300,
+    }
+}
+
+
+@override_settings(CACHES=TEST_CACHES)
+class PublicPageSSRTest(TestCase):
+    """Server-rendered blog pages (hybrid SSR migration): raw HTML must
+    contain the SEO-critical content + data-ssr markers."""
+
+    def setUp(self):
+        from django.core.cache import cache
+        cache.clear()  # isolate the deterministic page cache between tests
+        self.user = User.objects.create_user(
+            phone='09121234567',
+            national_code='1234567890',
+            first_name='Ali',
+            last_name='Rezaei'
+        )
+        self.doctor = Doctor.objects.create(
+            user=self.user,
+            speciality='Dentist',
+            university='Tehran University',
+            years_of_experience=10,
+            bio='Experienced dentist',
+            medical_license_number='ML12345'
+        )
+        self.service = Service.objects.create(
+            name='Dental Cleaning',
+            description='Professional dental cleaning'
+        )
+        self.article = Article.objects.create(
+            author=self.doctor,
+            slug='ssr-article',
+            title='SSR Test Article',
+            category=self.service,
+            abstract='SSR abstract text',
+            content='Test content',
+            is_published=True,
+            content_blocks=[
+                {'type': 'heading', 'data': {'text': 'First Section', 'level': 2}},
+                {'type': 'paragraph', 'data': {'text': 'Body text here.'}},
+            ],
+        )
+
+    def test_blog_index_renders_faqs_and_treatments(self):
+        FAQ.objects.create(question='Does it hurt?', answer_text='No.')
+        response = self.client.get('/blog/')
+        self.assertEqual(response.status_code, 200)
+        html = response.content.decode()
+        self.assertIn('Does it hurt?', html)
+        self.assertIn('Dental Cleaning', html)
+        self.assertIn('data-ssr="1"', html)
+        # FAQPage JSON-LD is server-rendered
+        self.assertIn('FAQPage', html)
+
+    def test_all_articles_renders_cards_and_popular(self):
+        self.article.view_count = 42
+        Article.objects.filter(pk=self.article.pk).update(view_count=42)
+        response = self.client.get('/blog/articles/')
+        self.assertEqual(response.status_code, 200)
+        html = response.content.decode()
+        self.assertIn('SSR Test Article', html)
+        self.assertIn('Ali Rezaei', html)
+        self.assertIn('data-category="Dental Cleaning"', html)
+        self.assertIn('id="popularList"', html)
+        self.assertIn('data-ssr="1"', html)
+
+    def test_post_detail_renders_full_article(self):
+        response = self.client.get('/blog/article/ssr-article/')
+        self.assertEqual(response.status_code, 200)
+        html = response.content.decode()
+        # Title in H1 + <title>
+        self.assertIn('SSR Test Article', html)
+        # Abstract takeaways
+        self.assertIn('SSR abstract text', html)
+        # Content blocks server-rendered with TOC-consistent heading ids
+        self.assertIn('id="section-1"', html)
+        self.assertIn('First Section', html)
+        # Author box
+        self.assertIn('Experienced dentist', html)
+        # BlogPosting JSON-LD
+        self.assertIn('BlogPosting', html)
+        # SSR marker
+        self.assertIn('data-ssr="1"', html)
+
+    def test_post_detail_404_for_unpublished(self):
+        Article.objects.filter(pk=self.article.pk).update(is_published=False)
+        response = self.client.get('/blog/article/ssr-article/')
+        self.assertEqual(response.status_code, 404)
+
+    def test_post_detail_renders_approved_comments_only(self):
+        Comment.objects.create(
+            article=self.article, content='Approved comment',
+            status=Comment.Status.APPROVED,
+        )
+        Comment.objects.create(
+            article=self.article, content='Pending comment',
+            status=Comment.Status.PENDING,
+        )
+        response = self.client.get('/blog/article/ssr-article/')
+        html = response.content.decode()
+        self.assertIn('Approved comment', html)
+        self.assertNotIn('Pending comment', html)
+
+    def test_before_after_renders_first_page_cards(self):
+        from django.core.files.uploadedfile import SimpleUploadedFile
+        patient = User.objects.create_user(
+            phone='09123334455', national_code='3344556677',
+            first_name='Nima', last_name='Karimi'
+        )
+        appointment = Appointment.objects.create(
+            doctor=self.doctor, patient=patient, service=self.service,
+            appointment_date=timezone.now() + timedelta(days=1), price=500000,
+        )
+        BeforeAfter.objects.create(
+            appointment=appointment,
+            description='Radiant smile transformation',
+            before_image=SimpleUploadedFile('ba_before.jpg', b'x' * 100, content_type='image/jpeg'),
+            after_image=SimpleUploadedFile('ba_after.jpg', b'x' * 100, content_type='image/jpeg'),
+        )
+        response = self.client.get('/blog/before_after/')
+        self.assertEqual(response.status_code, 200)
+        html = response.content.decode()
+        # First-page card server-rendered (SEO-critical alt text)
+        self.assertIn('Radiant smile transformation', html)
+        # JSON data island for the JS pagination/filter seed
+        self.assertIn('id="baData"', html)
+        self.assertIn('data-ssr="1"', html)
+        # Filter pill from the item's service
+        self.assertIn('data-filter="Dental Cleaning"', html)

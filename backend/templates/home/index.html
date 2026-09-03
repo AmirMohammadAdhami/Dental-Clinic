@@ -127,8 +127,20 @@
                 </button>
 
                 <div class="doctors-slider">
-                    <div class="doctors-track" id="doctorsTrack">
-                        <!-- پر شده توسط JavaScript از API -->
+                    <div class="doctors-track" id="doctorsTrack" data-ssr="1">
+                        {% for doctor in doctors %}
+                        <a href="/doctors/{{ doctor.slug }}/" class="doctor-card" aria-label="سوابق دکتر {{ doctor.user.first_name }} {{ doctor.user.last_name }}">
+                            <div class="doctor-img">
+                                <img src="{% if doctor.photos and doctor.photos.blog_photo %}{{ doctor.photos.blog_photo.url }}{% else %}/static/images/doctors/default.jpg{% endif %}" alt="دکتر {{ doctor.user.first_name }} {{ doctor.user.last_name }}" loading="lazy">
+                                <div class="doctor-overlay">
+                                    <span class="doctor-overlay-text">سوابق دکتر</span>
+                                </div>
+                            </div>
+                            <h3 class="doctor-name">دکتر {{ doctor.user.first_name }} {{ doctor.user.last_name }}</h3>
+                            <p class="doctor-specialty">{{ doctor.speciality }}</p>
+                            <p class="doctor-university">{{ doctor.university }}</p>
+                        </a>
+                        {% endfor %}
                     </div>
                 </div>
 
@@ -161,8 +173,16 @@
                 </button>
 
                 <div class="doctors-slider">
-                    <div class="doctors-track" id="assistantsTrack">
-                        <!-- پر شده توسط JavaScript از API -->
+                    <div class="doctors-track" id="assistantsTrack" data-ssr="1">
+                        {% for assistant in assistants %}
+                        <div class="doctor-card">
+                            <div class="doctor-img">
+                                <img src="{% if assistant.blog_photo %}{{ assistant.blog_photo.url }}{% else %}/static/images/assistants/default.jpg{% endif %}" alt="{{ assistant.user.first_name }} {{ assistant.user.last_name }}" loading="lazy">
+                            </div>
+                            <h3 class="doctor-name">{{ assistant.user.first_name }} {{ assistant.user.last_name }}</h3>
+                            <p class="doctor-specialty">{{ assistant.speciality }}</p>
+                        </div>
+                        {% endfor %}
                     </div>
                 </div>
 
@@ -185,8 +205,23 @@
             <h2 class="samples-title">نمونه کارهای ما</h2>
             <p class="samples-subtitle">نتیجه واقعی درمان‌های دنتورا را ببینید</p>
 
-            <div class="samples-grid reveal-stagger" id="beforeAfterGrid">
-                <!-- پر شده توسط JavaScript از API -->
+            <div class="samples-grid reveal-stagger" id="beforeAfterGrid" data-ssr="1">
+                {% for item in before_afters %}
+                <div class="doctor-card" data-ba>
+                    <div class="doctor-img ba-container" tabindex="0" role="slider"
+                         aria-label="مقایسه قبل و بعد {{ item.description }}، با کشیدن یا کلیدهای جهت‌نما"
+                         aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+                        <img class="ba-img ba-after" src="{{ item.after_image.url }}" alt="نتیجه بعد از {{ item.description }}" loading="lazy">
+                        <img class="ba-img ba-before" src="{{ item.before_image.url }}" alt="وضعیت قبل از {{ item.description }}" loading="lazy">
+                        <div class="ba-slider">
+                            <div class="ba-handle"></div>
+                        </div>
+                        <span class="ba-label ba-label-before">قبل</span>
+                        <span class="ba-label ba-label-after">بعد</span>
+                    </div>
+                    <p class="doctor-name">{{ item.description }}</p>
+                </div>
+                {% endfor %}
             </div>
 
             <div class="samples-cta">
@@ -210,8 +245,23 @@
                     </svg>
                 </button>
                 <div class="testimonials-deck" id="testimonialsDeck" role="region" aria-roledescription="کارت نظرات"
-                     aria-label="نظرات بیماران">
-                    <!-- پر شده توسط JavaScript از API -->
+                     aria-label="نظرات بیماران" data-ssr="1">
+                    {% for review in testimonials %}
+                    <div class="testimonial-card" data-index="{{ forloop.counter0 }}">
+                        <div class="testimonial-stars">
+                            {% for _ in review.stars_range %}
+                            <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            {% endfor %}
+                        </div>
+                        <blockquote class="testimonial-quote">
+                            {{ review.content }}
+                        </blockquote>
+                        <div class="testimonial-user">
+                            <span class="testimonial-name">{{ review.full_name|default:"بیمار دنتورا" }}</span>
+                            {% if review.service_name %}<span class="testimonial-badge">درمان: {{ review.service_name }}</span>{% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
                 </div>
 
                 <button class="testimonials-btn testimonials-next" aria-label="نظر بعدی">
@@ -232,8 +282,25 @@
             <h2 class="video-blog-title">ویدیوهای آموزشی و بلاگ تخصصی دنتورا</h2>
             <p class="video-blog-subtitle">ویدیوهای آموزشی و بلاگ های تخصصی ما را تماشا کنید</p>
 
-            <div class="video-blog-grid reveal-stagger" id="videoBlogGrid">
-                <!-- پر شده توسط JavaScript از API -->
+            <div class="video-blog-grid reveal-stagger" id="videoBlogGrid" data-ssr="1">
+                {% for video in videos %}
+                <div class="video-card">
+                    <div class="video-card-thumb">
+                        <img src="{% if video.cover_url %}{{ video.cover_url }}{% else %}/static/images/home-video-preview/preview-1.jpg{% endif %}" alt="{{ video.article.title|default:'ویدیوی آموزشی دنتورا' }}" loading="lazy">
+                        <div class="video-play-btn" data-video="{{ video.video_url }}">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="white">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="video-card-info">
+                        <span class="video-card-name">{{ video.article.author.user.full_name }}</span>
+                        <span class="video-card-role">{{ video.article.category.name }}</span>
+                        <h4 class="video-card-title">{{ video.article.title }}</h4>
+                        <a href="/blog/article/{{ video.article.slug }}/" class="video-card-cta">مشاهده ادامه بلاگ</a>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
 
             <div class="video-blog-cta">

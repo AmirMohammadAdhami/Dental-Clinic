@@ -45,6 +45,36 @@ document.addEventListener('DOMContentLoaded', function () {
     var container = document.getElementById('articlesFilters');
     if (!container) return;
 
+    // SSR: filter buttons server-rendered — bind events + apply ?cat= deep link
+    if (container.dataset.ssr === '1') {
+      var ssrFilterBtns = container.querySelectorAll('.articles-filter-btn');
+      ssrFilterBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          ssrFilterBtns.forEach(function (b) {
+            b.classList.remove('is-active');
+            b.setAttribute('aria-selected', 'false');
+          });
+          btn.classList.add('is-active');
+          btn.setAttribute('aria-selected', 'true');
+          applyFilter(true);
+        });
+      });
+
+      var urlParams = new URLSearchParams(window.location.search);
+      var initialCat = urlParams.get('cat');
+      if (initialCat) {
+        ssrFilterBtns.forEach(function (b) {
+          b.classList.remove('is-active');
+          b.setAttribute('aria-selected', 'false');
+          if (b.getAttribute('data-filter') === initialCat) {
+            b.classList.add('is-active');
+            b.setAttribute('aria-selected', 'true');
+          }
+        });
+      }
+      return;
+    }
+
     try {
       var res = await fetch('/api/services/');
       if (!res.ok) throw new Error('Services API not OK');
@@ -101,6 +131,12 @@ document.addEventListener('DOMContentLoaded', function () {
     var featuredSection = document.getElementById('featuredSection');
     var featuredCard = document.getElementById('featuredCard');
     if (!grid) return;
+
+    // SSR: cards server-rendered — collect them and init filters/pagination
+    if (grid.dataset.ssr === '1') {
+      applyFilter(false);
+      return;
+    }
 
     try {
       var res = await fetch('/api/home-videos/');

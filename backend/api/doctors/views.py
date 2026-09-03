@@ -1,19 +1,17 @@
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
-from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.generics import ListAPIView
 from django.db.models.functions import Coalesce
 from django.db.models import (
     Value, Avg, Q, F, FloatField, ExpressionWrapper, Count, OuterRef, Subquery,
 )
 from django.db.models import Prefetch
 
-from .serializers import DoctorListSerializer, DoctorDetailSerializer
+from .serializers import DoctorListSerializer
 from backend.apps.appointments.services import release_expired_reservations
 from backend.apps.doctors.models import Doctor
 from backend.apps.appointments.models import Appointment, AppointmentSlot, DoctorReview
-from backend.apps.blog.models import BeforeAfter
-from backend.apps.doctors.models import Certificate
 from backend.security.cache import CACHE_TTL
 
 # Sort keys accepted by the ?sort= query param (used by the
@@ -110,57 +108,3 @@ class DoctorListAPIView(ListAPIView):
                 queryset = queryset.order_by(field)
 
         return queryset
-
-
-@method_decorator(cache_page(CACHE_TTL['doctor_detail']), name='dispatch')
-class DoctorDetailAPIView(RetrieveAPIView):
-    lookup_field = 'slug'
-    serializer_class = DoctorDetailSerializer
-
-    def get_queryset(self):
-        approved_reviews = DoctorReview.objects.filter(
-            status=DoctorReview.Status.APPROVED
-        )
-        return (
-            Doctor.objects
-            .select_related('user', 'testimonial')
-            .prefetch_related(
-                'photos',
-                'services_offered',
-                Prefetch(
-                    'certificates',
-                    queryset=Certificate.objects.order_by('date'),
-                ),
-                'articles__media',
-                Prefetch(
-                    'appointments__before_after',
-                    queryset=BeforeAfter.objects.select_related('appointment__service'),
-                    to_attr='_prefetched_before_after',
-                ),
-                Prefetch(
-                    'appointments__testimonials',
-                    queryset=approved_reviews,
-                    to_attr='_prefetched_reviews',
-                ),
-            )
-            .annotate(
-                average_rating=Coalesce(
-                    Avg(
-                        ExpressionWrapper(
-                            (F('appointments__testimonials__professionalism_rating')
-                             + F('appointments__testimonials__treatment_quality_rating')
-                             + F('appointments__testimonials__communication_rating')) / 3.0,
-                            output_field=FloatField(),
-                        ),
-                        filter=Q(
-                            appointments__testimonials__status=DoctorReview.Status.APPROVED
-                        )
-                    ),
-                    Value(0.0)
-                ),
-                completed_appointments_count=Count(
-                    'appointments',
-                    filter=Q(appointments__status='DONE'),
-                ),
-            )
-        )

@@ -52,15 +52,46 @@
             <h1 class="ba-page-title">نمونه کارهای دنتورا</h1>
             <p class="ba-page-subtitle">نتیجه واقعی درمان‌های زیبایی و ترمیمی ما را ببینید</p>
         </div>
-        <div class="ba-filters reveal is-visible" id="baFilters" role="tablist" aria-label="فیلتر نوع درمان">
+        <div class="ba-filters reveal is-visible" id="baFilters" role="tablist" aria-label="فیلتر نوع درمان" data-ssr="1">
             <button class="ba-filter-btn is-active" data-filter="all" role="tab" aria-selected="true">همه</button>
+            {% for name in ba_service_names %}
+            <button class="ba-filter-btn" data-filter="{{ name }}" role="tab" aria-selected="false">{{ name }}</button>
+            {% endfor %}
         </div>
 
-        <div class="ba-grid" id="baGrid">
+        <div class="ba-grid" id="baGrid" data-ssr="1">
+            {% for item in first_page_items %}
+            <div class="ba-card-item" data-treatment="{{ item.service_name }}">
+                <div class="doctor-card" data-ba>
+                    <div class="doctor-img ba-container" tabindex="0" role="slider"
+                         aria-label="مقایسه قبل و بعد {{ item.description }}"
+                         aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+                        <img class="ba-img ba-after" src="{{ item.after_image.url }}" alt="نتیجه بعد از {{ item.description }}" loading="lazy">
+                        <img class="ba-img ba-before" src="{{ item.before_image.url }}" alt="وضعیت قبل از {{ item.description }}" loading="lazy">
+                        <div class="ba-slider"><div class="ba-handle"></div></div>
+                        <span class="ba-label ba-label-before">قبل</span>
+                        <span class="ba-label ba-label-after">بعد</span>
+                    </div>
+                </div>
+                <p class="ba-card-desc">{{ item.description }}</p>
+                <div class="ba-card-footer">
+                    <span class="ba-card-tag" data-filter-link="{{ item.service_name }}">{{ item.service_name }}</span>
+                    {% if item.doctor_name %}
+                    {% if item.doctor_slug %}
+                    <a href="/doctors/{{ item.doctor_slug }}/" class="ba-card-doctor">دکتر {{ item.doctor_name }}</a>
+                    {% else %}
+                    <span class="ba-card-doctor">دکتر {{ item.doctor_name }}</span>
+                    {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
         </div>
 
         <nav class="ba-pagination reveal" id="baPagination" aria-label="صفحه‌بندی نمونه کارها" style="display:none;">
         </nav>
+
+        {% if items_json %}{{ items_json|json_script:"baData" }}{% endif %}
     </div>
 </main>
 {% endblock %}

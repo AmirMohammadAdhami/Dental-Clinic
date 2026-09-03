@@ -1,16 +1,25 @@
-from django.test import TestCase, RequestFactory
+from django.test import TestCase, RequestFactory, override_settings
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from datetime import timedelta
 from rest_framework.test import APIClient, APITestCase
 from rest_framework import status
 
-from backend.apps.doctors.models import Doctor, Assistant
+from backend.apps.doctors.models import Doctor
 from backend.apps.appointments.models import Service, Appointment
 from backend.apps.blog.models import Article
 from backend.api.doctor_dashboard.permissions import IsDoctorUser
 
 User = get_user_model()
+
+# In-memory cache so API tests don't require a running Redis (@cache_page views)
+TEST_CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'test-dentura-api-cache',
+        'TIMEOUT': 300,
+    }
+}
 
 
 class IsDoctorUserPermissionTest(TestCase):
@@ -52,6 +61,7 @@ class IsDoctorUserPermissionTest(TestCase):
         self.assertTrue(self.permission.has_permission(request, None))
 
 
+@override_settings(CACHES=TEST_CACHES)
 class DoctorListAPITest(APITestCase):
     """Tests for DoctorListAPIView."""
 
@@ -85,28 +95,7 @@ class DoctorListAPITest(APITestCase):
         self.assertIn('university', doctor_data)
 
 
-class AssistantListAPITest(APITestCase):
-    """Tests for AssistantListAPIView."""
-
-    def setUp(self):
-        self.client = APIClient()
-        self.user = User.objects.create_user(
-            phone='09121234567',
-            national_code='1234567890',
-            first_name='Sara',
-            last_name='Ahmadi'
-        )
-        self.assistant = Assistant.objects.create(
-            user=self.user,
-            speciality='Dental Assistant'
-        )
-
-    def test_assistant_list_get(self):
-        response = self.client.get('/api/assistants/')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data['results']), 1)
-
-
+@override_settings(CACHES=TEST_CACHES)
 class ServiceListAPITest(APITestCase):
     """Tests for ServiceListApiView."""
 
@@ -128,6 +117,7 @@ class ServiceListAPITest(APITestCase):
         self.assertEqual(service_data['name'], 'Dental Cleaning')
 
 
+@override_settings(CACHES=TEST_CACHES)
 class DoctorDashboardOverviewAPITest(APITestCase):
     """Tests for DoctorDashboardOverviewView."""
 
@@ -178,6 +168,7 @@ class DoctorDashboardOverviewAPITest(APITestCase):
         self.assertIn('published_articles_count', response.data)
 
 
+@override_settings(CACHES=TEST_CACHES)
 class DoctorAppointmentsListAPITest(APITestCase):
     """Tests for DoctorAppointmentsListView."""
 
@@ -249,6 +240,7 @@ class DoctorAppointmentsListAPITest(APITestCase):
         self.assertEqual(len(response.data), 1)
 
 
+@override_settings(CACHES=TEST_CACHES)
 class DoctorDashboardProfileAPITest(APITestCase):
     """Tests for DoctorProfileView."""
 
@@ -294,6 +286,7 @@ class DoctorDashboardProfileAPITest(APITestCase):
         self.assertEqual(self.doctor.years_of_experience, 15)
 
 
+@override_settings(CACHES=TEST_CACHES)
 class UserDashboardAPITest(APITestCase):
     """Tests for UserDashboardAPIView."""
 

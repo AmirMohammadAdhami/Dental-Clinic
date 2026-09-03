@@ -1,55 +1,11 @@
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from rest_framework.mixins import (ListModelMixin, RetrieveModelMixin)
-from rest_framework.viewsets import GenericViewSet
-from backend.apps.blog.models import Article, ArticleMedia, Comment
-from django.db.models import Prefetch
-from backend.security.cache import CACHE_TTL, cache, invalidate_article, article_comments_key
-from .serializers import ArticleListSerializer, ArticleDetailSerializer, ArticleCommentListSerializer, ArticleCommentCreateSerializer
-from ...security.throttle import CommentAnonThrottle,CommentUserThrottle
 
-
-@method_decorator(cache_page(CACHE_TTL['article_detail']), name='dispatch')
-class ArticleListApiView(ListModelMixin, RetrieveModelMixin,GenericViewSet):
-    lookup_field = 'slug'
-    def get_serializer_class(self):
-        if self.action == 'list':
-            return ArticleListSerializer
-        elif self.action == 'retrieve':
-            return ArticleDetailSerializer
-
-    def get_queryset(self):
-        if self.action == 'list':
-            return (
-                Article.objects
-                .select_related('author__user', 'category')
-                .prefetch_related(
-                    Prefetch(
-                        'media',
-                        queryset=ArticleMedia.objects.all()
-                    ),
-                    'author__photos',
-                )
-                .only(
-                    'id', 'title', 'slug', 'abstract', 'view_count', 'is_published', 'special_article',
-                    'author__user__full_name',
-                    'category__name', 'created_at',
-                )
-                .order_by('-created_at')
-                .distinct()
-            )
-        elif self.action == 'retrieve':
-            return (
-                Article.objects
-                .select_related('author__user', 'category')
-                .prefetch_related(
-                    'media',
-                )
-                .distinct()
-            )
+from backend.apps.blog.models import Article, Comment
+from backend.security.cache import cache, invalidate_article, article_comments_key, CACHE_TTL
+from .serializers import ArticleCommentListSerializer, ArticleCommentCreateSerializer
+from ...security.throttle import CommentAnonThrottle, CommentUserThrottle
 
 
 class ArticleCommentListCreateView(generics.ListCreateAPIView):

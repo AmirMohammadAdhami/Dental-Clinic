@@ -43,6 +43,26 @@
   ]
 }
 </script>
+{% if faqs %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {% for faq in faqs %}
+    {
+      "@type": "Question",
+      "name": "{{ faq.question|escapejs }}",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "{{ faq.answer_text|escapejs }}"
+      }
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -54,14 +74,39 @@
         </div>
         <section class="faq-section reveal">
             <h2 class="faq-title">چه مشکلی دارید؟</h2>
-            <div id="faqList">
-                <!-- پر شده توسط JavaScript از API -->
+            <div id="faqList" data-ssr="1">
+                {% for faq in faqs %}
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>{{ faq.question }}</span>
+                        <span class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            <p class="faq-desc">{{ faq.answer_text }}</p>
+                            {% if faq.categories.all %}
+                            <p class="faq-treatments-label">درمان‌های پیشنهادی:</p>
+                            <div class="faq-treatments">
+                                {% for cat in faq.categories.all %}
+                                <a href="/blog/articles/?cat={{ cat.name|urlencode }}" class="faq-treatment-link">{{ cat.name }}</a>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
         </section>
         <section class="treatments-section reveal">
             <h2 class="treatments-title">انواع درمان‌ها</h2>
-            <div class="treatments-grid" id="treatmentsGrid">
-                <!-- پر شده توسط JavaScript از API -->
+            <div class="treatments-grid" id="treatmentsGrid" data-ssr="1">
+                {% for svc in services %}
+                <a href="/blog/articles/?cat={{ svc.name|urlencode }}" class="treatment-card">
+                    <div class="treatment-icon"><img src="{% if svc.icon %}{{ svc.icon.url }}{% else %}/static/images/blog-icons/default.jpg{% endif %}" alt="{{ svc.name }}" loading="lazy"></div>
+                    <span class="treatment-name">{{ svc.name }}</span>
+                </a>
+                {% endfor %}
             </div>
         </section>
         <div class="blog-cta reveal">

@@ -1,7 +1,7 @@
 {% extends "bases/base.html" %}
 {% block nav_team %}is-active{% endblock %}
 {% block mobnav_team %}is-active{% endblock %}
-{% load static %}
+{% load static content_blocks %}
 
 {% block css %}
     <link rel="stylesheet" href="{% static "css/blog/team.css" %}">
@@ -60,9 +60,11 @@
                     <span class="team-dropdown-value">همه خدمات</span>
                     <svg class="team-dropdown-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
                 </button>
-                <ul class="team-dropdown-menu" id="teamDropdownMenu" role="listbox">
+                <ul class="team-dropdown-menu" id="teamDropdownMenu" role="listbox" data-ssr="1">
                     <li class="team-dropdown-item is-selected" data-value="" role="option">همه خدمات</li>
-                    <!-- پر شده توسط JavaScript از API -->
+                    {% for svc in services %}
+                    <li class="team-dropdown-item" data-value="{{ svc.name }}" role="option">{{ svc.name }}</li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>
@@ -71,17 +73,60 @@
 
 <!-- ================= FILTER BAR ================= -->
 <section class="team-filters reveal" role="tablist" aria-label="فیلتر تخصص پزشکان">
-    <div class="team-filters-inner" id="teamFilters">
+    <div class="team-filters-inner" id="teamFilters" data-ssr="1">
         <button class="team-filter-pill is-active" data-filter="all" role="tab" aria-selected="true">همه پزشکان</button>
-        <!-- پر شده توسط JavaScript از API -->
+        {% for svc in services %}
+        <button class="team-filter-pill" data-filter="{{ svc.name }}" role="tab" aria-selected="false">{{ svc.name }}</button>
+        {% endfor %}
     </div>
 </section>
 
 <!-- ================= DOCTORS GRID ================= -->
 <section class="team-grid-section">
     <div class="team-grid-inner">
-        <div class="team-grid" id="teamGrid">
-            <!-- پر شده توسط JavaScript از API -->
+        <div class="team-grid" id="teamGrid" data-ssr="1">
+            {% for doctor in doctors %}
+            <div class="team-doctor-card" data-services="[{% for svc in doctor.services_offered.all %}{% if not forloop.first %},{% endif %}\"{{ svc.name|escapejs }}\"{% endfor %}]">
+                <a href="/doctors/{{ doctor.slug }}/" class="team-card-link" aria-label="مشاهده پروفایل دکتر {{ doctor.user.first_name }} {{ doctor.user.last_name }}">
+                    <div class="team-card-img-wrap">
+                        <img src="{% if doctor.photos and doctor.photos.profile_photo %}{{ doctor.photos.profile_photo.url }}{% else %}/static/images/doctors/default.jpg{% endif %}" alt="دکتر {{ doctor.user.first_name }} {{ doctor.user.last_name }}" class="team-card-img" loading="lazy">
+                    </div>
+                    <div class="team-card-body">
+                        <div class="team-card-header">
+                            <h3 class="team-card-name">دکتر {{ doctor.user.first_name }} {{ doctor.user.last_name }}</h3>
+                            <p class="team-card-specialty">{{ doctor.speciality }}</p>
+                        </div>
+                        {% if doctor.services_offered.all %}
+                        <div class="team-card-services">
+                            {% for svc in doctor.services_offered.all %}
+                            <span class="team-card-service-pill">{{ svc.name }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        <div class="team-card-stats">
+                            <span class="team-card-stat team-card-rating">
+                                {% if doctor.average_rating and doctor.average_rating > 0 %}
+                                <svg class="team-card-star" width="14" height="14" viewBox="0 0 20 20" fill="#f59e0b"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                {{ doctor.average_rating|floatformat:1|to_persian_num }} از ۵
+                                {% else %}
+                                <span class="team-card-rating--none">بدون امتیاز!</span>
+                                {% endif %}
+                            </span>
+                            <span class="team-card-stat">
+                                <svg class="team-card-star" width="14" height="14" viewBox="0 0 20 20" fill="#f59e0b"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                {{ doctor.years_of_experience|to_persian_num }} سال تجربه
+                            </span>
+                        </div>
+                        {% if doctor.working_days %}
+                        <p class="team-card-days">حضور: {{ doctor.working_days }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="team-card-actions">
+                        <span class="btn btn-primary btn-sm team-card-btn">مشاهده پروفایل و رزرو نوبت</span>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
         </div>
 
         <!-- No results message -->

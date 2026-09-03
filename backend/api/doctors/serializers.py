@@ -1,9 +1,9 @@
 from rest_framework import serializers
 
 from backend.api.base_serializers import ArticleMediaSerializer
-from backend.apps.appointments.models import Service, DoctorReview
-from backend.apps.blog.models import BeforeAfter, Article
-from backend.apps.doctors.models import Doctor, DoctorPhotos, Certificate, DoctorTestimonial
+from backend.apps.appointments.models import Service
+from backend.apps.blog.models import Article
+from backend.apps.doctors.models import Doctor, DoctorPhotos
 
 
 class DoctorPhotosSerializer(serializers.ModelSerializer):
@@ -35,98 +35,3 @@ class DoctorListSerializer(serializers.ModelSerializer):
     def get_full_name(self, obj):
         return obj.user.first_name + ' ' + obj.user.last_name
 
-
-class DoctorCertificateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Certificate
-        fields = ['date', 'what', 'where']
-
-
-class BeforeAfterDoctorSerializer(serializers.ModelSerializer):
-    service_name = serializers.SerializerMethodField()
-
-    class Meta:
-        model = BeforeAfter
-        fields = ['id',
-                  'before_image',
-                  'after_image',
-                  'description',
-                  'service_name', ]
-
-    def get_service_name(self, obj):
-        return obj.appointment.service.name
-
-
-class DoctorArticlesSerializer(serializers.ModelSerializer):
-    files = ArticleMediaSerializer(source='media', many=True, read_only=True)
-
-    class Meta:
-        model = Article
-        fields = ['id', 'title', 'slug', 'files', 'is_published']
-
-
-class DoctorReviewSerializer(serializers.ModelSerializer):
-    service_name = serializers.SerializerMethodField()
-    rating = serializers.SerializerMethodField()
-
-    class Meta:
-        model = DoctorReview
-        fields = ['id', 'service_name', 'content', 'rating', 'professionalism_rating',
-                  'treatment_quality_rating', 'communication_rating', 'status', 'created_at']
-
-    def get_service_name(self, obj):
-        return obj.appointment.service.name
-
-    def get_rating(self, obj):
-        return obj.rating
-
-
-class DoctorDetailSerializer(serializers.ModelSerializer):
-    doctor_photos = DoctorPhotosSerializer(source='photos', read_only=True)
-    services_offered = ServiceSerializer(many=True, read_only=True)
-    full_name = serializers.SerializerMethodField()
-    rating = serializers.FloatField(source='average_rating', read_only=True)
-    certificates = DoctorCertificateSerializer(many=True, read_only=True)
-    before_after = serializers.SerializerMethodField()
-    articles = DoctorArticlesSerializer(many=True, read_only=True)
-    doctor_testimonial = serializers.SerializerMethodField()
-    reviews = serializers.SerializerMethodField()
-    completed_appointments_count = serializers.IntegerField(read_only=True)
-
-    class Meta:
-        model = Doctor
-        fields = [
-            'id', 'slug', 'full_name', 'speciality', 'university',
-            'years_of_experience', 'working_days', 'rating', 'bio',
-            'medical_license_number',
-            'completed_appointments_count',
-            'certificates', 'before_after', 'articles', 'doctor_testimonial',
-            'doctor_photos', 'services_offered', 'reviews',
-        ]
-
-    def get_full_name(self, obj):
-        return obj.user.first_name + ' ' + obj.user.last_name
-
-    def get_before_after(self, obj):
-        """Use prefetched data if available, otherwise fallback."""
-        if hasattr(obj, '_prefetched_before_after'):
-            return BeforeAfterDoctorSerializer(obj._prefetched_before_after, many=True).data
-        return BeforeAfterDoctorSerializer(
-            BeforeAfter.objects.filter(appointment__doctor=obj).order_by('created_at'), many=True,
-        ).data
-
-    def get_doctor_testimonial(self, obj):
-        if hasattr(obj, 'testimonial') and obj.testimonial:
-            return obj.testimonial.video.url if obj.testimonial.video else None
-        return None
-
-    def get_reviews(self, obj):
-        """Use prefetched data if available, otherwise fallback."""
-        if hasattr(obj, '_prefetched_reviews'):
-            return DoctorReviewSerializer(obj._prefetched_reviews, many=True).data
-        return DoctorReviewSerializer(
-            DoctorReview.objects.filter(
-                appointment__doctor=obj,
-                status=DoctorReview.Status.APPROVED,
-            ), many=True,
-        ).data

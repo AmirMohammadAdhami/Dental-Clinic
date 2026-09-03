@@ -550,13 +550,80 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  /* ═══════════════════════════════════════════
+  /* ═ INIT-REPLACED-BELOW ═ */
+
+  /* ═════════════════════════════════════════
+     SSR INTERACTIONS (server-rendered content)
+     ═════════════════════════════════════════ */
+  function bindSSRInteractions() {
+    // BA filter pills <-> data-treatment cards
+    var filtersEl = document.getElementById('docBaFilters');
+    var grid = document.getElementById('docBaGrid');
+    if (filtersEl && grid) {
+      var baPills = filtersEl.querySelectorAll('.ba-filter-btn');
+      var baCards = grid.querySelectorAll('.ba-card-item');
+      baPills.forEach(function (pill) {
+        pill.addEventListener('click', function () {
+          baPills.forEach(function (p) { p.classList.remove('is-active'); p.setAttribute('aria-selected', 'false'); });
+          pill.classList.add('is-active');
+          pill.setAttribute('aria-selected', 'true');
+          var f = pill.getAttribute('data-filter');
+          baCards.forEach(function (card) {
+            card.style.display = (f === 'all' || card.getAttribute('data-treatment') === f) ? '' : 'none';
+          });
+        });
+      });
+    }
+
+    // Article cards: data-video -> open video modal, else navigate to the post
+    var articlesGrid = document.getElementById('docArticlesGrid');
+    if (articlesGrid) {
+      articlesGrid.querySelectorAll('.doc-article-card').forEach(function (card) {
+        card.addEventListener('click', function (e) {
+          var videoSrc = card.getAttribute('data-video');
+          var articleSlug = card.getAttribute('data-slug');
+          if (videoSrc) {
+            e.preventDefault();
+            openVideoModal(videoSrc);
+          } else if (articleSlug) {
+            window.location.href = '/blog/article/' + articleSlug + '/';
+          }
+        });
+      });
+    }
+
+    // Testimonial video from the JSON island
+    var testimonialEl = document.getElementById('docTestimonialVideo');
+    if (testimonialEl) {
+      try {
+        var videoUrl = JSON.parse(testimonialEl.textContent);
+        if (videoUrl) {
+          var videoContainer = document.getElementById('docReviewVideo');
+          videoContainer.style.display = '';
+          var videoPlayer = videoContainer.querySelector('.doc-review-video-player');
+          videoPlayer.querySelector('source').src = videoUrl;
+        }
+      } catch (err) { /* malformed JSON - leave video hidden */ }
+    }
+  }
+
+  /* ═════════════════════════════════════════
      INIT
-     ═══════════════════════════════════════════ */
+     ═════════════════════════════════════════ */
+  var isSSR = !!document.querySelector('[data-ssr="1"]');
+
   initCalendar();
   initStaticInteractions();
   initVideoModal();
-  loadDoctor().then(function () {
+
+  if (isSSR) {
+    // Content is server-rendered - only bind interactions
+    initBASliders();
+    bindSSRInteractions();
     initScrollReveal();
-  });
+  } else {
+    loadDoctor().then(function () {
+      initScrollReveal();
+    });
+  }
 });

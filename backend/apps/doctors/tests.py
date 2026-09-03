@@ -1,7 +1,9 @@
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.contrib.auth import get_user_model
+from django.utils import timezone
+from datetime import timedelta
 from backend.apps.doctors.models import Doctor, DoctorTestimonial, DoctorPhotos, Certificate, Assistant
-from backend.apps.appointments.models import Service
+from backend.apps.appointments.models import Service, Appointment, DoctorReview
 
 User = get_user_model()
 
@@ -212,3 +214,89 @@ class AssistantModelTest(TestCase):
             speciality='Nurse'
         )
         self.assertNotEqual(self.assistant.user, assistant2.user)
+
+
+# In-memory cache so the SSR page-cache tests run without Redis
+TEST_CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'test-dentura-doctors-cache',
+        'TIMEOUT': 300,
+    }
+}
+
+
+@override_settings(CACHES=TEST_CACHES)
+class PublicPageSSRTest(TestCase):
+    """Server-rendered doctors pages (hybrid SSR migration): raw HTML must
+    contain the SEO-critical content + data-ssr markers."""
+
+    def setUp(self):
+        from django.core.cache import cache
+        cache.clear()  # isolate the deterministic page cache between tests
+        self.user = User.objects.create_user(
+            phone='09121234567',
+            national_code='1234567890',
+            first_name='Ali',
+            last_name='Rezaei'
+        )
+        self.doctor = Doctor.objects.create(
+            user=self.user,
+            speciality='Dentist',
+            university='Tehran University',
+            years_of_experience=10,
+            bio='Experienced dentist',
+            medical_license_number='ML12345'
+        )
+        self.service = Service.objects.create(
+            name='Dental Cleaning',
+            description='Professional dental cleaning'
+        )
+        self.doctor.services_offered.add(self.service)
+
+    def test_team_page_renders_doctor_cards_and_filters(self):
+        response = self.client.get('/doctors/')
+        self.assertEqual(response.status_code, 200)
+        html = response.content.decode()
+        self.assertIn('Ali Rezaei', html)
+        self.assertIn('Dentist', html)
+        self.assertIn('id="teamGrid"', html)
+        self.assertIn('data-ssr="1"', html)
+        # Service pill server-rendered
+        self.assertIn('data-filter="Dental Cleaning"', html)
+
+    def test_doctor_detail_renders_profile_and_jsonld(self):
+        response = self.client.get('/doctors/' + self.doctor.slug + '/')
+        self.assertEqual(response.status_code, 200)
+        html = response.content.decode()
+        # Hero name server-rendered
+        self.assertIn('Ali Rezaei', html)
+        self.assertIn('Dentist', html)
+        self.assertIn('Experienced dentist', html)
+        # Physician JSON-LD server-rendered
+        self.assertIn('Physician', html)
+        # SSR markers
+        self.assertIn('data-ssr="1"', html)
+
+    def test_doctor_detail_404_for_unknown_slug(self):
+        response = self.client.get('/doctors/no-such-doctor/')
+        self.assertEqual(response.status_code, 404)
+
+    def test_doctor_detail_shows_reviews(self):
+        patient = User.objects.create_user(
+            phone='09123334455', national_code='3344556677',
+            first_name='Nima', last_name='Karimi'
+        )
+        appointment = Appointment.objects.create(
+            doctor=self.doctor, patient=patient, service=self.service,
+            appointment_date=timezone.now() + timedelta(days=1), price=1000000,
+        )
+        DoctorReview.objects.create(
+            appointment=appointment,
+            professionalism_rating=5, treatment_quality_rating=5,
+            communication_rating=4, status=DoctorReview.Status.APPROVED,
+            content='Fantastic doctor!',
+        )
+        response = self.client.get('/doctors/' + self.doctor.slug + '/')
+        html = response.content.decode()
+        self.assertIn('Fantastic doctor!', html)

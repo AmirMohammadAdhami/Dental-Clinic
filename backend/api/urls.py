@@ -1,16 +1,13 @@
 from django.urls import path
 
 from backend.api.dashboard.views import UserDashboardAPIView
-from backend.api.assistants.views import AssistantListAPIView
-from backend.api.doctors.views import DoctorListAPIView, DoctorDetailAPIView
+from backend.api.doctors.views import DoctorListAPIView
 from backend.api.doctor_availability.views import DoctorAvailabilityAPIView
 from backend.api.appointments.views import AppointmentCreateAPIView, AppointmentDetailAPIView
-from backend.api.before_after.views import BeforeAfterListApiView
 from backend.api.gallery.views import GalleryListApiView
-from backend.api.faq.views import FAQListApiView
 from backend.api.services.views import ServiceListApiView
 from backend.api.doctor_reviews.views import DoctorReviewListApiView, DoctorReviewCreateApiView
-from backend.api.articles.views import ArticleListApiView, ArticleCommentListCreateView
+from backend.api.articles.views import ArticleCommentListCreateView
 from backend.api.notifications.views import (
     NotificationListAPIView,
     NotificationMarkReadAPIView,
@@ -37,24 +34,16 @@ app_name = 'api'
 urlpatterns = [
     path('doctors/', DoctorListAPIView.as_view(), name='doctor-list'),
     path('doctors/<str:slug>/availability/', DoctorAvailabilityAPIView.as_view(), name='doctor-availability'),
-    path('doctors/<str:slug>/', DoctorDetailAPIView.as_view(), name='doctor-detail'),
 
     path('appointments/', AppointmentCreateAPIView.as_view(), name='appointment-create'),
     path('appointments/<str:tracking_code>/', AppointmentDetailAPIView.as_view(), name='appointment-detail'),
-
-    path('assistants/', AssistantListAPIView.as_view(), name='assistant-list'),
-    path('before-afters/', BeforeAfterListApiView.as_view(), name='before-after-list'),
 
     # Dashboard Gallery
     path('gallery/', GalleryListApiView.as_view(), name='gallery-list'),
     path('doctor-reviews/', DoctorReviewListApiView.as_view(), name='doctor-review-list'),
     path('doctor-reviews/create/', DoctorReviewCreateApiView.as_view(), name='doctor-review-create'),
-    path('home-videos/', ArticleListApiView.as_view({'get': 'list'}), name='home-video-list'),
-    path('home-videos/<str:slug>/', ArticleListApiView.as_view({'get': 'retrieve'}), name='home-video-detail'),
-    path('articles/<str:slug>/', ArticleListApiView.as_view({'get': 'retrieve'}), name='article-detail'),
     path('articles/<str:slug>/comments/', ArticleCommentListCreateView.as_view(), name='article-comments'),
     path('services/', ServiceListApiView.as_view(), name='service-list'),
-    path('faqs/', FAQListApiView.as_view(), name='faq-list'),
     path('dashboard/me/', UserDashboardAPIView.as_view(), name='user-dashboard'),
 
 

@@ -1,7 +1,7 @@
 {% extends "bases/base.html" %}
 {% block nav_blog %}is-active{% endblock %}
 {% block mobnav_blog %}is-active{% endblock %}
-{% load static %}
+{% load static content_blocks %}
 
 {% block title %}مجله سلامت دهان و دندان — دنتورا{% endblock %}
 {% block meta_description %}مجله سلامت دهان و دندان دنتورا — جدیدترین مقالات تخصصی دندانپزشکی، راهنمای درمان‌های زیبایی و نکات مراقبتی.{% endblock %}
@@ -60,10 +60,24 @@
     </section>
 
     <!-- ================= FEATURED ARTICLE ================= -->
-    <section class="articles-featured reveal" id="featuredSection" style="display:none">
+    <section class="articles-featured reveal" id="featuredSection" {% if not featured_article %}style="display:none"{% endif %}>
         <div class="articles-featured-inner">
-            <div class="featured-card" id="featuredCard">
-                <!-- پر شده توسط JavaScript از API -->
+            <div class="featured-card" id="featuredCard" {% if featured_article %}data-ssr="1"{% endif %}>
+                {% if featured_article %}
+                <a href="/blog/article/{{ featured_article.slug }}/" class="featured-card-img">
+                    <img src="{% get_first_image featured_article as feat_img %}{% if feat_img %}{{ feat_img }}{% else %}/static/images/home-video-preview/preview-1.jpg{% endif %}" alt="{{ featured_article.title }}" loading="lazy">
+                    <span class="featured-badge">مقاله ویژه</span>
+                </a>
+                <div class="featured-card-body">
+                    <span class="featured-tag">{{ featured_article.category.name }}</span>
+                    <h2 class="featured-title">{{ featured_article.title }}</h2>
+                    <p class="featured-desc">{{ featured_article.abstract }}</p>
+                    <a href="/blog/article/{{ featured_article.slug }}/" class="featured-cta">
+                        مطالعه مقاله
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                    </a>
+                </div>
+                {% endif %}
             </div>
         </div>
     </section>
@@ -71,11 +85,12 @@
     <!-- ================= CATEGORY FILTERS ================= -->
     <section class="articles-filters-section reveal">
         <div class="articles-filters-inner">
-            <h2 class="articles-filters-title">مرور مقالات</h2>
-            <div class="articles-filters" id="articlesFilters" role="tablist" aria-label="فیلتر دسته‌بندی مقالات">
-                <button class="articles-filter-btn is-active" data-filter="all" role="tab" aria-selected="true">همه
-                    مقالات
+            <h2 class="articles-filters-title">مرور مقالات</h2>            <div class="articles-filters" id="articlesFilters" role="tablist" aria-label="فیلتر دسته‌بندی مقالات" data-ssr="1">
+                <button class="articles-filter-btn is-active" data-filter="all" role="tab" aria-selected="true">همه مقالات
                 </button>
+                {% for svc in services %}
+                <button class="articles-filter-btn" data-filter="{{ svc.name }}" role="tab" aria-selected="false">{{ svc.name }}</button>
+                {% endfor %}
             </div>
         </div>
     </section>
@@ -88,8 +103,33 @@
             <div class="articles-main-col">
 
                 <!-- ARTICLE GRID -->
-                <div class="articles-grid" id="articlesGrid">
-                    <!-- پر شده توسط JavaScript از API -->
+                <div class="articles-grid" id="articlesGrid" data-ssr="1">
+                    {% for article in articles %}
+                    <article class="article-card" data-category="{{ article.category.name }}">
+                        <a href="/blog/article/{{ article.slug }}/" class="article-card-link">
+                            <div class="article-card-thumb">
+                                <img src="{% get_first_image article as cover_img %}{% if cover_img %}{{ cover_img }}{% else %}/static/images/home-video-preview/preview-1.jpg{% endif %}" alt="{{ article.title }}" loading="lazy">
+                            </div>
+                            <div class="article-card-body">
+                                <div class="article-card-meta">
+                                    <div class="article-card-author">
+                                        <img src="{% if article.author.photos and article.author.photos.profile_photo %}{{ article.author.photos.profile_photo.url }}{% else %}/static/images/doctors/default.jpg{% endif %}" alt="{{ article.author.user.full_name }}" class="article-card-avatar" loading="lazy">
+                                        <span>{{ article.author.user.full_name }}</span>
+                                    </div>
+                                    <span class="article-card-date">{{ article.created_at|to_jalali }}</span>
+                                </div>
+                                <h3 class="article-card-title">{{ article.title }}</h3>
+                                <div class="article-card-footer">
+                                    <span class="article-card-tag">{{ article.category.name }}</span>
+                                    <span class="article-card-more">
+                                        مطالعه مقاله
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                                    </span>
+                                </div>
+                            </div>
+                        </a>
+                    </article>
+                    {% endfor %}
                 </div>
 
                 <!-- PAGINATION -->
@@ -132,8 +172,13 @@
                         </svg>
                         محبوب‌ترین مقالات
                     </h3>
-                    <ol class="sidebar-popular-list" id="popularList">
-                        <!-- پر شده توسط JavaScript از API -->
+                    <ol class="sidebar-popular-list" id="popularList" data-ssr="1">
+                        {% for article in popular_articles %}
+                        <li class="sidebar-popular-item">
+                            <span class="sidebar-popular-num">{{ forloop.counter|to_persian_num }}</span>
+                            <a href="/blog/article/{{ article.slug }}/" class="sidebar-popular-link">{{ article.title }}</a>
+                        </li>
+                        {% endfor %}
                     </ol>
                 </div>
 

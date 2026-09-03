@@ -1,9 +1,10 @@
 from rest_framework import serializers
-
+from backend.apps.blog.tasks import process_article_video
 from backend.api.base_serializers import ArticleMediaSerializer
 from backend.apps.appointments.models import Appointment, Service, DoctorReview, MedicalRecord
 from backend.apps.blog.models import Article, ArticleMedia, Comment
 from backend.apps.doctors.models import Doctor, DoctorPhotos, Certificate
+from backend.security.process_images import process_article_cover_image, process_doctor_blog_image,process_doctor_profile_image
 
 
 # ── Profile ──────────────────────────────────────────────────────
@@ -12,6 +13,31 @@ class DoctorPhotosSerializer(serializers.ModelSerializer):
     class Meta:
         model = DoctorPhotos
         fields = ['profile_photo', 'blog_photo']
+
+    def create(self, validated_data):
+        profile_img = validated_data.get('profile_photo')
+        blog_img = validated_data.get('blog_photo')
+        if profile_img:
+            validated_data['profile_photo'] = process_doctor_profile_image(profile_img)
+        if blog_img:
+            validated_data['blog_photo'] = process_doctor_blog_image(blog_img)
+
+        return Doctor.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        profile_img = validated_data.get('profile_photo')
+        blog_img = validated_data.get('blog_photo')
+        if profile_img:
+            if instance.profile_photo:
+                instance.profile_photo.delete(save=False)
+
+            validated_data['profile_photo'] = process_doctor_profile_image(profile_img)
+
+        if blog_img:
+            validated_data['blog_photo'] = process_doctor_blog_image(blog_img)
+
+        return super().update(instance, validated_data)
+
 
 
 class ServiceSerializer(serializers.ModelSerializer):
@@ -185,10 +211,76 @@ class DoctorArticleDetailSerializer(serializers.ModelSerializer):
 # ── Media Upload ──────────────────────────────────────────────────
 
 class ArticleMediaUploadSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = ArticleMedia
-        fields = ['id', 'media_type', 'file', 'video_url']
+        fields = [
+            'id',
+            'media_type',
+            'file',
+            'video_url',
+        ]
         read_only_fields = ['id']
+
+    def validate(self, attrs):
+        media_type = attrs.get('media_type')
+        file = attrs.get('file')
+        video_url = attrs.get('video_url')
+
+        if media_type == ArticleMedia.MediaTypes.IMAGE:
+
+            if not file:
+                raise serializers.ValidationError({
+                    'file': 'Image file is required.'
+                })
+
+            if video_url:
+                raise serializers.ValidationError({
+                    'video_url': 'Image cannot have a video URL.'
+                })
+
+        elif media_type == ArticleMedia.MediaTypes.VIDEO:
+
+            if not file and not video_url:
+                raise serializers.ValidationError({
+                    'file': 'Video requires either a file or a video URL.'
+                })
+
+            if file and video_url:
+                raise serializers.ValidationError({
+                    'video_url': 'Video cannot have both a file and a video URL.'
+                })
+
+        return attrs
+
+    def create(self, validated_data):
+        article = validated_data.pop('article')
+
+        media_type = validated_data.get('media_type')
+        uploaded_file = validated_data.get('file')
+
+        # Article cover image
+        if (
+            media_type == ArticleMedia.MediaTypes.IMAGE
+            and uploaded_file
+        ):
+            validated_data['file'] = process_article_cover_image(
+                uploaded_file
+            )
+
+        media = ArticleMedia.objects.create(
+            article=article,
+            **validated_data
+        )
+
+        # Uploaded video → process in background
+        if (
+            media_type == ArticleMedia.MediaTypes.VIDEO
+            and media.file
+        ):
+            process_article_video.delay(media.id)
+
+        return media
 
 
 # ── Comments ──────────────────────────────────────────────────────

@@ -13,10 +13,54 @@ class ArticleMedia(models.Model):
         VIDEO = 'VIDEO', 'Video'
         IMAGE = 'IMAGE', 'Image'
 
-    article = models.ForeignKey('Article', on_delete=models.CASCADE, related_name='media')
-    media_type = models.CharField(max_length=10, choices=MediaTypes)
-    file = models.FileField(upload_to=f'blog/article-media/', null=True, blank=True)
-    video_url = models.URLField(max_length=200, null=True, blank=True)
+    class ProcessingStatus(models.TextChoices):
+        PENDING = 'PENDING', 'Pending'
+        PROCESSING = 'PROCESSING', 'Processing'
+        COMPLETED = 'COMPLETED', 'Completed'
+        FAILED = 'FAILED', 'Failed'
+
+    article = models.ForeignKey(
+        'Article',
+        on_delete=models.CASCADE,
+        related_name='media'
+    )
+
+    media_type = models.CharField(
+        max_length=10,
+        choices=MediaTypes
+    )
+
+    # Original uploaded file
+    file = models.FileField(
+        upload_to='blog/article-media/',
+        null=True,
+        blank=True
+    )
+
+    # Processed/optimized file
+    processed_file = models.FileField(
+        upload_to='blog/article-media/processed/',
+        null=True,
+        blank=True
+    )
+
+    # External video URL
+    video_url = models.URLField(
+        max_length=200,
+        null=True,
+        blank=True
+    )
+
+    processing_status = models.CharField(
+        max_length=20,
+        choices=ProcessingStatus,
+        default=ProcessingStatus.PENDING
+    )
+
+    processing_error = models.TextField(
+        null=True,
+        blank=True
+    )
 
 
 class ArticleView(models.Model):

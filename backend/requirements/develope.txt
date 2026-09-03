@@ -12,6 +12,7 @@ drf_spectacular
 # Third Party
 Pillow
 gunicorn
+python-magic
 # Celery
 celery[redis]
 

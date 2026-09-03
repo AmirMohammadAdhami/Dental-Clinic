@@ -59,6 +59,36 @@ document.addEventListener('DOMContentLoaded', function () {
      Fetch services and populate filters + dropdown
      ═══════════════════════════════════════════ */
   async function fetchAndRenderServices() {
+    // SSR: pills + dropdown entries server-rendered — just bind their events
+    if (filtersContainer && filtersContainer.dataset.ssr === '1') {
+      pills = Array.from(filtersContainer.querySelectorAll('.team-filter-pill'));
+      pills.forEach(function (pill) {
+        pill.addEventListener('click', function () {
+          pills.forEach(function (p) { p.classList.remove('is-active'); p.setAttribute('aria-selected', 'false'); });
+          pill.classList.add('is-active');
+          pill.setAttribute('aria-selected', 'true');
+          activeFilter = pill.getAttribute('data-filter');
+          applyFilters();
+        });
+      });
+
+      if (dropdownMenu) {
+        var ssrDropdownItems = Array.from(dropdownMenu.querySelectorAll('.team-dropdown-item'));
+        ssrDropdownItems.forEach(function (item) {
+          item.addEventListener('click', function () {
+            ssrDropdownItems.forEach(function (i) { i.classList.remove('is-selected'); });
+            item.classList.add('is-selected');
+            selectedService = item.getAttribute('data-value');
+            if (dropdownValue) dropdownValue.textContent = item.textContent;
+            dropdown.classList.remove('is-open');
+            dropdownTrigger.setAttribute('aria-expanded', 'false');
+            applyFilters();
+          });
+        });
+      }
+      return;
+    }
+
     try {
       var res = await fetch('/api/services/');
       if (!res.ok) throw new Error('Services API not OK');
@@ -124,6 +154,12 @@ document.addEventListener('DOMContentLoaded', function () {
      ═══════════════════════════════════════════ */
   async function fetchAndRenderDoctors() {
     if (!teamGrid) return;
+
+    // SSR: doctor cards server-rendered — just collect them for filtering
+    if (teamGrid.dataset.ssr === '1') {
+      cards = Array.from(teamGrid.querySelectorAll('.team-doctor-card'));
+      return;
+    }
 
     try {
       var res = await fetch('/api/doctors/');

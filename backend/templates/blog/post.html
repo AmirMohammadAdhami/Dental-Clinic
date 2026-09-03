@@ -1,7 +1,7 @@
 {% extends "bases/base.html" %}
 {% block nav_blog %}is-active{% endblock %}
 {% block mobnav_blog %}is-active{% endblock %}
-{% load static %}
+{% load static content_blocks %}
 
 {% block css %}
     <link rel="stylesheet" href="{% static "css/home/home.css" %}">
@@ -9,34 +9,59 @@
 {% endblock %}
 
 {% block js %}
-<script src="{% static "js/blog/post.js" %}?v=3"></script>
+<script src="{% static "js/blog/post.js" %}?v=4"></script>
 {% endblock %}
 
-{% block title %}مقاله — دنتورا{% endblock %}
+{% block title %}{{ article.title }} — دنتورا{% endblock %}
+
+{% block meta_description %}{{ article.abstract|truncatechars:160 }} — مقاله تخصصی دندانپزشکی دنتورا{% endblock %}
+
+{% block og_title %}{{ article.title }} — دنتورا{% endblock %}
+{% block og_description %}{{ article.abstract|truncatechars:160 }} — مقاله تخصصی دندانپزشکی دنتورا{% endblock %}
+{% block og_type %}article{% endblock %}
+{% if article_og_image %}{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{{ article_og_image }}{% endblock %}{% endif %}
+{% block twitter_title %}{{ article.title }} — دنتورا{% endblock %}
+{% block twitter_description %}{{ article.abstract|truncatechars:160 }}{% endblock %}
+{% if article_og_image %}{% block twitter_image %}{{ request.scheme }}://{{ request.get_host }}{{ article_og_image }}{% endblock %}{% endif %}
+
+{% block json_ld %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "{{ article.title|escapejs }}",
+  "description": "{{ article.abstract|truncatechars:300|escapejs }}",
+  "image": "{{ request.scheme }}://{{ request.get_host }}{% if article_og_image %}{{ article_og_image }}{% else %}{% static 'images/hero/clinic-detail.jpg' %}{% endif %}",
+  "url": "{{ request.scheme }}://{{ request.get_host }}{{ request.path }}",
+  "datePublished": "{{ article.created_at|date:'c' }}",
+  "dateModified": "{{ article.updated_at|date:'c' }}",
+  "author": {
+    "@type": "Person",
+    "name": "{{ author.user.full_name }}",
+    "jobTitle": "{{ author.speciality }}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "دنتورا",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ request.scheme }}://{{ request.get_host }}{% static 'images/hero/clinic-detail.jpg' %}"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ request.scheme }}://{{ request.get_host }}{{ request.path }}"
+  }{% if article.category %},
+  "keywords": "{{ article.category.name }}"{% endif %}
+}
+</script>
+{% endblock %}
 
 {% block content %}
 <!-- Reading Progress Bar -->
 <div class="reading-progress" id="readingProgress"></div>
 
-<style>
-.post-loading{text-align:center;padding:120px 20px;color:var(--text-faint)}
-.post-loading .spinner{width:40px;height:40px;border:3px solid rgba(15,118,110,0.15);border-top-color:var(--primary);border-radius:50%;margin:0 auto 16px;animation:spin 0.8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-</style>
-
-<!-- Loading -->
-<div class="post-loading" id="postLoading">
-    <div class="spinner"></div>
-    <p>در حال بارگذاری مقاله...</p>
-</div>
-
-<!-- Error -->
-<div id="postError" style="display:none;text-align:center;padding:120px 20px;color:var(--text-faint);">
-    <p style="font-size:1.2rem;margin-bottom:8px;">مقاله یافت نشد</p>
-    <a href="{% url 'blog:all_articles' %}" class="btn btn-primary btn-sm">بازگشت به مقالات</a>
-</div>
-
-<main class="post-page" id="main-content" tabindex="-1" style="display:none;">
+<main class="post-page" id="main-content" tabindex="-1" data-ssr="1">
 
     <div class="post-header">
         <div class="post-header-inner">
@@ -47,21 +72,23 @@
                 <span class="post-breadcrumb-sep">/</span>
                 <a href="{% url 'blog:all_articles' %}">بلاگ</a>
                 <span class="post-breadcrumb-sep">/</span>
-                <a href="{% url 'blog:all_articles' %}" id="bcCategory">بلاگ</a>
+                <a href="{% url 'blog:all_articles' %}?cat={{ article.category.name|urlencode }}" id="bcCategory">{{ article.category.name }}</a>
                 <span class="post-breadcrumb-sep">/</span>
-                <span class="post-breadcrumb-current" id="bcTitle"></span>
+                <span class="post-breadcrumb-current" id="bcTitle">{{ article.title }}</span>
             </nav>
 
-            <span class="post-tag" id="postTag"></span>
-            <h1 class="post-title" id="postTitle"></h1>
+            <span class="post-tag" id="postTag">{{ article.category.name }}</span>
+            <h1 class="post-title" id="postTitle">{{ article.title }}</h1>
 
             <!-- Meta Bar -->
             <div class="post-meta">
                 <div class="post-meta-author" id="postMetaAuthor">
-                    <img src="" alt="" class="post-meta-avatar" id="postMetaAvatar" style="display:none;">
+                    {% if author_photo %}
+                    <img src="{{ author_photo }}" alt="{{ author.user.full_name }}" class="post-meta-avatar" id="postMetaAvatar">
+                    {% endif %}
                     <div>
-                        <span class="post-meta-name" id="postMetaName"></span>
-                        <span class="post-meta-specialty" id="postMetaSpecialty"></span>
+                        <span class="post-meta-name" id="postMetaName">{{ author.user.full_name }}</span>
+                        <span class="post-meta-specialty" id="postMetaSpecialty">{{ author.speciality }}</span>
                     </div>
                 </div>
                 <div class="post-meta-info">
@@ -69,10 +96,12 @@
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                              stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4"
                                                                                                width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        بروزرسانی: {{ article.updated_at|to_jalali }}
                     </span>
                     <span class="post-meta-readtime" id="postMetaReadtime">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                              stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                        {{ article.reading_time|to_persian_num }} دقیقه مطالعه
                     </span>
                 </div>
                 <div class="post-meta-share">
@@ -88,15 +117,18 @@
                 </div>
             </div>
 
-            <!-- Media Gallery (populated by JS) -->
-            <div class="post-gallery" id="postGallery" style="display:none;">
+            <!-- Media Gallery (server-rendered; JS binds interactions) -->
+            {% if files %}
+            <div class="post-gallery" id="postGallery">
                 <div class="post-gallery-main">
-                    <img src="" alt="" class="post-gallery-img" id="galleryMainImg">
-                    <div class="post-gallery-video" id="galleryVideo" style="display:none;">
+                    {% with first_file=files.0 %}
+                    <img src="{% if first_file.media_type == 'IMAGE' %}{{ first_file.file.url }}{% endif %}" alt="" class="post-gallery-img" id="galleryMainImg" {% if first_file.media_type == 'VIDEO' %}style="display:none;"{% endif %}>
+                    <div class="post-gallery-video" id="galleryVideo" {% if first_file.media_type != 'VIDEO' %}style="display:none;"{% else %}style="display:block;"{% endif %}>
                         <video class="post-gallery-video-player" controls preload="metadata">
-                            <source src="" type="video/mp4">
+                            <source src="{% if first_file.media_type == 'VIDEO' %}{{ first_file.video_url|default:first_file.file.url }}{% endif %}" type="video/mp4">
                         </video>
                     </div>
+                    {% endwith %}
                     <button class="post-gallery-arrow post-gallery-next" id="galleryNext" aria-label="عکس بعدی">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
                     </button>
@@ -104,14 +136,40 @@
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
                     </button>
                 </div>
-                <div class="post-gallery-thumbs" id="galleryThumbs"></div>
+                <div class="post-gallery-thumbs" id="galleryThumbs">
+                    {% for f in files %}
+                    {% if f.media_type == 'VIDEO' %}
+                    {% with src=f.video_url|default:f.processed_file.url %}
+                    <button class="post-gallery-thumb{% if forloop.first %} is-active{% endif %}" data-index="{{ forloop.counter0 }}" data-type="video" data-src="{{ src }}">
+                        <video class="post-gallery-thumb-vid" muted preload="metadata"><source src="{{ src }}" type="video/mp4"></video>
+                        <span class="post-gallery-thumb-play"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></span>
+                    </button>
+                    {% endwith %}
+                    {% else %}
+                    <button class="post-gallery-thumb{% if forloop.first %} is-active{% endif %}" data-index="{{ forloop.counter0 }}" data-type="image" data-src="{{ f.file.url }}">
+                        <img src="{{ f.file.url }}" alt="تصویر {{ forloop.counter|to_persian_num }} گالری مقاله">
+                    </button>
+                    {% endif %}
+                    {% endfor %}
+                </div>
             </div>
+            {% endif %}
 
-            <!-- TOC Mobile (populated by JS) -->
-            <div class="post-toc-mobile" id="postTocMobile" style="display:none;">
+            <!-- TOC Mobile (server-rendered) -->
+            {% if toc %}
+            <div class="post-toc-mobile" id="postTocMobile">
                 <h3 class="post-toc-mobile-title">فهرست مقاله</h3>
-                <nav class="post-toc-list" id="postTocMobileNav"></nav>
+                <nav class="post-toc-list" id="postTocMobileNav">
+                    {% for item in toc %}
+                    {% if item.level == 3 %}
+                    <a href="#section-{{ item.index }}" class="post-toc-sub">{{ item.text }}</a>
+                    {% else %}
+                    <a href="#section-{{ item.index }}" class="post-toc-link{% if item.index == 1 %} is-active{% endif %}">{{ item.text }}</a>
+                    {% endif %}
+                    {% endfor %}
+                </nav>
             </div>
+            {% endif %}
 
         </div>
     </div>
@@ -123,40 +181,61 @@
             <article class="post-content">
 
                 <!-- Key Takeaways -->
-                <div class="post-takeaways" id="postTakeaways" style="display:none;">
+                {% if article.abstract %}
+                <div class="post-takeaways" id="postTakeaways">
                     <h3 class="post-takeaways-title">📌 چکیده مقاله</h3>
-                    <p id="postTakeawaysText"></p>
+                    <p id="postTakeawaysText">{{ article.abstract }}</p>
                 </div>
+                {% endif %}
 
                 <!-- Content Body -->
-                <div class="post-body" id="postBody"></div>
+                <div class="post-body" id="postBody">{% render_content_blocks article.content_blocks %}</div>
 
                 <!-- Author Bio -->
-                <div class="post-author-box" id="postAuthorBox" style="display:none;">
-                    <img src="" alt="" class="post-author-img" id="postAuthorImg" style="display:none;">
+                <div class="post-author-box" id="postAuthorBox">
+                    {% if author_photo %}
+                    <img src="{{ author_photo }}" alt="{{ author.user.full_name }}" class="post-author-img" id="postAuthorImg">
+                    {% endif %}
                     <div class="post-author-info">
-                        <h3 class="post-author-name" id="postAuthorName"></h3>
-                        <p class="post-author-specialty" id="postAuthorSpecialty"></p>
-                        <p class="post-author-bio" id="postAuthorBio"></p>
+                        <h3 class="post-author-name" id="postAuthorName">{{ author.user.full_name }}</h3>
+                        <p class="post-author-specialty" id="postAuthorSpecialty">{{ author.speciality }}{% if author.university %} — {{ author.university }}{% endif %}</p>
+                        <p class="post-author-bio" id="postAuthorBio">{{ author.bio }}</p>
                         <a href="#" class="btn btn-outline btn-sm post-author-btn">دریافت نوبت از این پزشک</a>
                     </div>
                 </div>
 
                 <!-- Testimonials -->
-                <section class="post-testimonials" id="postTestimonialsSection" style="display:none;">
+                {% if doctor_reviews %}
+                <section class="post-testimonials" id="postTestimonialsSection">
                     <h2 class="post-testimonials-title">نظرات بیماران ما</h2>
                     <p class="post-testimonials-subtitle">تجربه واقعی بیماران دنتورا از درمان و لبخند جدیدشان</p>
                     <div class="testimonials-deck-wrapper">
                         <button class="testimonials-btn testimonials-prev" aria-label="نظر قبلی">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         </button>
-                        <div class="testimonials-deck" id="testimonialsDeck"></div>
+                        <div class="testimonials-deck" id="testimonialsDeck">
+                            {% for review in doctor_reviews %}
+                            <div class="testimonial-card">
+                                <div class="testimonial-stars">
+                                    {% for s in "12345"|make_list %}{% if forloop.counter <= review.rating|floatformat:0 %}
+                                    <svg class="star-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                    {% endif %}{% endfor %}
+                                </div>
+                                <blockquote class="testimonial-quote">{{ review.content }}</blockquote>
+                                <div class="testimonial-user">
+                                    <span class="testimonial-name">{{ review.patient_name|default:"بیمار" }}</span>
+                                    {% if review.service_name %}<span class="testimonial-badge">درمان: {{ review.service_name }}</span>{% endif %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
                         <button class="testimonials-btn testimonials-next" aria-label="نظر بعدی">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         </button>
                     </div>
                     <div class="testimonials-dots" role="tablist"></div>
                 </section>
+                {% endif %}
 
                 <!-- Comments Section -->
                 <section class="post-comments">
@@ -175,10 +254,41 @@
                             <button class="btn btn-primary btn-sm" id="commentSubmitBtn">ارسال دیدگاه</button>
                         </div>
                     </div>
-                    <!-- Comment List (dynamic) -->
-                    <div id="commentList"></div>
+                    <!-- Comment List (server-rendered; JS re-renders after submit) -->
+                    <div id="commentList" data-ssr="1">
+                        {% for comment in comments %}
+                        <div class="post-comment">
+                            <div class="post-comment-header">
+                                <div class="post-comment-user">
+                                    <div class="post-comment-avatar">{{ comment.commenter_name|slice:":1"|default:"ن" }}</div>
+                                    <div>
+                                        <span class="post-comment-name">{{ comment.commenter_name|default:"ناشناس" }}</span>
+                                        <span class="post-comment-date">{{ comment.created_at|to_relative_time }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="post-comment-text">{{ comment.content }}</p>
+                            {% for reply in comment.children.all %}
+                            <div class="post-comment-reply">
+                                <div class="post-comment-header">
+                                    <div class="post-comment-user">
+                                        <div class="post-comment-avatar">{{ reply.commenter_name|slice:":1"|default:"د" }}</div>
+                                        <div>
+                                            <span class="post-comment-name">{{ reply.commenter_name|default:"دندانپزشک" }}</span>
+                                            <span class="post-comment-badge">پاسخ دندانپزشک</span>
+                                            <span class="post-comment-date">{{ reply.created_at|to_relative_time }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="post-comment-text">{{ reply.content }}</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% empty %}
+                        {% endfor %}
+                    </div>
                     <!-- Empty state -->
-                    <div class="post-comment-empty" id="commentEmpty" style="display:none;">
+                    <div class="post-comment-empty" id="commentEmpty" {% if comments %}style="display:none;"{% endif %}>
                         <p>هنوز دیدگاهی ثبت نشده است. اولین نفری باشید که نظر می‌دهد!</p>
                     </div>
                 </section>
@@ -196,7 +306,15 @@
 
                 <div class="post-sidebar-card post-toc">
                     <h3 class="post-sidebar-title">فهرست مقاله</h3>
-                    <nav class="post-toc-list" id="postToc"></nav>
+                    <nav class="post-toc-list" id="postToc">
+                        {% for item in toc %}
+                        {% if item.level == 3 %}
+                        <a href="#section-{{ item.index }}" class="post-toc-sub">{{ item.text }}</a>
+                        {% else %}
+                        <a href="#section-{{ item.index }}" class="post-toc-link{% if item.index == 1 %} is-active{% endif %}">{{ item.text }}</a>
+                        {% endif %}
+                        {% endfor %}
+                    </nav>
                 </div>
 
                 <div class="post-sidebar-card post-cta-card">
@@ -216,7 +334,7 @@
 </main>
 
 <!-- Mobile Bottom CTA -->
-<div class="post-layout" id="postMobileCta" style="display:none;">
+<div class="post-layout" id="postMobileCta">
     <div class="post-layout-inner">
         <div class="post-cta-mobile">
             <h3>نیاز به مشاوره تخصصی داری؟</h3>

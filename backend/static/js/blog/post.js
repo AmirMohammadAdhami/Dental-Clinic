@@ -97,53 +97,52 @@ document.addEventListener('DOMContentLoaded', function () {
     var errorEl = document.getElementById('postError');
     var mainEl = document.querySelector('main.post-page');
 
-    if (!slug) { loadingEl.style.display='none'; errorEl.style.display='block'; return; }
+    // ================= SSR BRANCH =================
+    // The page is fully server-rendered (title/meta/JSON-LD/gallery/TOC/
+    // body/comments). Only bind the interactive behaviours.
+    var isSSR = mainEl && mainEl.getAttribute('data-ssr') === '1';
 
-    // ================= FETCH =================
+    if (isSSR) {
+        bindSSRGallery();
+        initComments();
+        setTimeout(function() {
+            initProgress();
+            initLightbox();
+            initCopyLink();
+            initTocHighlight();
+            initGalleryLightbox();
+            initTestimonialsDeck();
+        }, 200);
+        return;
+    }
+
+    // ================= FETCH (non-SSR fallback) =================
+    if (!slug) { if (loadingEl) loadingEl.style.display='none'; if (errorEl) errorEl.style.display='block'; return; }
+
     fetch('/api/articles/' + encodeURIComponent(slug) + '/')
         .then(function(r) { if (!r.ok) throw 0; return r.json(); })
         .then(function(d) {
-            document.title = d.title + ' — دنتورا';
-            // Update meta description for SEO
-            var metaDesc = document.querySelector('meta[name="description"]');
-            if (metaDesc) {
-                metaDesc.setAttribute('content', (d.abstract || d.title || '') + ' — مقاله تخصصی دندانپزشکی دنتورا');
-            }
-            // Update Open Graph tags for SEO
-            var ogTitle = document.querySelector('meta[property="og:title"]');
-            var ogDesc = document.querySelector('meta[property="og:description"]');
-            var ogType = document.querySelector('meta[property="og:type"]');
-            var ogImage = document.querySelector('meta[property="og:image"]');
-            if (ogTitle) ogTitle.setAttribute('content', d.title + ' — دنتورا');
-            if (ogDesc) ogDesc.setAttribute('content', (d.abstract || d.title || '') + ' — مقاله تخصصی دندانپزشکی دنتورا');
-            if (ogType) ogType.setAttribute('content', 'article');
-            if (ogImage && d.files && d.files.length) {
-                var firstImg = d.files.find(function(f) { return f.media_type === 'IMAGE' && f.file; });
-                if (firstImg) ogImage.setAttribute('content', window.location.origin + firstImg.file);
-            }
-            // Update Twitter Card tags
-            var twTitle = document.querySelector('meta[name="twitter:title"]');
-            var twDesc = document.querySelector('meta[name="twitter:description"]');
-            var twImage = document.querySelector('meta[name="twitter:image"]');
-            if (twTitle) twTitle.setAttribute('content', d.title + ' — دنتورا');
-            if (twDesc) twDesc.setAttribute('content', (d.abstract || d.title || ''));
-            if (twImage && d.files && d.files.length) {
-                var twFirstImg = d.files.find(function(f) { return f.media_type === 'IMAGE' && f.file; });
-                if (twFirstImg) twImage.setAttribute('content', window.location.origin + twFirstImg.file);
-            }
-            // Update canonical URL
-            var canonicalLink = document.querySelector('link[rel="canonical"]');
-            if (canonicalLink) canonicalLink.setAttribute('href', window.location.href);
-            // Update og:url
-            var ogUrl = document.querySelector('meta[property="og:url"]');
-            if (ogUrl) ogUrl.setAttribute('content', window.location.href);
-            // Add Article JSON-LD structured data
-            addArticleJsonLd(d);
-            loadingEl.style.display = 'none';
-            mainEl.style.display = '';
+            if (loadingEl) loadingEl.style.display = 'none';
+            if (mainEl) mainEl.style.display = '';
             populate(d);
         })
-        .catch(function(err) { console.error('Article load error:', err); loadingEl.style.display='none'; errorEl.style.display='block'; });
+        .catch(function(err) { console.error('Article load error:', err); if (loadingEl) loadingEl.style.display='none'; if (errorEl) errorEl.style.display='block'; });
+
+    function populate(d) {
+        document.title = d.title + ' — دنتورا';
+        addArticleJsonLd(d);
+        buildTOC(d.content_blocks || []);
+        renderGallery(d.files || []);
+        if (d.doctor_reviews && d.doctor_reviews.length) renderTestimonials(d.doctor_reviews);
+        setTimeout(function() {
+            initProgress();
+            initLightbox();
+            initCopyLink();
+            initTocHighlight();
+            initGalleryLightbox();
+        }, 200);
+    }
+
 
     // ================= POPULATE =================
     function populate(d) {
@@ -588,8 +587,11 @@ document.addEventListener('DOMContentLoaded', function () {
             hint.textContent = isAuth ? '' : 'نام و نام خانوادگی شما در دیدگاه نمایش داده خواهد شد.';
         }
 
-        // Load existing comments
-        loadComments();
+        // Load existing comments (skip under SSR - they are server-rendered)
+        if (!document.getElementById('commentList') ||
+            document.getElementById('commentList').dataset.ssr !== '1') {
+            loadComments();
+        }
 
         // Submit handler
         if (submitBtn) {
@@ -763,6 +765,61 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
         return '';
+    }
+
+    // ================= SSR GALLERY BINDER =================
+    // Wires the server-rendered #postGallery thumbs and prev/next arrows.
+    function bindSSRGallery() {
+        var thumbsEl = document.getElementById('galleryThumbs');
+        var mainImg = document.getElementById('galleryMainImg');
+        var mainVideo = document.getElementById('galleryVideo');
+        var player = mainVideo ? mainVideo.querySelector('video') : null;
+        if (!thumbsEl || !mainImg || !mainVideo || !player) return;
+
+        var items = [];
+        thumbsEl.querySelectorAll('.post-gallery-thumb').forEach(function(btn) {
+            items.push({ type: btn.getAttribute('data-type'), src: btn.getAttribute('data-src') });
+        });
+        if (!items.length) return;
+
+        var ci = 0;
+        var allThumbs = thumbsEl.querySelectorAll('.post-gallery-thumb');
+
+        function showItem(idx) {
+            if (idx < 0 || idx >= items.length) return;
+            allThumbs[ci].classList.remove('is-active');
+            ci = idx;
+            allThumbs[ci].classList.add('is-active');
+            var it = items[ci];
+
+            if (it.type === 'video') {
+                mainImg.style.display = 'none';
+                mainVideo.style.display = 'block';
+                player.src = it.src;
+                player.load();
+                player.play().catch(function(){});
+            } else {
+                player.pause();
+                player.src = '';
+                mainVideo.style.display = 'none';
+                mainImg.style.display = '';
+                mainImg.style.opacity = '0';
+                mainImg.src = it.src;
+                mainImg.onload = function() {
+                    mainImg.style.transition = 'opacity 0.3s ease';
+                    mainImg.style.opacity = '1';
+                };
+            }
+        }
+
+        allThumbs.forEach(function(btn, idx2) {
+            btn.addEventListener('click', function(){ showItem(idx2); });
+        });
+
+        var prev = document.getElementById('galleryPrev');
+        var next = document.getElementById('galleryNext');
+        if (prev) prev.addEventListener('click', function(){ showItem(ci > 0 ? ci - 1 : items.length - 1); });
+        if (next) next.addEventListener('click', function(){ showItem(ci < items.length - 1 ? ci + 1 : 0); });
     }
 
     // Initialize comments

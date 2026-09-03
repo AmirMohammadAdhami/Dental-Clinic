@@ -15,6 +15,12 @@ document.addEventListener('DOMContentLoaded', function () {
     var faqList = document.getElementById('faqList');
     if (!faqList) return;
 
+    // SSR: FAQs server-rendered (incl. FAQPage JSON-LD) — just bind the accordion
+    if (faqList.dataset.ssr === '1') {
+      bindFAQAccordion();
+      return;
+    }
+
     try {
       var res = await fetch('/api/faqs/');
       if (!res.ok) throw new Error('FAQ API not OK');
@@ -116,6 +122,9 @@ document.addEventListener('DOMContentLoaded', function () {
   async function fetchAndRenderTreatments() {
     var grid = document.getElementById('treatmentsGrid');
     if (!grid) return;
+
+    // SSR: treatment cards server-rendered as plain links — no interactivity needed
+    if (grid.dataset.ssr === '1') return;
 
     try {
       var res = await fetch('/api/services/');

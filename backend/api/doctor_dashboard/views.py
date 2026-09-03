@@ -251,6 +251,10 @@ class DoctorArticleMediaUploadView(APIView):
         # Delete the file from storage
         if media.file:
             media.file.delete(save=False)
+
+        if media.processed_file:
+            media.processed_file.delete(save=False)
+
         media.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 

@@ -129,9 +129,8 @@ USE_TZ = True
 
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
-
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
+# NOTE: Django 6 forbids the deprecated EMAIL_BACKEND setting when MAILERS
+# is defined — configure backends through MAILERS only.
 MAILERS = {
     'default': {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',

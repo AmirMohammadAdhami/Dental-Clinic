@@ -52,6 +52,19 @@ def get_block_field(block, field_name):
     return block.get('data', {}).get(field_name, '')
 
 
+@register.simple_tag
+def get_first_image(article):
+    """Return the URL of the article's first IMAGE media item (same fallback
+    logic the old JS getFirstImage() used), or '' when none exists."""
+    try:
+        for f in article.media.all():
+            if f.media_type == 'IMAGE' and f.file:
+                return f.file.url
+    except Exception:
+        pass
+    return ''
+
+
 @register.filter
 def to_persian_num(value):
     """Convert western digits in a value to Persian digits."""
