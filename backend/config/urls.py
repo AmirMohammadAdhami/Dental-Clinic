@@ -11,6 +11,12 @@ from backend.apps.accounts import urls as accounts_urls
 from backend.apps.appointments import urls as appointments_urls
 from backend.apps.doctors import urls as doctors_urls
 from backend.api import urls as api_urls
+from backend.security.jwt_views import (
+    CookieTokenObtainView,
+    CookieTokenRefreshView,
+    CookieTokenVerifyView,
+    CookieTokenLogoutView,
+)
 from drf_spectacular.views import (
     SpectacularAPIView,
     SpectacularSwaggerView, SpectacularRedocView,
@@ -34,6 +40,11 @@ urlpatterns = [
     path('api/', include(api_urls)),
     path('api-auth/', include("rest_framework.urls")),
 
+    # ── JWT Authentication Endpoints ──
+    path('api/token/', CookieTokenObtainView.as_view(), name='jwt-token-obtain'),
+    path('api/token/refresh/', CookieTokenRefreshView.as_view(), name='jwt-token-refresh'),
+    path('api/token/verify/', CookieTokenVerifyView.as_view(), name='jwt-token-verify'),
+    path('api/token/logout/', CookieTokenLogoutView.as_view(), name='jwt-token-logout'),
 
     # YOUR PATTERNS
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),

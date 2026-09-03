@@ -5,6 +5,7 @@ django-environ
 
 #  Django Rest Framework
 djangorestframework
+djangorestframework-simplejwt
 markdown
 django-filter
 drf_spectacular

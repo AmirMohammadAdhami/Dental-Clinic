@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 import environ
 
@@ -55,6 +56,8 @@ local_apps = ['backend.apps.accounts.apps.AccountsConfig',
               'backend.apps.notifications.apps.NotificationsConfig', ]
 
 third_party_apps = ["rest_framework",
+                    "rest_framework_simplejwt",
+                    "rest_framework_simplejwt.token_blacklist",
                     ]
 
 INSTALLED_APPS = django_apps + third_party_apps + local_apps
@@ -169,6 +172,14 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20,
 
+    # ── Authentication Classes ──
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
 }
 
 # ── Cache (Redis) ──────────────────────────────────────────────
@@ -192,3 +203,33 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
+
+# ── JWT Authentication ────────────────────────────────────────
+LOGIN_URL = '/accounts/login/'
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(
+        minutes=env.int('SIMPLE_JWT_ACCESS_LIFETIME_MINUTES', default=30)
+    ),
+    'REFRESH_TOKEN_LIFETIME': timedelta(
+        days=env.int('SIMPLE_JWT_REFRESH_LIFETIME_DAYS', default=7)
+    ),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'SIGNING_KEY': env('SIMPLE_JWT_SECRET_KEY', default=SECRET_KEY),
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    # Cookie-based auth for server-rendered pages
+    'AUTH_COOKIE': 'access_token',
+    'AUTH_COOKIE_SECURE': not DEBUG,
+    'AUTH_COOKIE_HTTPONLY': True,
+    'AUTH_COOKIE_SAMESITE': 'Lax',
+    'REFRESH_COOKIE': 'refresh_token',
+    'REFRESH_COOKIE_SECURE': not DEBUG,
+    'REFRESH_COOKIE_HTTPONLY': True,
+    'REFRESH_COOKIE_SAMESITE': 'Lax',
+}
+
+MIDDLEWARE.insert(
+    MIDDLEWARE.index('django.contrib.auth.middleware.AuthenticationMiddleware') + 1,
+    'backend.security.jwt_middleware.JWTAuthenticationMiddleware',
+)

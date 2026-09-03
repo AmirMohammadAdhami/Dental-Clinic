@@ -1,3 +1,5 @@
+import logging
+from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.contrib import messages
@@ -8,9 +10,12 @@ from .models import OTPCode
 from datetime import timedelta
 from django.utils import timezone
 from django.contrib.auth import get_user_model, login, logout
+from rest_framework_simplejwt.tokens import RefreshToken
 from ...security.throttle import (
     check_throttle, LoginThrottle, OtpThrottle, ResendOtpThrottle,ThrottledError
 )
+
+logger = logging.getLogger(__name__)
 
 User = get_user_model()
 
@@ -45,6 +50,10 @@ def login_user(request):
             return redirect('accounts:login')
 
         unique_otp = otp_services.generate_otp()
+
+        # DEV: Print OTP to server console so you can see it
+        print(f"[DEV OTP] To: {phone_number} | Code: {unique_otp}")
+        logger.info("[DEV OTP] To: %s | Code: %s", phone_number, unique_otp)
 
         # Dispatch SMS sending to Celery — the view returns immediately.
         send_otp_task.delay(unique_otp, phone_number)
@@ -126,9 +135,12 @@ def otp(request):
 
             messages.success(request, 'You are now logged in.')
 
-            if hasattr(user, 'doctor'):
-                return redirect('doctors:doctor_dashboard_analytics')
-            return redirect('dashboard:dashboard')
+            # Issue JWT tokens as cookies
+            response = redirect(
+                'doctors:doctor_dashboard_analytics' if hasattr(user, 'doctor') else 'dashboard:dashboard'
+            )
+            _set_jwt_cookies(response, user)
+            return response
 
         unique_otp.attempts += 1
         unique_otp.save(update_fields=['attempts'])
@@ -188,6 +200,10 @@ def resend_otp(request):
 
     unique_otp = otp_services.generate_otp()
 
+    # DEV: Print OTP to server console so you can see it
+    print(f"[DEV OTP] To: {phone_number} | Code: {unique_otp}")
+    logger.info("[DEV OTP] To: %s | Code: %s", phone_number, unique_otp)
+
     # Dispatch SMS sending to Celery — the view returns immediately.
     send_otp_task.delay(unique_otp, phone_number)
 
@@ -240,7 +256,9 @@ def login_info(request):
         request.session.pop('otp_verified', None)
         request.session.pop('phone_number', None)
         messages.success(request, 'You are now Signed up.')
-        return redirect('dashboard:dashboard')
+        response = redirect('dashboard:dashboard')
+        _set_jwt_cookies(response, user)
+        return response
 
     return render(request, 'auth/login-info.html')
 
@@ -249,7 +267,43 @@ def logout_user(request):
     if request.user.is_authenticated:
         messages.success(request, 'You are logged out.')
         logout(request)
-        return redirect('core:home')
+        response = redirect('core:home')
+        _clear_jwt_cookies(response)
+        return response
 
     messages.error(request, 'You are not logged in.')
     return redirect('accounts:login')
+
+
+def _set_jwt_cookies(response, user):
+    """Set JWT access and refresh tokens as httpOnly cookies."""
+    refresh = RefreshToken.for_user(user)
+    jwt_settings = settings.SIMPLE_JWT
+
+    response.set_cookie(
+        key=jwt_settings.get('AUTH_COOKIE', 'access_token'),
+        value=str(refresh.access_token),
+        max_age=jwt_settings['ACCESS_TOKEN_LIFETIME'].total_seconds(),
+        secure=jwt_settings.get('AUTH_COOKIE_SECURE', True),
+        httponly=jwt_settings.get('AUTH_COOKIE_HTTPONLY', True),
+        samesite=jwt_settings.get('AUTH_COOKIE_SAMESITE', 'Lax'),
+        path='/',
+    )
+    response.set_cookie(
+        key=jwt_settings.get('REFRESH_COOKIE', 'refresh_token'),
+        value=str(refresh),
+        max_age=jwt_settings['REFRESH_TOKEN_LIFETIME'].total_seconds(),
+        secure=jwt_settings.get('REFRESH_COOKIE_SECURE', True),
+        httponly=jwt_settings.get('REFRESH_COOKIE_HTTPONLY', True),
+        samesite=jwt_settings.get('REFRESH_COOKIE_SAMESITE', 'Lax'),
+        path='/',
+    )
+    return response
+
+
+def _clear_jwt_cookies(response):
+    """Clear JWT cookies on logout."""
+    jwt_settings = settings.SIMPLE_JWT
+    response.delete_cookie(jwt_settings.get('AUTH_COOKIE', 'access_token'), path='/')
+    response.delete_cookie(jwt_settings.get('REFRESH_COOKIE', 'refresh_token'), path='/')
+    return response

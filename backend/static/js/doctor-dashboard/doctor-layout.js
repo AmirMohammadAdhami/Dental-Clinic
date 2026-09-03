@@ -13,8 +13,20 @@
     return '';
   }
 
+  // ================= JWT TOKEN REFRESH =================
+  function refreshAccessToken() {
+    return fetch('/api/token/refresh/', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' }
+    }).then(function (res) {
+      if (!res.ok) throw new Error('Refresh failed');
+      return res.json();
+    });
+  }
+
   window.API_BASE = '/api';
-  window.apiFetch = function (method, url, body) {
+  window.apiFetch = function (method, url, body, _retry) {
     var opts = {
       method: method,
       headers: {
@@ -27,6 +39,15 @@
       opts.body = JSON.stringify(body);
     }
     return fetch(API_BASE + url, opts).then(function (res) {
+      // Auto-refresh on 401 (token expired)
+      if (res.status === 401 && !_retry) {
+        return refreshAccessToken().then(function () {
+          return window.apiFetch(method, url, body, true);
+        }).catch(function () {
+          window.location.href = '/accounts/login/';
+          throw { status: 401, data: { detail: 'بارگذاری انجام نشد' } };
+        });
+      }
       if (!res.ok) {
         return res.json().then(function (data) {
           throw { status: res.status, data: data };
