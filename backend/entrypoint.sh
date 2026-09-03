@@ -1,11 +1,11 @@
 #!/bin/sh
 set -e
 
-echo "⏳ Applying database migrations..."
+echo "Applying database migrations..."
 python manage.py migrate --noinput
 
-echo "📂 Collecting static files..."
+echo "Collecting static files..."
 python manage.py collectstatic --noinput
 
-echo "🚀 Starting server..."
+echo "Starting server..."
 exec "$@"

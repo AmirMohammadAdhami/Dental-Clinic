@@ -9,9 +9,9 @@
     {# ── Heading ──────────────────────────────────────────────────── #}
     {% if block.type == 'heading' %}
         {% if block.data.level == '3' %}
-            <h3 class="post-body" id="section-{{ forloop.counter }}">{{ block.data.text }}</h3>
+            <h3 class="post-body" id="section-{{ block.heading_index }}">{{ block.data.text }}</h3>
         {% else %}
-            <h2 class="post-body" id="section-{{ forloop.counter }}">{{ block.data.text }}</h2>
+            <h2 class="post-body" id="section-{{ block.heading_index }}">{{ block.data.text }}</h2>
         {% endif %}
 
     {# ── Paragraph ────────────────────────────────────────────────── #}

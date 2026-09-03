@@ -28,7 +28,7 @@ services:
       dockerfile: Dockerfile
     container_name: celery_worker
     restart: unless-stopped
-    command: celery -A config worker --loglevel=info --autoreload
+    command: celery -A config worker --loglevel=info
     env_file: .env
     volumes:
       - .:/app/backend

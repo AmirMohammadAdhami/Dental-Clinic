@@ -17,6 +17,8 @@ Usage in views:
 """
 
 from django.core.cache import cache  # noqa: re-export for convenience
+from django.http import HttpResponse
+from django.template.loader import render_to_string
 
 # ── TTL constants (seconds) ────────────────────────────────────
 CACHE_TTL = {
@@ -79,6 +81,33 @@ def article_comments_key(slug):
     return _key('articles', 'comments', slug)
 
 
+# ── Deterministic page cache (server-rendered HTML pages) ──────
+def page_cache_key(name, *parts):
+    """Key for a server-rendered public page (hybrid-rendered pages)."""
+    return _key('pages', name, *parts)
+
+
+def render_cached_page(request, template_name, cache_key, timeout, context_builder):
+    """Render a public template page and cache the HTML under a
+    deterministic key.
+
+    Equivalent to ``@cache_page`` (same Redis backend, same TTLs) but with
+    keys we can invalidate precisely when the underlying data changes.
+
+    On a cache hit the cached HTML is returned immediately and the ORM
+    ``context_builder`` is never executed (same "skip the DB" behaviour as
+    the cache middleware).  On a miss the builder runs, the page is
+    rendered once and stored for ``timeout`` seconds.
+    """
+    html = cache.get(cache_key)
+    if html is not None:
+        return HttpResponse(html)
+    context = context_builder() or {}
+    html = render_to_string(template_name, context, request=request)
+    cache.set(cache_key, html, timeout)
+    return HttpResponse(html)
+
+
 # ── Invalidation helpers ───────────────────────────────────────
 # Each invalidator clears all cache keys that depend on the
 # changed data.  Call them after a successful write (POST/PATCH/DELETE).
@@ -92,36 +121,56 @@ def invalidate_doctor_list():
         doctor_list_key(sort='rating'),
         doctor_list_key(sort='availability'),
         doctor_list_key(sort='experience'),
+        # Server-rendered pages that embed doctor data.
+        page_cache_key('team'),
+        page_cache_key('home'),
     ])
 
 
 def invalidate_doctor_detail(slug):
     """Call after a doctor's profile, articles, or reviews change."""
-    cache.delete(doctor_detail_key(slug))
+    cache.delete_many([
+        doctor_detail_key(slug),
+        page_cache_key('doctor', slug),
+        page_cache_key('team'),
+        page_cache_key('home'),
+    ])
     # Doctor list also shows this doctor's rating
     invalidate_doctor_list()
 
 
 def invalidate_reviews():
     """Call after a new review is approved."""
-    cache.delete(reviews_list_key())
+    cache.delete_many([
+        reviews_list_key(),
+        page_cache_key('home'),
+        page_cache_key('team'),
+    ])
     invalidate_doctor_list()
 
 
 def invalidate_article(slug):
     """Call after an article is edited or a new comment is approved."""
-    cache.delete(article_detail_key(slug))
-    cache.delete(article_comments_key(slug))
+    cache.delete_many([
+        article_detail_key(slug),
+        article_comments_key(slug),
+        page_cache_key('post_article', slug),
+        page_cache_key('all_articles'),
+        page_cache_key('home'),
+    ])
 
 
 def invalidate_blog_listing():
     """Call after an article is published, unpublished, or edited."""
     # Invalidate the paginated blog listing endpoint
-    cache.delete(_key('articles', 'list', 'all'))
-    # Invalidate the /blog/ static page (keyed by Django's cache_page)
-    from django.core.cache import cache as _cache
-    _cache.delete('views.decorators.cache.cache_page./blog/.GET.dentura')
-    _cache.delete('views.decorators.cache.cache_page./blog/before_after/.GET.dentura')
+    cache.delete_many([
+        _key('articles', 'list', 'all'),
+        # Server-rendered pages that embed article data.
+        page_cache_key('blog_index'),
+        page_cache_key('all_articles'),
+        page_cache_key('before_after'),
+        page_cache_key('home'),
+    ])
 
 
 def invalidate_all():
