@@ -719,7 +719,25 @@
 }
 #doc-gallery .ba-card-desc {
     padding: 18px 24px 8px;
-    font-size: 0.95rem;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--text-muted);
+    direction: rtl;
+    text-align: right;
+}
+#doc-gallery .ba-card-footer {
+    display: flex;
+    align-items: center;
+    padding: 0 24px 18px;
+}
+#doc-gallery .ba-card-tag {
+    display: inline-block;
+    padding: 5px 16px;
+    background: rgba(15, 118, 110, 0.08);
+    color: var(--primary);
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 600;
 }
 @media (max-width: 620px) {
     #doc-gallery .ba-grid { grid-template-columns: 1fr; }

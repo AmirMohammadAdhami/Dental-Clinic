@@ -51,7 +51,7 @@ def _all_articles_context():
     popular = sorted(articles, key=lambda a: a.view_count or 0, reverse=True)[:7]
 
     return {
-        'services': Service.objects.all(),
+        'services': Service.objects.filter(articles__is_published=True).distinct(),
         'featured_article': featured,
         'articles': articles,
         'popular_articles': popular,
@@ -187,6 +187,7 @@ def _before_after_context():
             'created_at', 'updated_at',
             'appointment__doctor__user__first_name',
             'appointment__doctor__user__last_name',
+            'appointment__doctor__slug',
             'appointment__first_name',
             'appointment__last_name',
             'appointment__patient__first_name',

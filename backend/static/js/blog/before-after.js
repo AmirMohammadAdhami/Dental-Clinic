@@ -9,6 +9,7 @@
   var allData = [];
   var currentFilter = 'all';
   var currentPage = 1;
+  var doctorQuery = '';
 
   window.scrollTo(0, 0);
 
@@ -53,9 +54,11 @@
     var grid = document.getElementById('baGrid');
     if (!grid) return;
 
-    var filtered = currentFilter === 'all'
-      ? allData
-      : allData.filter(function (item) { return item.service_name === currentFilter; });
+    var filtered = allData.filter(function (item) {
+      var matchFilter = currentFilter === 'all' || item.service_name === currentFilter;
+      var matchDoctor = !doctorQuery || (item.doctor_name || '').toLowerCase().indexOf(doctorQuery) !== -1;
+      return matchFilter && matchDoctor;
+    });
 
     var totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
     if (currentPage > totalPages) currentPage = totalPages;
@@ -159,8 +162,13 @@
         var val = btn.getAttribute('data-page');
         if (val === 'prev') {
           if (currentPage > 1) currentPage--;
-        } else if (val === 'next') {
-          var tp = Math.ceil((currentFilter === 'all' ? allData : allData.filter(function(i){return i.service_name===currentFilter;}).length) / ITEMS_PER_PAGE);
+        } else        if (val === 'next') {
+          var filteredForPag = allData.filter(function (i) {
+            var mf = currentFilter === 'all' || i.service_name === currentFilter;
+            var md = !doctorQuery || (i.doctor_name || '').toLowerCase().indexOf(doctorQuery) !== -1;
+            return mf && md;
+          });
+          var tp = Math.ceil(filteredForPag.length / ITEMS_PER_PAGE);
           if (currentPage < tp) currentPage++;
         } else {
           currentPage = parseInt(val) || 1;
@@ -253,6 +261,42 @@
     });
   }
 
+  // ── Bind search bar ──
+  function bindSearchBar() {
+    var searchInput = document.getElementById('baPageSearch');
+    var searchBtn = document.getElementById('baPageSearchBtn');
+
+    // Read ?doctor= from URL
+    var urlParams = new URLSearchParams(window.location.search);
+    var initialDoctor = urlParams.get('doctor');
+    if (initialDoctor) {
+      doctorQuery = initialDoctor.trim().toLowerCase();
+      if (searchInput) searchInput.value = initialDoctor.trim();
+    }
+
+    if (searchInput) {
+      searchInput.addEventListener('input', function () {
+        doctorQuery = this.value.trim().toLowerCase();
+        currentPage = 1;
+        renderCards();
+      });
+      searchInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+          doctorQuery = this.value.trim().toLowerCase();
+          currentPage = 1;
+          renderCards();
+        }
+      });
+    }
+    if (searchBtn) {
+      searchBtn.addEventListener('click', function () {
+        doctorQuery = searchInput ? searchInput.value.trim().toLowerCase() : '';
+        currentPage = 1;
+        renderCards();
+      });
+    }
+  }
+
   // ── Fetch from API ──
   async function init() {
     // SSR: first page + filters server-rendered; the full dataset comes from
@@ -263,7 +307,9 @@
       try { allData = JSON.parse(ssrDataEl.textContent); }
       catch (e) { allData = []; console.error('خطا در خواندن داده‌های نمونه کارها:', e); }
 
+      bindSearchBar();
       currentPage = 1;
+      renderCards();
       renderPagination(Math.max(1, Math.ceil(allData.length / ITEMS_PER_PAGE)));
       bindFilters();
       bindTagClicks();
@@ -280,6 +326,7 @@
       allData = [];
     }
 
+    bindSearchBar();
     buildFilters(allData);
     renderCards();
     bindFilters();

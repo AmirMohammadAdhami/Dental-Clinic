@@ -119,11 +119,11 @@
 }
 .ba-card-desc {
     padding: 16px 20px 4px;
-    font-size: 0.9rem;
+    font-size: 1rem;
     line-height: 1.7;
     color: var(--text-muted);
     direction: rtl;
-    text-align: right;
+    text-align: center;
 }
 .ba-card-footer {
     display: flex;

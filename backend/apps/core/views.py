@@ -120,9 +120,13 @@ def _home_context():
              if m.media_type == ArticleMedia.MediaTypes.IMAGE and m.file),
             None,
         )
+        try:
+            vid_url = first_video.video_url or (first_video.processed_file.url if first_video.processed_file else '')
+        except (ValueError, OSError):
+            vid_url = first_video.file.url if first_video.file else ''
         video_articles.append({
             'article': article,
-            'video_url':first_video.video_url or (first_video.processed_file.url if first_video.processed_file else ''),
+            'video_url': vid_url,
             'cover_url': (first_image.file.url if first_image and first_image.file else ''),
             'author_photo': _author_photo(article),
         })

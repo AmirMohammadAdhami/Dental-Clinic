@@ -35,14 +35,15 @@ def _doctor_average_rating_annotation():
 
 def _team_context():
     """Seed for the team page — mirrors the /api/doctors/ feed (first 20,
-    same queryset) plus services for the filter pills / dropdown."""
+    same queryset) plus services for the filter pills / dropdown.
+    Only services that have at least one doctor offering them are shown."""
     from backend.api.doctors.views import _doctor_list_queryset
     from backend.apps.appointments.services import release_expired_reservations
 
     release_expired_reservations()
     return {
         'doctors': _doctor_list_queryset()[:20],
-        'services': Service.objects.all(),
+        'services': Service.objects.filter(doctors_offered__isnull=False).distinct(),
     }
 
 
@@ -108,7 +109,7 @@ def _doctor_detail_context(doctor):
     ba_qs = BeforeAfter.objects.filter(
         appointment__doctor=doctor,
     ).select_related('appointment__service').order_by('-created_at')
-    before_after_items = [
+    all_ba_items = [
         {
             'description': ba.description,
             'before_image': ba.before_image.url,
@@ -118,9 +119,13 @@ def _doctor_detail_context(doctor):
         for ba in ba_qs
     ]
     ba_service_names = []
-    for item in before_after_items:
+    for item in all_ba_items:
         if item['service_name'] and item['service_name'] not in ba_service_names:
             ba_service_names.append(item['service_name'])
+
+    # Show max 3 before/after items in the detail page
+    before_after_items = all_ba_items[:3]
+    ba_has_more = len(all_ba_items) > 3
 
     # Articles (max 4, newest first) with first video/image for the cards
     articles = []
@@ -154,6 +159,7 @@ def _doctor_detail_context(doctor):
         'doctor': doctor,
         'reviews': reviews,
         'before_after_items': before_after_items,
+        'ba_has_more': ba_has_more,
         'ba_service_names': ba_service_names,
         'articles': articles,
         'articles_has_more': doctor.articles.count() > 4,

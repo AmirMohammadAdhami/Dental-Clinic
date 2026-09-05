@@ -70,12 +70,15 @@ class ArticleMedia(models.Model):
         ``processed_file``, and finally the original uploaded ``file``.
         Returns an empty string when no video is available.
         """
-        if self.video_url:
-            return self.video_url
-        if self.processed_file:
-            return self.processed_file.url
-        if self.file:
-            return self.file.url
+        try:
+            if self.video_url:
+                return self.video_url
+            if self.processed_file:
+                return self.processed_file.url
+            if self.file:
+                return self.file.url
+        except (ValueError, OSError):
+            pass
         return ''
 
 
@@ -224,6 +227,23 @@ class BeforeAfter(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    @property
+    def service_name(self):
+        svc = self.appointment.service
+        return svc.name if svc else ''
+
+    @property
+    def doctor_name(self):
+        doctor = self.appointment.doctor
+        if doctor and doctor.user:
+            return f'{doctor.user.first_name} {doctor.user.last_name}'.strip()
+        return ''
+
+    @property
+    def doctor_slug(self):
+        doctor = self.appointment.doctor
+        return doctor.slug if doctor else ''
 
     def __str__(self):
         return f'{self.appointment.tracking_code}'

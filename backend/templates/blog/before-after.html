@@ -51,6 +51,16 @@
         <div class="ba-page-header reveal">
             <h1 class="ba-page-title">نمونه کارهای دنتورا</h1>
             <p class="ba-page-subtitle">نتیجه واقعی درمان‌های زیبایی و ترمیمی ما را ببینید</p>
+            <div class="ba-page-search" style="max-width:480px;margin:20px auto 0;">
+                <div style="display:flex;gap:8px;background:var(--surface);border-radius:999px;padding:6px 6px 6px 20px;border:1.5px solid rgba(15,23,42,0.1);box-shadow:0 2px 12px -4px rgba(15,23,42,0.08);">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-faint)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:4px;"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                    <input type="text" class="ba-page-search-input" id="baPageSearch"
+                           placeholder="جستجوی نام دکتر..." aria-label="جستجوی نام دکتر"
+                           style="flex:1;background:none;border:none;outline:none;color:var(--text);font-size:0.95rem;font-family:inherit;">
+                    <button class="ba-page-search-btn" id="baPageSearchBtn" aria-label="جستجو"
+                            style="background:var(--primary);color:#fff;border:none;border-radius:999px;padding:10px 20px;font-weight:600;font-size:0.88rem;cursor:pointer;font-family:inherit;transition:opacity 0.2s;">جستجو</button>
+                </div>
+            </div>
         </div>
         <div class="ba-filters reveal is-visible" id="baFilters" role="tablist" aria-label="فیلتر نوع درمان" data-ssr="1">
             <button class="ba-filter-btn is-active" data-filter="all" role="tab" aria-selected="true">همه</button>

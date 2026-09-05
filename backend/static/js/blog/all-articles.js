@@ -324,7 +324,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var html = '';
     html += '<button class="ba-page-btn pagination-prev" aria-label="صفحه بعد" ' + (currentPage <= 1 ? 'disabled' : '') + '>';
-    html += '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>';
+    html += '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>';
     html += '</button>';
 
     var pages = [];
@@ -347,7 +347,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     html += '<button class="ba-page-btn pagination-next" aria-label="صفحه قبل" ' + (currentPage >= totalPages ? 'disabled' : '') + '>';
-    html += '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>';
+    html += '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>';
     html += '</button>';
 
     nav.innerHTML = html;
@@ -371,7 +371,8 @@ document.addEventListener('DOMContentLoaded', function () {
     cards.forEach(function (card) {
       var title = (card.querySelector('.article-card-title') || {}).textContent || '';
       var category = card.getAttribute('data-category') || '';
-      var match = !q || title.toLowerCase().indexOf(q) !== -1 || category.toLowerCase().indexOf(q) !== -1;
+      var authorName = (card.querySelector('.article-card-author span') || {}).textContent || '';
+      var match = !q || title.toLowerCase().indexOf(q) !== -1 || category.toLowerCase().indexOf(q) !== -1 || authorName.toLowerCase().indexOf(q) !== -1;
       if (match) {
         card.style.display = '';
         card.style.opacity = '1';
@@ -392,6 +393,12 @@ document.addEventListener('DOMContentLoaded', function () {
       if (allBtn) { allBtn.classList.add('is-active'); allBtn.setAttribute('aria-selected', 'true'); }
     }
 
+    // Sync hero search bar and sidebar search input
+    var heroInput = document.getElementById('articlesHeroSearch');
+    var sidebarInput = document.querySelector('.sidebar-search-input');
+    if (heroInput && heroInput.value !== (query || '')) heroInput.value = query || '';
+    if (sidebarInput && sidebarInput.value !== (query || '')) sidebarInput.value = query || '';
+
     currentPage = 1;
     showPage(1, true);
   }
@@ -400,6 +407,17 @@ document.addEventListener('DOMContentLoaded', function () {
   var searchBtn = document.querySelector('.sidebar-search-btn');
   if (searchInput) searchInput.addEventListener('input', function () { performSearch(this.value); });
   if (searchBtn) searchBtn.addEventListener('click', function () { performSearch(searchInput.value); });
+
+  /* Hero Search Bar */
+  var heroSearchInput = document.getElementById('articlesHeroSearch');
+  var heroSearchBtn = document.getElementById('articlesHeroSearchBtn');
+  if (heroSearchInput) {
+    heroSearchInput.addEventListener('input', function () { performSearch(this.value); });
+    heroSearchInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { performSearch(this.value); }
+    });
+  }
+  if (heroSearchBtn) heroSearchBtn.addEventListener('click', function () { performSearch(heroSearchInput ? heroSearchInput.value : ''); });
 
   /* ═══════════════════════════════════════════
      Mobile Search Overlay

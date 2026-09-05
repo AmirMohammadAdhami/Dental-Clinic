@@ -197,32 +197,17 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   /* ═══════════════════════════════════════════
-     BEFORE / AFTER (slider cards with filters)
+     BEFORE / AFTER (slider cards, max 3, no filter bar)
      ═══════════════════════════════════════════ */
   function renderBeforeAfter(doc) {
-    var items = doc.before_after || [];
+    var items = (doc.before_after || []).slice(0, 3);
     if (items.length === 0) {
-      document.getElementById('doc-gallery').style.display = 'none';
+      var gallery = document.getElementById('doc-gallery');
+      if (gallery) gallery.style.display = 'none';
       return;
     }
 
-    // Collect unique service names for filters
-    var serviceNames = [];
-    items.forEach(function (item) {
-      if (item.service_name && serviceNames.indexOf(item.service_name) === -1) {
-        serviceNames.push(item.service_name);
-      }
-    });
-
-    // Render filter pills (same style as before-after page)
-    var filtersEl = document.getElementById('docBaFilters');
-    var pillsHtml = '<button class="ba-filter-btn is-active" data-filter="all" role="tab" aria-selected="true">همه</button>';
-    serviceNames.forEach(function (name) {
-      pillsHtml += '<button class="ba-filter-btn" data-filter="' + name + '" role="tab" aria-selected="false">' + name + '</button>';
-    });
-    filtersEl.innerHTML = pillsHtml;
-
-    // Render BA cards (same structure as before-after page)
+    // Render BA cards with treatment capsule
     var grid = document.getElementById('docBaGrid');
     grid.innerHTML = items.map(function (item) {
       var desc = item.description || '';
@@ -241,31 +226,22 @@ document.addEventListener('DOMContentLoaded', function () {
             '</div>' +
           '</div>' +
           '<p class="ba-card-desc">' + desc + '</p>' +
+          (serviceName ? '<div class="ba-card-footer"><span class="ba-card-tag">' + serviceName + '</span></div>' : '') +
         '</div>'
       );
     }).join('');
 
+    // Show "view all" CTA if more than 3 items
+    if ((doc.before_after || []).length > 3) {
+      var docName = (doc.full_name || '');
+      var ctaHtml = '<div class="doc-ba-cta" style="text-align:center;margin-top:20px;">' +
+        '<a href="/before_after/?doctor=' + encodeURIComponent(docName) + '" class="btn btn-outline btn-lg">مشاهده تمام نمونه کارها</a>' +
+        '</div>';
+      grid.insertAdjacentHTML('afterend', ctaHtml);
+    }
+
     // Init BA sliders (same as before-after page)
     initBASliders();
-
-    // Bind filter pills
-    var pills = filtersEl.querySelectorAll('.ba-filter-btn');
-    var cards = grid.querySelectorAll('.ba-card-item');
-    pills.forEach(function (pill) {
-      pill.addEventListener('click', function () {
-        pills.forEach(function (p) { p.classList.remove('is-active'); p.setAttribute('aria-selected', 'false'); });
-        pill.classList.add('is-active');
-        pill.setAttribute('aria-selected', 'true');
-        var f = pill.getAttribute('data-filter');
-        cards.forEach(function (card) {
-          if (f === 'all' || card.getAttribute('data-treatment') === f) {
-            card.style.display = '';
-          } else {
-            card.style.display = 'none';
-          }
-        });
-      });
-    });
   }
 
   /* ═══════════════════════════════════════════
@@ -296,7 +272,7 @@ document.addEventListener('DOMContentLoaded', function () {
       var isVideo = !!videoSrc;
 
       return (
-        '<div class="doc-article-card" data-video="' + videoSrc + '" data-slug="' + article.slug + '">' +
+        '<a href="/blog/article/' + article.slug + '/" class="doc-article-card" data-video="' + videoSrc + '" data-slug="' + article.slug + '" style="text-decoration:none;color:inherit;">' +
           '<div class="doc-article-thumb">' +
             '<img src="' + coverSrc + '" alt="' + (article.title || '') + '" loading="lazy">' +
             (isVideo ? '<div class="doc-article-play"><svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div>' : '') +
@@ -305,21 +281,19 @@ document.addEventListener('DOMContentLoaded', function () {
             '<span class="doc-article-type">' + (isVideo ? 'ویدیو' : 'مقاله') + '</span>' +
             '<h4>' + (article.title || '') + '</h4>' +
           '</div>' +
-        '</div>'
+        '</a>'
       );
     }).join('');
 
-    // Bind click events
+    // Bind click events — videos open modal, non-videos follow the <a> link
     grid.querySelectorAll('.doc-article-card').forEach(function (card) {
       card.addEventListener('click', function (e) {
         var videoSrc = card.getAttribute('data-video');
-        var slug = card.getAttribute('data-slug');
         if (videoSrc) {
           e.preventDefault();
           openVideoModal(videoSrc);
-        } else if (slug) {
-          window.location.href = '/blog/article/' + slug + '/';
         }
+        // Otherwise let the <a> tag navigate normally
       });
     });
 
@@ -556,38 +530,17 @@ document.addEventListener('DOMContentLoaded', function () {
      SSR INTERACTIONS (server-rendered content)
      ═════════════════════════════════════════ */
   function bindSSRInteractions() {
-    // BA filter pills <-> data-treatment cards
-    var filtersEl = document.getElementById('docBaFilters');
-    var grid = document.getElementById('docBaGrid');
-    if (filtersEl && grid) {
-      var baPills = filtersEl.querySelectorAll('.ba-filter-btn');
-      var baCards = grid.querySelectorAll('.ba-card-item');
-      baPills.forEach(function (pill) {
-        pill.addEventListener('click', function () {
-          baPills.forEach(function (p) { p.classList.remove('is-active'); p.setAttribute('aria-selected', 'false'); });
-          pill.classList.add('is-active');
-          pill.setAttribute('aria-selected', 'true');
-          var f = pill.getAttribute('data-filter');
-          baCards.forEach(function (card) {
-            card.style.display = (f === 'all' || card.getAttribute('data-treatment') === f) ? '' : 'none';
-          });
-        });
-      });
-    }
-
-    // Article cards: data-video -> open video modal, else navigate to the post
+    // Article cards: data-video -> open video modal (prevent default link), else follow link
     var articlesGrid = document.getElementById('docArticlesGrid');
     if (articlesGrid) {
       articlesGrid.querySelectorAll('.doc-article-card').forEach(function (card) {
         card.addEventListener('click', function (e) {
           var videoSrc = card.getAttribute('data-video');
-          var articleSlug = card.getAttribute('data-slug');
           if (videoSrc) {
             e.preventDefault();
             openVideoModal(videoSrc);
-          } else if (articleSlug) {
-            window.location.href = '/blog/article/' + articleSlug + '/';
           }
+          // Otherwise let the <a> tag navigate normally
         });
       });
     }
