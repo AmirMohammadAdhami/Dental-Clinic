@@ -58,6 +58,41 @@
   font-family: inherit;
 }
 
+/* ===== دارک مود ===== */
+:root[data-theme="dark"] #dentora-loader {
+  background: #0A2E22;
+}
+
+:root[data-theme="dark"] #dentora-loader .tooth-outline {
+  stroke: #E6EDF3;
+}
+
+:root[data-theme="dark"] #dentora-loader .wipe-mask {
+  fill: #0A2E22;
+}
+
+:root[data-theme="dark"] #dentora-loader .loader-text {
+  color: #E6EDF3;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) #dentora-loader {
+    background: #0A2E22;
+  }
+
+  :root:not([data-theme="light"]) #dentora-loader .tooth-outline {
+    stroke: #E6EDF3;
+  }
+
+  :root:not([data-theme="light"]) #dentora-loader .wipe-mask {
+    fill: #0A2E22;
+  }
+
+  :root:not([data-theme="light"]) #dentora-loader .loader-text {
+    color: #E6EDF3;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   #dentora-loader .wipe-mask {
     animation: none;
