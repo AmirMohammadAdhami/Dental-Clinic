@@ -310,7 +310,6 @@
       bindSearchBar();
       currentPage = 1;
       renderCards();
-      renderPagination(Math.max(1, Math.ceil(allData.length / ITEMS_PER_PAGE)));
       bindFilters();
       bindTagClicks();
       initSliders();

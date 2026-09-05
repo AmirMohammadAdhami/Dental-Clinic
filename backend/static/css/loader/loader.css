@@ -1,0 +1,66 @@
+/* ===== لودینگ دنتورا - افکت پر شدن دندون از پایین به بالا ===== */
+
+#dentora-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff; /* اگه بک‌گراند سایتت رنگ دیگه‌ایه، اینو عوض کن */
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+#dentora-loader.loader-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+#dentora-loader .loader-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+#dentora-loader .loader-logo {
+  width: 84px;
+  height: 84px;
+  overflow: visible;
+}
+
+/* خط دور دندون - همیشه ثابت و دیده می‌شه */
+#dentora-loader .tooth-outline {
+  fill: none;
+  stroke: #0F6E56;
+  stroke-width: 2;
+}
+
+/* مستطیل سفید که روی دندون می‌شینه و هر بار جابه‌جا می‌شه
+   تا انگار رنگ از پایین به بالا داره دندون رو پر می‌کنه.
+   باید دقیقاً هم‌رنگ بک‌گراند #dentora-loader باشه (اینجا سفید) */
+#dentora-loader .wipe-mask {
+  fill: #ffffff;
+  animation: dentora-fill-wipe 2s ease-in-out infinite;
+}
+
+@keyframes dentora-fill-wipe {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-36px); }
+  100% { transform: translateY(0); }
+}
+
+#dentora-loader .loader-text {
+  font-size: 14px;
+  color: #0F6E56;
+  letter-spacing: 0.3px;
+  font-family: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #dentora-loader .wipe-mask {
+    animation: none;
+    transform: translateY(-18px);
+  }
+}

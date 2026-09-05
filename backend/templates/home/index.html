@@ -23,93 +23,93 @@
 {% block og_url %}{{ request.scheme }}://{{ request.get_host }}{% endblock %}
 
 {% block content %}
-    <main class="hero" id="main-content" tabindex="-1">
-        <!-- Background glow effect -->
-        <div class="hero-glow"></div>
-
-        <!-- SVG Smile curve decorative element -->
-        <svg class="hero-smile-svg" viewBox="0 0 600 120" fill="none" xmlns="http://www.w3.org/2000/svg"
-             aria-hidden="true">
-            <path class="smile-path" d="M50 40 Q300 120 550 40" stroke="url(#smileGradient)" stroke-width="1.5"
-                  stroke-linecap="round" fill="none"/>
-            <defs>
-                <linearGradient id="smileGradient" x1="50" y1="40" x2="550" y2="40" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="var(--primary)" stop-opacity="0"/>
-                    <stop offset="30%" stop-color="var(--primary)" stop-opacity="0.3"/>
-                    <stop offset="70%" stop-color="var(--primary)" stop-opacity="0.3"/>
-                    <stop offset="100%" stop-color="var(--primary)" stop-opacity="0"/>
-                </linearGradient>
-            </defs>
-        </svg>
-
-        <div class="hero-inner" data-parallax-bg>
-
-            <h1 class="hero-title">
-                <span class="line hero-line-1">جایی که اعتماد به نفس شما</span>
-                <span class="line accent hero-line-2">با لبخندتان آغاز می‌شود</span>
+    <!-- ================= HERO FULL-WIDTH ================= -->
+    <main class="hero-full" id="main-content" tabindex="-1">
+        <div class="hero-full-bg">
+            <img width="1920" height="1080" src="{% static 'images/hero/main-hero.jpg' %}" alt="فضای داخلی مطب دنتورا">
+            <div class="hero-full-overlay"></div>
+        </div>
+        <div class="hero-full-content">
+            <h1 class="hero-full-title">
+                <span class="line hero-full-line-1">جایی که</span>
+                <span class="line hero-full-line-2"><span class="hero-accent">اعتماد به نفس</span> شما</span>
+                <span class="line hero-full-line-3">با <span class="hero-accent">لبخندتان</span></span>
+                <span class="line hero-full-line-4">آغاز می‌شود</span>
             </h1>
-
-            <p class="hero-subtitle">
-                دندانپزشکی زیبایی و ترمیمی، با تمرکز بر لبخندی طبیعی و ماندگار
-            </p>
-
-            <div class="hero-cta">
+            <p class="hero-full-subtitle">دندانپزشکی زیبایی و ترمیمی، با تمرکز بر لبخندی طبیعی و ماندگار</p>
+            <div class="hero-full-cta">
                 <button class="btn btn-primary btn-lg hero-btn-primary">رزرو نوبت آنلاین</button>
                 <button class="btn btn-outline btn-lg hero-btn-outline">مشاهده نمونه کارها</button>
             </div>
-
-            <!-- ================= LIVE SOCIAL PROOF ================= -->
-            <div class="live-proof" aria-live="polite">
-                <span class="live-dot"></span>
-                <span class="live-text">الان <strong id="live-count">۲۴</strong> نفر در حال رزرو نوبت هستند</span>
-            </div>
-
-            <div class="gallery">
-                <div class="tile tile-photo tile-photo-4" data-parallax-card="0.7" data-float-duration="5.2"
-                     data-float-delay="0">
-                    <img width="1408" height="768" src="{% static 'images/hero/clinic-detail.jpg' %}" alt="فضای مطب">
-                </div>
-
-                <div class="tile tile-photo tile-photo-1" data-parallax-card="1" data-float-duration="4.5"
-                     data-float-delay="1.2">
-                    <img width="768" height="1376" src="{% static 'images/hero/patient-woman.jpg' %}"
-                         alt="درمان دندان‌پزشکی">
-                </div>
-
-                <div class="tile tile-photo tile-photo-2" data-parallax-card="0.85" data-float-duration="5.8"
-                     data-float-delay="0.6">
-                    <img width="1408" height="768" src="{% static 'images/hero/dentist-work.jpg' %}"
-                         alt="پزشک در حال معاینه">
-                </div>
-
-                <div class="tile tile-photo tile-photo-3" data-parallax-card="0.9" data-float-duration="4.8"
-                     data-float-delay="2.1">
-                    <img width="768" height="1376" src="{% static 'images/hero/happy-patient.jpg' %}" alt="بیمار خندان">
-                </div>
-
-                <div class="tile tile-accent" data-parallax-card="0.8" data-float-duration="5.5" data-float-delay="1.8">
-                    <div class="tile-accent-photo">
-                        <img width="1408" height="768" src="{% static 'images/hero/smile-detail.jpg' %}"
-                             alt="لبخند بیمار">
-                    </div>
-                    <div class="tile-accent-info">
-                        <div class="tile-stat-block">
-                            <div class="tile-number" data-count-to="15" data-count-suffix="+">۰<span>+</span></div>
-                            <div class="tile-label">سال سابقه<br>خدمات درمانی</div>
-                        </div>
-                        <div class="tile-divider"></div>
-                        <div class="tile-stat-block">
-                            <div class="tile-number" data-count-to="5" data-count-suffix="هزار+">۰<span>هزار+</span>
-                            </div>
-                            <div class="tile-label">لبخند رضایت‌مند</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
         </div>
     </main>
+
+    <!-- ================= BEFORE / AFTER ================= -->
+    <section class="ba-section">
+        <div class="ba-inner reveal">
+            <h2 class="ba-title">نتایج واقعی درمان‌های ما</h2>
+            <p class="ba-subtitle">نتیجه واقعی درمان‌های دنتورا را ببینید</p>
+
+            <div class="samples-grid reveal-stagger" id="beforeAfterGrid" data-ssr="1">
+                {% for item in before_afters %}
+                <div class="doctor-card" data-ba>
+                    <div class="doctor-img ba-container" tabindex="0" role="slider"
+                         aria-label="مقایسه قبل و بعد {{ item.description }}، با کشیدن یا کلیدهای جهت‌نما"
+                         aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+                        <img class="ba-img ba-after" src="{{ item.after_image.url }}" alt="نتیجه بعد از {{ item.description }}" loading="lazy">
+                        <img class="ba-img ba-before" src="{{ item.before_image.url }}" alt="وضعیت قبل از {{ item.description }}" loading="lazy">
+                        <div class="ba-slider">
+                            <div class="ba-handle"></div>
+                        </div>
+                        <span class="ba-label ba-label-before">قبل</span>
+                        <span class="ba-label ba-label-after">بعد</span>
+                    </div>
+                    <p class="doctor-name">{{ item.description }}</p>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="samples-cta">
+                <a href="{% url 'blog:before_after' %}" class="btn btn-primary btn-lg">مشاهده همه نمونه‌کارها</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= ABOUT US ================= -->
+    <section class="about-section">
+        <div class="about-inner reveal">
+            <div class="about-text">
+                <h2 class="about-title">دنتورایی که پشت لبخند شماست</h2>
+                <p class="about-paragraph">دنتورا با بیش از ۱۵ سال سابقه در زمینه دندانپزشکی زیبایی و ترمیمی، همواره تلاش کرده است تا با بهره‌گیری از پیشرفته‌ترین تجهیزات و تیمی مجرب از متخصصان، لبخندی طبیعی و ماندگار را برای بیماران خود رقم بزند.</p>
+                <p class="about-paragraph">فلسفه درمانی ما بر پایه اعتماد، دقت و زیبایی‌شناسی است؛ هر درمان با مشاوره دقیق، طراحی دیجیتال لبخند و اجرای بی‌نقص توسط متخصصان ما انجام می‌شود تا نتیجه‌ای فراتر از انتظارتان باشد.</p>
+                <p class="about-paragraph">از ایمپلنت و لمینیت سرامیکی گرفته تا ارتودنسی و بلیچینگ، مجموعه‌ای کامل از خدمات درمانی و زیبایی را در فضایی مدرن و آرام ارائه می‌دهیم.</p>
+
+                <div class="about-stats">
+                    <div class="about-stat">
+                        <div class="about-stat-number" data-count-to="5" data-count-suffix="هزار+">۰<span>هزار+</span></div>
+                        <div class="about-stat-label">بیمار رضایت‌مند</div>
+                    </div>
+                    <div class="about-stat">
+                        <div class="about-stat-number" data-count-to="15" data-count-suffix="+">۰<span>+</span></div>
+                        <div class="about-stat-label">سال سابقه</div>
+                    </div>
+                    <div class="about-stat">
+                        <div class="about-stat-number">۲۰+</div>
+                        <div class="about-stat-label">خدمات درمانی</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="about-collage">
+                <div class="collage-item collage-1"><img src="{% static 'images/hero/clinic-detail.jpg' %}" alt="فضای مطب"></div>
+                <div class="collage-item collage-2"><img src="{% static 'images/hero/patient-woman.jpg' %}" alt="بیمار"></div>
+                <div class="collage-item collage-3"><img src="{% static 'images/hero/dentist-work.jpg' %}" alt="پزشک در حال معاینه"></div>
+                <div class="collage-item collage-4"><img src="{% static 'images/hero/happy-patient.jpg' %}" alt="بیمار خندان"></div>
+                <div class="collage-item collage-5"><img src="{% static 'images/hero/smile-detail.jpg' %}" alt="لبخند بیمار"></div>
+                <div class="collage-item collage-6"><img src="{% static 'images/hero/main-hero.jpg' %}" alt="مطب دنتورا"></div>
+            </div>
+        </div>
+    </section>
 
     <!-- ================= DOCTORS SLIDER ================= -->
     <section class="doctors-section">
@@ -199,37 +199,7 @@
         </div>
     </section>
 
-    <!-- ================= BEFORE / AFTER ================= -->
-    <section class="samples-section">
-        <div class="samples-inner reveal">
-            <h2 class="samples-title">نمونه کارهای ما</h2>
-            <p class="samples-subtitle">نتیجه واقعی درمان‌های دنتورا را ببینید</p>
 
-            <div class="samples-grid reveal-stagger" id="beforeAfterGrid" data-ssr="1">
-                {% for item in before_afters %}
-                <div class="doctor-card" data-ba>
-                    <div class="doctor-img ba-container" tabindex="0" role="slider"
-                         aria-label="مقایسه قبل و بعد {{ item.description }}، با کشیدن یا کلیدهای جهت‌نما"
-                         aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
-                        <img class="ba-img ba-after" src="{{ item.after_image.url }}" alt="نتیجه بعد از {{ item.description }}" loading="lazy">
-                        <img class="ba-img ba-before" src="{{ item.before_image.url }}" alt="وضعیت قبل از {{ item.description }}" loading="lazy">
-                        <div class="ba-slider">
-                            <div class="ba-handle"></div>
-                        </div>
-                        <span class="ba-label ba-label-before">قبل</span>
-                        <span class="ba-label ba-label-after">بعد</span>
-                    </div>
-                    <p class="doctor-name">{{ item.description }}</p>
-                </div>
-                {% endfor %}
-            </div>
-
-            <div class="samples-cta">
-                <a href="{% url 'blog:before_after' %}" class="btn btn-primary btn-lg">مشاهده
-                    نمونه‌ کارها</a>
-            </div>
-        </div>
-    </section>
 
     <!-- ================= TESTIMONIALS ================= -->
     <section class="testimonials-section">

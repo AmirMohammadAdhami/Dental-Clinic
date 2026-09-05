@@ -1,0 +1,30 @@
+<!-- این بلاک رو بلافاصله بعد از تگ <body> در همه صفحات سایت قرار بده -->
+<div id="dentora-loader" aria-hidden="true">
+  <div class="loader-box">
+    <svg class="loader-logo" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <clipPath id="tooth-clip">
+          <path d="M32 14 C22 14 17 20 17 28 C17 36 21 46 25 50 C27 52 29 48 30 44
+                   C30.5 42 33.5 42 34 44 C35 48 37 52 39 50 C43 46 47 36 47 28
+                   C47 20 42 14 32 14 Z" />
+        </clipPath>
+      </defs>
+
+      <!-- اگر لوگوی SVG واقعی دنتورا رو داری، فقط همین مسیر (path) رو با اون جایگزین کن،
+           و همون مسیر رو داخل clipPath بالا هم کپی کن تا افکت درست کار کنه -->
+      <path class="tooth-outline"
+        d="M32 14 C22 14 17 20 17 28 C17 36 21 46 25 50 C27 52 29 48 30 44
+           C30.5 42 33.5 42 34 44 C35 48 37 52 39 50 C43 46 47 36 47 28
+           C47 20 42 14 32 14 Z" />
+
+      <!-- گروه رنگی داخل دندون که با clip-path محدود به شکل دندون شده -->
+      <g clip-path="url(#tooth-clip)">
+        <rect x="14" y="14" width="36" height="40" fill="#0F6E56" />
+        <!-- این مستطیل سفید روی رنگ سبز حرکت می‌کنه و همون افکت "پر شدن" رو می‌سازه -->
+        <rect class="wipe-mask" x="14" y="14" width="36" height="40" />
+      </g>
+    </svg>
+
+    <span class="loader-text">دنتورا</span>
+  </div>
+</div>

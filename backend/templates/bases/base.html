@@ -71,6 +71,7 @@
 
     <link rel="stylesheet" href="{% static "css/base.css" %}">
     <link rel="stylesheet" href="{% static "css/shared.css" %}">
+    <link rel="stylesheet" href="{% static "css/loader/loader.css" %}">
 
     {% block css %}
 
@@ -79,6 +80,7 @@
 
 </head>
 <body>
+{% include "loader/loader.html" %}
 <a href="#main-content" class="skip-link">رفتن به محتوای اصلی</a>
 
 <!-- Django Messages -->
@@ -254,6 +256,7 @@
     <a href="{% url 'accounts:login' %}" class="site-main-nav-item"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>پروفایل</span></a>
 </nav>
 
+<script src="{% static "js/loader/loader.js" %}"></script>
 <script src="{% static "js/shared.js" %}?v=2"></script>
 <script>window.__IS_AUTHENTICATED__ = {{ user.is_authenticated|yesno:"true,false" }};</script>
 {% block js %}

@@ -238,35 +238,12 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function applyFilter(animate) {
-    var filter = getActiveFilter();
-    var cards = document.querySelectorAll('.article-card');
-    var visibleCount = 0;
-
-    cards.forEach(function (card) {
-      var category = card.getAttribute('data-category');
-      var show = (filter === 'all' || category === filter);
-
-      if (show) {
-        visibleCount++;
-        card.style.display = '';
-        if (animate) {
-          card.style.opacity = '0';
-          card.style.transform = 'translateY(16px)';
-          requestAnimationFrame(function () {
-            card.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0)';
-          });
-        } else {
-          card.style.opacity = '1';
-          card.style.transform = 'translateY(0)';
-        }
-      } else {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(16px)';
-        setTimeout(function () { card.style.display = 'none'; }, 300);
-      }
-    });
+    // Clear any active search when switching filters
+    var heroSearchInput = document.getElementById('articlesHeroSearch');
+    var sidebarSearchInput = document.querySelector('.sidebar-search-input');
+    if (heroSearchInput) heroSearchInput.value = '';
+    if (sidebarSearchInput) sidebarSearchInput.value = '';
+    document.querySelectorAll('.article-card').forEach(function (c) { c.removeAttribute('data-search-hidden'); });
 
     currentPage = 1;
     showPage(1, false);
@@ -280,6 +257,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var cards = document.querySelectorAll('.article-card');
     var visible = [];
     cards.forEach(function (card) {
+      if (card.hasAttribute('data-search-hidden')) return;
       var category = card.getAttribute('data-category');
       if (filter === 'all' || category === filter) visible.push(card);
     });
@@ -294,6 +272,12 @@ document.addEventListener('DOMContentLoaded', function () {
     var start = (currentPage - 1) * ITEMS_PER_PAGE;
     var end = start + ITEMS_PER_PAGE;
 
+    // First: hide ALL article cards
+    document.querySelectorAll('.article-card').forEach(function (card) {
+      card.style.display = 'none';
+    });
+
+    // Then: show only the visible ones on the current page
     visible.forEach(function (card, i) {
       if (i >= start && i < end) {
         card.style.display = '';
@@ -304,8 +288,6 @@ document.addEventListener('DOMContentLoaded', function () {
           card.style.opacity = '1';
           card.style.transform = 'translateY(0)';
         });
-      } else {
-        card.style.display = 'none';
       }
     });
 
@@ -373,14 +355,10 @@ document.addEventListener('DOMContentLoaded', function () {
       var category = card.getAttribute('data-category') || '';
       var authorName = (card.querySelector('.article-card-author span') || {}).textContent || '';
       var match = !q || title.toLowerCase().indexOf(q) !== -1 || category.toLowerCase().indexOf(q) !== -1 || authorName.toLowerCase().indexOf(q) !== -1;
-      if (match) {
-        card.style.display = '';
-        card.style.opacity = '1';
-        card.style.transform = 'translateY(0)';
+      if (!match) {
+        card.setAttribute('data-search-hidden', '1');
       } else {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(16px)';
-        setTimeout(function () { card.style.display = 'none'; }, 300);
+        card.removeAttribute('data-search-hidden');
       }
     });
 

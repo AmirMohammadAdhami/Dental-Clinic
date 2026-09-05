@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --- حذف افکت shimmer وقتی عکس واقعی لود شد ---
-  document.querySelectorAll('.tile-photo, .tile-accent-photo, .doctor-img').forEach(wrapper => {
+  document.querySelectorAll('.collage-item, .doctor-img').forEach(wrapper => {
     const img = wrapper.querySelector('img');
     if (!img) return;
     const markLoaded = () => wrapper.classList.add('img-loaded');
@@ -78,133 +78,62 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ================= HERO PREMIUM ANIMATIONS =================
-  const heroSection = document.querySelector('.hero');
-  const heroInner = document.querySelector('.hero-inner');
-  const heroLines = document.querySelectorAll('.hero-title .line');
-  const heroSubtitle = document.querySelector('.hero-subtitle');
-  const heroCta = document.querySelector('.hero-cta');
-  const galleryTiles = document.querySelectorAll('.gallery .tile');
-  const bgGlow = document.querySelector('.hero-glow');
+  const heroSection = document.querySelector('.hero-full');
+  const heroLines = document.querySelectorAll('.hero-full-title .line');
+  const heroSubtitle = document.querySelector('.hero-full-subtitle');
+  const heroCta = document.querySelector('.hero-full-cta');
 
   // --- Stagger hero text entrance ---
   setTimeout(() => {
     heroLines.forEach(line => line.classList.add('animate'));
-    heroSubtitle.classList.add('animate');
-  }, 100);
-
-  // --- Stagger gallery card entrance ---
-  setTimeout(() => {
-    galleryTiles.forEach(tile => tile.classList.add('entering'));
-    // Trigger CTA after cards
+    if (heroSubtitle) heroSubtitle.classList.add('animate');
     setTimeout(() => {
-      heroCta.classList.add('animate');
-    }, 400);
-    // Start floating after entrance completes
-    setTimeout(() => {
-      if (!REDUCED_MOTION) initFloatingCards();
-      initCountAnimation();
-    }, 1200);
-  }, 600);
+      if (heroCta) heroCta.classList.add('animate');
+    }, 300);
+  }, 200);
 
-  // --- Floating animation for cards ---
-  function initFloatingCards() {
-    galleryTiles.forEach(tile => {
-      const duration = parseFloat(tile.dataset.floatDuration) || 5;
-      const delay = parseFloat(tile.dataset.floatDelay) || 0;
-      const distance = 2 + Math.random() * 2; // 2-4px
-      tile.style.setProperty('--float-duration', `${duration}s`);
-      tile.style.setProperty('--float-delay', `${delay}s`);
-      tile.style.setProperty('--float-distance', `-${distance}px`);
-      tile.classList.add('floating');
-    });
-  }
-
-  // --- Count animation for statistics ---
+  // --- Count animation for statistics (About section + any data-count-to) ---
   function initCountAnimation() {
     const statNumbers = document.querySelectorAll('[data-count-to]');
     statNumbers.forEach(el => {
       const target = parseInt(el.dataset.countTo, 10);
       const suffix = el.dataset.countSuffix || '';
-
-      // با reduced-motion، عدد نهایی بلافاصله نمایش داده می‌شود
       if (REDUCED_MOTION) {
         el.innerHTML = `${toPersianNum(target)}<span>${suffix}</span>`;
         return;
       }
-
       const duration = 1500;
       const startTime = performance.now();
-      
       function easeOutQuart(t) {
         return 1 - Math.pow(1 - t, 4);
       }
-      
       function updateCount(currentTime) {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
         const easedProgress = easeOutQuart(progress);
         const currentValue = Math.round(easedProgress * target);
         el.innerHTML = `${toPersianNum(currentValue)}<span>${suffix}</span>`;
-        
         if (progress < 1) {
           requestAnimationFrame(updateCount);
         }
       }
-      
       requestAnimationFrame(updateCount);
     });
   }
 
-  // --- Mouse parallax effect ---
-  let mouseX = 0, mouseY = 0;
-  let currentX = 0, currentY = 0;
-  let isParallaxActive = true;
-
-  document.addEventListener('mousemove', (e) => {
-    const rect = heroSection.getBoundingClientRect();
-    if (e.clientY > rect.bottom + 100 || e.clientY < rect.top - 100) {
-      isParallaxActive = false;
-      return;
-    }
-    isParallaxActive = true;
-    mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-    mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-  });
-
-  function animateParallax() {
-    if (!isParallaxActive) {
-      currentX += (0 - currentX) * 0.05;
-      currentY += (0 - currentY) * 0.05;
-    } else {
-      currentX += (mouseX - currentX) * 0.08;
-      currentY += (mouseY - currentY) * 0.08;
-    }
-
-    // Background glow movement (8-10px)
-    if (bgGlow) {
-      bgGlow.style.transform = `translate(calc(-50% + ${currentX * 10}px), calc(-50% + ${currentY * 10}px))`;
-    }
-
-    // Hero inner movement (3px for subtle shift)
-    if (heroInner) {
-      heroInner.style.transform = `translate(${currentX * 3}px, ${currentY * 3}px)`;
-    }
-
-    // Surrounding cards parallax (5-7px)
-    galleryTiles.forEach(tile => {
-      const factor = parseFloat(tile.dataset.parallaxCard) || 0.5;
-      const tx = currentX * 7 * factor;
-      const ty = currentY * 7 * factor;
-      if (!tile.classList.contains('floating')) {
-        tile.style.transform = `translate(${tx}px, ${ty}px)`;
-      }
-    });
-
-    requestAnimationFrame(animateParallax);
+  // Trigger count animation when about section is visible
+  const aboutSection = document.querySelector('.about-section');
+  if (aboutSection) {
+    const countObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          initCountAnimation();
+          countObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    countObserver.observe(aboutSection);
   }
-
-  // Start parallax animation loop
-  if (!REDUCED_MOTION) requestAnimationFrame(animateParallax);
 
   // --- دکمه‌های رزرو نوبت ---
   const bookButtons = document.querySelectorAll('.btn-primary');
